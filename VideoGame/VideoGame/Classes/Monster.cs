@@ -12,6 +12,11 @@ namespace VideoGame.Classes {
     }
 
     public class Monster {
+        public Texture2D FrontSprite;   //Sprite that is shown when you're fighting this monster
+        public Texture2D BackSprite;    //Sprite that is shown when you've send out this monster
+        public Texture2D PartySprite;   //Sprite that is shown if you open the party
+        //Maybe add Points for Sprite sizes
+        //If we are going add monsters in the world we need to add a position and a collision box
         public int Experience;
         public int Level;
         public string Name;
@@ -33,13 +38,20 @@ namespace VideoGame.Classes {
         /// <param name="gender">Gender of the monster</param>
         /// <param name="ailment">Ailment the monster has</param>
         /// <param name="moves">Attacks the monster knows</param>
-        public Monster(string name, Stats stats, Type type, Gender gender, Ailment ailment, List<Move> moves) {
+        /// <param name="front">Texture that is shown when fighting against this monster</param>
+        /// <param name="back">Texture that is shown when you've send out this monster</param>
+        /// <param name="party">Texture that is shown in the party view</param>
+        public Monster(string name, Stats stats, Type type, Gender gender, Ailment ailment, List<Move> moves,
+        Texture2D front, Texture2D back, Texture2D party) {
             Name = name;
             Stats = stats;
             PrimaryType = type;
             Gender = gender;
             Ailment = ailment;
             Moves = moves;
+            FrontTexture = front;
+            BackTexture = back;
+            PartyTexture = party;
         }
 
         /// <summary>
@@ -52,7 +64,11 @@ namespace VideoGame.Classes {
         /// <param name="gender">Gender of the monster</param>
         /// <param name="ailment">Ailment the monster has</param>
         /// <param name="moves">Attacks the monster knows</param>
-        public Monster(string name, Stats stats, Type primaryType, Type secondaryType, Gender gender, Ailment ailment, List<Move> moves) {
+        /// <param name="front">Texture that is shown when fighting against this monster</param>
+        /// <param name="back">Texture that is shown when you've send out this monster</param>
+        /// <param name="party">Texture that is shown in the party view</param>
+        public Monster(string name, Stats stats, Type primaryType, Type secondaryType, Gender gender, Ailment ailment, List<Move> moves,
+        Texture2D front, Texture2D back, Texture2D party) {
             Name = name;
             Stats = stats;
             PrimaryType = primaryType;
@@ -60,6 +76,9 @@ namespace VideoGame.Classes {
             Gender = gender;
             Ailment = ailment;
             Moves = moves;
+            FrontTexture = front;
+            BackTexture = back;
+            PartyTexture = party;
         }
         
         public void ReceiveExp(int amount) {
