@@ -10,9 +10,31 @@ namespace VideoGame.Classes {
         Poisoned,
         Paralyzed,
         Burned,
-        Frozen
+        Frozen,
+        Fainted
     }
+
+    public class BaseStats { }
+
+
     public class Stats {
+        //Randomized stats which will be multiplied with Base and Level
+        public int RandHealth { get; }
+        public int RandAttack { get; }
+        public int RandDefense { get; }
+        public int RandSpecialAttack { get; }
+        public int RandSpecialDefense { get; }
+        public int RandSpeed { get; }
+
+        //Base stats, which will be multiplied to level
+        public int BaseHealth { get; }
+        public int BaseAttack { get; }
+        public int BaseDefense { get; }
+        public int BaseSpecialAttack { get; }
+        public int BaseSpecialDefense { get; }
+        public int BaseSpeed { get; }
+
+        //Shown stats
         public int Health;
         public int Attack;
         public int Defense;
@@ -24,14 +46,44 @@ namespace VideoGame.Classes {
         /// New stats with everything on 0
         /// </summary>
         public Stats() { }
+        
+        /// <summary>
+        /// new Base stat and automatically calculate all stats
+        /// </summary>
+        /// <param name="health"></param>
+        /// <param name="attack"></param>
+        /// <param name="defense"></param>
+        /// <param name="specialattack"></param>
+        /// <param name="specialdefense"></param>
+        /// <param name="speed"></param>
+        /// <param name="level"></param>
+        public Stats(int health, int attack, int defense, int specialattack, int specialdefense, int speed, int level) {
+            BaseHealth = health;
+            BaseAttack = attack;
+            BaseDefense = defense;
+            BaseSpecialAttack = specialattack;
+            BaseSpecialDefense = specialdefense;
+            BaseSpeed = speed;
 
-        public Stats(int health, int attack, int defense, int specialattack, int specialdefense, int speed) {
-            Health = health;
-            Attack = attack;
-            Defense = defense;
-            SpecialAttack = specialattack;
-            SpecialDefense = specialdefense;
-            Speed = speed;
+            //TODO: Change the random to crypto random
+            Random rand = new Random();
+            RandHealth = rand.Next(0, 31);
+            RandAttack = rand.Next(0, 31);
+            RandDefense = rand.Next(0, 31);
+            RandSpecialAttack = rand.Next(0, 31);
+            RandSpecialDefense = rand.Next(0, 31);
+            RandSpeed = rand.Next(0, 31);
+
+            CalculateStats(level);
+        }
+        private void CalculateStats(int level) {
+            //Shamelessly stolen from Pokemon, without EVs
+            Health = (((BaseHealth * RandHealth) * 2) * level / 100) + 5;
+            Attack = (((BaseAttack * RandAttack) * 2) * level / 100) + 5;
+            Defense = (((BaseDefense * RandDefense) * 2) * level / 100) + 5;
+            SpecialAttack = (((BaseSpecialAttack * RandSpecialAttack) * 2) * level / 100) + 5;
+            SpecialDefense = (((BaseSpecialDefense * RandSpecialDefense) * 2) * level / 100) + 5;
+            Speed = (((BaseSpeed * RandSpeed * 2) * level) / 100) + 5;
         }
     }
 
@@ -60,11 +112,11 @@ namespace VideoGame.Classes {
 
         public Stats ApplyModifiers(Monster receiver) {
             var stats = receiver.Stats;
-            stats.Attack *= (int) AttackMod;
-            stats.Defense *= (int) DefenseMod;
-            stats.SpecialAttack *= (int) SpecialAttackMod;
-            stats.SpecialDefense *= (int) SpecialDefenseMod;
-            stats.Speed *= (int) SpeedMod;
+            stats.Attack *= (int)AttackMod;
+            stats.Defense *= (int)DefenseMod;
+            stats.SpecialAttack *= (int)SpecialAttackMod;
+            stats.SpecialDefense *= (int)SpecialDefenseMod;
+            stats.Speed *= (int)SpeedMod;
             return stats;
         }
     }
