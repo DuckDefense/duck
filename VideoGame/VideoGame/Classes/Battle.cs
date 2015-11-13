@@ -68,7 +68,7 @@ namespace VideoGame.Classes {
             //Store stats so the battle won't alter the stats permanently
             user.PreviousStats = user.Stats;
             receiver.PreviousStats = receiver.Stats;
-
+            
 
             //Restore the stats when the battle is over, or when the monster has been switched out
             user.Stats = user.PreviousStats;
