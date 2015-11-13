@@ -88,11 +88,13 @@ namespace VideoGame.Classes {
     }
 
     public class StatModifier {
-        public double AttackMod;
-        public double DefenseMod;
-        public double SpecialAttackMod;
-        public double SpecialDefenseMod;
-        public double SpeedMod;
+        public double AttackMod = 1;
+        public double DefenseMod = 1;
+        public double SpecialAttackMod = 1;
+        public double SpecialDefenseMod = 1;
+        public double SpeedMod = 1;
+
+        public StatModifier() { }
 
         /// <summary>
         /// Add a modifier for stats
