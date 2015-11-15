@@ -31,6 +31,8 @@ namespace VideoGame.Classes {
         public Item HeldItem; //Item the monster is currently holding
         public Ailment Ailment;
         public Gender Gender;
+        public double CriticalHitChance = 5;
+        public double CriticalHitMultiplier = 2;
         public List<Move> Moves;
         public List<Move> KnownMoves;
 
