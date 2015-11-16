@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classes\Ability.cs" />
     <Compile Include="Classes\Battle.cs" />
     <Compile Include="Classes\Character.cs" />
     <Compile Include="Classes\Inventory.cs" />
@@ -45,6 +46,7 @@
     <Compile Include="Classes\Monster.cs" />
     <Compile Include="Classes\Move.cs" />
     <Compile Include="Classes\Stats.cs" />
+    <Compile Include="Classes\TextureLoader.cs" />
     <Compile Include="Classes\Type.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
