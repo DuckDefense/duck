@@ -13,10 +13,7 @@ namespace VideoGame.Classes {
         Frozen,
         Fainted
     }
-
-    public class BaseStats { }
-
-
+    
     public class Stats {
         //Randomized stats which will be multiplied with Base and Level
         public int RandHealth { get; }
@@ -50,13 +47,6 @@ namespace VideoGame.Classes {
         /// <summary>
         /// new Base stat and automatically calculate all stats
         /// </summary>
-        /// <param name="health"></param>
-        /// <param name="attack"></param>
-        /// <param name="defense"></param>
-        /// <param name="specialattack"></param>
-        /// <param name="specialdefense"></param>
-        /// <param name="speed"></param>
-        /// <param name="level"></param>
         public Stats(int health, int attack, int defense, int specialattack, int specialdefense, int speed, int level) {
             BaseHealth = health;
             BaseAttack = attack;
@@ -112,8 +102,8 @@ namespace VideoGame.Classes {
             SpeedMod = speedMod;
         }
 
-        public Stats ApplyModifiers(Monster receiver) {
-            var stats = receiver.Stats;
+        public Stats ApplyModifiers(Monster monster) {
+            var stats = monster.Stats;
             stats.Attack *= (int)AttackMod;
             stats.Defense *= (int)DefenseMod;
             stats.SpecialAttack *= (int)SpecialAttackMod;
