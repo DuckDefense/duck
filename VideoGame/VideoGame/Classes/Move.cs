@@ -24,7 +24,6 @@ namespace VideoGame.Classes {
         public Type Type;
         public StatModifier HitModifier;
         public StatModifier MissModifier;
-        private double damageMod = 1;
 
         public Move(string name, string description, int damage, int accuracy, int uses, Kind kind, Type type) {
             Name = name;
@@ -61,58 +60,61 @@ namespace VideoGame.Classes {
             Random rand = new Random();
             //If random number is below chanceToHit the move did hit
             if (rand.Next(0, 100) <= chanceToHit) {
+
                 //if random number is below the CriticalHitChance, the move did a critical
-                if (rand.Next(0, 100) <= user.CriticalHitChance) { critMultiplier = user.CriticalHitMultiplier; }
+                if (rand.Next(0, 100) <= user.CriticalHitChance) critMultiplier = user.CriticalHitMultiplier;
 
                 if (Kind == Kind.Physical) {
-                    var phys = Convert.ToInt32(((Damage * (user.Stats.Attack / receiver.Stats.Defense)) * damageMod) * critMultiplier);
-                    receiver.Stats.Health -= phys;
+                    var phys = GetDamage(user.Stats.Attack, receiver.Stats.Defense, GetDamageModifier(receiver), critMultiplier);
+                    receiver.Stats.Health -= phys; //Replace this with a lerp (reducing it little by little) so it looks nicer
                 }
                 else if (Kind == Kind.Special) {
-                    var spec =
-                        Convert.ToInt32(((Damage * (user.Stats.SpecialAttack / receiver.Stats.SpecialDefense)) * damageMod) * critMultiplier);
+                    var spec = GetDamage(user.Stats.SpecialAttack, receiver.Stats.SpecialDefense, GetDamageModifier(receiver), critMultiplier);
                     receiver.Stats.Health -= spec;
                 }
-
                 //TODO: Find out if this will return the same stats if the modifier is empty
                 user.Stats = HitModifier.ApplyModifiers(user);
                 receiver.Stats = HitModifier.ApplyModifiers(receiver);
             }
+            //User missed
             else {
                 user.Stats = MissModifier.ApplyModifiers(user);
                 receiver.Stats = MissModifier.ApplyModifiers(receiver);
             }
-            damageMod = 1;
+            // Check if either pokemon died
+            if (user.Stats.Health >= 0) user.Ailment = Ailment.Fainted;
+            if (receiver.Stats.Health >= 0) receiver.Ailment = Ailment.Fainted;
         }
 
-        public void GetDamageModifier(Monster receiver) {
+
+        private int GetDamage(int offensive, int defensive, int modifier, double crit) {
+            return Convert.ToInt32(((Damage * (offensive / defensive)) * modifier) * crit);
+        }
+
+        private int GetDamageModifier(Monster receiver) {
+            double modifier = 1;
             var prim = receiver.PrimaryType;
             var secon = receiver.SecondaryType;
             switch (Type) {
             case Type.Normal:
-                damageMod = 1;
                 break;
             case Type.Fight:
-                if (prim == Type.Normal || secon == Type.Normal) {
-                    damageMod *= 2;
-                }
+                if (prim == Type.Normal || secon == Type.Normal) { modifier *= 2; }
                 break;
             case Type.Fire:
-                if (prim == Type.Water || secon == Type.Water) {
-                    damageMod *= 2;
-                }
+                if (prim == Type.Grass || secon == Type.Grass) { modifier *= 2; }
+                if (prim == Type.Water || secon == Type.Water) { modifier *= .5; }
                 break;
             case Type.Water:
-                if (prim == Type.Fire || secon == Type.Fire) {
-                    damageMod *= 2;
-                }
+                if (prim == Type.Fire || secon == Type.Fire) { modifier *= 2; }
+                if (prim == Type.Grass || secon == Type.Grass) { modifier *= .5; }
                 break;
             case Type.Grass:
-                if (prim == Type.Water || secon == Type.Water) {
-                    damageMod *= 2;
-                }
+                if (prim == Type.Water || secon == Type.Water) { modifier *= 2; }
+                if (prim == Type.Fire || secon == Type.Fire) { modifier *= .5; }
                 break;
             }
+            return (int)modifier;
         }
 
         #region Preset Moves
