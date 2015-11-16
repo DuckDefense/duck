@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using VideoGame.Classes;
 
 namespace VideoGame {
     /// <summary>
@@ -9,6 +10,7 @@ namespace VideoGame {
     public class Game1 : Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private TextureLoader TextureLoader = new TextureLoader();
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
@@ -23,7 +25,6 @@ namespace VideoGame {
         /// </summary>
         protected override void Initialize() {
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -34,6 +35,7 @@ namespace VideoGame {
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            TextureLoader.LoadTextures(Content);
 
             // TODO: use this.Content to load your game content here
         }
