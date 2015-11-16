@@ -5,6 +5,7 @@ using System.Text;
 
 namespace VideoGame.Classes {
     public enum Type {
+        None,
         Normal,
         Fight,
         Fire,
