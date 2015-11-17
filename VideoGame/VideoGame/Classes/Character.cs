@@ -4,13 +4,26 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace VideoGame.Classes {
+
+    public enum Direction
+    {
+        None,
+        Up,
+        Down,
+        Right,
+        Left
+    }
     class Character {
         public float Interval { get; set; } // Interval at which the animation should update
         private float Timer { get; set; } // Timer that keeps getting updated until the Interval is reached
 
-        public Vector2 Position { get; set; } //Position of the character
+        private Vector2 position = new Vector2(0,0);
+        public Vector2 Position { get {return position;}
+            set { position = value; }
+        } //Position of the character
         public Point SpriteSize { get; set; } //Height and Width of the sprite
         public Point CurrentFrame { get; set; } //Frame that is being drawn by the SourceRectangle
         public Rectangle PositionRectangle { get; set; } //Rectangle used as collision
@@ -21,6 +34,7 @@ namespace VideoGame.Classes {
         public Texture2D WorldSprite; //Sprite that is shown when you're walking around on the area
 
         public bool Controllable;
+        public Direction Direction;
         public string Name;
         public int Money;
         public Inventory Inventory;
@@ -58,7 +72,44 @@ namespace VideoGame.Classes {
         //TODO: Add animation function from DuckDefense
         
         public void Update(GameTime time) {
+            if (Controllable)
+            {
+                Movement(time);
+            }
+           
             // Add timer here
         }
+
+        public void Draw(SpriteBatch batch)
+        {
+            batch.Begin();
+            batch.Draw(FrontSprite, Position, Color.White);
+            batch.End();
+        }
+        public void Movement(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.W) || Keyboard.GetState().IsKeyDown(Keys.Up)) Direction = Direction.Up;
+            else if (Keyboard.GetState().IsKeyDown(Keys.S) || Keyboard.GetState().IsKeyDown(Keys.Down)) Direction = Direction.Down;
+            else if (Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.Left)) Direction = Direction.Left;
+            else if (Keyboard.GetState().IsKeyDown(Keys.D) || Keyboard.GetState().IsKeyDown(Keys.Right))
+                Direction = Direction.Right;
+            else Direction = Direction.None;
+            switch (Direction)
+            {
+                case Direction.Up:
+                    position.Y -= 2;
+                    break;
+                case Direction.Down:
+                    position.Y += 2;
+                    break;
+                case Direction.Right:
+                    position.X += 2;
+                    break;
+                case Direction.Left:
+                    position.X -= 2;
+                    break;
+            }
+        }
+
     }
 }
