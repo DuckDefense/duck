@@ -59,18 +59,16 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+    <Reference Include="TiledSharp, Version=0.10.5799.23511, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\TiledSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\C#\Visual Studio\TiledSharp-master\TiledSharp\TiledSharp.csproj">
-      <Project>{e4130f8d-d301-4e0c-916d-489c4a23c9b1}</Project>
-      <Name>TiledSharp</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Maps\Map.tmx" />
