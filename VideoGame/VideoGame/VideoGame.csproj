@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classes\Ability.cs" />
+    <Compile Include="Classes\Area.cs" />
     <Compile Include="Classes\Battle.cs" />
     <Compile Include="Classes\Character.cs" />
     <Compile Include="Classes\Inventory.cs" />
