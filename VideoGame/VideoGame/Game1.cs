@@ -76,6 +76,7 @@ namespace VideoGame {
 
             // TODO: Add your drawing code here
             Player.Draw(spriteBatch);
+            Area.Route1().Draw(spriteBatch);
 
             base.Draw(gameTime);
         }
