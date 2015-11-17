@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classes\Ability.cs" />
+    <Compile Include="Classes\Area.cs" />
     <Compile Include="Classes\Battle.cs" />
     <Compile Include="Classes\Character.cs" />
     <Compile Include="Classes\Inventory.cs" />
@@ -58,6 +59,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+    <Reference Include="xTile">
+      <HintPath>C:\Users\Ruud\Downloads\xTile207\xTile207\Engine\PC\xTile.dll</HintPath>
+    </Reference>
+    <Reference Include="xTile.Pipeline">
+      <HintPath>C:\Users\Ruud\Downloads\xTile207\xTile207\Pipeline\xTile.Pipeline.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
