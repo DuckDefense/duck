@@ -163,7 +163,7 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(45, 50, 71, 40, 60, 66, level);
             return new Monster(1, "Armler", "This shifty creature Likes to pretend that his pockets are its eyes", Type.Grass, 75, item, stats, moves, abilities,
-                TextureLoader.GronkeyFront, TextureLoader.GronkeyBack, TextureLoader.GronkeyParty);
+                ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.GronkeyParty);
         }
 
         public static Monster Gronkey(int level, Item item = null) {
@@ -176,7 +176,7 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(45, 66, 40, 40, 45, 85, level);
             return new Monster(10, "Gronkey", "This creature is absolutely vivid because someone shaved its face.", Type.Fight, 50, item, stats, moves, abilities,
-                TextureLoader.GronkeyFront, TextureLoader.GronkeyBack, TextureLoader.GronkeyParty);
+                ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.GronkeyParty);
         }
 
     }
