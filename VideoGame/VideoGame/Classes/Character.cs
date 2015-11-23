@@ -148,7 +148,7 @@ namespace VideoGame.Classes {
                 position.X -= 2;
                 break;
             }
-            Camera.Move(Position);
+            //Camera.Move(Position);
         }
     }
 }
