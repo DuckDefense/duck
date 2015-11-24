@@ -124,31 +124,31 @@ namespace VideoGame.Forms
             switch (cbb16to9.Text)
             {
                 case "854x480":
-                    Classes.Settings.ResolutionHeigt = 480;
+                    Classes.Settings.ResolutionHeight = 480;
                     Classes.Settings.ResolutionWidth = 854;
                     break;
                 case "960x540":
-                    Classes.Settings.ResolutionHeigt = 540;
+                    Classes.Settings.ResolutionHeight = 540;
                     Classes.Settings.ResolutionWidth = 960;
                     break;
                 case "1280x720":
-                    Classes.Settings.ResolutionHeigt = 720;
+                    Classes.Settings.ResolutionHeight = 720;
                     Classes.Settings.ResolutionWidth = 1280;
                     break;
                 case "1600x900":
-                    Classes.Settings.ResolutionHeigt = 900;
+                    Classes.Settings.ResolutionHeight = 900;
                     Classes.Settings.ResolutionWidth = 1600;
                     break;
                 case "1920x1080":
-                    Classes.Settings.ResolutionHeigt = 1080;
+                    Classes.Settings.ResolutionHeight = 1080;
                     Classes.Settings.ResolutionWidth = 1920;
                     break;
                 case "2560x1440":
-                    Classes.Settings.ResolutionHeigt = 1440;
+                    Classes.Settings.ResolutionHeight = 1440;
                     Classes.Settings.ResolutionWidth = 2560;
                     break;
                 case "3840x2160":
-                    Classes.Settings.ResolutionHeigt = 2160;
+                    Classes.Settings.ResolutionHeight = 2160;
                     Classes.Settings.ResolutionWidth = 3840;
                     break;
             }
@@ -159,31 +159,31 @@ namespace VideoGame.Forms
             switch (cbb4to3.Text)
             {
                 case "640x480":
-                    Classes.Settings.ResolutionHeigt = 480;
+                    Classes.Settings.ResolutionHeight = 480;
                     Classes.Settings.ResolutionWidth = 640;
                     break;
                 case "800x600":
-                    Classes.Settings.ResolutionHeigt = 600;
+                    Classes.Settings.ResolutionHeight = 600;
                     Classes.Settings.ResolutionWidth = 800;
                     break;
                 case "960x720":
-                    Classes.Settings.ResolutionHeigt = 720;
+                    Classes.Settings.ResolutionHeight = 720;
                     Classes.Settings.ResolutionWidth = 960;
                     break;
                 case "1280x960":
-                    Classes.Settings.ResolutionHeigt = 960;
+                    Classes.Settings.ResolutionHeight = 960;
                     Classes.Settings.ResolutionWidth = 1280;
                     break;
                 case "1440x1080":
-                    Classes.Settings.ResolutionHeigt = 1080;
+                    Classes.Settings.ResolutionHeight = 1080;
                     Classes.Settings.ResolutionWidth = 1440;
                     break;
                 case "1600x1200":
-                    Classes.Settings.ResolutionHeigt = 1200;
+                    Classes.Settings.ResolutionHeight = 1200;
                     Classes.Settings.ResolutionWidth = 1600;
                     break;
                 case "1920x1440":
-                    Classes.Settings.ResolutionHeigt = 1440;
+                    Classes.Settings.ResolutionHeight = 1440;
                     Classes.Settings.ResolutionWidth = 1920;
                     break;
             }
