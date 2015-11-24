@@ -10,7 +10,10 @@ namespace VideoGame.Classes {
         Poisoned,
         Paralyzed,
         Burned,
+        Dazzled,
         Frozen,
+        Blessed,
+        Frenzied,
         Fainted
     }
     
