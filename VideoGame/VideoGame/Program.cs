@@ -1,4 +1,5 @@
 ﻿using System;
+using VideoGame.Forms;
 
 namespace VideoGame {
 #if WINDOWS || LINUX
@@ -13,8 +14,10 @@ namespace VideoGame {
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
-                game.Run();
+            //using (var game = new Game1())
+            //    game.Run();
+            Launcher l = new Launcher();
+            l.ShowDialog();
         }
     }
 #endif

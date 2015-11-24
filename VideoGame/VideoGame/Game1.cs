@@ -20,6 +20,8 @@ namespace VideoGame {
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = Settings.ResolutionHeigt;
+            graphics.PreferredBackBufferWidth = Settings.ResolutionWidth;
             Content.RootDirectory = "Content";
         }
 
@@ -31,6 +33,7 @@ namespace VideoGame {
         /// </summary>
         protected override void Initialize() {
             // TODO: Add your initialization logic here
+
             IsMouseVisible = true;
             base.Initialize();
         }
@@ -45,7 +48,7 @@ namespace VideoGame {
             ContentLoader.SetContent(Content);
             _contentLoader.LoadContent();
 
-            var viewportAdapter = new ScalingViewportAdapter(GraphicsDevice, 800, 480);
+            var viewportAdapter = new ScalingViewportAdapter(GraphicsDevice, Settings.ResolutionWidth, Settings.ResolutionHeigt);
 
             camera = new Camera2D(viewportAdapter) {
                 Zoom = 0.5f,
@@ -89,7 +92,7 @@ namespace VideoGame {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
 
             //Draw areas before player and opponents
