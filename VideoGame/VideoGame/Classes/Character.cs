@@ -40,7 +40,6 @@ namespace VideoGame.Classes {
         public Inventory Inventory;
         public List<Monster> Monsters;
         public Area CurrentArea;
-        public Camera2D Camera;
 
         /// <summary>
         /// New moveable character
@@ -53,19 +52,18 @@ namespace VideoGame.Classes {
         /// <param name="back">Sprite that is shown when you're fighting as this character</param>
         /// <param name="world">Sprite that is shown when you're walking around on the area</param>
         /// <param name="position">Position of the character</param>
-        /// <param name="camera"></param>
+        /// <param name="controllable"></param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters,
-        Texture2D front, Texture2D back, Texture2D world, Vector2 position, Camera2D camera) {
+        Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable) {
             Name = name;
             Money = money;
             Inventory = inventory;
             Monsters = monsters;
-            Controllable = true;
+            Controllable = controllable;
             FrontSprite = front;
             BackSprite = back;
             WorldSprite = world;
             Position = position;
-            Camera = camera;
 
             SpriteSize = new Point(WorldSprite.Width, WorldSprite.Height);
             PositionRectangle = new Rectangle((int)Position.X, (int)Position.Y, SpriteSize.X, SpriteSize.Y);
@@ -101,18 +99,10 @@ namespace VideoGame.Classes {
         }
 
         //TODO: Add animation function from DuckDefense
-
-        public void EnterArea(ScalingViewportAdapter viewport) {
-            Camera = new Camera2D(viewport) {
-                Zoom = 0.5f,
-                Position = new Vector2(CurrentArea.Map.WidthInPixels / 4f,
-                CurrentArea.Map.HeightInPixels / 4f)
-            };
-        }
-
+        
         public void Update(GameTime time, KeyboardState cur, KeyboardState prev) {
             if (Controllable) {
-                Movement(time, cur, prev);
+                //Movement(time, cur, prev);
             }
 
             // Add timer here
@@ -122,33 +112,33 @@ namespace VideoGame.Classes {
             batch.Draw(WorldSprite, Position, Color.White);
         }
 
-        public void Movement(GameTime gameTime, KeyboardState cur, KeyboardState prev) {
-            Direction = Direction.None;
-            if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
-                Direction = Direction.Up;
-            if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
-                Direction = Direction.Down;
-            if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
-                Direction = Direction.Left;
-            if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
-                Direction = Direction.Right;
+        //public void Movement(GameTime gameTime, KeyboardState cur, KeyboardState prev) {
+        //    Direction = Direction.None;
+        //    if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
+        //        Direction = Direction.Up;
+        //    if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
+        //        Direction = Direction.Down;
+        //    if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
+        //        Direction = Direction.Left;
+        //    if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
+        //        Direction = Direction.Right;
 
-            //TODO: Add grid movement
-            switch (Direction) {
-            case Direction.Up:
-                position.Y -= 2;
-                break;
-            case Direction.Down:
-                position.Y += 2;
-                break;
-            case Direction.Right:
-                position.X += 2;
-                break;
-            case Direction.Left:
-                position.X -= 2;
-                break;
-            }
-            //Camera.Move(Position);
-        }
+        //    //TODO: Add grid movement
+        //    switch (Direction) {
+        //    case Direction.Up:
+        //        position.Y -= 2;
+        //        break;
+        //    case Direction.Down:
+        //        position.Y += 2;
+        //        break;
+        //    case Direction.Right:
+        //        position.X += 2;
+        //        break;
+        //    case Direction.Left:
+        //        position.X -= 2;
+        //        break;
+        //    }
+        //    //Camera.Move(Position);
+        //}
     }
 }
