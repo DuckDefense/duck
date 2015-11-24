@@ -105,5 +105,93 @@ namespace VideoGame.Forms
         {
             left = true;
         }
+
+        private void cbbRatio_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbRatio.Text == "16:9")
+            {
+                cbb16to9.Visible = true;
+                cbb4to3.Visible = false;
+            }else if (cbbRatio.Text == "4:3")
+            {
+                cbb16to9.Visible = false;
+                cbb4to3.Visible = true;
+            }
+        }
+
+        private void cbb16to9_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cbb16to9.Text)
+            {
+                case "854x480":
+                    Classes.Settings.ResolutionHeigt = 480;
+                    Classes.Settings.ResolutionWidth = 854;
+                    break;
+                case "960x540":
+                    Classes.Settings.ResolutionHeigt = 540;
+                    Classes.Settings.ResolutionWidth = 960;
+                    break;
+                case "1280x720":
+                    Classes.Settings.ResolutionHeigt = 720;
+                    Classes.Settings.ResolutionWidth = 1280;
+                    break;
+                case "1600x900":
+                    Classes.Settings.ResolutionHeigt = 900;
+                    Classes.Settings.ResolutionWidth = 1600;
+                    break;
+                case "1920x1080":
+                    Classes.Settings.ResolutionHeigt = 1080;
+                    Classes.Settings.ResolutionWidth = 1920;
+                    break;
+                case "2560x1440":
+                    Classes.Settings.ResolutionHeigt = 1440;
+                    Classes.Settings.ResolutionWidth = 2560;
+                    break;
+                case "3840x2160":
+                    Classes.Settings.ResolutionHeigt = 2160;
+                    Classes.Settings.ResolutionWidth = 3840;
+                    break;
+            }
+        }
+
+        private void cbb4to3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cbb4to3.Text)
+            {
+                case "640x480":
+                    Classes.Settings.ResolutionHeigt = 480;
+                    Classes.Settings.ResolutionWidth = 640;
+                    break;
+                case "800x600":
+                    Classes.Settings.ResolutionHeigt = 600;
+                    Classes.Settings.ResolutionWidth = 800;
+                    break;
+                case "960x720":
+                    Classes.Settings.ResolutionHeigt = 720;
+                    Classes.Settings.ResolutionWidth = 960;
+                    break;
+                case "1280x960":
+                    Classes.Settings.ResolutionHeigt = 960;
+                    Classes.Settings.ResolutionWidth = 1280;
+                    break;
+                case "1440x1080":
+                    Classes.Settings.ResolutionHeigt = 1080;
+                    Classes.Settings.ResolutionWidth = 1440;
+                    break;
+                case "1600x1200":
+                    Classes.Settings.ResolutionHeigt = 1200;
+                    Classes.Settings.ResolutionWidth = 1600;
+                    break;
+                case "1920x1440":
+                    Classes.Settings.ResolutionHeigt = 1440;
+                    Classes.Settings.ResolutionWidth = 1920;
+                    break;
+            }
+        }
+
+        private void btnApply_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
