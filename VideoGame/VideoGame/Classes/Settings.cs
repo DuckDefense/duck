@@ -8,7 +8,7 @@ namespace VideoGame.Classes
 {
     public static class Settings
     {
-        public static int ResolutionHeigt = 480;
+        public static int ResolutionHeight = 480;
         public static int ResolutionWidth = 800;
         public static Keys moveUp = Keys.W;
         public static Keys moveDown = Keys.S;
