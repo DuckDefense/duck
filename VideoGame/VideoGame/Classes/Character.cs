@@ -123,15 +123,15 @@ namespace VideoGame.Classes {
         }
 
         public void Movement(GameTime gameTime, KeyboardState cur, KeyboardState prev) {
-            if (Keyboard.GetState().IsKeyDown(Keys.W) || Keyboard.GetState().IsKeyDown(Keys.Up))
+            Direction = Direction.None;
+            if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
                 Direction = Direction.Up;
-            else if (Keyboard.GetState().IsKeyDown(Keys.S) || Keyboard.GetState().IsKeyDown(Keys.Down))
+            if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
                 Direction = Direction.Down;
-            else if (Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.Left))
+            if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
                 Direction = Direction.Left;
-            else if (Keyboard.GetState().IsKeyDown(Keys.D) || Keyboard.GetState().IsKeyDown(Keys.Right))
+            if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
                 Direction = Direction.Right;
-            else Direction = Direction.None;
 
             //TODO: Add grid movement
             switch (Direction) {
