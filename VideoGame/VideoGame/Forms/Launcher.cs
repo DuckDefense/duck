@@ -49,5 +49,11 @@ namespace VideoGame.Forms
                 game.Run();
             
         }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            using (var setting = new Settings())
+                setting.ShowDialog();
+        }
     }
 }

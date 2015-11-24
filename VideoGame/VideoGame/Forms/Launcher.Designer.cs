@@ -32,6 +32,7 @@
             this.pbLaunchBackground = new System.Windows.Forms.PictureBox();
             this.btnLogin = new System.Windows.Forms.Button();
             this.btnPlay = new System.Windows.Forms.Button();
+            this.btnSettings = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbLaunchBackground)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,11 +65,22 @@
             this.btnPlay.UseVisualStyleBackColor = true;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
+            // btnSettings
+            // 
+            this.btnSettings.Location = new System.Drawing.Point(381, 200);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(75, 23);
+            this.btnSettings.TabIndex = 3;
+            this.btnSettings.Text = "Settings";
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
             // Launcher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(468, 235);
+            this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.pbLaunchBackground);
@@ -85,5 +97,6 @@
         private System.Windows.Forms.PictureBox pbLaunchBackground;
         private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.Button btnPlay;
+        private System.Windows.Forms.Button btnSettings;
     }
 }
