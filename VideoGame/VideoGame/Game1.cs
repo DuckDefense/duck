@@ -16,8 +16,16 @@ namespace VideoGame {
         private Character player;
         private ContentLoader _contentLoader = new ContentLoader();
         private KeyboardState currentKeyboardState, previousKeyboardState;
+        private MouseState currentMouseState, previousMouseState;
         private Camera2D camera;
-
+        private bool battling = true;
+        private Button attackButton;
+        private Button runButton;
+        private Button inventoryButton;
+        private Button partyButton;
+        private Vector2 battleBackgroundPos;
+        private Battle currentBattle;
+        
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferHeight = Settings.ResolutionHeigt;
@@ -61,6 +69,17 @@ namespace VideoGame {
             player.CurrentArea = Area.Route1();
             player.CurrentArea.EnteredArea = true;
 
+            int buttonPos = 0;
+
+            attackButton = new Button(new Rectangle(buttonPos, ContentLoader.GrassyBackground.Height,
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button);
+            inventoryButton = new Button(new Rectangle((int) (buttonPos + 64), ContentLoader.GrassyBackground.Height,
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button);
+            partyButton = new Button(new Rectangle((int)(buttonPos + 128), ContentLoader.GrassyBackground.Height,
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button);
+            runButton = new Button(new Rectangle((int)(buttonPos + 192), ContentLoader.GrassyBackground.Height,
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button);
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -77,13 +96,40 @@ namespace VideoGame {
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime) {
+        protected override void Update(GameTime gameTime)
+        {
+            currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
             player.Update(gameTime, currentKeyboardState, previousKeyboardState);
             // TODO: Add your update logic here
+            if (battling)
+            {
+                attackButton.Update(currentMouseState, previousMouseState);
+                inventoryButton.Update(currentMouseState, previousMouseState);
+                partyButton.Update(currentMouseState,previousMouseState);
+                runButton.Update(currentMouseState,previousMouseState);
+
+                if (attackButton.IsClicked(currentMouseState, previousMouseState))
+                {
+                    currentBattle.Selection = Selection.Attack;
+                }
+                if (inventoryButton.IsClicked(currentMouseState, previousMouseState))
+                {
+                    currentBattle.Selection = Selection.Item;
+                }
+                if (partyButton.IsClicked(currentMouseState, previousMouseState))
+                {
+                    currentBattle.Selection = Selection.Party;
+                }
+                if (runButton.IsClicked(currentMouseState, previousMouseState))
+                {
+                    currentBattle.Selection = Selection.Run;
+                }
+            }
 
             base.Update(gameTime);
 
+            previousMouseState = currentMouseState;
             previousKeyboardState = currentKeyboardState;
         }
 
@@ -95,6 +141,14 @@ namespace VideoGame {
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
 
+            if (battling)
+            {
+                spriteBatch.Draw(ContentLoader.GrassyBackground, Vector2.Zero);
+                attackButton.Draw(spriteBatch);
+                runButton.Draw(spriteBatch);
+                inventoryButton.Draw(spriteBatch);
+                partyButton.Draw(spriteBatch);
+            }
             //Draw areas before player and opponents
             player.CurrentArea.Draw(player.Camera);
 

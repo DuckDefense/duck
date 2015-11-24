@@ -12,6 +12,7 @@ namespace VideoGame.Classes {
     }
 
     public enum Selection {
+        None,
         Attack,
         Item,
         Party,
@@ -23,7 +24,7 @@ namespace VideoGame.Classes {
         public Character Opponent;
         public Monster CurrentUserMonster;
         public Monster CurrentOpponentMonster;
-        public Selection Selection;
+        public Selection Selection = Selection.None;
         /// <summary>
         /// Battle with a trainer
         /// </summary>
@@ -65,30 +66,41 @@ namespace VideoGame.Classes {
 
         public void LoopTurns() {
 
-            var userSpeed = CurrentUserMonster.Stats.Speed;
-            var opponentSpeed = CurrentOpponentMonster.Stats.Speed;
+            if (!CurrentUserMonster.IsDead && !CurrentOpponentMonster.IsDead)
+            {
+                var userSpeed = CurrentUserMonster.Stats.Speed;
+                var opponentSpeed = CurrentOpponentMonster.Stats.Speed;
 
-            switch (Selection) {
-            case Selection.Attack:
-                Selection = Selection.Attack;
-                //Draw moves here
-                if (userSpeed > opponentSpeed) {
-                    //User goes before opponent
+                
+
+                switch (Selection)
+                {
+                    case Selection.Attack:
+                        Selection = Selection.Attack;
+                        //Draw moves here
+                        //select move
+                        if (userSpeed > opponentSpeed)
+                        {
+                            
+                        }
+                        else
+                        {
+                            //Opponent goes first
+                        }
+                        break;
+                    case Selection.Item:
+                        Selection = Selection.Item;
+                        break;
+                    case Selection.Party:
+                        Selection = Selection.Party;
+                        break;
+                    case Selection.Run:
+                        Selection = Selection.Run;
+                        break;
                 }
-                else {
-                    //Opponent goes first
-                }
-                break;
-            case Selection.Item:
-                Selection = Selection.Item;
-                break;
-            case Selection.Party:
-                Selection = Selection.Party;
-                break;
-            case Selection.Run:
-                Selection = Selection.Run;
-                break;
             }
+
+
         }
 
         public void Attack(Monster user, Monster opponent, int chosen) {

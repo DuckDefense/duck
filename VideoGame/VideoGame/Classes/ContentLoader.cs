@@ -6,19 +6,25 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Maps.Tiled;
 
-namespace VideoGame.Classes {
-    public class ContentLoader {
+namespace VideoGame.Classes
+{
+    public class ContentLoader
+    {
         public static ContentManager Content;
         public static Texture2D GronkeyFront, GronkeyBack, GronkeyParty;
+        public static Texture2D GrassyBackground;
         public static Texture2D Christman;
+        public static Texture2D Button;
         public static TiledMap Map;
 
-        public static void SetContent(ContentManager content) {
+        public static void SetContent(ContentManager content)
+        {
             Content = content;
         }
 
         //Add all Textures in here
-        public void LoadContent() {
+        public void LoadContent()
+        {
             #region Monsters
             GronkeyFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Gronkey");
             GronkeyBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Gronkey");
@@ -28,6 +34,12 @@ namespace VideoGame.Classes {
             #region Characters
 
             Christman = Content.Load<Texture2D>(@"Sprites/Characters/World/Christman");
+            #endregion
+
+            #region battle
+
+            GrassyBackground = Content.Load<Texture2D>(@"Sprites/Battle/Backgrounds/Grassy");
+            Button = Content.Load<Texture2D>(@"Sprites/Buttons/Button");
             #endregion
 
             #region Maps
