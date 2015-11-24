@@ -20,7 +20,7 @@ namespace VideoGame {
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferHeight = Settings.ResolutionHeigt;
+            graphics.PreferredBackBufferHeight = Settings.ResolutionHeight;
             graphics.PreferredBackBufferWidth = Settings.ResolutionWidth;
             Content.RootDirectory = "Content";
         }
@@ -48,16 +48,15 @@ namespace VideoGame {
             ContentLoader.SetContent(Content);
             _contentLoader.LoadContent();
 
-            var viewportAdapter = new ScalingViewportAdapter(GraphicsDevice, Settings.ResolutionWidth, Settings.ResolutionHeigt);
+            var viewportAdapter = new ScalingViewportAdapter(GraphicsDevice, Settings.ResolutionWidth, Settings.ResolutionHeight);
 
             camera = new Camera2D(viewportAdapter) {
                 Zoom = 0.5f,
-                Position = new Vector2(Area.Route1().Map.WidthInPixels / 4f,
-                Area.Route1().Map.HeightInPixels / 4f)
+                Position = new Vector2((Settings.ResolutionWidth/2) - 32, (Settings.ResolutionHeight /2) - 32)
             };
 
             player = new Character("Pietertje", 5000, new Inventory(), new List<Monster>(),
-                ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.Christman, new Vector2(0, 0), camera);
+                ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.Christman, camera.Position, true);
             player.CurrentArea = Area.Route1();
             player.CurrentArea.EnteredArea = true;
 
@@ -80,10 +79,10 @@ namespace VideoGame {
         protected override void Update(GameTime gameTime) {
             currentKeyboardState = Keyboard.GetState();
             player.Update(gameTime, currentKeyboardState, previousKeyboardState);
-            // TODO: Add your update logic here
+            Movement(currentKeyboardState);
+            
 
             base.Update(gameTime);
-
             previousKeyboardState = currentKeyboardState;
         }
 
@@ -96,13 +95,24 @@ namespace VideoGame {
             spriteBatch.Begin();
 
             //Draw areas before player and opponents
-            player.CurrentArea.Draw(player.Camera);
+            player.CurrentArea.Draw(camera);
 
             player.Draw(spriteBatch);
 
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public void Movement(KeyboardState cur) {
+            if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
+                camera.Move(new Vector2(0, -2));
+            if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
+                camera.Move(new Vector2(0, 2));
+            if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
+                camera.Move(new Vector2(-2, 0));
+            if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
+                camera.Move(new Vector2(2, 0));
         }
     }
 }
