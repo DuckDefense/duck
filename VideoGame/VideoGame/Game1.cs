@@ -20,7 +20,7 @@ namespace VideoGame {
         private KeyboardState currentKeyboardState, previousKeyboardState;
         private MouseState currentMouseState, previousMouseState;
         private Camera2D camera;
-        private bool battling = true;
+        private bool battling = false;
         private Button attackButton;
         private Button runButton;
         private Button inventoryButton;
@@ -83,9 +83,6 @@ namespace VideoGame {
             runButton = new Button(new Rectangle((int)(buttonPos + 192), ContentLoader.GrassyBackground.Height,
                 ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Run", ContentLoader.Arial);
 
-
-
-
             // TODO: use this.Content to load your game content here
         }
 
@@ -131,6 +128,8 @@ namespace VideoGame {
             }
             else {
                 Movement(currentKeyboardState);
+
+                player.SetLineOfSight(8);
             }
 
             base.Update(gameTime);
@@ -169,13 +168,26 @@ namespace VideoGame {
 
         public void Movement(KeyboardState cur) {
             if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
+            {
                 camera.Move(new Vector2(0, -2));
+                player.Direction = Direction.Up;
+            }
             if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
+            {
                 camera.Move(new Vector2(0, 2));
+                player.Direction = Direction.Down;
+            }
+
             if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
+            {
                 camera.Move(new Vector2(-2, 0));
+                player.Direction = Direction.Left;
+            }
             if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
+            {
                 camera.Move(new Vector2(2, 0));
+                player.Direction = Direction.Right;
+            }
         }
     }
 }
