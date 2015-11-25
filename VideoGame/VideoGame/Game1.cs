@@ -102,6 +102,7 @@ namespace VideoGame {
             }
             else {
                 Movement(currentKeyboardState);
+                player.SetLineOfSight(8);
             }
 
             base.Update(gameTime);
