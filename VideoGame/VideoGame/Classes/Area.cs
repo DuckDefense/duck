@@ -10,7 +10,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
 
 namespace VideoGame.Classes {
-    internal class Area {
+    public class Area {
 
         private static Point Levelrange;
         public string Name;

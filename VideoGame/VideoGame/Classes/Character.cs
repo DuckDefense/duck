@@ -17,7 +17,8 @@ namespace VideoGame.Classes {
         Right,
         Left
     }
-    class Character {
+
+    public class Character {
         public float Interval { get; set; } // Interval at which the animation should update
         private float Timer { get; set; } // Timer that keeps getting updated until the Interval is reached
 
@@ -59,6 +60,9 @@ namespace VideoGame.Classes {
             Money = money;
             Inventory = inventory;
             Monsters = monsters;
+            foreach (Monster monster in Monsters) {
+                monster.IsWild = false;
+            }
             Controllable = controllable;
             FrontSprite = front;
             BackSprite = back;
@@ -87,6 +91,9 @@ namespace VideoGame.Classes {
             Money = money;
             Inventory = inventory;
             Monsters = monsters;
+            foreach (Monster monster in Monsters) {
+                monster.IsWild = false;
+            }
             Controllable = false;
             FrontSprite = front;
             BackSprite = back;
@@ -111,34 +118,5 @@ namespace VideoGame.Classes {
         public void Draw(SpriteBatch batch) {
             batch.Draw(WorldSprite, Position, Color.White);
         }
-
-        //public void Movement(GameTime gameTime, KeyboardState cur, KeyboardState prev) {
-        //    Direction = Direction.None;
-        //    if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
-        //        Direction = Direction.Up;
-        //    if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
-        //        Direction = Direction.Down;
-        //    if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
-        //        Direction = Direction.Left;
-        //    if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
-        //        Direction = Direction.Right;
-
-        //    //TODO: Add grid movement
-        //    switch (Direction) {
-        //    case Direction.Up:
-        //        position.Y -= 2;
-        //        break;
-        //    case Direction.Down:
-        //        position.Y += 2;
-        //        break;
-        //    case Direction.Right:
-        //        position.X += 2;
-        //        break;
-        //    case Direction.Left:
-        //        position.X -= 2;
-        //        break;
-        //    }
-        //    //Camera.Move(Position);
-        //}
     }
 }

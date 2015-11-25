@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace VideoGame.Classes {
-    class Inventory {
+    public class Inventory {
         public Dictionary<int, Item> Items = new Dictionary<int, Item>();
         public Dictionary<int, Medicine> Medicine = new Dictionary<int, Medicine>();
         public Dictionary<int, Capture> Captures = new Dictionary<int, Capture>();
