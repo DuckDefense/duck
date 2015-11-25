@@ -67,6 +67,7 @@ namespace VideoGame {
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.Christman, camera.Position, true);
             player.CurrentArea = Area.Route1();
             player.CurrentArea.EnteredArea = true;
+            player.Monsters.Add(Monster.Gronkey(15));
 
             int buttonPos = 0;
 
@@ -101,6 +102,8 @@ namespace VideoGame {
             currentKeyboardState = Keyboard.GetState();
             //player.Update(gameTime, currentKeyboardState, previousKeyboardState);
             Movement(currentKeyboardState);
+
+            currentBattle = new Battle(player, Monster.Gronkey(5));
 
             if (battling)
             {

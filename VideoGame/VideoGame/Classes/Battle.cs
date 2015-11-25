@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace VideoGame.Classes {
     public enum State {
@@ -79,9 +80,11 @@ namespace VideoGame.Classes {
                         Selection = Selection.Attack;
                         //Draw moves here
                         //select move
+                        //TODO: Change this
+                        Move selected = Move.Bubble();
                         if (userSpeed > opponentSpeed)
                         {
-                            
+                         Attack(CurrentUserMonster, CurrentOpponentMonster, selected);   
                         }
                         else
                         {
@@ -103,12 +106,12 @@ namespace VideoGame.Classes {
 
         }
 
-        public void Attack(Monster user, Monster opponent, int chosen) {
+        public void Attack(Monster user, Monster opponent, Move chosen) {
             //Execute chosen move here
-            user.Moves[chosen].Execute(user, opponent);
+            chosen.Execute(user, opponent);
             //Wait for the move to complete
-            opponent.Moves[chosen].Execute(opponent, user);
-
+            //choose opponent move here with ai
+            //opponent.Moves[]
         }
     }
 }
