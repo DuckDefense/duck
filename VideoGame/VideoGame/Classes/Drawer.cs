@@ -41,6 +41,7 @@ namespace VideoGame.Classes {
         }
 
         public static void DrawItems(SpriteBatch batch, Character player) {
+            
         }
 
         public static void DrawParty(SpriteBatch batch, Character player) {
@@ -65,10 +66,10 @@ namespace VideoGame.Classes {
         }
 
         public static void UpdateBattleButtons(MouseState cur, MouseState prev) {
-            foreach (var btn in ItemButtons) btn.Update(cur, prev);
-            foreach (var btn in InventoryButtons) btn.Update(cur, prev);
-            foreach (var btn in MoveButtons) btn.Update(cur, prev);
-            foreach (var btn in PartyButtons) btn.Update(cur, prev);
+            if(ItemButtons != null) foreach (var btn in ItemButtons) btn.Update(cur, prev);
+            if(InventoryButtons != null) foreach (var btn in InventoryButtons) btn.Update(cur, prev);
+            if(MoveButtons != null) foreach (var btn in MoveButtons) btn.Update(cur, prev);
+            if(PartyButtons != null) foreach (var btn in PartyButtons) btn.Update(cur, prev);
 
             if (bItems.IsClicked(cur, prev)) {
             }
