@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace VideoGame.Classes {
@@ -125,21 +126,43 @@ namespace VideoGame.Classes {
 
         public static Medicine LeafBandage()
         {
-            return new Medicine(1,"LeafBandage","Bandage that heals 10 HP", 10, 50, 1, 99);
+            return new Medicine(1,"Leaf Bandage","Bandage that heals 10 HP", 10, 50, 1, 99);
         }
         public static Medicine MagicStone()
         {
-            return new Medicine(2, "MagicStone", "Stone that heals 20 HP", 50, 500, 1, 99);
+            return new Medicine(2, "Magic Stone", "Stone that heals 20 HP", 50, 500, 1, 99);
         }
 
         public static Medicine AntiPoison()
         {
-            return new Medicine(3,"AntiPoison", "Cures poison", Cure.Poisoned, 200, 1, 99);
+            return new Medicine(3,"Anti Poison", "Cures poison", Cure.Poisoned, 200, 1, 99);
         }
 
         public static Medicine BucketOfWater()
         {
-            return new Medicine(4,"BucketOfWater", "Throw the bucket with a high speed at the monster", -20,Cure.Burned,150,1,99);
+            return new Medicine(4,"Bucket Of Water", "Throw the bucket with a high speed at the monster", -20,Cure.Burned,150,1,99);
+        }
+
+        public static Medicine Salt()
+        {
+            return new Medicine(5, "Salt", "Throw salt at the frozen monster\n" + " !WARNING if your monster is a snail it WILL die!", Cure.Frozen, 150, 1 ,99);
+        }
+
+        public static Medicine AirHorn()
+        {
+            return new Medicine(6, "Air Horn", "Blow the horn in the ears of the monster", Cure.Sleep, 200, 1,99);
+        }
+
+        public static Medicine SpinalCord()
+        {
+            return new Medicine(7, "Spinal Cord", "Perform surgery on the monter to give it a new spinal cord\n" +
+                                                  "Even if it didn't have one before.",
+                Cure.Paralyzed, 250, 1, 99);
+        }
+
+        public static Medicine RoosVicee()
+        {
+            return new Medicine(8, "RoosVicee", "Komt wel goed schatje", Cure.All, 586, 1,99);
         }
     }
 
