@@ -96,3 +96,9 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Buttons/Button.png
 
+#begin Fonts/Arial.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Arial.spritefont
+

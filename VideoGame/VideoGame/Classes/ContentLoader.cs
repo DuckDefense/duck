@@ -16,6 +16,7 @@ namespace VideoGame.Classes
         public static Texture2D Christman;
         public static Texture2D Button;
         public static TiledMap Map;
+        public static SpriteFont Arial;
 
         public static void SetContent(ContentManager content)
         {
@@ -32,18 +33,21 @@ namespace VideoGame.Classes
             #endregion
 
             #region Characters
-
             Christman = Content.Load<Texture2D>(@"Sprites/Characters/World/Christman");
             #endregion
 
             #region battle
-
             GrassyBackground = Content.Load<Texture2D>(@"Sprites/Battle/Backgrounds/Grassy");
             Button = Content.Load<Texture2D>(@"Sprites/Buttons/Button");
             #endregion
 
             #region Maps
             Map = Content.Load<TiledMap>("map");
+            #endregion
+
+            #region Fonts
+
+            Arial = Content.Load<SpriteFont>(@"Fonts/Arial");
 
             #endregion
 
