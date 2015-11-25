@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,9 +9,11 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 
-namespace VideoGame.Classes {
+namespace VideoGame.Classes
+{
 
-    public enum Direction {
+    public enum Direction
+    {
         None,
         Up,
         Down,
@@ -18,7 +21,8 @@ namespace VideoGame.Classes {
         Left
     }
 
-    public class Character {
+    public class Character
+    {
         public float Interval { get; set; } // Interval at which the animation should update
         private float Timer { get; set; } // Timer that keeps getting updated until the Interval is reached
 
@@ -29,11 +33,13 @@ namespace VideoGame.Classes {
         public Point CurrentFrame { get; set; } //Frame that is being drawn by the SourceRectangle
         public Rectangle PositionRectangle { get; set; } //Rectangle used as collision
         public Rectangle SourceRectangle; //Rectangle needed for animating
+        public Rectangle LineOfSightRectangle;
 
         public Texture2D FrontSprite; //Sprite that is shown when you're fighting against this character
         public Texture2D BackSprite; //Sprite that is shown when you're fighting as this character
         public Texture2D WorldSprite; //Sprite that is shown when you're walking around on the area
 
+        public bool Debug;
         public bool Controllable;
         public Direction Direction;
         public string Name;
@@ -56,12 +62,14 @@ namespace VideoGame.Classes {
         /// <param name="position">Position of the character</param>
         /// <param name="controllable"></param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters,
-        Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable) {
+        Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable)
+        {
             Name = name;
             Money = money;
             Inventory = inventory;
             Monsters = monsters;
-            foreach (Monster monster in Monsters) {
+            foreach (Monster monster in Monsters)
+            {
                 monster.IsWild = false;
             }
             Controllable = controllable;
@@ -87,12 +95,14 @@ namespace VideoGame.Classes {
         /// <param name="world">Sprite that is shown when you're walking around on the area</param>
         /// <param name="position">Position of the character</param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters,
-        Texture2D front, Texture2D back, Texture2D world, Vector2 position) {
+        Texture2D front, Texture2D back, Texture2D world, Vector2 position)
+        {
             Name = name;
             Money = money;
             Inventory = inventory;
             Monsters = monsters;
-            foreach (Monster monster in Monsters) {
+            foreach (Monster monster in Monsters)
+            {
                 monster.IsWild = false;
             }
             Controllable = false;
@@ -107,17 +117,45 @@ namespace VideoGame.Classes {
         }
 
         //TODO: Add animation function from DuckDefense
-        
-        public void Update(GameTime time, KeyboardState cur, KeyboardState prev) {
-            if (Controllable) {
+
+        public void Update(GameTime time, KeyboardState cur, KeyboardState prev)
+        {
+            if (Controllable)
+            {
                 //Movement(time, cur, prev);
             }
 
             // Add timer here
         }
 
-        public void Draw(SpriteBatch batch) {
+        public void Draw(SpriteBatch batch)
+        {
             batch.Draw(WorldSprite, Position, Color.White);
+            if (Debug)
+                batch.Draw(ContentLoader.Button, null, LineOfSightRectangle, null, null, 0f, Vector2.Zero, Color.White);
+        }
+
+        public void SetLineOfSight(int tiles)
+        {
+            var size = (tiles + 1) * 16;
+            switch (Direction)
+            {
+                case Direction.None:
+                    break;
+                case Direction.Up:
+                    LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y - (size - WorldSprite.Height), WorldSprite.Width, size);
+                    break;
+                case Direction.Down:
+                    LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, WorldSprite.Width, size);
+                    break;
+                case Direction.Right:
+                    LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, size, WorldSprite.Height);
+                    break;
+                case Direction.Left:
+                    LineOfSightRectangle = new Rectangle((int)Position.X - (size - WorldSprite.Width), (int)Position.Y, size, WorldSprite.Height);
+                    break;
+            }
+
         }
     }
 }
