@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.InputListeners;
 
 namespace VideoGame.Classes {
     public enum State {
@@ -26,6 +30,10 @@ namespace VideoGame.Classes {
         public Monster CurrentUserMonster;
         public Monster CurrentOpponentMonster;
         public Selection Selection = Selection.None;
+        private bool battleOver;
+        private bool battleStart;
+        private bool drawBattleButtons, drawMoves;
+        public static Button AttackButton, RunButton, InventoryButton, PartyButton;
         /// <summary>
         /// Battle with a trainer
         /// </summary>
@@ -33,7 +41,10 @@ namespace VideoGame.Classes {
             User = user;
             Opponent = opponent;
             CurrentUserMonster = User.Monsters[0];
+            User.CurrentMonster = user.Monsters[0];
             CurrentOpponentMonster = Opponent.Monsters[0];
+            SetupButtons();
+            battleStart = true;
         }
 
         /// <summary>
@@ -43,53 +54,38 @@ namespace VideoGame.Classes {
             User = user;
             CurrentUserMonster = User.Monsters[0];
             CurrentOpponentMonster = opponent;
+            SetupButtons();
+            battleStart = true;
         }
 
-        public void Start() {
-            //Store stats so the battle won't alter the stats permanently
-            CurrentUserMonster.PreviousStats = CurrentUserMonster.Stats;
-            CurrentOpponentMonster.PreviousStats = CurrentOpponentMonster.Stats;
-
-            //Get Ability effects here
-            CurrentUserMonster.Ability.GetEffects(CurrentUserMonster, CurrentOpponentMonster);
-            CurrentOpponentMonster.Ability.GetEffects(CurrentOpponentMonster, CurrentUserMonster);
-
-            //Choose action here, wether its an attack, using an item or switching out a monster
-            //TODO: Make this async
-            LoopTurns();
-
-
-            //Restore the stats when the battle is over, or when the monster has been switched out
-
-            //Add experience here so the stats will still be updated if the monster levels up
-
+        public void Attack(Monster user, Monster opponent, Move chosen) {
+            //Execute chosen move here
+            chosen.Execute(user, opponent);
+            //Wait for the move to complete
+            //choose opponent move here with ai
+            //opponent.Moves[]
         }
 
-        public void LoopTurns() {
-
-            if (!CurrentUserMonster.IsDead && !CurrentOpponentMonster.IsDead)
-            {
+        public void LoopTurns(MouseState cur, MouseState prev) {
+            if (!CurrentUserMonster.IsDead || !CurrentOpponentMonster.IsDead) {
+                drawBattleButtons = true;
                 var userSpeed = CurrentUserMonster.Stats.Speed;
                 var opponentSpeed = CurrentOpponentMonster.Stats.Speed;
+                UpdateButtons(cur, prev);
 
-                
-
-                switch (Selection)
-                {
+                switch (Selection) {
                     case Selection.Attack:
                         Selection = Selection.Attack;
                         //Draw moves here
                         //select move
-                        //TODO: Change this
-                        Move selected = Move.Bubble();
-                        if (userSpeed > opponentSpeed)
-                        {
-                         Attack(CurrentUserMonster, CurrentOpponentMonster, selected);   
-                        }
-                        else
-                        {
-                            //Opponent goes first
-                        }
+
+                        //Move selected = Move.Bubble();
+                        //if (userSpeed > opponentSpeed) {
+                        //    Attack(CurrentUserMonster, CurrentOpponentMonster, selected);
+                        //}
+                        //else {
+                        //    //Opponent goes first
+                        //}
                         break;
                     case Selection.Item:
                         Selection = Selection.Item;
@@ -102,16 +98,93 @@ namespace VideoGame.Classes {
                         break;
                 }
             }
+        }
+        
+        public void Update(MouseState cur, MouseState prev) {
+            if (battleStart) {
+                //Store stats so the battle won't alter the stats permanently
+                CurrentUserMonster.PreviousStats = CurrentUserMonster.Stats;
+                CurrentOpponentMonster.PreviousStats = CurrentOpponentMonster.Stats;
 
-
+                //Get Ability effects here
+                CurrentUserMonster.Ability.GetEffects(CurrentUserMonster, CurrentOpponentMonster);
+                CurrentOpponentMonster.Ability.GetEffects(CurrentOpponentMonster, CurrentUserMonster);
+                battleStart = false;
+                drawBattleButtons = true;
+            }
+            if (!battleOver) {
+                //Choose action here, wether its an attack, using an item or switching out a monster
+                LoopTurns(cur, prev);
+            }
+            else if (battleOver) {
+                //Restore the stats when the battle is over, or when the monster has been switched out
+                CurrentUserMonster.Stats = CurrentUserMonster.PreviousStats;
+                CurrentOpponentMonster.Stats = CurrentOpponentMonster.PreviousStats;
+                //Add experience here so the stats will still be updated if the monster levels up
+            }
         }
 
-        public void Attack(Monster user, Monster opponent, Move chosen) {
-            //Execute chosen move here
-            chosen.Execute(user, opponent);
-            //Wait for the move to complete
-            //choose opponent move here with ai
-            //opponent.Moves[]
+
+        public void Draw(SpriteBatch batch, Character player) {
+            if (!battleStart) {
+                Drawer.DrawBattle(batch, CurrentUserMonster, CurrentOpponentMonster);
+                if (drawBattleButtons) {
+                    DrawButtons(batch);
+                    switch (Selection) {
+                    case Selection.Attack:
+                        Drawer.DrawMoves(batch, player, AttackButton);
+                        break;
+                    case Selection.Item:
+                        Drawer.DrawItems(batch, player);
+                        break;
+                    case Selection.Party:
+                        Drawer.DrawParty(batch, player);
+                        break;
+                    case Selection.Run:
+                        break;
+                    }
+                }
+            }
+        }
+        public void SetupButtons() {
+            int buttonPos = 0;
+
+            AttackButton = new Button(new Rectangle(buttonPos, ContentLoader.GrassyBackground.Height,
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Attack", ContentLoader.Arial);
+            InventoryButton = new Button(new Rectangle((int)(buttonPos + 64), ContentLoader.GrassyBackground.Height,
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Items", ContentLoader.Arial);
+            PartyButton = new Button(new Rectangle((int)(buttonPos + 128), ContentLoader.GrassyBackground.Height,
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Party", ContentLoader.Arial);
+            RunButton = new Button(new Rectangle((int)(buttonPos + 192), ContentLoader.GrassyBackground.Height,
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Run", ContentLoader.Arial);
+        }
+
+        public void UpdateButtons(MouseState cur, MouseState prev) {
+            AttackButton.Update(cur, prev);
+            InventoryButton.Update(cur, prev);
+            PartyButton.Update(cur, prev);
+            RunButton.Update(cur, prev);
+
+            if (AttackButton.IsClicked(cur, prev)) {
+                Selection = Selection.Attack;
+                drawMoves = true;
+            }
+            if (InventoryButton.IsClicked(cur, prev)) {
+                Selection = Selection.Item;
+            }
+            if (PartyButton.IsClicked(cur, prev)) {
+                Selection = Selection.Party;
+            }
+            if (RunButton.IsClicked(cur, prev)) {
+                Selection = Selection.Run;
+            }
+        }
+
+        public void DrawButtons(SpriteBatch batch) {
+            AttackButton.Draw(batch);
+            InventoryButton.Draw(batch);
+            PartyButton.Draw(batch);
+            RunButton.Draw(batch);
         }
     }
 }

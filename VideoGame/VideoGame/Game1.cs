@@ -20,14 +20,10 @@ namespace VideoGame {
         private KeyboardState currentKeyboardState, previousKeyboardState;
         private MouseState currentMouseState, previousMouseState;
         private Camera2D camera;
-        private bool battling = true;
-        private Button attackButton;
-        private Button runButton;
-        private Button inventoryButton;
-        private Button partyButton;
         private Vector2 battleBackgroundPos;
         private Battle currentBattle;
-        private bool drawMoves;
+        private bool battling = false;
+        private bool encountered = true;
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
@@ -71,21 +67,7 @@ namespace VideoGame {
             player.CurrentArea = Area.Route1();
             player.CurrentArea.EnteredArea = true;
             player.Monsters.Add(Monster.Gronkey(15));
-
-            int buttonPos = 0;
-
-            attackButton = new Button(new Rectangle(buttonPos, ContentLoader.GrassyBackground.Height,
-                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Attack", ContentLoader.Arial);
-            inventoryButton = new Button(new Rectangle((int)(buttonPos + 64), ContentLoader.GrassyBackground.Height,
-                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Items", ContentLoader.Arial);
-            partyButton = new Button(new Rectangle((int)(buttonPos + 128), ContentLoader.GrassyBackground.Height,
-                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Party", ContentLoader.Arial);
-            runButton = new Button(new Rectangle((int)(buttonPos + 192), ContentLoader.GrassyBackground.Height,
-                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Run", ContentLoader.Arial);
-
-
-
-
+            
             // TODO: use this.Content to load your game content here
         }
 
@@ -107,27 +89,16 @@ namespace VideoGame {
             currentKeyboardState = Keyboard.GetState();
             //player.Update(gameTime, currentKeyboardState, previousKeyboardState);
 
-            currentBattle = new Battle(player, Monster.Gronkey(5));
-
+            if (!battling) {
+                if (encountered) {
+                    //Start battle
+                    currentBattle = new Battle(player, Monster.Gronkey(5));
+                    encountered = false;
+                    battling = true;
+                }
+            }
             if (battling) {
-                attackButton.Update(currentMouseState, previousMouseState);
-                inventoryButton.Update(currentMouseState, previousMouseState);
-                partyButton.Update(currentMouseState, previousMouseState);
-                runButton.Update(currentMouseState, previousMouseState);
-
-                if (attackButton.IsClicked(currentMouseState, previousMouseState)) {
-                    currentBattle.Selection = Selection.Attack;
-                    drawMoves = true;
-                }
-                if (inventoryButton.IsClicked(currentMouseState, previousMouseState)) {
-                    currentBattle.Selection = Selection.Item;
-                }
-                if (partyButton.IsClicked(currentMouseState, previousMouseState)) {
-                    currentBattle.Selection = Selection.Party;
-                }
-                if (runButton.IsClicked(currentMouseState, previousMouseState)) {
-                    currentBattle.Selection = Selection.Run;
-                }
+                currentBattle.Update(currentMouseState, previousMouseState);
             }
             else {
                 Movement(currentKeyboardState);
@@ -149,13 +120,7 @@ namespace VideoGame {
 
             if (battling) {
                 spriteBatch.Draw(ContentLoader.GrassyBackground, Vector2.Zero);
-                attackButton.Draw(spriteBatch);
-                runButton.Draw(spriteBatch);
-                inventoryButton.Draw(spriteBatch);
-                partyButton.Draw(spriteBatch);
-                if (drawMoves) {
-                    Drawer.DrawMoves(spriteBatch, player, attackButton);
-                }
+                currentBattle.Draw(spriteBatch, player);
             }
             else {
                 //Draw areas before player and opponents
