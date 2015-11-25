@@ -15,6 +15,7 @@ namespace VideoGame.Classes
         public static Texture2D GrassyBackground;
         public static Texture2D Christman;
         public static Texture2D Button;
+        public static Texture2D LeafBandage, MagicStone, AntiPoison, BucketOfWater, Salt, AirHorn, SpinalCord, RoosVicee;
         public static TiledMap Map;
         public static SpriteFont Arial;
 
@@ -52,6 +53,14 @@ namespace VideoGame.Classes
             #endregion
 
             #region Items
+            LeafBandage = Content.Load<Texture2D>(@"Sprites/Items/Medicine/LeafBandage");
+            MagicStone = Content.Load<Texture2D>(@"Sprites/Items/Medicine/MagicStone");
+            AntiPoison = Content.Load<Texture2D>(@"Sprites/Items/Medicine/AntiPoison");
+            BucketOfWater = Content.Load<Texture2D>(@"Sprites/Items/Medicine/BucketOfWater");
+            Salt = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
+            AirHorn = Content.Load<Texture2D>(@"Sprites/Items/Medicine/AirHorn");
+            RoosVicee = Content.Load<Texture2D>(@"Sprites/Items/Medicine/RoosVicee");
+            
 
             #endregion
         }
