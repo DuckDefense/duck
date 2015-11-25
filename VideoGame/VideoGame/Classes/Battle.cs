@@ -32,7 +32,7 @@ namespace VideoGame.Classes {
         public Selection Selection = Selection.None;
         private bool battleOver;
         private bool battleStart;
-        private bool drawBattleButtons, drawMoves;
+        private bool drawBattleButtons, drawMoves, drawInventory, drawItems, drawParty;
         public static Button AttackButton, RunButton, InventoryButton, PartyButton;
         /// <summary>
         /// Battle with a trainer
@@ -69,34 +69,7 @@ namespace VideoGame.Classes {
         public void LoopTurns(MouseState cur, MouseState prev) {
             if (!CurrentUserMonster.IsDead || !CurrentOpponentMonster.IsDead) {
                 drawBattleButtons = true;
-                var userSpeed = CurrentUserMonster.Stats.Speed;
-                var opponentSpeed = CurrentOpponentMonster.Stats.Speed;
                 UpdateButtons(cur, prev);
-
-                switch (Selection) {
-                    case Selection.Attack:
-                        Selection = Selection.Attack;
-                        //Draw moves here
-                        //select move
-
-                        //Move selected = Move.Bubble();
-                        //if (userSpeed > opponentSpeed) {
-                        //    Attack(CurrentUserMonster, CurrentOpponentMonster, selected);
-                        //}
-                        //else {
-                        //    //Opponent goes first
-                        //}
-                        break;
-                    case Selection.Item:
-                        Selection = Selection.Item;
-                        break;
-                    case Selection.Party:
-                        Selection = Selection.Party;
-                        break;
-                    case Selection.Run:
-                        Selection = Selection.Run;
-                        break;
-                }
             }
         }
         
@@ -132,10 +105,10 @@ namespace VideoGame.Classes {
                     DrawButtons(batch);
                     switch (Selection) {
                     case Selection.Attack:
-                        Drawer.DrawMoves(batch, player, AttackButton);
+                        Drawer.DrawMoves(batch, player);
                         break;
                     case Selection.Item:
-                        Drawer.DrawItems(batch, player);
+                        Drawer.DrawInventory(batch, player);
                         break;
                     case Selection.Party:
                         Drawer.DrawParty(batch, player);
@@ -160,6 +133,9 @@ namespace VideoGame.Classes {
         }
 
         public void UpdateButtons(MouseState cur, MouseState prev) {
+            var userSpeed = CurrentUserMonster.Stats.Speed;
+            var opponentSpeed = CurrentOpponentMonster.Stats.Speed;
+
             AttackButton.Update(cur, prev);
             InventoryButton.Update(cur, prev);
             PartyButton.Update(cur, prev);
@@ -168,15 +144,21 @@ namespace VideoGame.Classes {
             if (AttackButton.IsClicked(cur, prev)) {
                 Selection = Selection.Attack;
                 drawMoves = true;
+                //Add attack here
             }
             if (InventoryButton.IsClicked(cur, prev)) {
                 Selection = Selection.Item;
+                drawInventory = true;
+                //Add party here
             }
             if (PartyButton.IsClicked(cur, prev)) {
                 Selection = Selection.Party;
+                drawParty = true;
+                //Add party here
             }
             if (RunButton.IsClicked(cur, prev)) {
                 Selection = Selection.Run;
+                //Add run here
             }
         }
 
