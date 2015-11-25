@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -120,6 +121,25 @@ namespace VideoGame.Classes {
 
         public void Use() {
             //Use the medicine
+        }
+
+        public static Medicine LeafBandage()
+        {
+            return new Medicine(1,"LeafBandage","Bandage that heals 10 HP", 10, 50, 1, 99);
+        }
+        public static Medicine MagicStone()
+        {
+            return new Medicine(2, "MagicStone", "Stone that heals 20 HP", 50, 500, 1, 99);
+        }
+
+        public static Medicine AntiPoison()
+        {
+            return new Medicine(3,"AntiPoison", "Cures poison", Cure.Poisoned, 200, 1, 99);
+        }
+
+        public static Medicine BucketOfWater()
+        {
+            return new Medicine(4,"BucketOfWater", "Throw the bucket with a high speed at the monster", -20,Cure.Burned,150,1,99);
         }
     }
 
