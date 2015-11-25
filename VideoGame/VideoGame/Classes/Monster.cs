@@ -16,7 +16,7 @@ namespace VideoGame.Classes {
 
     public class Monster {
 
-        public bool IsDead => Stats.Health >= 0; //Returns true if health is 0 or below it
+        public bool IsDead => Stats.Health <= 0; //Returns true if health is 0 or below it
         public bool IsWild;
 
         public Texture2D FrontSprite; //Sprite that is shown when you're fighting this monster
