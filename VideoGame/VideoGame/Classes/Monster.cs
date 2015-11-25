@@ -17,6 +17,7 @@ namespace VideoGame.Classes {
     public class Monster {
 
         public bool IsDead => Stats.Health >= 0; //Returns true if health is 0 or below it
+        public bool IsWild;
 
         public Texture2D FrontSprite; //Sprite that is shown when you're fighting this monster
         public Texture2D BackSprite; //Sprite that is shown when you've send out this monster
@@ -24,7 +25,14 @@ namespace VideoGame.Classes {
         //Maybe add Points for Sprite sizes
         //If we are going add monsters in the world we need to add a position and a collision box
         public int Experience;
-        public int Level;
+
+        //TODO: Fix this
+        private int level;
+        public int Level {
+            get { return (Experience * Experience * Experience) / 5; }
+            set { level = value; }
+        }
+
         public int Id;
         public string Name;
         public string Description;
@@ -57,9 +65,11 @@ namespace VideoGame.Classes {
         /// <param name="front">Texture that is shown when fighting against this monster</param>
         /// <param name="back">Texture that is shown when you've send out this monster</param>
         /// <param name="party">Texture that is shown in the party view</param>
-        public Monster(int id, string name, string description, Type type, int maleChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
+        public Monster(int id, int level, string name, string description, Type type, int maleChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
             Texture2D front, Texture2D back, Texture2D party) {
             Id = id;
+            Level = level;
+            Experience = level * 5;
             Name = name;
             Description = description;
             PrimaryType = type;
@@ -73,6 +83,8 @@ namespace VideoGame.Classes {
             BackSprite = back;
             PartySprite = party;
             Ailment = Ailment.Normal;
+            KnownMoves = new List<Move>();
+            GetMoves(id);
         }
 
         /// <summary>
@@ -91,8 +103,11 @@ namespace VideoGame.Classes {
         /// <param name="front">Texture that is shown when fighting against this monster</param>
         /// <param name="back">Texture that is shown when you've send out this monster</param>
         /// <param name="party">Texture that is shown in the party view</param>
-        public Monster(int id, string name, string description, Type primaryType, Type secondaryType, int maleChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
+        public Monster(int id, int level, string name, string description, Type primaryType, Type secondaryType, int maleChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
         Texture2D front, Texture2D back, Texture2D party) {
+            Id = id;
+            Level = level;
+            Experience = level*5;
             Name = name;
             Description = description;
             PrimaryType = primaryType;
@@ -106,9 +121,19 @@ namespace VideoGame.Classes {
             BackSprite = back;
             PartySprite = party;
             Ailment = Ailment.Normal;
+            KnownMoves = new List<Move>();
+            GetMoves(id);
         }
 
-        public void ReceiveExp(int amount) {
+        public void ReceiveExp(Monster opponent) {
+            double a = opponent.IsWild ? 1 : 1.5f;
+            double l = opponent.Level;
+            double y = Level >= l ? 1 : 1.2f;
+
+            var expGain = (a * l * y) / 3;
+
+            Experience += Convert.ToInt32(expGain);
+
             //TODO: Add a experience calculation which will return level based on the amount of experience it has
         }
 
@@ -133,7 +158,7 @@ namespace VideoGame.Classes {
             KnownMoves.Clear();
             switch (id) {
             case 1:
-                if (Level >= 1) { 
+                if (Level >= 1) {
                     KnownMoves.Add(Move.Tackle());
                 }
                 break;
@@ -162,7 +187,7 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(45, 50, 71, 40, 60, 66, level);
-            return new Monster(1, "Armler", "This shifty creature Likes to pretend that his pockets are its eyes", Type.Grass, 75, item, stats, moves, abilities,
+            return new Monster(1, level, "Armler", "This shifty creature Likes to pretend that his pockets are its eyes", Type.Grass, 75, item, stats, moves, abilities,
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.GronkeyParty);
         }
 
@@ -175,7 +200,7 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(45, 66, 40, 40, 45, 85, level);
-            return new Monster(10, "Gronkey", "This creature is absolutely vivid because someone shaved its face.", Type.Fight, 50, item, stats, moves, abilities,
+            return new Monster(10, level, "Gronkey", "This creature is absolutely vivid because someone shaved its face.", Type.Fight, 50, item, stats, moves, abilities,
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.GronkeyParty);
         }
 
