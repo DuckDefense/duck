@@ -99,6 +99,7 @@ namespace VideoGame {
             }
             if (battling) {
                 currentBattle.Update(currentMouseState, previousMouseState);
+                Drawer.UpdateBattleButtons(currentMouseState, previousMouseState);
             }
             else {
                 Movement(currentKeyboardState);
