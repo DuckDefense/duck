@@ -72,13 +72,16 @@ namespace VideoGame {
             int buttonPos = 0;
 
             attackButton = new Button(new Rectangle(buttonPos, ContentLoader.GrassyBackground.Height,
-                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button);
-            inventoryButton = new Button(new Rectangle((int) (buttonPos + 64), ContentLoader.GrassyBackground.Height,
-                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button);
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Attack", ContentLoader.Arial);
+            inventoryButton = new Button(new Rectangle((int)(buttonPos + 64), ContentLoader.GrassyBackground.Height,
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Items", ContentLoader.Arial);
             partyButton = new Button(new Rectangle((int)(buttonPos + 128), ContentLoader.GrassyBackground.Height,
-                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button);
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Party", ContentLoader.Arial);
             runButton = new Button(new Rectangle((int)(buttonPos + 192), ContentLoader.GrassyBackground.Height,
-                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button);
+                ContentLoader.Button.Width, ContentLoader.Button.Height), ContentLoader.Button, "Run", ContentLoader.Arial);
+
+
+
 
             // TODO: use this.Content to load your game content here
         }
