@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -25,6 +27,7 @@ namespace VideoGame {
         private Button partyButton;
         private Vector2 battleBackgroundPos;
         private Battle currentBattle;
+        private bool drawMoves;
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
@@ -60,7 +63,7 @@ namespace VideoGame {
 
             camera = new Camera2D(viewportAdapter) {
                 Zoom = 0.5f,
-                Position = new Vector2((Settings.ResolutionWidth/2) - 32, (Settings.ResolutionHeight /2) - 32)
+                Position = new Vector2((Settings.ResolutionWidth / 2) - 32, (Settings.ResolutionHeight / 2) - 32)
             };
 
             player = new Character("Pietertje", 5000, new Inventory(), new List<Monster>(),
@@ -99,38 +102,35 @@ namespace VideoGame {
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
-        {
+        protected override void Update(GameTime gameTime) {
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
             //player.Update(gameTime, currentKeyboardState, previousKeyboardState);
-            Movement(currentKeyboardState);
 
             currentBattle = new Battle(player, Monster.Gronkey(5));
 
-            if (battling)
-            {
+            if (battling) {
                 attackButton.Update(currentMouseState, previousMouseState);
                 inventoryButton.Update(currentMouseState, previousMouseState);
                 partyButton.Update(currentMouseState, previousMouseState);
                 runButton.Update(currentMouseState, previousMouseState);
 
-                if (attackButton.IsClicked(currentMouseState, previousMouseState))
-                {
+                if (attackButton.IsClicked(currentMouseState, previousMouseState)) {
                     currentBattle.Selection = Selection.Attack;
+                    drawMoves = true;
                 }
-                if (inventoryButton.IsClicked(currentMouseState, previousMouseState))
-                {
+                if (inventoryButton.IsClicked(currentMouseState, previousMouseState)) {
                     currentBattle.Selection = Selection.Item;
                 }
-                if (partyButton.IsClicked(currentMouseState, previousMouseState))
-                {
+                if (partyButton.IsClicked(currentMouseState, previousMouseState)) {
                     currentBattle.Selection = Selection.Party;
                 }
-                if (runButton.IsClicked(currentMouseState, previousMouseState))
-                {
+                if (runButton.IsClicked(currentMouseState, previousMouseState)) {
                     currentBattle.Selection = Selection.Run;
                 }
+            }
+            else {
+                Movement(currentKeyboardState);
             }
 
             base.Update(gameTime);
@@ -147,19 +147,21 @@ namespace VideoGame {
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
 
-            if (battling)
-            {
+            if (battling) {
                 spriteBatch.Draw(ContentLoader.GrassyBackground, Vector2.Zero);
                 attackButton.Draw(spriteBatch);
                 runButton.Draw(spriteBatch);
                 inventoryButton.Draw(spriteBatch);
                 partyButton.Draw(spriteBatch);
+                if (drawMoves) {
+                    Drawer.DrawMoves(spriteBatch, player, attackButton);
+                }
             }
-            //Draw areas before player and opponents
-            player.CurrentArea.Draw(camera);
-
-            player.Draw(spriteBatch);
-
+            else {
+                //Draw areas before player and opponents
+                player.CurrentArea.Draw(camera);
+                player.Draw(spriteBatch);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);
