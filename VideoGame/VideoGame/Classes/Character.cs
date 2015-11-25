@@ -40,6 +40,7 @@ namespace VideoGame.Classes {
         public int Money;
         public Inventory Inventory;
         public List<Monster> Monsters;
+        public Monster CurrentMonster;
         public Area CurrentArea;
 
         /// <summary>
