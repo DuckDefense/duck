@@ -10,6 +10,9 @@ namespace VideoGame.Classes {
         Fight,
         Fire,
         Water,
-        Grass
+        Grass,
+        Rock,
+        Poison,
+        Fly
     }
 }
