@@ -187,9 +187,13 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(45, 50, 71, 40, 60, 66, level);
-            return new Monster(1, level, "Armler", "This shifty creature Likes to pretend that his pockets are its eyes", Type.Grass, 75, item, stats, moves, abilities,
-                ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.GronkeyParty);
+            return new Monster(1, level, "Armler", "This shifty creature Likes to pretend that his pockets are its eyes",
+                Type.Grass, 75, item, stats, moves, abilities,
+                ContentLoader.ArmlerFront, ContentLoader.ArmlerBack, ContentLoader.ArmlerParty);
         }
+        // 2 to 3 evolutions of Armler
+        // 4 to 6 water starter
+        // 7 to 9 fire starter
 
         public static Monster Gronkey(int level, Item item = null) {
             if (item == null) item = new Item();
@@ -200,9 +204,40 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(45, 66, 40, 40, 45, 85, level);
-            return new Monster(10, level, "Gronkey", "This creature is absolutely vivid because someone shaved its face.", Type.Fight, 50, item, stats, moves, abilities,
+            return new Monster(10, level, "Gronkey", "This creature is absolutely vivid because someone shaved its face.",
+                Type.Fight, 50, item, stats, moves, abilities,
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.GronkeyParty);
         }
+        //11: Evolution of Gronkey?
+        public static Monster Brass(int level, Item item = null) {
+            if (item == null) item = new Item();
+            List<Move> moves = new List<Move>();
+            List<Ability> abilities = new List<Ability> {
+                Ability.Ordinary(),
+                Ability.Unmovable()
+            };
+            //Calculate level so we can determine what moves it could have learned
 
+            Stats stats = new Stats(78, 15, 90, 10, 80, 5, level);
+            return new Monster(12, level, "Brass", "This brick is pretty useless, all it can do is lie and wait\nuntil is undeniably faints.",
+                Type.Rock, 75, item, stats, moves, abilities,
+                ContentLoader.BrassFront, ContentLoader.BrassBack, ContentLoader.BrassParty);
+        }
+        //13: Bonsantai
+
+        public static Monster Huffstein(int level, Item item = null) {
+            if (item == null) item = new Item();
+            List<Move> moves = new List<Move>();
+            List<Ability> abilities = new List<Ability> {
+                Ability.Fuzzy(),
+                Ability.ToxicBody()
+            };
+            //Calculate level so we can determine what moves it could have learned
+
+            Stats stats = new Stats(78, 15, 90, 10, 80, 5, level);
+            return new Monster(12, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its' body",
+                Type.Poison, Type.Rock, 50, item, stats, moves, abilities,
+                ContentLoader.HuffsteinFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
+        }
     }
 }
