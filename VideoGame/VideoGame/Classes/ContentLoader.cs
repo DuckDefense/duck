@@ -6,31 +6,39 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Maps.Tiled;
 
-namespace VideoGame.Classes
-{
-    public class ContentLoader
-    {
+namespace VideoGame.Classes {
+    public class ContentLoader {
         public static ContentManager Content;
         public static Texture2D GronkeyFront, GronkeyBack, GronkeyParty;
+        public static Texture2D ArmlerFront, ArmlerBack, ArmlerParty;
+        public static Texture2D BrassFront, BrassBack, BrassParty;
+        public static Texture2D HuffsteinFront, HuffsteinBack, HuffsteinParty;
         public static Texture2D GrassyBackground;
         public static Texture2D Christman;
         public static Texture2D Button;
-        public static Texture2D LeafBandage, MagicStone, AntiPoison, BucketOfWater, Salt, AirHorn, SpinalCord, RoosVicee;
+        public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt, SpinalCord;
         public static TiledMap Map;
         public static SpriteFont Arial;
 
-        public static void SetContent(ContentManager content)
-        {
+        public static void SetContent(ContentManager content) {
             Content = content;
         }
 
         //Add all Textures in here
-        public void LoadContent()
-        {
+        public void LoadContent() {
             #region Monsters
             GronkeyFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Gronkey");
             GronkeyBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Gronkey");
             GronkeyParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Gronkey");
+            ArmlerFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Armler");
+            ArmlerBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Armler");
+            ArmlerParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Armler");
+            BrassFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Brass");
+            BrassBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Brass");
+            BrassParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Brass");
+            HuffsteinFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Huffstein");
+            HuffsteinBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Huffstein");
+            HuffsteinParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Huffstein");
             #endregion
 
             #region Characters
@@ -53,14 +61,15 @@ namespace VideoGame.Classes
             #endregion
 
             #region Items
-            LeafBandage = Content.Load<Texture2D>(@"Sprites/Items/Medicine/LeafBandage");
-            MagicStone = Content.Load<Texture2D>(@"Sprites/Items/Medicine/MagicStone");
+            AirHorn = Content.Load<Texture2D>(@"Sprites/Items/Medicine/AirHorn");
             AntiPoison = Content.Load<Texture2D>(@"Sprites/Items/Medicine/AntiPoison");
             BucketOfWater = Content.Load<Texture2D>(@"Sprites/Items/Medicine/BucketOfWater");
-            Salt = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
-            AirHorn = Content.Load<Texture2D>(@"Sprites/Items/Medicine/AirHorn");
+            LeafBandage = Content.Load<Texture2D>(@"Sprites/Items/Medicine/LeafBandage");
+            MagicStone = Content.Load<Texture2D>(@"Sprites/Items/Medicine/MagicStone");
             RoosVicee = Content.Load<Texture2D>(@"Sprites/Items/Medicine/RoosVicee");
-            
+            Salt = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
+            SpinalCord = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
+
 
             #endregion
         }
