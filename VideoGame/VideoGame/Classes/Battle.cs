@@ -74,7 +74,7 @@ namespace VideoGame.Classes {
                 UpdateButtons(cur, prev);
             }
         }
-        
+
         public void Update(MouseState cur, MouseState prev) {
             if (battleStart) {
                 //Store stats so the battle won't alter the stats permanently
@@ -168,30 +168,22 @@ namespace VideoGame.Classes {
                 Selection = Selection.Run;
                 //Add run here
             }
-                GetSelected(cur, prev);
+            GetSelected(cur, prev);
         }
 
-        public void GetSelected(MouseState cur, MouseState prev)
-        {
+        public void GetSelected(MouseState cur, MouseState prev) {
             var button = Drawer.GetClickedButton();
-            if (button != null && button.IsClicked(cur, prev))
-            {
-                if (drawMoves)
-                {
-                    foreach (var m in CurrentUserMonster.KnownMoves)
-                    {
-                        if (m.Name == button.Text)
-                        {
+            if (button != null && button.IsHeld(cur)) {
+                if (drawMoves) {
+                    foreach (var m in CurrentUserMonster.KnownMoves) {
+                        if (m.Name == button.Text) {
                             SelectedMove = m;
                         }
                     }
                 }
-                if (drawParty)
-                {
-                    foreach (var m in User.Monsters)
-                    {
-                        if (m.Name == button.Text)
-                        {
+                if (drawParty) {
+                    foreach (var m in User.Monsters) {
+                        if (m.Name == button.Text) {
                             SelectedMonster = m;
                         }
                     }
