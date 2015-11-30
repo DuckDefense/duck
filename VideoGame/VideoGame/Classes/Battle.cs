@@ -34,6 +34,8 @@ namespace VideoGame.Classes {
         private bool battleStart;
         private bool drawBattleButtons, drawMoves, drawInventory, drawItems, drawParty;
         public static Button AttackButton, RunButton, InventoryButton, PartyButton;
+        public Move SelectedMove;
+        public Monster SelectedMonster;
         /// <summary>
         /// Battle with a trainer
         /// </summary>
@@ -144,21 +146,56 @@ namespace VideoGame.Classes {
             if (AttackButton.IsClicked(cur, prev)) {
                 Selection = Selection.Attack;
                 drawMoves = true;
+                drawInventory = false;
+                drawParty = false;
                 //Add attack here
             }
             if (InventoryButton.IsClicked(cur, prev)) {
                 Selection = Selection.Item;
+                drawMoves = false;
                 drawInventory = true;
+                drawParty = false;
                 //Add party here
             }
             if (PartyButton.IsClicked(cur, prev)) {
                 Selection = Selection.Party;
+                drawMoves = false;
+                drawInventory = false;
                 drawParty = true;
                 //Add party here
             }
             if (RunButton.IsClicked(cur, prev)) {
                 Selection = Selection.Run;
                 //Add run here
+            }
+                GetSelected(cur, prev);
+        }
+
+        public void GetSelected(MouseState cur, MouseState prev)
+        {
+            var button = Drawer.GetClickedButton();
+            if (button != null && button.IsClicked(cur, prev))
+            {
+                if (drawMoves)
+                {
+                    foreach (var m in CurrentUserMonster.KnownMoves)
+                    {
+                        if (m.Name == button.Text)
+                        {
+                            SelectedMove = m;
+                        }
+                    }
+                }
+                if (drawParty)
+                {
+                    foreach (var m in User.Monsters)
+                    {
+                        if (m.Name == button.Text)
+                        {
+                            SelectedMonster = m;
+                        }
+                    }
+                }
             }
         }
 
