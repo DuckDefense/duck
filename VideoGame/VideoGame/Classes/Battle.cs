@@ -80,10 +80,10 @@ namespace VideoGame.Classes
         public void Run(Monster user, Monster opponent)
         {
             int a = user.Stats.Speed;
-            int b = opponent.Stats.Speed/4;
+            int b = opponent.Stats.Speed / 4;
             int c = 0;
 
-            int f = ((a*32)/b) + (30*c);
+            int f = ((a * 32) / b) + (30 * c);
             if (f < 255)
             {
                 Random rand = new Random();
@@ -305,17 +305,22 @@ namespace VideoGame.Classes
                         }
                     }
                 }
-                if (drawInventory)
+                if (Drawer.DrawMedicine)
                 {
                     foreach (var m in User.Inventory.Medicine)
                     {
                         if (m.Value.Name == button.Text)
                         {
                             SelectedMedicine = m.Value;
-                        }   
+                        }
+                    }
+                    if (SelectedMedicine != null)
+                    {
+                        SelectedMedicine.Use(CurrentUserMonster);
+                        Drawer.DrawMedicine = false;
+                        SelectedMedicine = null;
                     }
                 }
-                SelectedMedicine.Use(SelectedMonster);
             }
         }
 
