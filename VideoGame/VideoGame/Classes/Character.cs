@@ -120,12 +120,10 @@ namespace VideoGame.Classes
 
         public void Update(GameTime time, KeyboardState cur, KeyboardState prev)
         {
-            if (Controllable)
-            {
-                //Movement(time, cur, prev);
+            foreach (var m in Monsters) {
+                m.Update(time);
             }
-
-            // Add timer here
+            //Add update and sourcerectangle here
         }
 
         public void Draw(SpriteBatch batch)
