@@ -48,6 +48,13 @@ namespace VideoGame.Classes {
         public void Use() {
             //Throw the net
         }
+
+        public static Capture RottenNet() {
+            return new Capture(1, "Rotten Net", "Worn out net which doesn't seem up to the job.", ContentLoader.RottenNet, 45, true, 5, 1, 999);
+        }
+        public static Capture RegularNet() {
+            return new Capture(2, "Regular Net", "Regular net which seems decent at first glance.", ContentLoader.RegularNet, 45, true, 200, 1, 99);
+        }
     }
 
     public class Medicine : Item {
