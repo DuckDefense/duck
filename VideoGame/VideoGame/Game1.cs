@@ -92,18 +92,20 @@ namespace VideoGame {
             if (!battling) {
                 if (encountered) {
                     //Start battle
-                    currentBattle = new Battle(player, Monster.Gronkey(5));
+                    currentBattle = new Battle(player, Monster.Armler(15));
                     encountered = false;
                     battling = true;
                 }
             }
-            if (battling) {
+            if (!currentBattle.battleOver) {
                 currentBattle.Update(currentMouseState, previousMouseState);
                 Drawer.UpdateBattleButtons(currentMouseState, previousMouseState);
+                
             }
             else {
                 Movement(currentKeyboardState);
                 player.SetLineOfSight(8);
+                //battling = false;
             }
 
             base.Update(gameTime);
@@ -120,7 +122,7 @@ namespace VideoGame {
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
 
-            if (battling) {
+            if (!currentBattle.battleOver) {
                 spriteBatch.Draw(ContentLoader.GrassyBackground, Vector2.Zero);
                 currentBattle.Draw(spriteBatch, player);
             }
