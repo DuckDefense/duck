@@ -44,6 +44,7 @@
     <Compile Include="Classes\Character.cs" />
     <Compile Include="Classes\Drawer.cs" />
     <Compile Include="Classes\ExtensionManager.cs" />
+    <Compile Include="Classes\IAnimatable.cs" />
     <Compile Include="Classes\Inventory.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\Monster.cs" />
