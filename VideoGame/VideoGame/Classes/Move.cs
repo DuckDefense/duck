@@ -56,31 +56,46 @@ namespace VideoGame.Classes {
             //Check if types are very effective or not very effective
             GetDamageModifier(receiver);
             //Check if the move hit
-            var chanceToHit = Accuracy - (user.Stats.Speed - receiver.Stats.Speed);
+            var chanceToHit = Accuracy + ((user.Stats.Speed - receiver.Stats.Speed )/ 3);
             Random rand = new Random();
             //If random number is below chanceToHit the move did hit
-            if (rand.Next(0, 100) <= chanceToHit) {
+            if (rand.Next(0, 100) <= chanceToHit)
+            {
 
                 //if random number is below the CriticalHitChance, the move did a critical
                 if (rand.Next(0, 100) <= user.CriticalHitChance) critMultiplier = user.CriticalHitMultiplier;
 
-                if (Kind == Kind.Physical) {
-                    var phys = GetDamage(user.Stats.Attack, receiver.Stats.Defense, GetDamageModifier(receiver), critMultiplier);
-                    receiver.Stats.Health -= phys; //Replace this with a lerp (reducing it little by little) so it looks nicer
+                if (Kind == Kind.Physical)
+                {
+                    var phys = GetDamage(user.Stats.Attack, receiver.Stats.Defense, GetDamageModifier(receiver),
+                        critMultiplier);
+                    receiver.Stats.Health -= phys;
+                        //Replace this with a lerp (reducing it little by little) so it looks nicer
                 }
-                else if (Kind == Kind.Special) {
-                    var spec = GetDamage(user.Stats.SpecialAttack, receiver.Stats.SpecialDefense, GetDamageModifier(receiver), critMultiplier);
+                else if (Kind == Kind.Special)
+                {
+                    var spec = GetDamage(user.Stats.SpecialAttack, receiver.Stats.SpecialDefense,
+                        GetDamageModifier(receiver), critMultiplier);
                     receiver.Stats.Health -= spec;
                 }
-                //TODO: Find out if this will return the same stats if the modifier is empty
-                user.Stats = HitModifier.ApplyModifiers(user);
-                receiver.Stats = HitModifier.ApplyModifiers(receiver);
+                if (HitModifier != null)
+                {
+                   //TODO: Find out if this will return the same stats if the modifier is empty
+                    user.Stats = HitModifier.ApplyModifiers(user);
+                    receiver.Stats = HitModifier.ApplyModifiers(receiver); 
+                }
+                
             }
             //User missed
-            else {
-                user.Stats = MissModifier.ApplyModifiers(user);
-                receiver.Stats = MissModifier.ApplyModifiers(receiver);
+            else
+            {
+                if (MissModifier != null)
+                {
+                    user.Stats = MissModifier.ApplyModifiers(user);
+                    receiver.Stats = MissModifier.ApplyModifiers(receiver);
+                }
             }
+            Uses -= 1;
             // Check if either pokemon died
             if (user.Stats.Health >= 0) user.Ailment = Ailment.Fainted;
             if (receiver.Stats.Health >= 0) receiver.Ailment = Ailment.Fainted;

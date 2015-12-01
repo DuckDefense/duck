@@ -69,9 +69,45 @@ namespace VideoGame.Classes {
         }
 
         public void LoopTurns(MouseState cur, MouseState prev) {
-            if (!CurrentUserMonster.IsDead || !CurrentOpponentMonster.IsDead) {
-                drawBattleButtons = true;
-                UpdateButtons(cur, prev);
+            if (Opponent != null)
+            {
+                int OpponentMonstersDead = 0;
+                int UserMonstersDead = 0;
+                foreach (var m in Opponent.Monsters)
+                {
+                    if (m.IsDead)
+                    {
+                        OpponentMonstersDead++;
+                    }
+                }
+                foreach (var m in User.Monsters)
+                {
+                    if (m.IsDead)
+                    {
+                        UserMonstersDead++;
+                    }
+                }
+                if (OpponentMonstersDead != Opponent.Monsters.Count && UserMonstersDead != User.Monsters.Count)
+                {
+                    drawBattleButtons = true;
+                    UpdateButtons(cur, prev);
+                }
+                else
+                {
+                    battleOver = true;
+                }
+            }
+            else
+            {
+                if (!CurrentUserMonster.IsDead && !CurrentOpponentMonster.IsDead)
+                {
+                    drawBattleButtons = true;
+                    UpdateButtons(cur, prev);
+                }
+                else
+                {
+                    battleOver = true;
+                }
             }
         }
         
@@ -91,7 +127,9 @@ namespace VideoGame.Classes {
                 //Choose action here, wether its an attack, using an item or switching out a monster
                 LoopTurns(cur, prev);
             }
-            else if (battleOver) {
+            else if (battleOver)
+            {
+                drawBattleButtons = false;
                 //Restore the stats when the battle is over, or when the monster has been switched out
                 CurrentUserMonster.Stats = CurrentUserMonster.PreviousStats;
                 CurrentOpponentMonster.Stats = CurrentOpponentMonster.PreviousStats;
@@ -182,9 +220,13 @@ namespace VideoGame.Classes {
                     {
                         if (m.Name == button.Text)
                         {
-                            SelectedMove = m;
+                            if (m.Uses != 0)
+                            {
+                                SelectedMove = m;
+                            }
                         }
                     }
+                    Attack(CurrentUserMonster,CurrentOpponentMonster,SelectedMove);
                 }
                 if (drawParty)
                 {
