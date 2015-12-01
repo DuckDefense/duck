@@ -9,6 +9,7 @@ using MonoGame.Extended.Maps.Tiled;
 namespace VideoGame.Classes {
     public class ContentLoader {
         public static ContentManager Content;
+        public static Texture2D MonsterViewer;
         public static Texture2D GronkeyFront, GronkeyBack, GronkeyParty;
         public static Texture2D ArmlerFront, ArmlerBack, ArmlerParty;
         public static Texture2D BrassFront, BrassBack, BrassParty;
@@ -17,6 +18,7 @@ namespace VideoGame.Classes {
         public static Texture2D Christman;
         public static Texture2D Button;
         public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt, SpinalCord;
+        public static Texture2D RegularNet, RottenNet;
         public static TiledMap Map;
         public static SpriteFont Arial;
 
@@ -39,6 +41,7 @@ namespace VideoGame.Classes {
             HuffsteinFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Huffstein");
             HuffsteinBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Huffstein");
             HuffsteinParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Huffstein");
+            MonsterViewer = Content.Load<Texture2D>(@"Sprites/Monsters/Viewer");
             #endregion
 
             #region Characters
@@ -61,6 +64,14 @@ namespace VideoGame.Classes {
             #endregion
 
             #region Items
+
+            #region Capture
+
+            RottenNet = Content.Load<Texture2D>(@"Sprites\Items\Capture\Rotten Net");
+            RegularNet = Content.Load<Texture2D>(@"Sprites\Items\Capture\Regular Net");
+            #endregion
+
+            #region Medicine
             AirHorn = Content.Load<Texture2D>(@"Sprites/Items/Medicine/AirHorn");
             AntiPoison = Content.Load<Texture2D>(@"Sprites/Items/Medicine/AntiPoison");
             BucketOfWater = Content.Load<Texture2D>(@"Sprites/Items/Medicine/BucketOfWater");
@@ -68,7 +79,8 @@ namespace VideoGame.Classes {
             MagicStone = Content.Load<Texture2D>(@"Sprites/Items/Medicine/MagicStone");
             RoosVicee = Content.Load<Texture2D>(@"Sprites/Items/Medicine/RoosVicee");
             Salt = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
-            SpinalCord = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
+            SpinalCord = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt"); 
+            #endregion
 
 
             #endregion
