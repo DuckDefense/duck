@@ -35,9 +35,35 @@ namespace VideoGame.Classes {
                 }
             }
         }
-        
+
+        public void GetCollision() {
+            foreach (var layer in Map.Layers) {
+                if (layer.Properties.Count != 0) {
+                    var layerPropKeys = layer.Properties.Keys.ToList();
+                    var layerPropValues = layer.Properties.Values.ToList();
+                    foreach (var key in layerPropKeys) {
+                        if (key == "Collision") {
+                            foreach (var value in layerPropValues) {
+                                if (value == "true") {
+                                    //There is collision and player can not move here
+                                }
+                            }
+                        }
+                        if (key == "Encounters") {
+                            foreach (var value in layerPropValues) {
+                                if (value == "true") {
+                                    //When walking on this spot there is a chance to get encounters
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         #region Route1
-        public static Area Route1() {
+            public static
+            Area Route1() {
             Random random = new Random();
             Point levelrange = new Point(3, 8);
             
