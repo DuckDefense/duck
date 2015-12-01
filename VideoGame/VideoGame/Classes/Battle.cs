@@ -252,6 +252,8 @@ namespace VideoGame.Classes
                 drawMoves = false;
                 drawInventory = true;
                 drawParty = false;
+                Drawer.DrawCapture = false;
+                Drawer.DrawMedicine = false;
                 //Add party here
             }
             if (PartyButton.IsClicked(cur, prev))
