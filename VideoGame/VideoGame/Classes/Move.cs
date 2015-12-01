@@ -81,7 +81,7 @@ namespace VideoGame.Classes {
                 if (HitModifier != null)
                 {
                    //TODO: Find out if this will return the same stats if the modifier is empty
-                    user.Stats = HitModifier.ApplyModifiers(user);
+                    //user.Stats = HitModifier.ApplyModifiers(user);
                     receiver.Stats = HitModifier.ApplyModifiers(receiver); 
                 }
                 
@@ -92,7 +92,7 @@ namespace VideoGame.Classes {
                 if (MissModifier != null)
                 {
                     user.Stats = MissModifier.ApplyModifiers(user);
-                    receiver.Stats = MissModifier.ApplyModifiers(receiver);
+                    //receiver.Stats = MissModifier.ApplyModifiers(receiver);
                 }
             }
             Uses -= 1;
@@ -160,13 +160,13 @@ namespace VideoGame.Classes {
         #region NonDamage
         public static Move Glare() {
             //TODO: Test if this will keep reducing stats if used more than once
-            var statMod = new StatModifier(0, 0, 0, 0, .75);
+            var statMod = new StatModifier(1, 1, 1, 1, .75);
             return new Move("Glare", "The monster gives a cold glare and slightly lowers opponents speed",
                 0, 70, 25, statMod, statMod, Kind.NonDamage, Type.Normal);
         }
         public static Move Intimidate() {
-            var hit = new StatModifier(0, 0.75, 0, 0, 0);
-            var miss = new StatModifier(0, 0, 0.75, 0, 0);
+            var hit = new StatModifier(1, 0.75, 1, 1, 1);
+            var miss = new StatModifier(1, 1, 0.75, 1, 1);
             return new Move("Intimidate", "The monster shows the opponent just how intimidating it can be," +
                                           "which will slightly lower the opponents attack," +
                                           "if it misses will lower the users defense",
