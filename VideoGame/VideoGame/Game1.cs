@@ -73,7 +73,12 @@ namespace VideoGame {
             player.Monsters.Add(Monster.Armler(15));
             player.Monsters.Add(Monster.Gronkey(15));
             player.Monsters.Add(Monster.Brass(15));
-            
+            player.Inventory.Add(Medicine.RoosVicee(), 1);
+            player.Inventory.Add(Medicine.MagicStone(), 3);
+            player.Inventory.Add(Medicine.Salt(), 2);
+            player.Inventory.Add(Capture.RottenNet(), 198);
+            player.Inventory.Add(Capture.RegularNet(), 1);
+
             // TODO: use this.Content to load your game content here
         }
 
