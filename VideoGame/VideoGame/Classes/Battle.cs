@@ -42,6 +42,7 @@ namespace VideoGame.Classes
         public static Button AttackButton, RunButton, InventoryButton, PartyButton;
         public Move SelectedMove;
         public Monster SelectedMonster;
+        public Medicine SelectedMedicine;
         /// <summary>
         /// Battle with a trainer
         /// </summary>
@@ -304,6 +305,17 @@ namespace VideoGame.Classes
                         }
                     }
                 }
+                if (drawInventory)
+                {
+                    foreach (var m in User.Inventory.Medicine)
+                    {
+                        if (m.Value.Name == button.Text)
+                        {
+                            SelectedMedicine = m.Value;
+                        }   
+                    }
+                }
+                SelectedMedicine.Use(SelectedMonster);
             }
         }
 

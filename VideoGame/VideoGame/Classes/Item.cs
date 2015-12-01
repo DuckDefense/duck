@@ -137,8 +137,29 @@ namespace VideoGame.Classes {
             MaxAmount = maxAmount;
         }
 
-        public void Use() {
-            //Use the medicine
+        public void Use(Monster monster) {
+
+            if (Cures != Cure.None)
+            {
+                if (Cures == Cure.All)
+                {
+                    monster.Ailment = Ailment.Normal;
+                }
+                if(monster.Ailment == (Ailment) Cures)
+                {
+                    monster.Ailment = Ailment.Normal;
+                }
+            }
+            monster.Stats.Health += HealAmount;
+            if (monster.Stats.Health < monster.PreviousStats.Health)
+            {
+                monster.Stats.Health = monster.PreviousStats.Health;
+            }
+            Amount -= 1;
+            if (Amount <= 0)
+            {
+                
+            }
         }
 
         public static Medicine LeafBandage()
