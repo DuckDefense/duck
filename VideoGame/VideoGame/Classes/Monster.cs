@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,7 +15,12 @@ namespace VideoGame.Classes {
         Female
     }
 
-    public class Monster {
+    public class Monster : IAnimatable {
+        public Rectangle SourceRectangle;
+        public Point PartySpriteSize = new Point(24, 24);
+        private Point CurrentFrame = new Point(0, 0);
+        private float Interval = 500f;
+        private float Timer = 0f;
 
         public bool IsDead => Stats.Health <= 0; //Returns true if health is 0 or below it
         public bool IsWild;
@@ -177,6 +183,34 @@ namespace VideoGame.Classes {
             }
         }
 
+        public void Update(GameTime gametime) {
+            SourceRectangle = new Rectangle(CurrentFrame.X * PartySpriteSize.X, CurrentFrame.Y * PartySpriteSize.Y, PartySpriteSize.X, PartySpriteSize.Y);
+            AnimateParty(gametime); 
+        }
+        public void AnimateWorld(GameTime gametime) {
+            throw new NotImplementedException();
+        }
+
+        public void AnimateFront(GameTime gametime) {
+            throw new NotImplementedException();
+        }
+
+        public void AnimateBack(GameTime gametime) {
+            throw new NotImplementedException();
+        }
+
+        public void AnimateParty(GameTime gametime) {
+            Timer += (float) gametime.ElapsedGameTime.TotalMilliseconds;
+            if (Timer > Interval) {
+                CurrentFrame.X++;
+                if (CurrentFrame.X > 1) {
+                    CurrentFrame.X = 0;
+                }
+                Timer = 0f;
+            }
+        }
+        #region Monsters
+
         public static Monster Armler(int level, Item item = null) {
             if (item == null) item = new Item();
             List<Move> moves = new List<Move>();
@@ -234,10 +268,12 @@ namespace VideoGame.Classes {
             };
             //Calculate level so we can determine what moves it could have learned
 
-            Stats stats = new Stats(78, 15, 90, 10, 80, 5, level);
+            Stats stats = new Stats(40, 42, 50, 76, 65, 55, level);
             return new Monster(12, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its' body",
                 Type.Poison, Type.Rock, 50, item, stats, moves, abilities,
                 ContentLoader.HuffsteinFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
         }
+
+        #endregion
     }
 }

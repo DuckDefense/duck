@@ -66,7 +66,13 @@ namespace VideoGame {
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.Christman, camera.Position, true);
             player.CurrentArea = Area.Route1();
             player.CurrentArea.EnteredArea = true;
+            player.CurrentArea.GetCollision();
             player.Monsters.Add(Monster.Gronkey(15));
+            player.Monsters.Add(Monster.Brass(15));
+            player.Monsters.Add(Monster.Huffstein(15));
+            player.Monsters.Add(Monster.Armler(15));
+            player.Monsters.Add(Monster.Gronkey(15));
+            player.Monsters.Add(Monster.Brass(15));
             
             // TODO: use this.Content to load your game content here
         }
@@ -87,7 +93,7 @@ namespace VideoGame {
         protected override void Update(GameTime gameTime) {
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
-            //player.Update(gameTime, currentKeyboardState, previousKeyboardState);
+            player.Update(gameTime, currentKeyboardState, previousKeyboardState);
 
             if (!battling) {
                 if (encountered) {
@@ -119,7 +125,7 @@ namespace VideoGame {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.Gray);
             spriteBatch.Begin();
 
             if (!currentBattle.battleOver) {
