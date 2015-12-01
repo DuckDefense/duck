@@ -49,22 +49,26 @@ namespace VideoGame.Classes {
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
             if (DrawMedicine) {
                 foreach (var item in player.Inventory.Medicine) {
-                    var amountPos = ContentLoader.Arial.MeasureString(item.Value.Name);
+                    var amountPos = ContentLoader.Arial.MeasureString(item.Value.Amount.ToString());
                     var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + (ContentLoader.Button.Height * 2), rec.Width, rec.Height),
                             ContentLoader.Button) { Text = item.Value.Name };
                     b.Draw(batch);
                     MedicineButtons.Add(b);
-                    batch.DrawString(ContentLoader.Arial, $"{item.Value.Amount}", new Vector2(b.Position.X + amountPos.X, b.Position.Y * 4),Color.White);
                     batch.Draw(item.Value.Sprite, new Vector2(b.Position.X + (item.Value.Sprite.Width / 2), b.Position.Y), Color.White);
+                    batch.DrawString(ContentLoader.Arial, $"{item.Value.Amount}x",
+                        new Vector2(b.Position.X, b.Position.Y + ContentLoader.Button.Height), Color.White);
                 }
             }
             if (DrawCapture) {
                 foreach (var item in player.Inventory.Captures) {
+                    var amountPos = ContentLoader.Arial.MeasureString(item.Value.Amount.ToString());
                     var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + (ContentLoader.Button.Height * 2), rec.Width, rec.Height),
                         ContentLoader.Button) { Text = item.Value.Name };
                     b.Draw(batch);
                     CaptureButtons.Add(b);
                     batch.Draw(item.Value.Sprite, new Vector2(b.Position.X + (item.Value.Sprite.Width / 2), b.Position.Y), Color.White);
+                    batch.DrawString(ContentLoader.Arial, $"{item.Value.Amount}x",
+                        new Vector2(b.Position.X, b.Position.Y + ContentLoader.Button.Height), Color.White);
                 }
             }
         }
@@ -77,7 +81,7 @@ namespace VideoGame.Classes {
 
             foreach (var monster in party) {
                 var rect = new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height);
-                var b = new Button(rect, ContentLoader.Button) {Text = monster.Name };
+                var b = new Button(rect, ContentLoader.Button) { Text = monster.Name };
                 b.Draw(batch);
                 batch.Draw(monster.PartySprite, new Vector2(rect.X + monster.PartySpriteSize.X - 4, rect.Y + 4), monster.SourceRectangle, Color.White);
             }
