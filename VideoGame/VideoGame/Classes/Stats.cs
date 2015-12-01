@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace VideoGame.Classes {
         Frenzied,
         Fainted
     }
-    
+
     public class Stats {
         //Randomized stats which will be multiplied with Base and Level
         public int RandHealth { get; }
@@ -46,7 +47,7 @@ namespace VideoGame.Classes {
         /// New stats with everything on 0
         /// </summary>
         public Stats() { }
-        
+
         /// <summary>
         /// new Base stat and automatically calculate all stats
         /// </summary>
@@ -107,12 +108,32 @@ namespace VideoGame.Classes {
 
         public Stats ApplyModifiers(Monster monster) {
             var stats = monster.Stats;
-            stats.Attack *= (int)AttackMod;
-            stats.Defense *= (int)DefenseMod;
-            stats.SpecialAttack *= (int)SpecialAttackMod;
-            stats.SpecialDefense *= (int)SpecialDefenseMod;
-            stats.Speed *= (int)SpeedMod;
+            CheckMinimum(monster.Stats, monster.PreviousStats);
+            //double att = stats.Attack * AttackMod;
+            //double def = stats.Defense * DefenseMod;
+            //double specAtt = stats.SpecialAttack * SpecialAttackMod;
+            //double specDef = stats.SpecialDefense * SpecialDefenseMod;
+            //double spd = stats.Speed * SpeedMod;
+            stats.Attack = Convert.ToInt32(stats.Attack * AttackMod);
+            stats.Defense = Convert.ToInt32(stats.Defense * DefenseMod);
+            stats.SpecialAttack = Convert.ToInt32(stats.SpecialAttack * SpecialAttackMod);
+            stats.SpecialDefense = Convert.ToInt32(stats.SpecialDefense * SpecialDefenseMod);
+            stats.Speed = Convert.ToInt32(stats.Speed * SpeedMod);
             return stats;
+        }
+
+        private void CheckMinimum(Stats curStats, Stats prevStats) {
+            var attDif = curStats.Attack - prevStats.Attack;
+            var defDif = curStats.Defense - prevStats.Defense;
+            var specAttDif = curStats.SpecialAttack - prevStats.SpecialAttack;
+            var specDefDif = curStats.SpecialDefense - prevStats.SpecialDefense;
+            var spdDif = curStats.Speed - prevStats.Speed;
+            //Check if stats are below 40% of the original
+            if ((attDif / prevStats.Attack) <= 0.4) { curStats.Attack = Convert.ToInt32(prevStats.Attack * 0.4); AttackMod = 1; }
+            if ((defDif / prevStats.Defense) <= 0.4) { curStats.Defense = Convert.ToInt32(prevStats.Defense * 0.4); DefenseMod = 1; }
+            if ((specAttDif / prevStats.SpecialAttack) <= 0.4) { curStats.SpecialAttack = Convert.ToInt32(prevStats.SpecialAttack * 0.4); SpecialAttackMod = 1; }
+            if ((specDefDif / prevStats.SpecialDefense) <= 0.4) { curStats.SpecialDefense = Convert.ToInt32(prevStats.SpecialDefense * 0.4); SpecialDefenseMod = 1; }
+            if ((spdDif / prevStats.Speed) <= 0.4) { curStats.Speed = Convert.ToInt32(prevStats.Speed * 0.4); SpeedMod = 1; }
         }
     }
 }
