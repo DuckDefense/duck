@@ -84,14 +84,16 @@ namespace VideoGame.Classes {
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
 
             foreach (var monster in party) {
-                var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height), monster.PartySprite);
-                batch.DrawString(ContentLoader.Arial, $"{monster.Name}", new Vector2(b.Position.X, b.Position.Y + (rec.Height / 2)), Color.Black);
+                var rect = new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height);
+                var b = new Button(rect, ContentLoader.Button, monster.Name, ContentLoader.Arial);
+                b.Draw(batch);
+                batch.Draw(monster.PartySprite, new Vector2(rect.X + monster.PartySpriteSize.X - 4, rect.Y + 4), monster.SourceRectangle, Color.White);
             }
         }
 
         public static void DrawBattle(SpriteBatch batch, Monster userMon, Monster oppoMon) {
             Rectangle userMonsterPos = new Rectangle(
-                ContentLoader.GrassyBackground.Width - (int)(userMon.BackSprite.Width * 6.5),
+                ContentLoader.GrassyBackground.Width - (ContentLoader.GrassyBackground.Width),
                 ContentLoader.GrassyBackground.Height - userMon.BackSprite.Height,
                 userMon.BackSprite.Width,
                 userMon.BackSprite.Height);
