@@ -242,6 +242,8 @@ namespace VideoGame.Classes
                 drawMoves = true;
                 drawInventory = false;
                 drawParty = false;
+                Drawer.DrawCapture = false;
+                Drawer.DrawMedicine = false;
                 //Add attack here
             }
             if (InventoryButton.IsClicked(cur, prev))
@@ -258,6 +260,8 @@ namespace VideoGame.Classes
                 drawMoves = false;
                 drawInventory = false;
                 drawParty = true;
+                Drawer.DrawCapture = false;
+                Drawer.DrawMedicine = false;
                 //Add party here
             }
             if (RunButton.IsClicked(cur, prev))

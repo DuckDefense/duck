@@ -10,8 +10,8 @@ using Microsoft.Xna.Framework.Input;
 namespace VideoGame.Classes {
     public static class Drawer {
         private static Button LastClicked;
-        private static bool drawItems, drawMedicine, drawCapture;
-        public static Button bItems, bMedicine, bCapture;
+        public static bool DrawMedicine, DrawCapture;
+        public static Button bMedicine, bCapture;
         public static List<Button> MoveButtons, InventoryButtons, ItemButtons, MedicineButtons, CaptureButtons, PartyButtons;
 
         #region Battle
@@ -30,49 +30,41 @@ namespace VideoGame.Classes {
             InventoryButtons = new List<Button>();
             var buttonPos = 0;
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
-
-            bItems = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height),
-                ContentLoader.Button, "Items", ContentLoader.Arial);
             bMedicine = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height),
                 ContentLoader.Button, "Medicine", ContentLoader.Arial);
             bCapture = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height),
                 ContentLoader.Button, "Capture", ContentLoader.Arial);
 
-            bItems.Draw(batch);
             bMedicine.Draw(batch);
             bCapture.Draw(batch);
-            InventoryButtons.AddMany(bItems, bMedicine, bCapture);
+            InventoryButtons.AddMany(bMedicine, bCapture);
             DrawItems(batch, player);
         }
 
         public static void DrawItems(SpriteBatch batch, Character player) {
             ItemButtons = new List<Button>();
+            MedicineButtons = new List<Button>();
+            CaptureButtons = new List<Button>();
             var buttonPos = 0;
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
-
-            if (drawItems) {
-                foreach (var item in player.Inventory.Items) {
-                    var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height),
-                        ContentLoader.Button, $"{item.Value.Name}", ContentLoader.Arial);
-                    b.Draw(batch);
-                    ItemButtons.Add(b);
-                }
-            }
-            if (drawMedicine) {
+            if (DrawMedicine) {
                 foreach (var item in player.Inventory.Medicine) {
-                    var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height,
-                                rec.Width, rec.Height),
-                            ContentLoader.Button, $"{item.Value.Name}", ContentLoader.Arial);
+                    var amountPos = ContentLoader.Arial.MeasureString(item.Value.Name);
+                    var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + (ContentLoader.Button.Height * 2), rec.Width, rec.Height),
+                            ContentLoader.Button) { Text = item.Value.Name };
                     b.Draw(batch);
                     MedicineButtons.Add(b);
+                    batch.DrawString(ContentLoader.Arial, $"{item.Value.Amount}", new Vector2(b.Position.X + amountPos.X, b.Position.Y * 4),Color.White);
+                    batch.Draw(item.Value.Sprite, new Vector2(b.Position.X + (item.Value.Sprite.Width / 2), b.Position.Y), Color.White);
                 }
             }
-            if (drawCapture) {
+            if (DrawCapture) {
                 foreach (var item in player.Inventory.Captures) {
-                    var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height),
-                        ContentLoader.Button, $"{item.Value.Name}", ContentLoader.Arial);
+                    var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + (ContentLoader.Button.Height * 2), rec.Width, rec.Height),
+                        ContentLoader.Button) { Text = item.Value.Name };
                     b.Draw(batch);
                     CaptureButtons.Add(b);
+                    batch.Draw(item.Value.Sprite, new Vector2(b.Position.X + (item.Value.Sprite.Width / 2), b.Position.Y), Color.White);
                 }
             }
         }
@@ -85,10 +77,26 @@ namespace VideoGame.Classes {
 
             foreach (var monster in party) {
                 var rect = new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height);
-                var b = new Button(rect, ContentLoader.Button, monster.Name, ContentLoader.Arial);
+                var b = new Button(rect, ContentLoader.Button) {Text = monster.Name };
                 b.Draw(batch);
                 batch.Draw(monster.PartySprite, new Vector2(rect.X + monster.PartySpriteSize.X - 4, rect.Y + 4), monster.SourceRectangle, Color.White);
             }
+        }
+
+        public static void DrawHealth(SpriteBatch batch) {
+
+        }
+
+        public static void DrawMonsterInfo(SpriteBatch batch, Monster m) {
+            Texture2D background = ContentLoader.Button;
+            var frontPos = new Vector2();
+            var namePos = new Vector2();
+            var descriptionPos = new Vector2();
+
+            batch.Draw(m.FrontSprite, frontPos, Color.White);
+            batch.DrawString(ContentLoader.Arial, m.Name, namePos, Color.White);
+            batch.DrawString(ContentLoader.Arial, m.Description, descriptionPos, Color.White);
+            //Unfinished
         }
 
         public static void DrawBattle(SpriteBatch batch, Monster userMon, Monster oppoMon) {
@@ -111,37 +119,56 @@ namespace VideoGame.Classes {
             if (ItemButtons != null)
                 foreach (var btn in ItemButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) LastClicked = btn;
+                    if (btn.IsClicked(cur, prev)) {
+                        LastClicked = btn;
+                    }
                 }
             if (MedicineButtons != null)
                 foreach (var btn in MedicineButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) LastClicked = btn;
+                    if (btn.IsClicked(cur, prev)) {
+                        LastClicked = btn;
+                    }
                 }
             if (CaptureButtons != null)
                 foreach (var btn in CaptureButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) LastClicked = btn;
+                    if (btn.IsClicked(cur, prev)) {
+                        LastClicked = btn;
+                    }
                 }
             if (InventoryButtons != null)
                 foreach (var btn in InventoryButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) LastClicked = btn;
+                    if (btn.IsClicked(cur, prev)) {
+                        LastClicked = btn;
+                    }
                 }
             if (MoveButtons != null)
                 foreach (var btn in MoveButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) LastClicked = btn;
+                    if (btn.IsClicked(cur, prev)) {
+                        LastClicked = btn;
+                    }
                 }
             if (PartyButtons != null)
                 foreach (var btn in PartyButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) LastClicked = btn;
+                    if (btn.IsClicked(cur, prev)) {
+                        LastClicked = btn;
+                    }
                 }
 
-            if (bItems != null) if (bItems.IsClicked(cur, prev)) drawItems = true;
-            if (bMedicine != null) if (bMedicine.IsClicked(cur, prev)) drawMedicine = true;
-            if (bCapture != null) if (bCapture.IsClicked(cur, prev)) drawCapture = true;
+            if (bMedicine != null)
+                if (bMedicine.IsClicked(cur, prev)) {
+                    DrawMedicine = true;
+                    DrawCapture = false;
+                }
+            if (bCapture != null)
+                if (bCapture.IsClicked(cur, prev)) {
+                    DrawCapture = true;
+                    DrawMedicine = false;
+                }
         }
         #endregion
 
