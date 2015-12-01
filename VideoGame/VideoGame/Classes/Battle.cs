@@ -30,8 +30,8 @@ namespace VideoGame.Classes {
         public Monster CurrentUserMonster;
         public Monster CurrentOpponentMonster;
         public Selection Selection = Selection.None;
-        private bool battleOver;
-        private bool battleStart;
+        public bool battleOver;
+        public bool battleStart;
         private bool drawBattleButtons, drawMoves, drawInventory, drawItems, drawParty;
         public static Button AttackButton, RunButton, InventoryButton, PartyButton;
         public Move SelectedMove;
