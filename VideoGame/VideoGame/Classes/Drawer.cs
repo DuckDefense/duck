@@ -84,6 +84,7 @@ namespace VideoGame.Classes {
                 var b = new Button(rect, ContentLoader.Button) { Text = monster.Name };
                 b.Draw(batch);
                 batch.Draw(monster.PartySprite, new Vector2(rect.X + monster.PartySpriteSize.X - 4, rect.Y + 4), monster.SourceRectangle, Color.White);
+                PartyButtons.Add(b);
             }
         }
 
