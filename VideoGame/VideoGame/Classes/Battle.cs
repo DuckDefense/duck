@@ -34,15 +34,18 @@ namespace VideoGame.Classes
         public Character Opponent;
         public Monster CurrentUserMonster;
         public Monster CurrentOpponentMonster;
+        private int boxSize, partySize;
         public Selection Selection = Selection.None;
         public State BattleState = State.Battling;
         public bool battleOver;
         public bool battleStart;
+        private bool caught;
         private bool drawBattleButtons, drawMoves, drawInventory, drawItems, drawParty;
         public static Button AttackButton, RunButton, InventoryButton, PartyButton;
         public Move SelectedMove;
         public Monster SelectedMonster;
         public Medicine SelectedMedicine;
+        public Capture SelectedCapture;
         /// <summary>
         /// Battle with a trainer
         /// </summary>
@@ -98,6 +101,11 @@ namespace VideoGame.Classes
                 BattleState = State.Ran;
                 battleOver = true;
             }
+        }
+
+        public void Capture(Monster opponent)
+        {
+
         }
 
         public void LoopTurns(MouseState cur, MouseState prev)
@@ -162,6 +170,8 @@ namespace VideoGame.Classes
         {
             if (battleStart)
             {
+                partySize = User.Monsters.Count;
+                boxSize = User.Box.Count;
                 //Store stats so the battle won't alter the stats permanently
                 CurrentUserMonster.PreviousStats = CurrentUserMonster.Stats;
                 CurrentOpponentMonster.PreviousStats = CurrentOpponentMonster.Stats;
@@ -270,8 +280,6 @@ namespace VideoGame.Classes
             if (RunButton.IsClicked(cur, prev))
             {
                 Selection = Selection.Run;
-
-                //Add run here
             }
             GetSelected(cur, prev);
         }
@@ -319,6 +327,36 @@ namespace VideoGame.Classes
                         SelectedMedicine.Use(CurrentUserMonster);
                         Drawer.DrawMedicine = false;
                         SelectedMedicine = null;
+                    }
+                }
+                if (Drawer.DrawCapture)
+                {
+                    foreach (var m in User.Inventory.Captures)
+                    {
+                        if (m.Value.Name == button.Text)
+                        {
+                            SelectedCapture = m.Value;
+                        }
+                    }
+                    if (SelectedCapture != null)
+                    {
+                        SelectedCapture.Use(CurrentOpponentMonster, User);
+                        if (User.Monsters.Count == partySize)
+                        {
+                            if (User.Box.Count != boxSize)
+                            {
+                                BattleState = State.Won;
+                                battleOver = true;
+                            }
+                        }
+                        else
+                        {
+                            BattleState = State.Won;
+                            battleOver = true;
+                        }
+
+                        Drawer.DrawCapture = false;
+                        SelectedCapture = null;
                     }
                 }
             }

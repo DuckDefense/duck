@@ -19,7 +19,7 @@ namespace VideoGame.Classes {
     }
 
     public class Capture : Item {
-        public double CaptureChance;
+        public int CaptureChance;
 
         /// <summary>
         /// Default Capture Item
@@ -33,7 +33,7 @@ namespace VideoGame.Classes {
         /// <param name="worth"></param>
         /// <param name="amount"></param>
         /// <param name="maxAmount"></param>
-        public Capture(int id, string name, string description, Texture2D sprite, double captureChance, bool useable, int worth, int amount, int maxAmount) {
+        public Capture(int id, string name, string description, Texture2D sprite, int captureChance, bool useable, int worth, int amount, int maxAmount) {
             Id = id;
             Name = name;
             Description = description;
@@ -45,12 +45,76 @@ namespace VideoGame.Classes {
             MaxAmount = maxAmount;
         }
 
-        public void Use() {
+        public void Use(Monster monster, Character player) {
             //Throw the net
+            Random random = new Random();
+            int capturechance = 0;
+
+            if (monster.Stats.Health < (monster.PreviousStats.Health/100*20))
+            {
+                capturechance += 25;
+            }
+            else if (monster.Stats.Health < (monster.PreviousStats.Health / 100 * 40))
+            {
+                capturechance += 20;
+            }
+            else if (monster.Stats.Health < (monster.PreviousStats.Health / 100 * 60))
+            {
+                capturechance += 15;
+            }
+            else if (monster.Stats.Health < (monster.PreviousStats.Health / 100 * 80))
+            {
+                capturechance += 10;
+            }
+            switch (monster.Ailment)
+            {
+                case Ailment.Sleep:
+                    capturechance += 20;
+                    break;
+                case Ailment.Poisoned:
+                    capturechance += 10;
+                    break;
+                case Ailment.Paralyzed:
+                    capturechance += 15;
+                    break;
+                case Ailment.Burned:
+                    capturechance += 10;
+                    break;
+                case Ailment.Dazzled:
+                    capturechance += 10;
+                    break;
+                case Ailment.Frozen:
+                    capturechance += 20;
+                    break;
+                case Ailment.Frenzied:
+                    capturechance += 5;
+                    break;
+            }
+            capturechance += CaptureChance;
+            capturechance += (player.Monsters[0].Level - monster.Level);
+            capturechance -= monster.CaptureChance;
+
+            if (capturechance < 5)
+            {
+                capturechance = 5;
+            }
+            var dice = random.Next(0, 100);
+            if (dice < capturechance)
+            {
+                if (player.Monsters.Count >= 6)
+                {
+                    player.Box.Add(monster);
+                }
+                else
+                {
+                    player.Monsters.Add(monster);
+                }
+            }
+            Amount -= 1;
         }
 
         public static Capture RottenNet() {
-            return new Capture(1, "Rotten Net", "Worn out net which doesn't seem up to the job.", ContentLoader.RottenNet, 45, true, 5, 1, 999);
+            return new Capture(1, "Rotten Net", "Worn out net which doesn't seem up to the job.", ContentLoader.RottenNet, 5, true, 5, 1, 999);
         }
         public static Capture RegularNet() {
             return new Capture(2, "Regular Net", "Regular net which seems decent at first glance.", ContentLoader.RegularNet, 45, true, 200, 1, 99);
