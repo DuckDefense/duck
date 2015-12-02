@@ -119,6 +119,9 @@ namespace VideoGame.Classes {
         public static Capture RegularNet() {
             return new Capture(2, "Regular Net", "Regular net which seems decent at first glance.", ContentLoader.RegularNet, 45, true, 200, 1, 99);
         }
+        public static Capture GreatNet() {
+            return new Capture(2, "Great Net", "A big net that will occasionally catch a monster.", ContentLoader.RegularNet, 65, true, 500, 1, 99);
+        }
     }
 
     public class Medicine : Item {

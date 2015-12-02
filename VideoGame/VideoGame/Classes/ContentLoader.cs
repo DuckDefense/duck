@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Maps.Tiled;
@@ -9,6 +10,8 @@ using MonoGame.Extended.Maps.Tiled;
 namespace VideoGame.Classes {
     public class ContentLoader {
         public static ContentManager Content;
+        public static GraphicsDevice GraphicsDevice;
+        public static Texture2D Health;
         public static Texture2D MonsterViewer;
         public static Texture2D GronkeyFront, GronkeyBack, GronkeyParty;
         public static Texture2D ArmlerFront, ArmlerBack, ArmlerParty;
@@ -18,11 +21,12 @@ namespace VideoGame.Classes {
         public static Texture2D Christman;
         public static Texture2D Button;
         public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt, SpinalCord;
-        public static Texture2D RegularNet, RottenNet;
+        public static Texture2D RottenNet, RegularNet, GreatNet;
         public static TiledMap Map;
         public static SpriteFont Arial;
 
-        public static void SetContent(ContentManager content) {
+        public static void SetContent(ContentManager content, GraphicsDeviceManager graphicsDevice) {
+            GraphicsDevice = graphicsDevice.GraphicsDevice;
             Content = content;
         }
 
@@ -48,9 +52,10 @@ namespace VideoGame.Classes {
             Christman = Content.Load<Texture2D>(@"Sprites/Characters/World/Christman");
             #endregion
 
-            #region battle
+            #region Battle
             GrassyBackground = Content.Load<Texture2D>(@"Sprites/Battle/Backgrounds/Grassy");
             Button = Content.Load<Texture2D>(@"Sprites/Buttons/Button");
+            Health = new Texture2D(GraphicsDevice, 5, 5, false, SurfaceFormat.Color);
             #endregion
 
             #region Maps
@@ -69,6 +74,7 @@ namespace VideoGame.Classes {
 
             RottenNet = Content.Load<Texture2D>(@"Sprites\Items\Capture\Rotten Net");
             RegularNet = Content.Load<Texture2D>(@"Sprites\Items\Capture\Regular Net");
+            GreatNet = Content.Load<Texture2D>(@"Sprites\Items\Capture\Great Net");
             #endregion
 
             #region Medicine
@@ -79,7 +85,7 @@ namespace VideoGame.Classes {
             MagicStone = Content.Load<Texture2D>(@"Sprites/Items/Medicine/MagicStone");
             RoosVicee = Content.Load<Texture2D>(@"Sprites/Items/Medicine/RoosVicee");
             Salt = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
-            SpinalCord = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt"); 
+            SpinalCord = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
             #endregion
 
 

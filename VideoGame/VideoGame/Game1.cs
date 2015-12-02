@@ -52,7 +52,7 @@ namespace VideoGame {
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            ContentLoader.SetContent(Content);
+            ContentLoader.SetContent(Content, graphics);
             _contentLoader.LoadContent();
 
             var viewportAdapter = new ScalingViewportAdapter(GraphicsDevice, Settings.ResolutionWidth, Settings.ResolutionHeight);
@@ -78,6 +78,7 @@ namespace VideoGame {
             player.Inventory.Add(Medicine.Salt(), 2);
             player.Inventory.Add(Capture.RottenNet(), 198);
             player.Inventory.Add(Capture.RegularNet(), 1);
+            player.Inventory.Add(Capture.GreatNet(), 4);
 
             // TODO: use this.Content to load your game content here
         }
@@ -111,7 +112,7 @@ namespace VideoGame {
             if (!currentBattle.battleOver) {
                 currentBattle.Update(currentMouseState, previousMouseState);
                 Drawer.UpdateBattleButtons(currentMouseState, previousMouseState);
-                
+
             }
             else {
                 Movement(currentKeyboardState);
