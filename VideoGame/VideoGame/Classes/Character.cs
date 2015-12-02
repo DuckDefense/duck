@@ -9,11 +9,9 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 
-namespace VideoGame.Classes
-{
+namespace VideoGame.Classes {
 
-    public enum Direction
-    {
+    public enum Direction {
         None,
         Up,
         Down,
@@ -21,16 +19,15 @@ namespace VideoGame.Classes
         Left
     }
 
-    public class Character
-    {
-        public float Interval { get; set; } // Interval at which the animation should update
-        private float Timer { get; set; } // Timer that keeps getting updated until the Interval is reached
+    public class Character : IAnimatable {
+        public float Interval = 200; // Interval at which the animation should update
+        private float Timer = 0;// Timer that keeps getting updated until the Interval is reached
 
         private Vector2 position;
         public Vector2 Position { get { return position; } set { position = value; } } //Position of the character
 
-        public Point SpriteSize { get; set; } //Height and Width of the sprite
-        public Point CurrentFrame { get; set; } //Frame that is being drawn by the SourceRectangle
+        public Point SpriteSize = new Point(32, 32);//Height and Width of the sprite
+        public Point CurrentFrame = new Point(0, 0);//Frame that is being drawn by the SourceRectangle
         public Rectangle PositionRectangle { get; set; } //Rectangle used as collision
         public Rectangle SourceRectangle; //Rectangle needed for animating
         public Rectangle LineOfSightRectangle;
@@ -46,7 +43,7 @@ namespace VideoGame.Classes
         public int Money;
         public Inventory Inventory;
         public List<Monster> Monsters;
-        public List<Monster> Box = new List<Monster>();  
+        public List<Monster> Box = new List<Monster>();
         public Monster CurrentMonster;
         public Area CurrentArea;
 
@@ -63,14 +60,12 @@ namespace VideoGame.Classes
         /// <param name="position">Position of the character</param>
         /// <param name="controllable"></param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters,
-        Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable)
-        {
+        Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable) {
             Name = name;
             Money = money;
             Inventory = inventory;
             Monsters = monsters;
-            foreach (Monster monster in Monsters)
-            {
+            foreach (Monster monster in Monsters) {
                 monster.IsWild = false;
             }
             Controllable = controllable;
@@ -79,9 +74,7 @@ namespace VideoGame.Classes
             WorldSprite = world;
             Position = position;
 
-            SpriteSize = new Point(WorldSprite.Width, WorldSprite.Height);
             PositionRectangle = new Rectangle((int)Position.X, (int)Position.Y, SpriteSize.X, SpriteSize.Y);
-            SourceRectangle = new Rectangle();
         }
 
         /// <summary>
@@ -96,14 +89,12 @@ namespace VideoGame.Classes
         /// <param name="world">Sprite that is shown when you're walking around on the area</param>
         /// <param name="position">Position of the character</param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters,
-        Texture2D front, Texture2D back, Texture2D world, Vector2 position)
-        {
+        Texture2D front, Texture2D back, Texture2D world, Vector2 position) {
             Name = name;
             Money = money;
             Inventory = inventory;
             Monsters = monsters;
-            foreach (Monster monster in Monsters)
-            {
+            foreach (Monster monster in Monsters) {
                 monster.IsWild = false;
             }
             Controllable = false;
@@ -112,49 +103,84 @@ namespace VideoGame.Classes
             WorldSprite = world;
             Position = position;
 
-            SpriteSize = new Point(WorldSprite.Width, WorldSprite.Height);
             PositionRectangle = new Rectangle((int)Position.X, (int)Position.Y, SpriteSize.X, SpriteSize.Y);
-            SourceRectangle = new Rectangle();
         }
 
         //TODO: Add animation function from DuckDefense
 
-        public void Update(GameTime time, KeyboardState cur, KeyboardState prev)
-        {
+        public void Update(GameTime time, KeyboardState cur, KeyboardState prev) {
             foreach (var m in Monsters) {
                 m.Update(time);
             }
-            //Add update and sourcerectangle here
+            GetDirection(cur, prev);
+            SourceRectangle = new Rectangle(CurrentFrame.X * SpriteSize.X, CurrentFrame.Y * SpriteSize.Y, SpriteSize.X, SpriteSize.Y);
+            AnimateWorld(time);
         }
 
-        public void Draw(SpriteBatch batch)
-        {
-            batch.Draw(WorldSprite, Position, Color.White);
+        public void Draw(SpriteBatch batch) {
+            batch.Draw(WorldSprite, Position, SourceRectangle, Color.White);
             if (Debug)
                 batch.Draw(ContentLoader.Button, null, LineOfSightRectangle, null, null, 0f, Vector2.Zero, Color.White);
         }
 
-        public void SetLineOfSight(int tiles)
-        {
+        public void GetDirection(KeyboardState cur, KeyboardState prev) {
+            Direction = Direction.None;
+            if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
+                Direction = Direction.Up;
+            if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
+                Direction = Direction.Down;
+            if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
+                Direction = Direction.Left;
+            if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
+                Direction = Direction.Right;
+        }
+
+        public void SetLineOfSight(int tiles) {
             var size = (tiles + 1) * 16;
-            switch (Direction)
-            {
-                case Direction.None:
-                    break;
-                case Direction.Up:
-                    LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y - (size - WorldSprite.Height), WorldSprite.Width, size);
-                    break;
-                case Direction.Down:
-                    LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, WorldSprite.Width, size);
-                    break;
-                case Direction.Right:
-                    LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, size, WorldSprite.Height);
-                    break;
-                case Direction.Left:
-                    LineOfSightRectangle = new Rectangle((int)Position.X - (size - WorldSprite.Width), (int)Position.Y, size, WorldSprite.Height);
-                    break;
+            switch (Direction) {
+            case Direction.None:
+                break;
+            case Direction.Up:
+                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y - (size - WorldSprite.Height), WorldSprite.Width, size);
+                break;
+            case Direction.Down:
+                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, WorldSprite.Width, size);
+                break;
+            case Direction.Right:
+                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, size, WorldSprite.Height);
+                break;
+            case Direction.Left:
+                LineOfSightRectangle = new Rectangle((int)Position.X - (size - WorldSprite.Width), (int)Position.Y, size, WorldSprite.Height);
+                break;
             }
 
+        }
+
+        public void AnimateWorld(GameTime gametime) {
+            if (Direction == Direction.None) CurrentFrame.X = 0;
+            else {
+
+                Timer += (float)gametime.ElapsedGameTime.TotalMilliseconds;
+                if (Timer > Interval) {
+                    CurrentFrame.X++;
+                    if (CurrentFrame.X > WorldSprite.Width / SpriteSize.X - 1) {
+                        CurrentFrame.X = 1;
+                    }
+                    Timer = 0f;
+                }
+            }
+        }
+
+        public void AnimateFront(GameTime gametime) {
+            throw new NotImplementedException();
+        }
+
+        public void AnimateBack(GameTime gametime) {
+            throw new NotImplementedException();
+        }
+
+        public void AnimateParty(GameTime gametime) {
+            throw new NotImplementedException();
         }
     }
 }
