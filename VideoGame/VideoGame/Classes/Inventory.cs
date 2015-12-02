@@ -19,8 +19,10 @@ namespace VideoGame.Classes {
             if (Items.ContainsKey(item.Id)) {
                 Items[item.Id].Amount += amount;
             }
-            item.Amount = amount;
-            Items.Add(item.Id, item);
+            else {
+                item.Amount = amount;
+                Items.Add(item.Id, item);
+            }
         }
 
         /// <summary>
@@ -32,8 +34,10 @@ namespace VideoGame.Classes {
             if (Medicine.ContainsKey(item.Id)) {
                 Medicine[item.Id].Amount += amount;
             }
-            item.Amount = amount;
-            Medicine.Add(item.Id, item);
+            else {
+                item.Amount = amount;
+                Medicine.Add(item.Id, item);
+            }
         }
 
         /// <summary>
@@ -45,8 +49,10 @@ namespace VideoGame.Classes {
             if (Captures.ContainsKey(item.Id)) {
                 Captures[item.Id].Amount += amount;
             }
-            item.Amount = amount;
-            Captures.Add(item.Id, item);
+            else {
+                item.Amount = amount;
+                Captures.Add(item.Id, item);
+            }
         }
 
         /// <summary>
