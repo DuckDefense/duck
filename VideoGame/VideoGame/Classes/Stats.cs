@@ -20,7 +20,6 @@ namespace VideoGame.Classes {
 
     public class Stats {
         //Randomized stats which will be multiplied with Base and Level
-        public int RandHealth { get; }
         public int RandAttack { get; }
         public int RandDefense { get; }
         public int RandSpecialAttack { get; }
@@ -61,7 +60,6 @@ namespace VideoGame.Classes {
 
             //TODO: Change the random to crypto random
             Random rand = new Random();
-            RandHealth = rand.Next(0, 31);
             RandAttack = rand.Next(0, 31);
             RandDefense = rand.Next(0, 31);
             RandSpecialAttack = rand.Next(0, 31);
@@ -72,7 +70,7 @@ namespace VideoGame.Classes {
         }
         private void CalculateStats(int level) {
             //Shamelessly stolen from Pokemon, without EVs
-            Health = (((BaseHealth * RandHealth) * 2) * level / 100) + 5;
+            Health = ((BaseHealth) * level / 50) + 5;
             Attack = (((BaseAttack * RandAttack) * 2) * level / 100) + 5;
             Defense = (((BaseDefense * RandDefense) * 2) * level / 100) + 5;
             SpecialAttack = (((BaseSpecialAttack * RandSpecialAttack) * 2) * level / 100) + 5;
