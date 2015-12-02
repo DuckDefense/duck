@@ -21,6 +21,7 @@ namespace VideoGame.Classes {
         private Point CurrentFrame = new Point(0, 0);
         private float Interval = 500f;
         private float Timer = 0f;
+        public int MaxHealth;
 
         public bool IsDead => Stats.Health <= 0; //Returns true if health is 0 or below it
         public bool IsWild;
@@ -95,7 +96,8 @@ namespace VideoGame.Classes {
             Ailment = Ailment.Normal;
             KnownMoves = new List<Move>();
             GetMoves(id);
-        }
+            MaxHealth = Stats.Health;
+            }
 
         /// <summary>
         /// Monster with two types
@@ -134,6 +136,8 @@ namespace VideoGame.Classes {
             Ailment = Ailment.Normal;
             KnownMoves = new List<Move>();
             GetMoves(id);
+            //TODO: Check if this updates with levelup
+            MaxHealth = Stats.Health;
         }
 
         public void ReceiveExp(Monster opponent) {
