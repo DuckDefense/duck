@@ -33,9 +33,8 @@ namespace VideoGame.Classes {
                                       //If we are going add monsters in the world we need to add a position and a collision box
         private int experience;
 
-        public int Experience
-        {
-            get { return Level*Level*5; }
+        public int Experience {
+            get { return Level * Level * 5; }
             set { experience = value; }
         }
 
@@ -75,7 +74,7 @@ namespace VideoGame.Classes {
         /// <param name="front">Texture that is shown when fighting against this monster</param>
         /// <param name="back">Texture that is shown when you've send out this monster</param>
         /// <param name="party">Texture that is shown in the party view</param>
-        public Monster(int id, int level, string name, string description, Type type, int maleChance , int captureChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
+        public Monster(int id, int level, string name, string description, Type type, int maleChance, int captureChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
             Texture2D front, Texture2D back, Texture2D party) {
             Id = id;
             Level = level;
@@ -95,9 +94,9 @@ namespace VideoGame.Classes {
             PartySprite = party;
             Ailment = Ailment.Normal;
             KnownMoves = new List<Move>();
-            GetMoves(id);
+            GetMoves();
             MaxHealth = Stats.Health;
-            }
+        }
 
         /// <summary>
         /// Monster with two types
@@ -115,11 +114,11 @@ namespace VideoGame.Classes {
         /// <param name="front">Texture that is shown when fighting against this monster</param>
         /// <param name="back">Texture that is shown when you've send out this monster</param>
         /// <param name="party">Texture that is shown in the party view</param>
-        public Monster(int id, int level, string name, string description, Type primaryType, Type secondaryType, int maleChance,int captureChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
+        public Monster(int id, int level, string name, string description, Type primaryType, Type secondaryType, int maleChance, int captureChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
         Texture2D front, Texture2D back, Texture2D party) {
             Id = id;
             Level = level;
-            Experience = level*5;
+            Experience = level * 5;
             Name = name;
             Description = description;
             PrimaryType = primaryType;
@@ -135,7 +134,7 @@ namespace VideoGame.Classes {
             PartySprite = party;
             Ailment = Ailment.Normal;
             KnownMoves = new List<Move>();
-            GetMoves(id);
+            GetMoves();
             //TODO: Check if this updates with levelup
             MaxHealth = Stats.Health;
         }
@@ -153,7 +152,7 @@ namespace VideoGame.Classes {
         }
 
         public void LevelUp(int amount, int id) {
-            GetMoves(id);
+            GetMoves();
             //If we are limiting moves put a prompt here asking if the monster should learn this move
         }
 
@@ -169,9 +168,9 @@ namespace VideoGame.Classes {
         }
 
         //TODO: Find a way to do this nicer and cleaner
-        public void GetMoves(int id) {
+        public void GetMoves() {
             KnownMoves.Clear();
-            switch (id) {
+            switch (Id) {
             case 1:
                 if (Level >= 1) {
                     KnownMoves.Add(Move.Tackle());
@@ -182,19 +181,16 @@ namespace VideoGame.Classes {
                     KnownMoves.Add(Move.Strangle());
                     KnownMoves.Add(Move.Glare());
                 }
-                if (Level >= 5) {
-                    KnownMoves.Add(Move.Tackle());
-                }
-                if (Level >= 9) {
-                    KnownMoves.Add(Move.Intimidate());
-                }
+                if (Level >= 5) { KnownMoves.Add(Move.Tackle()); }
+                if (Level >= 9) { KnownMoves.Add(Move.Intimidate()); }
+                if (Level >= 11) { KnownMoves.Add(Move.Headbutt()); }
                 break;
             }
         }
 
         public void Update(GameTime gametime) {
             SourceRectangle = new Rectangle(CurrentFrame.X * PartySpriteSize.X, CurrentFrame.Y * PartySpriteSize.Y, PartySpriteSize.X, PartySpriteSize.Y);
-            AnimateParty(gametime); 
+            AnimateParty(gametime);
         }
         public void AnimateWorld(GameTime gametime) {
             throw new NotImplementedException();
@@ -209,7 +205,7 @@ namespace VideoGame.Classes {
         }
 
         public void AnimateParty(GameTime gametime) {
-            Timer += (float) gametime.ElapsedGameTime.TotalMilliseconds;
+            Timer += (float)gametime.ElapsedGameTime.TotalMilliseconds;
             if (Timer > Interval) {
                 CurrentFrame.X++;
                 if (CurrentFrame.X > 1) {
@@ -263,7 +259,7 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(78, 15, 90, 10, 80, 5, level);
             return new Monster(12, level, "Brass", "This brick is pretty useless, all it can do is lie and wait\nuntil is undeniably faints.",
-                Type.Rock, 75,50, item, stats, moves, abilities,
+                Type.Rock, 75, 50, item, stats, moves, abilities,
                 ContentLoader.BrassFront, ContentLoader.BrassBack, ContentLoader.BrassParty);
         }
         //13: Bonsantai
@@ -279,7 +275,7 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(40, 42, 50, 76, 65, 55, level);
             return new Monster(12, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its' body",
-                Type.Poison, Type.Rock, 50,50, item, stats, moves, abilities,
+                Type.Poison, Type.Rock, 50, 50, item, stats, moves, abilities,
                 ContentLoader.HuffsteinFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
         }
 
