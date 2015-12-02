@@ -129,11 +129,11 @@ namespace VideoGame.Classes {
             var specDefDif = curStats.SpecialDefense - prevStats.SpecialDefense;
             var spdDif = curStats.Speed - prevStats.Speed;
             //Check if stats are below 40% of the original
-            if ((attDif / prevStats.Attack) <= 0.4) { curStats.Attack = Convert.ToInt32(prevStats.Attack * 0.4); AttackMod = 1; }
-            if ((defDif / prevStats.Defense) <= 0.4) { curStats.Defense = Convert.ToInt32(prevStats.Defense * 0.4); DefenseMod = 1; }
-            if ((specAttDif / prevStats.SpecialAttack) <= 0.4) { curStats.SpecialAttack = Convert.ToInt32(prevStats.SpecialAttack * 0.4); SpecialAttackMod = 1; }
-            if ((specDefDif / prevStats.SpecialDefense) <= 0.4) { curStats.SpecialDefense = Convert.ToInt32(prevStats.SpecialDefense * 0.4); SpecialDefenseMod = 1; }
-            if ((spdDif / prevStats.Speed) <= 0.4) { curStats.Speed = Convert.ToInt32(prevStats.Speed * 0.4); SpeedMod = 1; }
+            if (attDif != 0) if ((attDif / prevStats.Attack) <= 0.4) { curStats.Attack = Convert.ToInt32(prevStats.Attack * 0.4); AttackMod = 1; }
+            if (defDif != 0) if ((defDif / prevStats.Defense) <= 0.4) { curStats.Defense = Convert.ToInt32(prevStats.Defense * 0.4); DefenseMod = 1; }
+            if (specAttDif != 0) if ((specAttDif / prevStats.SpecialAttack) <= 0.4) { curStats.SpecialAttack = Convert.ToInt32(prevStats.SpecialAttack * 0.4); SpecialAttackMod = 1; }
+            if (specAttDif != 0) if ((specDefDif / prevStats.SpecialDefense) <= 0.4) { curStats.SpecialDefense = Convert.ToInt32(prevStats.SpecialDefense * 0.4); SpecialDefenseMod = 1; }
+            if (spdDif != 0) if ((spdDif / prevStats.Speed) <= 0.4) { curStats.Speed = Convert.ToInt32(prevStats.Speed * 0.4); SpeedMod = 1; }
         }
     }
 }
