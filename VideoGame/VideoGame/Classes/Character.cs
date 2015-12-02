@@ -46,6 +46,7 @@ namespace VideoGame.Classes
         public int Money;
         public Inventory Inventory;
         public List<Monster> Monsters;
+        public List<Monster> Box = new List<Monster>();  
         public Monster CurrentMonster;
         public Area CurrentArea;
 

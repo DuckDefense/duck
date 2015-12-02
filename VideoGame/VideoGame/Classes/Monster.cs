@@ -28,18 +28,21 @@ namespace VideoGame.Classes {
         public Texture2D FrontSprite; //Sprite that is shown when you're fighting this monster
         public Texture2D BackSprite; //Sprite that is shown when you've send out this monster
         public Texture2D PartySprite; //Sprite that is shown if you open the party
-        //Maybe add Points for Sprite sizes
-        //If we are going add monsters in the world we need to add a position and a collision box
-        public int Experience;
+                                      //Maybe add Points for Sprite sizes
+                                      //If we are going add monsters in the world we need to add a position and a collision box
+        private int experience;
 
-        //TODO: Fix this
-        private int level;
-        public int Level {
-            get { return (Experience * Experience * Experience) / 5; }
-            set { level = value; }
+        public int Experience
+        {
+            get { return Level*Level*5; }
+            set { experience = value; }
         }
 
+        //TODO: Fix this
+        public int Level { get; set; }
+
         public int Id;
+        public int CaptureChance;
         public string Name;
         public string Description;
         public Stats PreviousStats;
@@ -71,7 +74,7 @@ namespace VideoGame.Classes {
         /// <param name="front">Texture that is shown when fighting against this monster</param>
         /// <param name="back">Texture that is shown when you've send out this monster</param>
         /// <param name="party">Texture that is shown in the party view</param>
-        public Monster(int id, int level, string name, string description, Type type, int maleChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
+        public Monster(int id, int level, string name, string description, Type type, int maleChance , int captureChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
             Texture2D front, Texture2D back, Texture2D party) {
             Id = id;
             Level = level;
@@ -81,6 +84,7 @@ namespace VideoGame.Classes {
             PrimaryType = type;
             SecondaryType = Type.None;
             Gender = GetGender(maleChance);
+            CaptureChance = captureChance;
             HeldItem = helditem;
             Stats = stats;
             Moves = moves;
@@ -109,7 +113,7 @@ namespace VideoGame.Classes {
         /// <param name="front">Texture that is shown when fighting against this monster</param>
         /// <param name="back">Texture that is shown when you've send out this monster</param>
         /// <param name="party">Texture that is shown in the party view</param>
-        public Monster(int id, int level, string name, string description, Type primaryType, Type secondaryType, int maleChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
+        public Monster(int id, int level, string name, string description, Type primaryType, Type secondaryType, int maleChance,int captureChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
         Texture2D front, Texture2D back, Texture2D party) {
             Id = id;
             Level = level;
@@ -119,6 +123,7 @@ namespace VideoGame.Classes {
             PrimaryType = primaryType;
             SecondaryType = secondaryType;
             Gender = GetGender(maleChance);
+            CaptureChance = captureChance;
             HeldItem = helditem;
             Stats = stats;
             Moves = moves;
@@ -222,7 +227,7 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(45, 50, 71, 40, 60, 66, level);
             return new Monster(1, level, "Armler", "This shifty creature Likes to pretend that his pockets are its eyes",
-                Type.Grass, 75, item, stats, moves, abilities,
+                Type.Grass, 75, 5, item, stats, moves, abilities,
                 ContentLoader.ArmlerFront, ContentLoader.ArmlerBack, ContentLoader.ArmlerParty);
         }
         // 2 to 3 evolutions of Armler
@@ -239,7 +244,7 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(45, 66, 40, 40, 45, 85, level);
             return new Monster(10, level, "Gronkey", "This creature is absolutely vivid because someone shaved its face.",
-                Type.Fight, 50, item, stats, moves, abilities,
+                Type.Fight, 50, 50, item, stats, moves, abilities,
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.GronkeyParty);
         }
         //11: Evolution of Gronkey?
@@ -254,7 +259,7 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(78, 15, 90, 10, 80, 5, level);
             return new Monster(12, level, "Brass", "This brick is pretty useless, all it can do is lie and wait\nuntil is undeniably faints.",
-                Type.Rock, 75, item, stats, moves, abilities,
+                Type.Rock, 75,50, item, stats, moves, abilities,
                 ContentLoader.BrassFront, ContentLoader.BrassBack, ContentLoader.BrassParty);
         }
         //13: Bonsantai
@@ -270,7 +275,7 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(40, 42, 50, 76, 65, 55, level);
             return new Monster(12, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its' body",
-                Type.Poison, Type.Rock, 50, item, stats, moves, abilities,
+                Type.Poison, Type.Rock, 50,50, item, stats, moves, abilities,
                 ContentLoader.HuffsteinFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
         }
 
