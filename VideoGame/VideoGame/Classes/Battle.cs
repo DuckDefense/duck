@@ -103,8 +103,15 @@ namespace VideoGame.Classes
             }
         }
 
-        public void Capture(Monster opponent)
+        public void ChangeMonster()
         {
+            var health = CurrentUserMonster.Stats.Health;
+            CurrentUserMonster.Stats = CurrentUserMonster.PreviousStats;
+            CurrentUserMonster.Stats.Health = health;
+            User.Monsters.Move(SelectedMonster, 0);
+            CurrentUserMonster = SelectedMonster;
+            CurrentUserMonster.PreviousStats = CurrentUserMonster.Stats;
+
 
         }
 
@@ -257,7 +264,7 @@ namespace VideoGame.Classes
                 Drawer.DrawMedicine = false;
                 //Add attack here
             }
-            if (InventoryButton.IsClicked(cur, prev))
+            else if (InventoryButton.IsClicked(cur, prev))
             {
                 Selection = Selection.Item;
                 drawMoves = false;
@@ -267,7 +274,7 @@ namespace VideoGame.Classes
                 Drawer.DrawMedicine = false;
                 //Add party here
             }
-            if (PartyButton.IsClicked(cur, prev))
+            else if (PartyButton.IsClicked(cur, prev))
             {
                 Selection = Selection.Party;
                 drawMoves = false;
@@ -277,7 +284,7 @@ namespace VideoGame.Classes
                 Drawer.DrawMedicine = false;
                 //Add party here
             }
-            if (RunButton.IsClicked(cur, prev))
+            else if (RunButton.IsClicked(cur, prev))
             {
                 Selection = Selection.Run;
             }
@@ -310,6 +317,8 @@ namespace VideoGame.Classes
                         if (m.Name == button.Text)
                         {
                             SelectedMonster = m;
+                            ChangeMonster();
+                            break;
                         }
                     }
                 }
