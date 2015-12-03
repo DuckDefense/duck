@@ -9,9 +9,11 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 
-namespace VideoGame.Classes {
+namespace VideoGame.Classes
+{
 
-    public enum Direction {
+    public enum Direction
+    {
         None,
         Up,
         Down,
@@ -19,15 +21,15 @@ namespace VideoGame.Classes {
         Left
     }
 
-    public class Character : IAnimatable {
+    public class Character : IAnimatable
+    {
         public float Interval = 200; // Interval at which the animation should update
         private float Timer = 0;// Timer that keeps getting updated until the Interval is reached
 
-        private Vector2 position;
-        public Vector2 Position { get { return position; } set { position = value; } } //Position of the character
-
+        public Vector2 Position; //Position of the character
         public Point SpriteSize = new Point(32, 32);//Height and Width of the sprite
         public Point CurrentFrame = new Point(0, 0);//Frame that is being drawn by the SourceRectangle
+
         public Rectangle PositionRectangle { get; set; } //Rectangle used as collision
         public Rectangle SourceRectangle; //Rectangle needed for animating
         public Rectangle LineOfSightRectangle;
@@ -46,6 +48,8 @@ namespace VideoGame.Classes {
         public List<Monster> Box = new List<Monster>();
         public Monster CurrentMonster;
         public Area CurrentArea;
+        public AI AI;
+
 
         /// <summary>
         /// New moveable character
@@ -60,12 +64,14 @@ namespace VideoGame.Classes {
         /// <param name="position">Position of the character</param>
         /// <param name="controllable"></param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters,
-        Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable) {
+        Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable)
+        {
             Name = name;
             Money = money;
             Inventory = inventory;
             Monsters = monsters;
-            foreach (Monster monster in Monsters) {
+            foreach (Monster monster in Monsters)
+            {
                 monster.IsWild = false;
             }
             Controllable = controllable;
@@ -89,12 +95,14 @@ namespace VideoGame.Classes {
         /// <param name="world">Sprite that is shown when you're walking around on the area</param>
         /// <param name="position">Position of the character</param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters,
-        Texture2D front, Texture2D back, Texture2D world, Vector2 position) {
+        Texture2D front, Texture2D back, Texture2D world, Vector2 position)
+        {
             Name = name;
             Money = money;
             Inventory = inventory;
             Monsters = monsters;
-            foreach (Monster monster in Monsters) {
+            foreach (Monster monster in Monsters)
+            {
                 monster.IsWild = false;
             }
             Controllable = false;
@@ -108,8 +116,10 @@ namespace VideoGame.Classes {
 
         //TODO: Add animation function from DuckDefense
 
-        public void Update(GameTime time, KeyboardState cur, KeyboardState prev) {
-            foreach (var m in Monsters) {
+        public void Update(GameTime time, KeyboardState cur, KeyboardState prev)
+        {
+            foreach (var m in Monsters)
+            {
                 m.Update(time);
             }
             GetDirection(cur, prev);
@@ -117,53 +127,64 @@ namespace VideoGame.Classes {
             AnimateWorld(time);
         }
 
-        public void Draw(SpriteBatch batch) {
-            batch.Draw(WorldSprite, Position, SourceRectangle, Color.White);
+        public void Draw(SpriteBatch batch)
+        {
+            
             if (Debug)
                 batch.Draw(ContentLoader.Button, null, LineOfSightRectangle, null, null, 0f, Vector2.Zero, Color.White);
+            batch.Draw(WorldSprite, Position, SourceRectangle, Color.White);
         }
 
-        public void GetDirection(KeyboardState cur, KeyboardState prev) {
-            Direction = Direction.None;
-            if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
-                Direction = Direction.Up;
-            if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
-                Direction = Direction.Down;
-            if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
-                Direction = Direction.Left;
-            if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
-                Direction = Direction.Right;
+        public void GetDirection(KeyboardState cur, KeyboardState prev)
+        {
+            if (Controllable)
+            {
+                Direction = Direction.None;
+                if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
+                    Direction = Direction.Up;
+                if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
+                    Direction = Direction.Down;
+                if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
+                    Direction = Direction.Left;
+                if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
+                    Direction = Direction.Right;
+            }
         }
 
-        public void SetLineOfSight(int tiles) {
+        public void SetLineOfSight(int tiles)
+        {
             var size = (tiles + 1) * 16;
-            switch (Direction) {
-            case Direction.None:
-                break;
-            case Direction.Up:
-                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y - (size - WorldSprite.Height), WorldSprite.Width, size);
-                break;
-            case Direction.Down:
-                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, WorldSprite.Width, size);
-                break;
-            case Direction.Right:
-                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, size, WorldSprite.Height);
-                break;
-            case Direction.Left:
-                LineOfSightRectangle = new Rectangle((int)Position.X - (size - WorldSprite.Width), (int)Position.Y, size, WorldSprite.Height);
-                break;
+            switch (Direction)
+            {
+                case Direction.None:
+                    break;
+                case Direction.Up:
+                    LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y - (size - (WorldSprite.Height / 3)), (WorldSprite.Width / 3), size);
+                    break;
+                case Direction.Down:
+                    LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, (WorldSprite.Width / 3), size);
+                    break;
+                case Direction.Right:
+                    LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, size, (WorldSprite.Height) / 3);
+                    break;
+                case Direction.Left:
+                    LineOfSightRectangle = new Rectangle((int)Position.X - (size - (WorldSprite.Width / 3)), (int)Position.Y, size, (WorldSprite.Height / 3));
+                    break;
             }
 
         }
 
-        public void AnimateWorld(GameTime gametime) {
+        public void AnimateWorld(GameTime gametime)
+        {
             if (Direction == Direction.None) CurrentFrame.X = 0;
-            else {
-
+            else
+            {
                 Timer += (float)gametime.ElapsedGameTime.TotalMilliseconds;
-                if (Timer > Interval) {
+                if (Timer > Interval)
+                {
                     CurrentFrame.X++;
-                    if (CurrentFrame.X > WorldSprite.Width / SpriteSize.X - 1) {
+                    if (CurrentFrame.X > WorldSprite.Width / SpriteSize.X - 1)
+                    {
                         CurrentFrame.X = 1;
                     }
                     Timer = 0f;
@@ -171,15 +192,18 @@ namespace VideoGame.Classes {
             }
         }
 
-        public void AnimateFront(GameTime gametime) {
+        public void AnimateFront(GameTime gametime)
+        {
             throw new NotImplementedException();
         }
 
-        public void AnimateBack(GameTime gametime) {
+        public void AnimateBack(GameTime gametime)
+        {
             throw new NotImplementedException();
         }
 
-        public void AnimateParty(GameTime gametime) {
+        public void AnimateParty(GameTime gametime)
+        {
             throw new NotImplementedException();
         }
     }
