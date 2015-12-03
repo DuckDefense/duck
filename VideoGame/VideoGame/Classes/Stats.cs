@@ -69,12 +69,12 @@ namespace VideoGame.Classes {
         }
         private void CalculateStats(int level) {
             //Shamelessly stolen from Pokemon, without EVs
-            Health = (((BaseHealth * 20) * 2) * level / 100) + 5;
-            Attack = (((BaseAttack * RandAttack) * 2) * level / 100) + 5;
-            Defense = (((BaseDefense * RandDefense) * 2) * level / 100) + 5;
-            SpecialAttack = (((BaseSpecialAttack * RandSpecialAttack) * 2) * level / 100) + 5;
-            SpecialDefense = (((BaseSpecialDefense * RandSpecialDefense) * 2) * level / 100) + 5;
-            Speed = (((BaseSpeed * RandSpeed * 2) * level) / 100) + 5;
+            Health = ((((BaseHealth * 20) * 2) * level) / 250) + 5;
+            Attack = ((((BaseAttack * RandAttack) * 2) * level) / 250) + 5;
+            Defense = ((((BaseDefense * RandDefense) * 2) * level) / 250) + 5;
+            SpecialAttack = ((((BaseSpecialAttack * RandSpecialAttack) * 2) * level) / 250) + 5;
+            SpecialDefense = ((((BaseSpecialDefense * RandSpecialDefense) * 2) * level) / 250) + 5;
+            Speed = ((((BaseSpeed * RandSpeed) * 2) * level) / 250) + 5;
         }
     }
 
