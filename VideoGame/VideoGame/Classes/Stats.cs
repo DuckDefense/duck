@@ -9,7 +9,6 @@ namespace VideoGame.Classes {
         Normal,
         Sleep,
         Poisoned,
-        Paralyzed,
         Burned,
         Dazzled,
         Frozen,

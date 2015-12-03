@@ -20,7 +20,7 @@ namespace VideoGame.Classes {
         public static Texture2D GrassyBackground;
         public static Texture2D Christman;
         public static Texture2D Button;
-        public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt, SpinalCord;
+        public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt;
         public static Texture2D RottenNet, RegularNet, GreatNet;
         public static TiledMap Map;
         public static SpriteFont Arial;
@@ -85,7 +85,6 @@ namespace VideoGame.Classes {
             MagicStone = Content.Load<Texture2D>(@"Sprites/Items/Medicine/MagicStone");
             RoosVicee = Content.Load<Texture2D>(@"Sprites/Items/Medicine/RoosVicee");
             Salt = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
-            SpinalCord = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
             #endregion
 
 

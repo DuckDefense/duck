@@ -58,7 +58,6 @@ namespace VideoGame.Classes {
             switch (monster.Ailment) {
             case Ailment.Sleep: capturechance += 20; break;
             case Ailment.Poisoned: capturechance += 10; break;
-            case Ailment.Paralyzed: capturechance += 15; break;
             case Ailment.Burned: capturechance += 10; break;
             case Ailment.Dazzled: capturechance += 10; break;
             case Ailment.Frozen: capturechance += 20; break;
@@ -219,12 +218,6 @@ namespace VideoGame.Classes {
 
         public static Medicine AirHorn() {
             return new Medicine(6, "Air Horn", "Blow the horn in the ears of the monster", ContentLoader.AirHorn, Cure.Sleep, 200, 1, 99);
-        }
-
-        public static Medicine SpinalCord() {
-            return new Medicine(7, "Spinal Cord", "Perform surgery on the monter to give it a new spinal cord\n" +
-                                                  "Even if it didn't have one before.",
-                ContentLoader.SpinalCord, Cure.Paralyzed, 250, 1, 99);
         }
 
         public static Medicine RoosVicee() {
