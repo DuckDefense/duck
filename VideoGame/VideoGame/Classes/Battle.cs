@@ -28,7 +28,7 @@ namespace VideoGame.Classes
         Run
     }
 
-    class Battle
+    public class Battle
     {
         public Character User;
         public Character Opponent;
@@ -333,7 +333,7 @@ namespace VideoGame.Classes
                     }
                     if (SelectedMedicine != null)
                     {
-                        SelectedMedicine.Use(CurrentUserMonster);
+                        SelectedMedicine.Use(CurrentUserMonster, User);
                         Drawer.DrawMedicine = false;
                         SelectedMedicine = null;
                     }
