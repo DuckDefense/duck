@@ -8,14 +8,16 @@ using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using VideoGame.Classes;
 
-namespace VideoGame {
+namespace VideoGame
+{
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game {
+    public class Game1 : Game
+    {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Character player;
+        private Character player, tegenstander;
         private ContentLoader _contentLoader = new ContentLoader();
         private KeyboardState currentKeyboardState, previousKeyboardState;
         private MouseState currentMouseState, previousMouseState;
@@ -23,9 +25,11 @@ namespace VideoGame {
         private Vector2 battleBackgroundPos;
         private Battle currentBattle;
         private bool battling = false;
-        private bool encountered = true;
+        private bool encountered;
+        public bool AllowedToWalk = true;
 
-        public Game1() {
+        public Game1()
+        {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferHeight = Settings.ResolutionHeight;
             graphics.PreferredBackBufferWidth = Settings.ResolutionWidth;
@@ -38,7 +42,8 @@ namespace VideoGame {
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
-        protected override void Initialize() {
+        protected override void Initialize()
+        {
             // TODO: Add your initialization logic here
 
             IsMouseVisible = true;
@@ -49,7 +54,8 @@ namespace VideoGame {
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent() {
+        protected override void LoadContent()
+        {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ContentLoader.SetContent(Content, graphics);
@@ -57,13 +63,22 @@ namespace VideoGame {
 
             var viewportAdapter = new ScalingViewportAdapter(GraphicsDevice, Settings.ResolutionWidth, Settings.ResolutionHeight);
 
-            camera = new Camera2D(viewportAdapter) {
+            camera = new Camera2D(viewportAdapter)
+            {
                 Zoom = 0.5f,
                 Position = new Vector2((Settings.ResolutionWidth / 2) - 32, (Settings.ResolutionHeight / 2) - 32)
             };
+            tegenstander = new Character("nice", 600000, new Inventory(), new List<Monster>(), null, null, ContentLoader.Christman, new Vector2(0, 0));
+            tegenstander.AI = new AI(tegenstander, 16, "YOOOOOOOOOOOOOOOOOOOOOOOOOO");
+            tegenstander.Monsters.Add(Monster.Gronkey(50));
+            //tegenstander.Direction = Direction.Down;
+            //tegenstander.SetLineOfSight(8);
+            tegenstander.Debug = true;
+            //tegenstander.Controllable = true;
 
             player = new Character("Pietertje", 5000, new Inventory(), new List<Monster>(),
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.Christman, camera.Position, true);
+            //player.Debug = true;
             player.CurrentArea = Area.Route1();
             player.CurrentArea.EnteredArea = true;
             player.CurrentArea.GetCollision();
@@ -79,6 +94,11 @@ namespace VideoGame {
             player.Inventory.Add(Capture.RottenNet(), 198);
             player.Inventory.Add(Capture.RegularNet(), 1);
             player.Inventory.Add(Capture.GreatNet(), 4);
+            currentBattle = new Battle(player, Monster.Gronkey(40000))
+            {
+                battleOver = true,
+                battleStart = false
+            };
 
             // TODO: use this.Content to load your game content here
         }
@@ -87,7 +107,8 @@ namespace VideoGame {
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
         /// </summary>
-        protected override void UnloadContent() {
+        protected override void UnloadContent()
+        {
             // TODO: Unload any non ContentManager content here
         }
 
@@ -96,28 +117,36 @@ namespace VideoGame {
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime) {
+        protected override void Update(GameTime gameTime)
+        {
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
             player.Update(gameTime, currentKeyboardState, previousKeyboardState);
 
-            if (!battling) {
-                if (encountered) {
+            if (!battling)
+            {
+                if (encountered)
+                {
                     //Start battle
                     currentBattle = new Battle(player, Monster.Armler(15));
                     encountered = false;
                     battling = true;
                 }
             }
-            if (!currentBattle.battleOver) {
+
+            if (!currentBattle.battleOver)
+            {
                 currentBattle.Update(currentMouseState, previousMouseState);
                 Drawer.UpdateBattleButtons(currentMouseState, previousMouseState);
 
             }
-            else {
+            else
+            {
                 Movement(currentKeyboardState);
                 player.SetLineOfSight(8);
                 //battling = false;
+                tegenstander.Update(gameTime, currentKeyboardState, previousKeyboardState);
+                tegenstander.AI.Update(gameTime, player, ref AllowedToWalk, ref currentBattle);
             }
 
             base.Update(gameTime);
@@ -130,17 +159,22 @@ namespace VideoGame {
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime) {
+        protected override void Draw(GameTime gameTime)
+        {
             GraphicsDevice.Clear(Color.Gray);
             spriteBatch.Begin();
 
-            if (!currentBattle.battleOver) {
+            if (!currentBattle.battleOver)
+            {
                 spriteBatch.Draw(ContentLoader.GrassyBackground, Vector2.Zero);
                 currentBattle.Draw(spriteBatch, player);
             }
-            else {
+            else
+            {
                 //Draw areas before player and opponents
-                player.CurrentArea.Draw(camera);
+                //player.CurrentArea.Draw(camera);
+                tegenstander.Draw(spriteBatch);
+                spriteBatch.Draw(ContentLoader.Button, tegenstander.AI.Hitbox, Color.White);
                 player.Draw(spriteBatch);
             }
             spriteBatch.End();
@@ -148,15 +182,31 @@ namespace VideoGame {
             base.Draw(gameTime);
         }
 
-        public void Movement(KeyboardState cur) {
-            if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
-                camera.Move(new Vector2(0, -2));
-            if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
-                camera.Move(new Vector2(0, 2));
-            if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
-                camera.Move(new Vector2(-2, 0));
-            if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
-                camera.Move(new Vector2(2, 0));
+        public void Movement(KeyboardState cur)
+        {
+            if (AllowedToWalk == true)
+            {
+                if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
+                {
+                    camera.Move(new Vector2(0, -2));
+                    tegenstander.Position.Y += 1;
+                }
+                if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
+                {
+                    camera.Move(new Vector2(0, 2));
+                    tegenstander.Position.Y -= 1;
+                }
+                if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
+                {
+                    camera.Move(new Vector2(-2, 0));
+                    tegenstander.Position.X += 1;
+                }
+                if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
+                {
+                    camera.Move(new Vector2(2, 0));
+                    tegenstander.Position.X -= 1;
+                }
+            }
         }
     }
 }
