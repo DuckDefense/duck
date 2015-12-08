@@ -168,15 +168,17 @@ namespace VideoGame.Classes {
         }
 
         public void AnimateWorld(GameTime gametime) {
-            Timer += (float)gametime.ElapsedGameTime.TotalMilliseconds;
-            if (Timer > Interval) {
-                CurrentFrame.X++;
-                if (CurrentFrame.X > WorldSprite.Width / SpriteSize.X - 1) {
-                    CurrentFrame.X = 1;
+            if (Direction == Direction.None) CurrentFrame.X = 0;
+            else {
+                Timer += (float) gametime.ElapsedGameTime.TotalMilliseconds;
+                if (Timer > Interval) {
+                    CurrentFrame.X++;
+                    if (CurrentFrame.X > WorldSprite.Width/SpriteSize.X - 1) {
+                        CurrentFrame.X = 1;
+                    }
+                    Timer = 0f;
                 }
-                Timer = 0f;
             }
-
         }
 
         public void AnimateFront(GameTime gametime) {
