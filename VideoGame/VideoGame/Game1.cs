@@ -46,6 +46,7 @@ namespace VideoGame
         {
             // TODO: Add your initialization logic here
 
+            Drawer.Initialize(graphics);
             IsMouseVisible = true;
             base.Initialize();
         }
@@ -70,10 +71,10 @@ namespace VideoGame
             };
             tegenstander = new Character("nice", 600000, new Inventory(), new List<Monster>(), null, null, ContentLoader.Christman, new Vector2(0, 0));
             tegenstander.AI = new AI(tegenstander, 16, "YOOOOOOOOOOOOOOOOOOOOOOOOOO");
-            tegenstander.Monsters.Add(Monster.Gronkey(50));
+            tegenstander.Monsters.Add(Monster.Gronkey(20));
             //tegenstander.Direction = Direction.Down;
             //tegenstander.SetLineOfSight(8);
-            tegenstander.Debug = true;
+            tegenstander.Debug = false;
             //tegenstander.Controllable = true;
 
             player = new Character("Pietertje", 5000, new Inventory(), new List<Monster>(),
@@ -172,9 +173,9 @@ namespace VideoGame
             else
             {
                 //Draw areas before player and opponents
-                //player.CurrentArea.Draw(camera);
+                player.CurrentArea.Draw(camera);
                 tegenstander.Draw(spriteBatch);
-                spriteBatch.Draw(ContentLoader.Button, tegenstander.AI.Hitbox, Color.White);
+                //spriteBatch.Draw(ContentLoader.Button, tegenstander.AI.Hitbox, Color.White);
                 player.Draw(spriteBatch);
             }
             spriteBatch.End();
