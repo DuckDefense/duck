@@ -6,7 +6,7 @@ using System.Text;
 
 namespace VideoGame.Classes {
     public enum Ailment {
-        Normal,
+        Normal = 0,
         Sleep,
         Poisoned,
         Burned,
