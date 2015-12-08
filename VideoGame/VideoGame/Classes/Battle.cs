@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
@@ -39,6 +40,7 @@ namespace VideoGame.Classes
         public State BattleState = State.Battling;
         public bool battleOver;
         public bool battleStart;
+        public bool playerTurn = true;
         private bool caught;
         private bool drawBattleButtons, drawMoves, drawInventory, drawItems, drawParty;
         public static Button AttackButton, RunButton, InventoryButton, PartyButton;
@@ -111,13 +113,12 @@ namespace VideoGame.Classes
             User.Monsters.Move(SelectedMonster, 0);
             CurrentUserMonster = SelectedMonster;
             CurrentUserMonster.PreviousStats = CurrentUserMonster.Stats;
-
-
         }
 
         public void LoopTurns(MouseState cur, MouseState prev)
         {
             UpdateButtons(cur, prev);
+
             switch (Selection)
             {
                 case Selection.Attack:
@@ -139,7 +140,8 @@ namespace VideoGame.Classes
                                 UserMonstersDead++;
                             }
                         }
-                        if (OpponentMonstersDead != Opponent.Monsters.Count && UserMonstersDead != User.Monsters.Count)
+                        if (OpponentMonstersDead != Opponent.Monsters.Count &&
+                            UserMonstersDead != User.Monsters.Count)
                         {
                             drawBattleButtons = true;
                             //UpdateButtons(cur, prev);
@@ -170,6 +172,8 @@ namespace VideoGame.Classes
                     Run(CurrentUserMonster, CurrentOpponentMonster);
                     break;
             }
+
+
 
         }
 
@@ -247,46 +251,74 @@ namespace VideoGame.Classes
 
         public void UpdateButtons(MouseState cur, MouseState prev)
         {
-            AttackButton.Update(cur, prev);
-            InventoryButton.Update(cur, prev);
-            PartyButton.Update(cur, prev);
-            RunButton.Update(cur, prev);
-
-            if (AttackButton.IsClicked(cur, prev))
+            if (CurrentUserMonster.IsDead)
             {
-                Selection = Selection.Attack;
-                drawMoves = true;
-                drawInventory = false;
-                drawParty = false;
-                Drawer.DrawCapture = false;
-                Drawer.DrawMedicine = false;
-                //Add attack here
-            }
-            else if (InventoryButton.IsClicked(cur, prev))
-            {
-                Selection = Selection.Item;
-                drawMoves = false;
-                drawInventory = true;
-                drawParty = false;
-                Drawer.DrawCapture = false;
-                Drawer.DrawMedicine = false;
-                //Add party here
-            }
-            else if (PartyButton.IsClicked(cur, prev))
-            {
+                var button = Drawer.GetClickedButton();
                 Selection = Selection.Party;
-                drawMoves = false;
-                drawInventory = false;
                 drawParty = true;
-                Drawer.DrawCapture = false;
-                Drawer.DrawMedicine = false;
-                //Add party here
+                foreach (var m in User.Monsters)
+                {
+                    if (m.Name == button.Text)
+                    {
+                        SelectedMonster = m;
+                        ChangeMonster();
+                        playerTurn = true;
+                        Thread.Sleep(150);
+                        break;
+                    }
+                }
             }
-            else if (RunButton.IsClicked(cur, prev))
+            else
             {
-                Selection = Selection.Run;
+                if (playerTurn)
+                {
+                    AttackButton.Update(cur, prev);
+                    InventoryButton.Update(cur, prev);
+                    PartyButton.Update(cur, prev);
+                    RunButton.Update(cur, prev);
+
+                    if (AttackButton.IsClicked(cur, prev))
+                    {
+                        Selection = Selection.Attack;
+                        drawMoves = true;
+                        drawInventory = false;
+                        drawParty = false;
+                        Drawer.DrawCapture = false;
+                        Drawer.DrawMedicine = false;
+                        //Add attack here
+                    }
+                    else if (InventoryButton.IsClicked(cur, prev))
+                    {
+                        Selection = Selection.Item;
+                        drawMoves = false;
+                        drawInventory = true;
+                        drawParty = false;
+                        Drawer.DrawCapture = false;
+                        Drawer.DrawMedicine = false;
+                        //Add party here
+                    }
+                    else if (PartyButton.IsClicked(cur, prev))
+                    {
+                        Selection = Selection.Party;
+                        drawMoves = false;
+                        drawInventory = false;
+                        drawParty = true;
+                        Drawer.DrawCapture = false;
+                        Drawer.DrawMedicine = false;
+                        //Add party here
+                    }
+                    else if (RunButton.IsClicked(cur, prev))
+                    {
+                        Selection = Selection.Run;
+                    }
+                    GetSelected(cur, prev);
+                }
+                else
+                {
+                    BattleAI.EnemyAttack(this, CurrentOpponentMonster, CurrentUserMonster);
+                    playerTurn = true;
+                }
             }
-            GetSelected(cur, prev);
         }
 
         public void GetSelected(MouseState cur, MouseState prev)
@@ -307,6 +339,7 @@ namespace VideoGame.Classes
                         }
                     }
                     Attack(CurrentUserMonster, CurrentOpponentMonster, SelectedMove);
+                    playerTurn = false;
                 }
                 if (drawParty)
                 {
@@ -316,6 +349,7 @@ namespace VideoGame.Classes
                         {
                             SelectedMonster = m;
                             ChangeMonster();
+                            playerTurn = false;
                             break;
                         }
                     }
@@ -334,6 +368,7 @@ namespace VideoGame.Classes
                         SelectedMedicine.Use(CurrentUserMonster, User);
                         Drawer.DrawMedicine = false;
                         SelectedMedicine = null;
+                        playerTurn = false;
                     }
                 }
                 if (Drawer.DrawCapture)
@@ -348,6 +383,7 @@ namespace VideoGame.Classes
                     if (SelectedCapture != null)
                     {
                         SelectedCapture.Use(CurrentOpponentMonster, User);
+                        playerTurn = false;
                         if (User.Monsters.Count == partySize)
                         {
                             if (User.Box.Count != boxSize)

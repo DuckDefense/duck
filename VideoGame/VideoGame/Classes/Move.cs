@@ -98,12 +98,12 @@ namespace VideoGame.Classes {
         }
 
 
-        private int GetDamage(int offensive, int defensive, int modifier, double crit) {
+        public int GetDamage(int offensive, int defensive, int modifier, double crit) {
             if (modifier == 0) return 0;
             return Convert.ToInt32(((BaseDamage * ((double)offensive / (double)defensive)) * modifier) * crit);
         }
 
-        private int GetDamageModifier(Monster receiver) {
+        public int GetDamageModifier(Monster receiver) {
             double modifier = 1;
             var prim = receiver.PrimaryType;
             var secon = receiver.SecondaryType;
