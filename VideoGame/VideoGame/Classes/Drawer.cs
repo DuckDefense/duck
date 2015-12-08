@@ -9,15 +9,24 @@ using Microsoft.Xna.Framework.Input;
 
 namespace VideoGame.Classes {
     public static class Drawer {
+        public static SpriteBatch Batch;
         private static Button LastClicked;
         public static bool DrawMedicine, DrawCapture;
         public static Button bMedicine, bCapture;
         public static List<Button> MoveButtons, InventoryButtons, ItemButtons, MedicineButtons, CaptureButtons, PartyButtons;
 
+        private static Rectangle userpos, opponentpos;
+
         #region Battle
+
+        public static void Initialize(GraphicsDeviceManager graphics) {
+            Batch = new SpriteBatch(graphics.GraphicsDevice);
+        }
+
         public static void DrawMoves(SpriteBatch batch, Character player) {
-            MoveButtons = new List<Button>();
+            ClearLists();
             var buttonPos = 0;
+            player.Monsters[0].GetMoves();
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
             foreach (var move in player.Monsters[0].KnownMoves) {
                 var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height), ContentLoader.Button, $"{move.Name}", ContentLoader.Arial);
@@ -27,7 +36,7 @@ namespace VideoGame.Classes {
         }
 
         public static void DrawInventory(SpriteBatch batch, Character player) {
-            InventoryButtons = new List<Button>();
+            ClearLists();
             var buttonPos = 0;
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
             bMedicine = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height),
@@ -42,14 +51,11 @@ namespace VideoGame.Classes {
         }
 
         public static void DrawItems(SpriteBatch batch, Character player) {
-            ItemButtons = new List<Button>();
-            MedicineButtons = new List<Button>();
-            CaptureButtons = new List<Button>();
+            ClearLists();
             var buttonPos = 0;
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
             if (DrawMedicine) {
                 foreach (var item in player.Inventory.Medicine) {
-                    var amountPos = ContentLoader.Arial.MeasureString(item.Value.Amount.ToString());
                     var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + (ContentLoader.Button.Height * 2), rec.Width, rec.Height),
                             ContentLoader.Button) { Text = item.Value.Name };
                     b.Draw(batch);
@@ -61,7 +67,6 @@ namespace VideoGame.Classes {
             }
             if (DrawCapture) {
                 foreach (var item in player.Inventory.Captures) {
-                    var amountPos = ContentLoader.Arial.MeasureString(item.Value.Amount.ToString());
                     var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + (ContentLoader.Button.Height * 2), rec.Width, rec.Height),
                         ContentLoader.Button) { Text = item.Value.Name };
                     b.Draw(batch);
@@ -74,7 +79,7 @@ namespace VideoGame.Classes {
         }
 
         public static void DrawParty(SpriteBatch batch, Character player) {
-            PartyButtons = new List<Button>();
+            ClearLists();
             var party = player.Monsters;
             var buttonPos = 0;
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
@@ -88,15 +93,56 @@ namespace VideoGame.Classes {
             }
         }
 
-        public static void DrawHealth(SpriteBatch batch) {
+        public static void DrawHealth(SpriteBatch batch, Monster user, Monster opponent) {
+            var userHealthPerc = (user.Stats.Health * 100) / user.PreviousStats.Health;
+            var currentUserHealthSize = new Vector2(userHealthPerc, 5);
+            var userHealthRec = new Rectangle(userpos.X + 32, userpos.Y, (int)currentUserHealthSize.X, (int)currentUserHealthSize.Y);
+
+            var opponentHealthPerc = (opponent.Stats.Health * 100) / opponent.PreviousStats.Health;
+            var currentOpponentHealthSize = new Vector2(opponentHealthPerc, 5);
+            var opponentHealthRec = new Rectangle(opponentpos.X - 32, opponentpos.Y + 32, (int)currentOpponentHealthSize.X, (int)currentOpponentHealthSize.Y);
+
+            batch.DrawString(ContentLoader.Arial, user.Name, new Vector2(userpos.X + 32, userpos.Y + 32), Color.Black);
+            batch.DrawString(ContentLoader.Arial, $"{user.Stats.Health}/{user.MaxHealth}", new Vector2(userpos.X + 32, userpos.Y - 32), Color.Red);
+            batch.DrawString(ContentLoader.Arial, $"{opponent.Stats.Health}/{opponent.MaxHealth}", new Vector2(opponentpos.X, opponentpos.Y), Color.Blue);
+            batch.DrawString(ContentLoader.Arial, $"{userHealthPerc}", new Vector2(userpos.X, userpos.Y), Color.Orange);
+            batch.DrawString(ContentLoader.Arial, $"{opponentHealthPerc}", new Vector2(opponentHealthRec.X, opponentHealthRec.Y), Color.Orange);
+            batch.Draw(ContentLoader.Button, userHealthRec, Color.Red);
+            batch.Draw(ContentLoader.Button, opponentHealthRec, Color.Red);
+        }
+
+        public static void DrawLevel(SpriteBatch batch, Monster user, Monster opponent) {
+            var userLevelPos = new Vector2(opponentpos.X + 32, opponentpos.Y - 96);
+            var opponentLevelPos = new Vector2(userpos.X + 32, userpos.Y + 64);
+
+            batch.DrawString(ContentLoader.Arial, user.Level.ToString(), userLevelPos, Color.White);
+            batch.DrawString(ContentLoader.Arial, opponent.Level.ToString(), opponentLevelPos, Color.White);
+        }
+
+        public static void DrawAilment() {
 
         }
 
+        public static void DrawMessage(string message) {
+            Rectangle rec = new Rectangle(0 - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
+            Batch.Begin();
+            var b = new Button(rec, message, ContentLoader.Arial);
+            //Batch.DrawString(ContentLoader.Arial, message, new Vector2(500, 500), Color.White);
+            b.Draw(Batch);
+            Batch.End();
+        }
+
         public static void DrawMonsterInfo(SpriteBatch batch, Monster m) {
-            Texture2D background = ContentLoader.Button;
-            var frontPos = new Vector2();
-            var namePos = new Vector2();
-            var descriptionPos = new Vector2();
+            Texture2D background = ContentLoader.MonsterViewer;
+            var nameSize = ContentLoader.Arial.MeasureString(m.Name);
+            var descriptionSize = ContentLoader.Arial.MeasureString(m.Name);
+            Rectangle backgroundRectangle = new Rectangle(8, 8, background.Width, background.Height);
+            var frontPos = new Vector2(backgroundRectangle.X - 22, backgroundRectangle.Y - 8);
+            var namePos = new Vector2(backgroundRectangle.X - nameSize.X, backgroundRectangle.Y);
+            var descriptionPos = new Vector2(backgroundRectangle.X - descriptionSize.X, backgroundRectangle.Y - descriptionSize.Y);
+            var statsPos = new Vector2();
+            var abilityNamePos = new Vector2();
+            var abilityDescriptionPos = new Vector2();
 
             batch.Draw(m.FrontSprite, frontPos, Color.White);
             batch.DrawString(ContentLoader.Arial, m.Name, namePos, Color.White);
@@ -104,20 +150,34 @@ namespace VideoGame.Classes {
             //Unfinished
         }
 
-        public static void DrawBattle(SpriteBatch batch, Monster userMon, Monster oppoMon) {
+        public static void DrawBattle(SpriteBatch batch, Monster user, Monster opponent) {
             Rectangle userMonsterPos = new Rectangle(
                 ContentLoader.GrassyBackground.Width - (ContentLoader.GrassyBackground.Width),
-                ContentLoader.GrassyBackground.Height - userMon.BackSprite.Height,
-                userMon.BackSprite.Width,
-                userMon.BackSprite.Height);
+                ContentLoader.GrassyBackground.Height - user.BackSprite.Height,
+                user.BackSprite.Width,
+                user.BackSprite.Height);
             Rectangle opponentMonsterPos = new Rectangle(
-                ContentLoader.GrassyBackground.Width - (int)(oppoMon.FrontSprite.Width * 2),
-                ContentLoader.GrassyBackground.Height - (int)(oppoMon.FrontSprite.Height * 2),
-                oppoMon.FrontSprite.Width,
-                oppoMon.FrontSprite.Height);
+                ContentLoader.GrassyBackground.Width - (int)(opponent.FrontSprite.Width * 2),
+                ContentLoader.GrassyBackground.Height - (int)(opponent.FrontSprite.Height * 2),
+                opponent.FrontSprite.Width,
+                opponent.FrontSprite.Height);
 
-            batch.Draw(userMon.BackSprite, new Vector2(userMonsterPos.X, userMonsterPos.Y));
-            batch.Draw(oppoMon.FrontSprite, new Vector2(opponentMonsterPos.X, opponentMonsterPos.Y));
+            userpos = userMonsterPos;
+            opponentpos = opponentMonsterPos;
+
+            batch.Draw(user.BackSprite, new Vector2(userMonsterPos.X, userMonsterPos.Y));
+            batch.Draw(opponent.FrontSprite, new Vector2(opponentMonsterPos.X, opponentMonsterPos.Y));
+            DrawLevel(batch, user, opponent);
+            DrawHealth(batch, user, opponent);
+        }
+
+        public static void ClearLists() {
+            MoveButtons = new List<Button>();
+            InventoryButtons = new List<Button>();
+            ItemButtons = new List<Button>();
+            MedicineButtons = new List<Button>();
+            CaptureButtons = new List<Button>();
+            PartyButtons = new List<Button>();
         }
 
         public static void UpdateBattleButtons(MouseState cur, MouseState prev) {
