@@ -17,6 +17,7 @@ namespace VideoGame.Classes {
 
         public string Name;
         public string Description;
+        public int BaseDamage;
         public int Damage;
         public Kind Kind;
         public int Accuracy;
@@ -24,11 +25,12 @@ namespace VideoGame.Classes {
         public Type Type;
         public StatModifier HitModifier;
         public StatModifier MissModifier;
+        public bool Missed = false;
 
         public Move(string name, string description, int damage, int accuracy, int uses, Kind kind, Type type) {
             Name = name;
             Description = description;
-            Damage = damage;
+            BaseDamage = damage;
             Accuracy = accuracy;
             Uses = uses;
             Kind = kind;
@@ -37,7 +39,7 @@ namespace VideoGame.Classes {
         public Move(string name, string description, int damage, int accuracy, int uses, StatModifier hitModifier, StatModifier missModifier, Kind kind, Type type) {
             Name = name;
             Description = description;
-            Damage = damage;
+            BaseDamage = damage;
             Accuracy = accuracy;
             Uses = uses;
             HitModifier = hitModifier;
@@ -53,27 +55,26 @@ namespace VideoGame.Classes {
         /// <param name="receiver">Monster that is receiving this move</param>
         public void Execute(Monster user, Monster receiver) {
             double critMultiplier = 1;
-            //Check if types are very effective or not very effective
-            GetDamageModifier(receiver);
             //Check if the move hit
             var chanceToHit = Accuracy + ((user.Stats.Speed - receiver.Stats.Speed) / 3);
+            if (chanceToHit < Accuracy / 3) chanceToHit = Accuracy / 3;
             Random rand = new Random();
             //If random number is below chanceToHit the move did hit
             if (rand.Next(0, 100) <= chanceToHit) {
-
+                Missed = false;
                 //if random number is below the CriticalHitChance, the move did a critical
                 if (rand.Next(0, 100) <= user.CriticalHitChance) critMultiplier = user.CriticalHitMultiplier;
 
                 if (Kind == Kind.Physical) {
-                    var phys = GetDamage(user.Stats.Attack, receiver.Stats.Defense, GetDamageModifier(receiver),
+                    Damage = GetDamage(user.Stats.Attack, receiver.Stats.Defense, GetDamageModifier(receiver),
                         critMultiplier);
-                    receiver.Stats.Health -= phys;
+                    receiver.Stats.Health -= Damage;
                     //Replace this with a lerp (reducing it little by little) so it looks nicer
                 }
                 else if (Kind == Kind.Special) {
-                    var spec = GetDamage(user.Stats.SpecialAttack, receiver.Stats.SpecialDefense,
+                    Damage = GetDamage(user.Stats.SpecialAttack, receiver.Stats.SpecialDefense,
                         GetDamageModifier(receiver), critMultiplier);
-                    receiver.Stats.Health -= spec;
+                    receiver.Stats.Health -= Damage;
                 }
                 if (HitModifier != null) {
                     //TODO: Find out if this will return the same stats if the modifier is empty
@@ -84,6 +85,7 @@ namespace VideoGame.Classes {
             }
             //User missed
             else {
+                Missed = true;
                 if (MissModifier != null) {
                     user.Stats = MissModifier.ApplyModifiers(user);
                     //receiver.Stats = MissModifier.ApplyModifiers(receiver);
@@ -98,7 +100,7 @@ namespace VideoGame.Classes {
 
         private int GetDamage(int offensive, int defensive, int modifier, double crit) {
             if (modifier == 0) return 0;
-            return Convert.ToInt32(((Damage * (offensive / defensive)) * modifier) * crit);
+            return Convert.ToInt32(((BaseDamage * ((double)offensive / (double)defensive)) * modifier) * crit);
         }
 
         private int GetDamageModifier(Monster receiver) {
@@ -193,8 +195,8 @@ namespace VideoGame.Classes {
         }
 
         public static Move InstantKill() {
-            return new Move("InstantKill", "Test Attack",
-                500, 100, 60, Kind.Physical, Type.Normal);
+            return new Move("InstantKill", "Test Attack, not to be used in final game",
+                5000, 1500, 60, Kind.Physical, Type.Normal);
         }
         #endregion
 
