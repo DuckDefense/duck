@@ -85,11 +85,14 @@ namespace VideoGame.Classes {
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
 
             foreach (var monster in party) {
-                var rect = new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height);
-                var b = new Button(rect, ContentLoader.Button) { Text = monster.Name };
-                b.Draw(batch);
-                batch.Draw(monster.PartySprite, new Vector2(rect.X + monster.PartySpriteSize.X - 4, rect.Y + 4), monster.SourceRectangle, Color.White);
-                PartyButtons.Add(b);
+                if (!monster.IsDead) {
+                    var rect = new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height);
+                    var b = new Button(rect, ContentLoader.Button) { Text = monster.Name };
+                    b.Draw(batch);
+                    batch.Draw(monster.PartySprite, new Vector2(rect.X + monster.PartySpriteSize.X - 4, rect.Y + 4),
+                        monster.SourceRectangle, Color.White);
+                    PartyButtons.Add(b);
+                }
             }
         }
 
