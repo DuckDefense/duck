@@ -69,4 +69,22 @@ namespace VideoGame.Classes {
             }
         }
     }
+
+    public static class BattleAI
+    {
+        private static Move strongestAttack = Move.Glare();
+        public static void EnemyAttack(Battle b, Monster user, Monster receiver)
+        {
+            foreach (var m in b.CurrentOpponentMonster.KnownMoves)
+            {
+                m.Damage = m.GetDamage(user.Stats.SpecialAttack, receiver.Stats.SpecialDefense,
+                           m.GetDamageModifier(receiver), 1);
+                if (m.Damage > strongestAttack.Damage)
+                {
+                    strongestAttack = m;
+                }
+            }
+            b.Attack(user, receiver, strongestAttack);
+        }
+    }
 }
