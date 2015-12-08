@@ -194,9 +194,10 @@ namespace VideoGame.Classes
                 //Choose action here, wether its an attack, using an item or switching out a monster
                 LoopTurns(cur, prev);
             }
-            else if (battleOver)
+            if (battleOver)
             {
                 drawBattleButtons = false;
+                Opponent.Defeated = true;
                 //Restore the stats when the battle is over, or when the monster has been switched out
                 CurrentUserMonster.Stats = CurrentUserMonster.PreviousStats;
                 CurrentOpponentMonster.Stats = CurrentOpponentMonster.PreviousStats;
@@ -246,9 +247,6 @@ namespace VideoGame.Classes
 
         public void UpdateButtons(MouseState cur, MouseState prev)
         {
-            var userSpeed = CurrentUserMonster.Stats.Speed;
-            var opponentSpeed = CurrentOpponentMonster.Stats.Speed;
-
             AttackButton.Update(cur, prev);
             InventoryButton.Update(cur, prev);
             PartyButton.Update(cur, prev);
