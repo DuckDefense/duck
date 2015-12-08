@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace VideoGame.Classes {
@@ -20,6 +21,12 @@ namespace VideoGame.Classes {
 
     public class Capture : Item {
         public int CaptureChance;
+
+        //Capture animation
+        public List<Vector2> Patrols = new List<Vector2>();
+        public int currentPatrol = 1;
+        public int lastPatrol = 1;
+        public float DistanceBetween;
 
         /// <summary>
         /// Default Capture Item
@@ -50,6 +57,12 @@ namespace VideoGame.Classes {
             Random random = new Random();
             int capturechance = 0;
 
+            CaptureAnimation(new List<Vector2>()
+            {
+                new Vector2(20,20),
+                new Vector2(50,50)
+            });
+
             if (monster.Stats.Health < (monster.PreviousStats.Health / 100 * 20)) capturechance += 25;
             else if (monster.Stats.Health < (monster.PreviousStats.Health / 100 * 40)) capturechance += 20;
             else if (monster.Stats.Health < (monster.PreviousStats.Health / 100 * 60)) capturechance += 15;
@@ -77,6 +90,12 @@ namespace VideoGame.Classes {
             Amount--;
 
             if (Amount < 1) player.Inventory.Captures.Remove(Id); 
+        }
+
+        public void CaptureAnimation(List<Vector2> PatrolList)
+        {
+            Patrols = PatrolList;
+            lastPatrol = PatrolList.Count;
         }
 
         public static Capture RottenNet() {
