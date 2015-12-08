@@ -180,6 +180,7 @@ namespace VideoGame.Classes {
                 if (Level >= 1) {
                     KnownMoves.Add(Move.Strangle());
                     KnownMoves.Add(Move.Glare());
+                    KnownMoves.Add(Move.InstantKill());
                 }
                 if (Level >= 5) { KnownMoves.Add(Move.Tackle()); }
                 if (Level >= 9) { KnownMoves.Add(Move.Intimidate()); }
