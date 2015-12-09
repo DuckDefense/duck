@@ -66,7 +66,7 @@ namespace VideoGame
 
             camera = new Camera2D(viewportAdapter)
             {
-                Zoom = 0.5f,
+                Zoom = 1f,
                 Position = new Vector2((Settings.ResolutionWidth / 2) - 32, (Settings.ResolutionHeight / 2) - 32)
             };
             tegenstander = new Character("nice", 600000, new Inventory(), new List<Monster>(), null, null, ContentLoader.Christman, new Vector2(0, 0));
@@ -79,16 +79,14 @@ namespace VideoGame
 
             player = new Character("Pietertje", 5000, new Inventory(), new List<Monster>(),
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.Christman, camera.Position, true);
-            //player.Debug = true;
+            player.Debug = true;
             player.CurrentArea = Area.Route1();
             player.CurrentArea.EnteredArea = true;
-            player.CurrentArea.GetCollision();
+            player.CurrentArea.GetCollision(player);
             player.Monsters.Add(Monster.Gronkey(15));
             player.Monsters.Add(Monster.Brass(15));
             player.Monsters.Add(Monster.Huffstein(15));
             player.Monsters.Add(Monster.Armler(15));
-            player.Monsters.Add(Monster.Gronkey(15));
-            player.Monsters.Add(Monster.Brass(15));
             player.Inventory.Add(Medicine.RoosVicee(), 1);
             player.Inventory.Add(Medicine.MagicStone(), 3);
             player.Inventory.Add(Medicine.Salt(), 2);
@@ -145,6 +143,7 @@ namespace VideoGame
             {
                 Movement(currentKeyboardState);
                 player.SetLineOfSight(8);
+                player.CurrentArea.GetTileCollisions(camera);
                 //battling = false;
                 tegenstander.Update(gameTime, currentKeyboardState, previousKeyboardState);
                 tegenstander.AI.Update(gameTime, player, ref AllowedToWalk, ref currentBattle);
@@ -174,9 +173,9 @@ namespace VideoGame
             {
                 //Draw areas before player and opponents
                 player.CurrentArea.Draw(camera);
-                tegenstander.Draw(spriteBatch);
                 //spriteBatch.Draw(ContentLoader.Button, tegenstander.AI.Hitbox, Color.White);
                 player.Draw(spriteBatch);
+                tegenstander.Draw(spriteBatch);
             }
             spriteBatch.End();
 
@@ -189,23 +188,23 @@ namespace VideoGame
             {
                 if (cur.IsKeyDown(Settings.moveUp) || cur.IsKeyDown(Keys.Up))
                 {
-                    camera.Move(new Vector2(0, -2));
-                    tegenstander.Position.Y += 1;
+                    camera.Move(new Vector2(0, -player.MovementSpeed));
+                    tegenstander.Position.Y += (player.MovementSpeed / 2) + camera.Zoom;
                 }
                 if (cur.IsKeyDown(Settings.moveDown) || cur.IsKeyDown(Keys.Down))
                 {
-                    camera.Move(new Vector2(0, 2));
-                    tegenstander.Position.Y -= 1;
+                    camera.Move(new Vector2(0, player.MovementSpeed));
+                    tegenstander.Position.Y -= (player.MovementSpeed / 2) + camera.Zoom;
                 }
                 if (cur.IsKeyDown(Settings.moveLeft) || cur.IsKeyDown(Keys.Left))
                 {
-                    camera.Move(new Vector2(-2, 0));
-                    tegenstander.Position.X += 1;
+                    camera.Move(new Vector2(-player.MovementSpeed, 0));
+                    tegenstander.Position.X += (player.MovementSpeed / 2) + camera.Zoom;
                 }
                 if (cur.IsKeyDown(Settings.moveRight) || cur.IsKeyDown(Keys.Right))
                 {
-                    camera.Move(new Vector2(2, 0));
-                    tegenstander.Position.X -= 1;
+                    camera.Move(new Vector2(player.MovementSpeed, 0));
+                    tegenstander.Position.X -= (player.MovementSpeed / 2) + camera.Zoom;
                 }
             }
         }
