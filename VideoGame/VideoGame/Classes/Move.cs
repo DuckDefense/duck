@@ -139,10 +139,10 @@ namespace VideoGame.Classes {
                 if (prim == Type.Ice || secon == Type.Ice) { modifier *= 2; }
                 break;
             case Type.Poison:
-                if (prim == Type.Physic || secon == Type.Physic) { modifier *= 2; }
+                if (prim == Type.Phych || secon == Type.Phych) { modifier *= 2; }
                 if (prim == Type.Grass || secon == Type.Grass) { modifier *= 2; }
                 break;
-            case Type.Physic:
+            case Type.Phych:
                 if (prim == Type.Ghost || secon == Type.Ghost) { modifier *= 2; }
                 break;
             case Type.Flying:
@@ -160,13 +160,13 @@ namespace VideoGame.Classes {
                 break;
             case Type.Ghost:
                 if (prim == Type.Normal || secon == Type.Normal) { modifier *= 0; }
-                if (prim == Type.Physic || secon == Type.Physic) { modifier *= 2; }
+                if (prim == Type.Phych || secon == Type.Phych) { modifier *= 2; }
                 if (prim == Type.Ghost || secon == Type.Ghost) { modifier *= 2; }
                 break;
             case Type.Sound:
                 if (prim == Type.Normal || secon == Type.Normal) { modifier *= .5; }
                 if (prim == Type.Water || secon == Type.Water) { modifier *= .5; }
-                if (prim == Type.Physic || secon == Type.Physic) { modifier *= 2; }
+                if (prim == Type.Phych || secon == Type.Phych) { modifier *= 2; }
                 if (prim == Type.Rock || secon == Type.Rock) { modifier *= .5; }
                 if (prim == Type.Ice || secon == Type.Ice) { modifier *= 2; }
                 if (prim == Type.Ghost || secon == Type.Ghost) { modifier *= 2; }

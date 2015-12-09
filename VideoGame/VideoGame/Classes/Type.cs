@@ -13,7 +13,7 @@ namespace VideoGame.Classes {
         Grass,
         Rock,
         Poison,
-        Physic,
+        Phych,
         Flying,
         Ice,
         Ghost,
