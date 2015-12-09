@@ -29,7 +29,10 @@ namespace VideoGame.Classes {
 
         public Rectangle PositionRectangle { get; set; } //Rectangle used as collision
         public Rectangle SourceRectangle; //Rectangle needed for animating
+
+        //Collisions
         public Rectangle LineOfSightRectangle;
+        public Rectangle Hitbox;
 
         public Texture2D FrontSprite; //Sprite that is shown when you're fighting against this character
         public Texture2D BackSprite; //Sprite that is shown when you're fighting as this character
@@ -47,6 +50,7 @@ namespace VideoGame.Classes {
         public Monster CurrentMonster;
         public Area CurrentArea;
         public AI AI;
+        public float MovementSpeed = 2;
 
 
         /// <summary>
@@ -116,12 +120,17 @@ namespace VideoGame.Classes {
             }
             GetDirection(cur, prev);
             SourceRectangle = new Rectangle(CurrentFrame.X * SpriteSize.X, CurrentFrame.Y * SpriteSize.Y, SpriteSize.X, SpriteSize.Y);
+            if (CurrentArea != null) {
+                Hitbox = new Rectangle((int)Position.X - (SpriteSize.X / 2), (int)Position.Y - (SpriteSize.Y / 2), SpriteSize.X * 2, SpriteSize.Y * 2);
+            }
             AnimateWorld(time);
         }
 
         public void Draw(SpriteBatch batch) {
-            if (Debug)
+            if (Debug) {
                 batch.Draw(ContentLoader.Button, null, LineOfSightRectangle, null, null, 0f, Vector2.Zero, Color.White);
+                batch.Draw(ContentLoader.Button, Hitbox, Color.Red);
+            }
             batch.Draw(WorldSprite, Position, SourceRectangle, Color.White);
         }
 
@@ -159,10 +168,10 @@ namespace VideoGame.Classes {
                 LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, (WorldSprite.Width / 3), size);
                 break;
             case Direction.Right:
-                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, size, (WorldSprite.Height) / 3);
+                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, size, (WorldSprite.Height) / 4);
                 break;
             case Direction.Left:
-                LineOfSightRectangle = new Rectangle((int)Position.X - (size - (WorldSprite.Width / 3)), (int)Position.Y, size, (WorldSprite.Height / 3));
+                LineOfSightRectangle = new Rectangle((int)Position.X - (size - (WorldSprite.Width / 3)), (int)Position.Y, size, (WorldSprite.Height / 4));
                 break;
             }
         }
