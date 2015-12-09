@@ -84,6 +84,7 @@ namespace VideoGame.Classes {
             if (capturechance < 5) capturechance = 5; 
             var dice = random.Next(0, 100);
             if (dice < capturechance) {
+                monster.UId = RandomId.GenerateRandomUId();
                 if (player.Monsters.Count >= 6) player.Box.Add(monster); 
                 else player.Monsters.Add(monster);
             }
