@@ -43,6 +43,7 @@ namespace VideoGame.Classes {
         public int Level { get; set; }
 
         public int Id;
+        public int UId;
         public int CaptureChance;
         public string Name;
         public string Description;
@@ -78,6 +79,7 @@ namespace VideoGame.Classes {
         public Monster(int id, int level, string name, string description, Type type, int maleChance, int captureChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
             Texture2D front, Texture2D back, Texture2D party) {
             Id = id;
+            UId = RandomId.GenerateRandomUId();
             Level = level;
             Experience = level * 5;
             Name = name;
@@ -118,6 +120,7 @@ namespace VideoGame.Classes {
         public Monster(int id, int level, string name, string description, Type primaryType, Type secondaryType, int maleChance, int captureChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
         Texture2D front, Texture2D back, Texture2D party) {
             Id = id;
+            UId = RandomId.GenerateRandomUId();
             Level = level;
             Experience = level * 5;
             Name = name;

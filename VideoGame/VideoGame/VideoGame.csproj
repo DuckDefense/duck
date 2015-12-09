@@ -50,6 +50,7 @@
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\Monster.cs" />
     <Compile Include="Classes\Move.cs" />
+    <Compile Include="Classes\RandomId.cs" />
     <Compile Include="Classes\Settings.cs" />
     <Compile Include="Classes\Shop.cs" />
     <Compile Include="Classes\Stats.cs" />
