@@ -75,7 +75,9 @@ namespace VideoGame.Classes {
         private static Move strongestAttack = Move.Glare();
         public static void EnemyAttack(Battle b, Monster user, Monster receiver)
         {
-            foreach (var m in b.CurrentOpponentMonster.KnownMoves)
+            strongestAttack = Move.Glare();
+            //user.GetMoves();
+            foreach (var m in user.KnownMoves)
             {
                 m.Damage = m.GetDamage(user.Stats.SpecialAttack, receiver.Stats.SpecialDefense,
                            m.GetDamageModifier(receiver), 1);

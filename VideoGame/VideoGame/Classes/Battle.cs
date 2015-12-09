@@ -36,6 +36,8 @@ namespace VideoGame.Classes
         public Monster CurrentUserMonster;
         public Monster CurrentOpponentMonster;
         private int boxSize, partySize;
+        public int OpponentMonstersDead = 0;
+        public int UserMonstersDead = 0;
         public Selection Selection = Selection.None;
         public State BattleState = State.Battling;
         public bool battleOver;
@@ -76,10 +78,13 @@ namespace VideoGame.Classes
 
         public void Attack(Monster user, Monster opponent, Move chosen)
         {
-            //Execute chosen move here
-            chosen.Execute(user, opponent);
-            //Wait for the move to complete
-            //choose opponent move here with ai
+            if (SelectedMove != null || !playerTurn)
+            {
+                //Execute chosen move here
+                chosen.Execute(user, opponent);
+                //Wait for the move to complete
+                //choose opponent move here with ai
+            }
         }
 
         public void Run(Monster user, Monster opponent)
@@ -121,59 +126,55 @@ namespace VideoGame.Classes
 
             switch (Selection)
             {
-                case Selection.Attack:
-                    if (Opponent != null)
-                    {
-                        int OpponentMonstersDead = 0;
-                        int UserMonstersDead = 0;
-                        foreach (var m in Opponent.Monsters)
-                        {
-                            if (m.IsDead)
-                            {
-                                OpponentMonstersDead++;
-                            }
-                        }
-                        foreach (var m in User.Monsters)
-                        {
-                            if (m.IsDead)
-                            {
-                                UserMonstersDead++;
-                            }
-                        }
-                        if (OpponentMonstersDead != Opponent.Monsters.Count &&
-                            UserMonstersDead != User.Monsters.Count)
-                        {
-                            drawBattleButtons = true;
-                            //UpdateButtons(cur, prev);
-                        }
-                        else
-                        {
-                            battleOver = true;
-                        }
-                    }
-                    else
-                    {
-                        if (!CurrentUserMonster.IsDead && !CurrentOpponentMonster.IsDead)
-                        {
-                            drawBattleButtons = true;
-                            //UpdateButtons(cur, prev);
-                        }
-                        else
-                        {
-                            battleOver = true;
-                        }
-                    }
-                    break;
-                case Selection.Item:
-                    break;
-                case Selection.Party:
-                    break;
                 case Selection.Run:
                     Run(CurrentUserMonster, CurrentOpponentMonster);
                     break;
             }
 
+            if (Opponent != null)
+            {
 
+                foreach (var m in Opponent.Monsters)
+                {
+                    if (m.IsDead && m.DeadCount == false)
+                    {
+                        OpponentMonstersDead++;
+                        m.DeadCount = true;
+                    }
+                }
+                foreach (var m in User.Monsters)
+                {
+                    if (m.IsDead && m.DeadCount == false)
+                    {
+                        UserMonstersDead++;
+                        SelectedMove = null;
+                        m.DeadCount = true;
+                    }
+                }
+                if (OpponentMonstersDead != Opponent.Monsters.Count &&
+                    UserMonstersDead != User.Monsters.Count)
+                {
+                    drawBattleButtons = true;
+                    //UpdateButtons(cur, prev);
+                }
+                else
+                {
+                    BattleState = State.Loss;
+                    battleOver = true;
+                }
+            }
+            else
+            {
+                if (!CurrentUserMonster.IsDead && !CurrentOpponentMonster.IsDead)
+                {
+                    drawBattleButtons = true;
+                    //UpdateButtons(cur, prev);
+                }
+                else
+                {
+                    battleOver = true;
+                }
+            }
 
         }
 
