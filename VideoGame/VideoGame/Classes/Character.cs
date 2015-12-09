@@ -19,9 +19,9 @@ namespace VideoGame.Classes {
         Left
     }
 
-    public class Character : IAnimatable {
-        public float Interval = 200; // Interval at which the animation should update
-        private float Timer = 0;// Timer that keeps getting updated until the Interval is reached
+    public class Character : IAnimatable, ITimer {
+        public float Interval { get; set; } = 200; // Interval at which the animation should update
+        public float Timer { get; set; } = 0; // Timer that keeps getting updated until the Interval is reached
 
         public Vector2 Position; //Position of the character
         public Point SpriteSize = new Point(32, 32);//Height and Width of the sprite
@@ -179,10 +179,10 @@ namespace VideoGame.Classes {
         public void AnimateWorld(GameTime gametime) {
             if (Direction == Direction.None) CurrentFrame.X = 0;
             else {
-                Timer += (float) gametime.ElapsedGameTime.TotalMilliseconds;
+                Timer += (float)gametime.ElapsedGameTime.TotalMilliseconds;
                 if (Timer > Interval) {
                     CurrentFrame.X++;
-                    if (CurrentFrame.X > WorldSprite.Width/SpriteSize.X - 1) {
+                    if (CurrentFrame.X > WorldSprite.Width / SpriteSize.X - 1) {
                         CurrentFrame.X = 1;
                     }
                     Timer = 0f;
