@@ -115,7 +115,7 @@ namespace VideoGame.Classes {
             GetDirection(cur, prev);
             SourceRectangle = new Rectangle(CurrentFrame.X * SpriteSize.X, CurrentFrame.Y * SpriteSize.Y, SpriteSize.X, SpriteSize.Y);
             if (CurrentArea != null) {
-                Hitbox = new Rectangle((int)Position.X - (SpriteSize.X / 2), (int)Position.Y - (SpriteSize.Y / 2), SpriteSize.X * 2, SpriteSize.Y * 2);
+                Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 32, 32);
             }
             AnimateWorld(time);
             Movement(cur);
