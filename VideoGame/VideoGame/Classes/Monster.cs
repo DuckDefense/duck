@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using OpenTK.Graphics.ES20;
 
 namespace VideoGame.Classes {
 
@@ -58,7 +59,6 @@ namespace VideoGame.Classes {
         public double CriticalHitChance = 5;
         public double CriticalHitMultiplier = 2;
         public List<Move> Moves;
-        public List<Move> KnownMoves;
 
         public Monster() { }
 
@@ -72,12 +72,11 @@ namespace VideoGame.Classes {
         /// <param name="helditem">Item the monster is carrying</param>
         /// <param name="stats">Stats the monster has</param>
         /// <param name="type">Type which changes how much damage certain moves do</param>
-        /// <param name="moves">Attacks the monster knows</param>
         /// <param name="abilities">All possible abilities the monster can have</param>
         /// <param name="front">Texture that is shown when fighting against this monster</param>
         /// <param name="back">Texture that is shown when you've send out this monster</param>
         /// <param name="party">Texture that is shown in the party view</param>
-        public Monster(int id, int level, string name, string description, Type type, int maleChance, int captureChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
+        public Monster(int id, int level, string name, string description, Type type, int maleChance, int captureChance, Item helditem, Stats stats, List<Ability> abilities,
             Texture2D front, Texture2D back, Texture2D party) {
             Id = id;
             UId = RandomId.GenerateRandomUId();
@@ -91,13 +90,11 @@ namespace VideoGame.Classes {
             CaptureChance = captureChance;
             HeldItem = helditem;
             Stats = stats;
-            Moves = moves;
             Ability = GetAbility(abilities);
             FrontSprite = front;
             BackSprite = back;
             PartySprite = party;
             Ailment = Ailment.Normal;
-            KnownMoves = new List<Move>();
             GetMoves();
             MaxHealth = Stats.Health;
         }
@@ -113,12 +110,11 @@ namespace VideoGame.Classes {
         /// <param name="description">Short description of the monster</param>
         /// <param name="primaryType">Primary type which changes how much damage certain moves do</param>
         /// <param name="secondaryType">Secondary type which changes how much damage certain moves do</param>
-        /// <param name="moves">Attacks the monster knows</param>
         /// <param name="abilities">All possible abilities the monster can have</param>
         /// <param name="front">Texture that is shown when fighting against this monster</param>
         /// <param name="back">Texture that is shown when you've send out this monster</param>
         /// <param name="party">Texture that is shown in the party view</param>
-        public Monster(int id, int level, string name, string description, Type primaryType, Type secondaryType, int maleChance, int captureChance, Item helditem, Stats stats, List<Move> moves, List<Ability> abilities,
+        public Monster(int id, int level, string name, string description, Type primaryType, Type secondaryType, int maleChance, int captureChance, Item helditem, Stats stats, List<Ability> abilities,
         Texture2D front, Texture2D back, Texture2D party) {
             Id = id;
             UId = RandomId.GenerateRandomUId();
@@ -132,13 +128,12 @@ namespace VideoGame.Classes {
             CaptureChance = captureChance;
             HeldItem = helditem;
             Stats = stats;
-            Moves = moves;
             Ability = GetAbility(abilities);
             FrontSprite = front;
             BackSprite = back;
             PartySprite = party;
             Ailment = Ailment.Normal;
-            KnownMoves = new List<Move>();
+            Moves = new List<Move>();
             GetMoves();
             //TODO: Check if this updates with levelup
             MaxHealth = Stats.Health;
@@ -174,22 +169,22 @@ namespace VideoGame.Classes {
 
         //TODO: Find a way to do this nicer and cleaner
         public void GetMoves() {
-            KnownMoves.Clear();
+            Moves = new List<Move>();
             switch (Id) {
             case 1:
                 if (Level >= 1) {
-                    KnownMoves.Add(Move.Tackle());
+                    Moves.Add(Move.Tackle());
                 }
                 break;
             case 10:
                 if (Level >= 1) {
-                    KnownMoves.Add(Move.Strangle());
-                    KnownMoves.Add(Move.Glare());
-                    KnownMoves.Add(Move.InstantKill());
+                    Moves.Add(Move.Strangle());
+                    Moves.Add(Move.Glare());
+                    Moves.Add(Move.InstantKill());
                 }
-                if (Level >= 5) { KnownMoves.Add(Move.Tackle()); }
-                if (Level >= 9) { KnownMoves.Add(Move.Intimidate()); }
-                if (Level >= 11) { KnownMoves.Add(Move.Headbutt()); }
+                if (Level >= 5) { Moves.Add(Move.Tackle()); }
+                if (Level >= 9) { Moves.Add(Move.Intimidate()); }
+                if (Level >= 11) { Moves.Add(Move.Headbutt()); }
                 break;
             }
         }
@@ -224,7 +219,6 @@ namespace VideoGame.Classes {
 
         public static Monster Armler(int level, Item item = null) {
             if (item == null) item = new Item();
-            List<Move> moves = new List<Move>();
             List<Ability> abilities = new List<Ability> {
                 Ability.Buff(),
                 Ability.Enraged()
@@ -233,7 +227,7 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(45, 50, 71, 40, 60, 66, level);
             return new Monster(1, level, "Armler", "This shifty creature Likes to pretend that his pockets are its eyes",
-                Type.Grass, 75, 5, item, stats, moves, abilities,
+                Type.Grass, 75, 5, item, stats, abilities,
                 ContentLoader.ArmlerFront, ContentLoader.ArmlerBack, ContentLoader.ArmlerParty);
         }
         // 2 to 3 evolutions of Armler
@@ -242,7 +236,6 @@ namespace VideoGame.Classes {
 
         public static Monster Gronkey(int level, Item item = null) {
             if (item == null) item = new Item();
-            List<Move> moves = new List<Move>();
             List<Ability> abilities = new List<Ability> {
                 Ability.Enraged()
             };
@@ -250,13 +243,12 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(45, 66, 40, 40, 45, 85, level);
             return new Monster(10, level, "Gronkey", "This creature is absolutely vivid because someone shaved its face.",
-                Type.Fight, 50, 50, item, stats, moves, abilities,
+                Type.Fight, 50, 50, item, stats, abilities,
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.GronkeyParty);
         }
         //11: Evolution of Gronkey?
         public static Monster Brass(int level, Item item = null) {
             if (item == null) item = new Item();
-            List<Move> moves = new List<Move>();
             List<Ability> abilities = new List<Ability> {
                 Ability.Ordinary(),
                 Ability.Unmovable()
@@ -265,14 +257,13 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(78, 15, 90, 10, 80, 5, level);
             return new Monster(12, level, "Brass", "This brick is pretty useless, all it can do is lie and wait\nuntil is undeniably faints.",
-                Type.Rock, 75, 50, item, stats, moves, abilities,
+                Type.Rock, 75, 50, item, stats, abilities,
                 ContentLoader.BrassFront, ContentLoader.BrassBack, ContentLoader.BrassParty);
         }
         //13: Bonsantai
 
         public static Monster Huffstein(int level, Item item = null) {
             if (item == null) item = new Item();
-            List<Move> moves = new List<Move>();
             List<Ability> abilities = new List<Ability> {
                 Ability.Fuzzy(),
                 Ability.ToxicBody()
@@ -281,7 +272,7 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(40, 42, 50, 76, 65, 55, level);
             return new Monster(12, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its' body",
-                Type.Poison, Type.Rock, 50, 50, item, stats, moves, abilities,
+                Type.Poison, Type.Rock, 50, 50, item, stats, abilities,
                 ContentLoader.HuffsteinFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
         }
 
