@@ -73,7 +73,7 @@ namespace VideoGame.Classes {
         {
             strongestAttack = Move.Glare();
             //user.GetMoves();
-            foreach (var m in user.KnownMoves)
+            foreach (var m in user.Moves)
             {
                 m.Damage = m.GetDamage(user.Stats.SpecialAttack, receiver.Stats.SpecialDefense,
                            m.GetDamageModifier(receiver), 1);

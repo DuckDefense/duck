@@ -298,7 +298,7 @@ namespace VideoGame.Classes {
             var button = Drawer.GetClickedButton();
             if (button != null && button.IsHeld(cur)) {
                 if (drawMoves) {
-                    foreach (var m in CurrentUserMonster.KnownMoves) {
+                    foreach (var m in CurrentUserMonster.Moves) {
                         if (m.Name == button.Text) {
                             if (m.Uses != 0) {
                                 SelectedMove = m;
