@@ -22,7 +22,9 @@ namespace VideoGame.Classes {
         public Kind Kind;
         public int Accuracy;
         public int Uses;
+        public double AilmentChance;
         public Type Type;
+        public Ailment Ailment;
         public StatModifier HitModifier;
         public StatModifier MissModifier;
         public bool Missed = false;
@@ -44,6 +46,19 @@ namespace VideoGame.Classes {
             Uses = uses;
             HitModifier = hitModifier;
             MissModifier = missModifier;
+            Kind = kind;
+            Type = type;
+        }
+
+        public Move(string name, string description, int damage, int accuracy, int uses, Ailment ailment, double ailmentChance, Kind kind, Type type)
+        {
+            Name = name;
+            Description = description;
+            BaseDamage = damage;
+            Accuracy = accuracy;
+            Uses = uses;
+            Ailment = ailment;
+            AilmentChance = ailmentChance;
             Kind = kind;
             Type = type;
         }
@@ -139,15 +154,16 @@ namespace VideoGame.Classes {
                 if (prim == Type.Ice || secon == Type.Ice) { modifier *= 2; }
                 break;
             case Type.Poison:
-                if (prim == Type.Phych || secon == Type.Phych) { modifier *= 2; }
+                if (prim == Type.Psych || secon == Type.Psych) { modifier *= 2; }
                 if (prim == Type.Grass || secon == Type.Grass) { modifier *= 2; }
                 break;
-            case Type.Phych:
+            case Type.Psych:
                 if (prim == Type.Ghost || secon == Type.Ghost) { modifier *= 2; }
                 break;
             case Type.Flying:
                 if (prim == Type.Grass || secon == Type.Grass) { modifier *= 2; }
                 if (prim == Type.Ice || secon == Type.Ice) { modifier *= 2; }
+                if (prim == Type.Fight || secon == Type.Fight) { modifier *= 2; }
                 break;
             case Type.Ice:
                 if (prim == Type.Water || secon == Type.Water) { modifier *= .5; }
@@ -160,13 +176,13 @@ namespace VideoGame.Classes {
                 break;
             case Type.Ghost:
                 if (prim == Type.Normal || secon == Type.Normal) { modifier *= 0; }
-                if (prim == Type.Phych || secon == Type.Phych) { modifier *= 2; }
+                if (prim == Type.Psych || secon == Type.Psych) { modifier *= 2; }
                 if (prim == Type.Ghost || secon == Type.Ghost) { modifier *= 2; }
                 break;
             case Type.Sound:
                 if (prim == Type.Normal || secon == Type.Normal) { modifier *= .5; }
                 if (prim == Type.Water || secon == Type.Water) { modifier *= .5; }
-                if (prim == Type.Phych || secon == Type.Phych) { modifier *= 2; }
+                if (prim == Type.Psych || secon == Type.Psych) { modifier *= 2; }
                 if (prim == Type.Rock || secon == Type.Rock) { modifier *= .5; }
                 if (prim == Type.Ice || secon == Type.Ice) { modifier *= 2; }
                 if (prim == Type.Ghost || secon == Type.Ghost) { modifier *= 2; }
@@ -179,33 +195,126 @@ namespace VideoGame.Classes {
 
         #region Preset Moves
 
-        #region Physical
+        #region Normal
         public static Move Tackle() {
-            return new Move("Tackle", "A fullbody tackle",
-                60, 100, 40, Kind.Physical, Type.Normal);
-        }
-        public static Move Headbutt() {
-            return new Move("Headbutt", "A headbutt",
-                70, 100, 25, Kind.Physical, Type.Normal);
-        }
+                    return new Move("Tackle", "A fullbody tackle",
+                        60, 100, 40, Kind.Physical, Type.Normal);
+                }
+                public static Move Headbutt() {
+                    return new Move("Headbutt", "A headbutt",
+                        70, 100, 25, Kind.Physical, Type.Normal);
+                }
 
-        public static Move Strangle() {
-            return new Move("Strangle", "The monster strangles the foe",
-                40, 100, 20, Kind.Physical, Type.Normal);
-        }
+                public static Move Strangle() {
+                    return new Move("Strangle", "The monster strangles the foe",
+                        40, 100, 20, Kind.Physical, Type.Normal);
+                }
 
-        public static Move InstantKill() {
-            return new Move("InstantKill", "Test Attack, not to be used in final game",
-                5000, 1500, 60, Kind.Physical, Type.Normal);
+                public static Move InstantKill() {
+                    return new Move("InstantKill", "Test Attack, not to be used in final game",
+                        5000, 1500, 60, Kind.Physical, Type.Normal);
+                }
+        #endregion
+        #region Fight
+        public static Move MultiPunch()
+        {
+            return new Move("Multipunch", "punches the foe at a high speed",
+                70, 75, 15, Kind.Special, Type.Fire);
         }
         #endregion
-
-        #region Special
-        public static Move Bubble() {
-            return new Move("Bubble", "The monster spits bubbles",
-                40, 100, 30, Kind.Special, Type.Water);
+        #region Fire
+        public static Move Meteor()
+        {
+            return new Move("Meteor", "Cast down a meteor uppon the foe",
+                100, 70, 5, Kind.Special, Type.Fire);
         }
-
+        public static Move Implode()
+        {
+            return new Move("Implode", "Implodes the foe",
+                70, 75, 20,Ailment.Burned,20, Kind.Special, Type.Fire);
+        }
+        #endregion
+        #region Water
+        public static Move Bubble() {
+                    return new Move("Bubble", "The monster spits bubbles",
+                        40, 100, 30, Kind.Special, Type.Water);
+                }
+        #endregion
+        #region Grass
+        public static Move LeafCut()
+        {
+            return new Move("LeafCut", "Cuts the target with a sharp leaf",
+                60, 80, 20, Kind.Special, Type.Grass);
+        }
+        #endregion
+        #region Rock
+        public static Move RockThrow()
+        {
+            return new Move("Rock throw", "Throw a rock at the foe",
+                65, 80, 20, Kind.Special, Type.Rock);
+        }
+        #endregion
+        #region Ice
+        public static Move Freeze()
+        {
+            return new Move("Freeze", "Freezes the foe",
+                60, 80, 15,Ailment.Frozen,20, Kind.Special, Type.Ice);
+        }
+        public static Move Icicle()
+        {
+            return new Move("Icicle", "Fires icicles at the foe",
+                75, 70, 10, Kind.Special, Type.Ice);
+        }
+        #endregion
+        #region Poison
+        public static Move PoisonDart()
+        {
+            return new Move("Poison dart", "Shoots a poison dart at the target",
+                40, 70, 60,Ailment.Poisoned,60, Kind.Physical, Type.Normal);
+        }
+        #endregion
+        #region Ghost
+        public static Move Torment()
+        {
+            return new Move("Torment", "Torments the foe",
+                70, 75, 15, Kind.Special, Type.Ghost);
+        }
+        public static Move SoulHunt()
+        {
+            return new Move("Soul hunt", "Hunt for the foes soul",
+                120, 40, 10, Kind.Special, Type.Ghost);
+        }
+        #endregion
+        #region Psych
+        public static Move MindTrick()
+        {
+            return new Move("MindTrick", "Tricks the foes mind causing him to hurt itself",
+                80, 60, 15, Kind.Special, Type.Psych);
+        }
+        public static Move MindClose()
+        {
+            return new Move("Mind close", "Closes the foes mind",
+                20, 75, 5,Ailment.Sleep,80, Kind.Special, Type.Fire);
+        }
+        #endregion
+        #region Flying
+        public static Move Tornado()
+        {
+            return new Move("Tornado", "Twists the foe in a tornado",
+                50, 90, 15, Kind.Special, Type.Flying);
+        }
+        #endregion
+        #region Sound
+        public static Move Scream()
+        {
+            return new Move("Scream", "Screams loudly at the foe",
+                60, 80, 20, Kind.Special, Type.Sound);
+        }
+        public static Move HighPitch()
+        {
+            return new Move("High pitch", "Make a high pitch sound, deafening the foe",
+                75, 65, 15, Kind.Special, Type.Sound);
+        }
         #endregion
 
         #region NonDamage
