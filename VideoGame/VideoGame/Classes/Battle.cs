@@ -177,6 +177,7 @@ namespace VideoGame.Classes {
             }
             if (battleOver) {
                 drawBattleButtons = false;
+                if(Opponent != null)
                 Opponent.Defeated = true;
                 //Restore the stats when the battle is over, or when the monster has been switched out
                 CurrentUserMonster.Stats = CurrentUserMonster.PreviousStats;
