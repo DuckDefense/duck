@@ -17,6 +17,7 @@ namespace VideoGame.Classes {
         public static Texture2D ArmlerFront, ArmlerBack, ArmlerParty;
         public static Texture2D BrassFront, BrassBack, BrassParty;
         public static Texture2D HuffsteinFront, HuffsteinBack, HuffsteinParty;
+        public static Texture2D FesterFront;
         public static Texture2D GrassyBackground;
         public static Texture2D Christman;
         public static Texture2D Button;
@@ -45,6 +46,7 @@ namespace VideoGame.Classes {
             HuffsteinFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Huffstein");
             HuffsteinBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Huffstein");
             HuffsteinParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Huffstein");
+            FesterFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Fester");
             MonsterViewer = Content.Load<Texture2D>(@"Sprites/Monsters/Viewer");
             #endregion
 
