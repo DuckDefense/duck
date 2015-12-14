@@ -276,6 +276,19 @@ namespace VideoGame.Classes {
                 ContentLoader.HuffsteinFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
         }
 
+        public static Monster Fester(int level, Item item = null)
+        {
+            if (item == null) item = new Item();
+            List<Ability> abilities = new List<Ability> {
+                Ability.Fuzzy()
+            };
+            //Calculate level so we can determine what moves it could have learned
+
+            Stats stats = new Stats(38, 80, 40, 76, 65, 78, level);
+            return new Monster(12, level, "Fester", "Being haunted in life, he now haunts his enemies in the afterlife",
+                Type.Poison, Type.Ghost, 50, 50, item, stats, abilities,
+                ContentLoader.FesterFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
+        }
         #endregion
     }
 }
