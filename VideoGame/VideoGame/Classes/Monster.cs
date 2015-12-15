@@ -271,7 +271,7 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(40, 42, 50, 76, 65, 55, level);
-            return new Monster(12, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its' body",
+            return new Monster(14, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its' body",
                 Type.Poison, Type.Rock, 50, 50, item, stats, abilities,
                 ContentLoader.HuffsteinFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
         }
@@ -285,9 +285,10 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(38, 80, 40, 76, 65, 78, level);
-            return new Monster(12, level, "Fester", "Being haunted in life, he now haunts his enemies in the afterlife",
+            return new Monster(15, level, "Fester", "Being haunted in life, he now haunts his enemies in the afterlife",
                 Type.Poison, Type.Ghost, 50, 50, item, stats, abilities,
                 ContentLoader.FesterFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
+            //TODO: Fix the Back and Party sprite for Fester
         }
         #endregion
     }
