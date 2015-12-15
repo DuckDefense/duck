@@ -98,8 +98,10 @@ namespace VideoGame.Classes {
         }
 
         public Monster GetRandomMonster() {
-            Random rand = new Random();
-            return Monsters[rand.Next(0, Monsters.Count)];
+            CryptoRandom rand = new CryptoRandom();
+            int index = rand.Next(0, Monsters.Count);
+            if (Monsters[index].Stats.Health != Monsters[index].MaxHealth) Monsters[index].Stats.Health = Monsters[index].MaxHealth;
+            return Monsters[index];
         }
 
         #region Route1
@@ -112,7 +114,8 @@ namespace VideoGame.Classes {
 
             List<Monster> monsters = new List<Monster> {
                 Monster.Armler(random.Next(levelrange.X, levelrange.Y)),
-                Monster.Gronkey(random.Next(levelrange.X, levelrange.Y))
+                Monster.Gronkey(random.Next(levelrange.X, levelrange.Y)),
+                Monster.Brass(random.Next(levelrange.X, levelrange.Y))
             };
 
             return new Area("Route 1", levelrange, monsters, map);
