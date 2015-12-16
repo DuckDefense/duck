@@ -78,6 +78,7 @@ namespace VideoGame {
             player.Monsters.Add(Monster.Brass(15));
             player.Monsters.Add(Monster.Huffstein(15));
             player.Monsters.Add(Monster.Armler(15));
+            player.Monsters.Add(Monster.Armler(15));
             player.Inventory.Add(Medicine.RoosVicee(), 1);
             player.Inventory.Add(Medicine.MagicStone(), 3);
             player.Inventory.Add(Medicine.Salt(), 2);
@@ -109,13 +110,13 @@ namespace VideoGame {
         protected override void Update(GameTime gameTime) {
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
-            player.Update(gameTime, currentKeyboardState, previousKeyboardState);
 
             if (!currentBattle.battleOver) {
                 currentBattle.Update(currentMouseState, previousMouseState, gameTime);
                 Drawer.UpdateBattleButtons(currentMouseState, previousMouseState);
             }
             else {
+                player.Update(gameTime, currentKeyboardState, previousKeyboardState);
                 player.CurrentArea.GetCollision(player);
                 player.CurrentArea.GetEncounters(player, ref currentBattle, ref battling);
             }
