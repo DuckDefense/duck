@@ -114,6 +114,7 @@ namespace VideoGame {
             if (!currentBattle.battleOver) {
                 currentBattle.Update(currentMouseState, previousMouseState, gameTime);
                 Drawer.UpdateBattleButtons(currentMouseState, previousMouseState);
+                player.MonsterUpdate(gameTime);
             }
             else {
                 player.Update(gameTime, currentKeyboardState, previousKeyboardState);

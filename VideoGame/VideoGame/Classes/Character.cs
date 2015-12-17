@@ -125,10 +125,6 @@ namespace VideoGame.Classes
             }
             else
             {
-                foreach (var m in Monsters)
-                {
-                    m.Update(time);
-                }
                 GetDirection(cur, prev);
                 
                 Movement(cur, time);
@@ -136,6 +132,12 @@ namespace VideoGame.Classes
             SourceRectangle = new Rectangle(CurrentFrame.X*SpriteSize.X, CurrentFrame.Y*SpriteSize.Y, SpriteSize.X, SpriteSize.Y);
             if (CurrentArea != null) Hitbox = new Rectangle((int) Position.X, (int) Position.Y, 32, 32);    
             AnimateWorld(time);
+        }
+
+        public void MonsterUpdate(GameTime time) {
+            foreach (var m in Monsters) {
+                m.Update(time);
+            }
         }
 
         public void Draw(SpriteBatch batch)
