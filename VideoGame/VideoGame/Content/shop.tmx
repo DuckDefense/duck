@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="shop en center" tilewidth="32" tileheight="32" tilecount="180">
+  <image source="shop en center.png" width="192" height="960"/>
+ </tileset>
+ <layer name="Tilelaag 1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt0TsKAlEQRNGePegoOiOo+Nv/Bi2hUwWjl5wDF5pOa1NV2zR3u7RPUzHCIR3T0q3pVPYY5bPBOV26a//sMcbyJXuMcUv39EjPvl9lj1GmHwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/eQONSAOK
+  </data>
+ </layer>
+ <layer name="layer2" width="100" height="100">
+  <properties>
+   <property name="Collision" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0TEKg0AYhNH/CEEMSmICarf3P6BTbB1ItRbvwddMO3NVPdOUHmlJa2rFCK/0Tlvvk77lj5H2dPTOvvnjXvxxL/4Yo/0IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+M8F8fsDow==
+  </data>
+ </layer>
+</map>

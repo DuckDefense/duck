@@ -62,6 +62,7 @@ namespace VideoGame.Classes {
 
             #region Maps
             Map = Content.Load<TiledMap>("map");
+            Map = Content.Load<TiledMap>("city");
             #endregion
 
             #region Fonts
