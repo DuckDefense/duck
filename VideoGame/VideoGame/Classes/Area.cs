@@ -161,7 +161,7 @@ namespace VideoGame.Classes
             {
                 case "Route 1":
                     return Route1();
-                case "shop":
+                case "City":
                     return City();
             }
             return null;
@@ -181,7 +181,7 @@ namespace VideoGame.Classes
         {
             Random random = new Random();
             Point levelrange = new Point(3, 8);
-
+            
             var map = ContentLoader.Map;
 
             List<Monster> monsters = new List<Monster> {
@@ -199,7 +199,7 @@ namespace VideoGame.Classes
             Random random = new Random();
             Point levelrange = new Point(3, 8);
 
-            var map = ContentLoader.Map;
+            var map = ContentLoader.City;
 
             List<Monster> monsters = new List<Monster> {
                 Monster.Armler(random.Next(levelrange.X, levelrange.Y)),
