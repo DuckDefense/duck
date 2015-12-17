@@ -72,7 +72,7 @@ namespace VideoGame {
             player = new Character("Pietertje", 5000, new Inventory(), new List<Monster>(),
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.Christman, new Vector2(150, 100), true);
             player.Debug = true;
-            player.CurrentArea = Area.Route1();
+            player.CurrentArea = Area.City();
             player.CurrentArea.EnteredArea = true;
             player.Monsters.Add(Monster.Gronkey(15));
             player.Monsters.Add(Monster.Brass(15));
@@ -118,6 +118,7 @@ namespace VideoGame {
             }
             else {
                 player.Update(gameTime, currentKeyboardState, previousKeyboardState);
+                player.CurrentArea.GetArea(player);
                 player.CurrentArea.GetCollision(player);
                 player.CurrentArea.GetEncounters(player, ref currentBattle, ref battling);
             }
