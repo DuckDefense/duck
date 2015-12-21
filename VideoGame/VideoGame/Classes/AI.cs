@@ -18,7 +18,7 @@ namespace VideoGame.Classes {
             RandomizeDirection();
         }
 
-        public void Update(GameTime gameTime, Character player, ref bool allowedToWalk, ref Battle battle) {
+        public void Update(Character player, ref Battle battle) {
             character.SetLineOfSight(tiles);
             Hitbox = new Rectangle((int)character.Position.X - (character.SpriteSize.X / 2), (int)character.Position.Y - (character.SpriteSize.Y / 2),
               character.SpriteSize.X * 2, character.SpriteSize.Y * 2);
