@@ -157,7 +157,7 @@ namespace VideoGame.Classes {
         }
         public void RestorePreviousStats() {
             var stats = Stats;
-            PreviousStats = new Stats(MaxHealth, stats.BaseAttack, stats.BaseDefense, stats.BaseSpecialAttack, stats.BaseSpecialDefense, stats.BaseSpeed, Level);
+            PreviousStats = new Stats(stats, Level, stats.RandAttack, stats.RandDefense, stats.RandSpecialAttack, stats.RandSpecialDefense, stats.RandSpeed);
         }
 
         public void CheckLevelUp() {
