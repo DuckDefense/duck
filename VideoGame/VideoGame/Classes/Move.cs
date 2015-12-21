@@ -6,6 +6,17 @@ using System.Security.AccessControl;
 using System.Text;
 
 namespace VideoGame.Classes {
+    public class ModApplyer {
+        public StatModifier Modifier;
+        public bool ApplyToUser;
+        public bool ApplyToOpponent;
+
+        public ModApplyer(StatModifier mod, bool applyToUser, bool applyToOpponent) {
+            Modifier = mod;
+            ApplyToUser = applyToUser;
+            ApplyToOpponent = applyToOpponent;
+        }
+    }
 
     public enum Kind {
         Physical,
@@ -22,11 +33,11 @@ namespace VideoGame.Classes {
         public Kind Kind;
         public int Accuracy;
         public int Uses;
-        public double AilmentChance;
         public Type Type;
+        public double AilmentChance;
         public Ailment Ailment;
-        public StatModifier HitModifier;
-        public StatModifier MissModifier;
+        private ModApplyer HitModifier;
+        private ModApplyer MissModifier;
         public bool Missed = false;
 
         public Move(string name, string description, int damage, int accuracy, int uses, Kind kind, Type type) {
@@ -38,7 +49,7 @@ namespace VideoGame.Classes {
             Kind = kind;
             Type = type;
         }
-        public Move(string name, string description, int damage, int accuracy, int uses, StatModifier hitModifier, StatModifier missModifier, Kind kind, Type type) {
+        public Move(string name, string description, int damage, int accuracy, int uses, ModApplyer hitModifier, ModApplyer missModifier, Kind kind, Type type) {
             Name = name;
             Description = description;
             BaseDamage = damage;
@@ -50,8 +61,7 @@ namespace VideoGame.Classes {
             Type = type;
         }
 
-        public Move(string name, string description, int damage, int accuracy, int uses, Ailment ailment, double ailmentChance, Kind kind, Type type)
-        {
+        public Move(string name, string description, int damage, int accuracy, int uses, Ailment ailment, double ailmentChance, Kind kind, Type type) {
             Name = name;
             Description = description;
             BaseDamage = damage;
@@ -93,8 +103,8 @@ namespace VideoGame.Classes {
                 }
                 if (HitModifier != null) {
                     //TODO: Find out if this will return the same stats if the modifier is empty
-                    //user.Stats = HitModifier.ApplyModifiers(user);
-                    receiver.Stats = HitModifier.ApplyModifiers(receiver);
+                    if (HitModifier.ApplyToOpponent) receiver.Stats = HitModifier.Modifier.ApplyModifiers(receiver);
+                    if (HitModifier.ApplyToUser) user.Stats = HitModifier.Modifier.ApplyModifiers(user);
                 }
 
             }
@@ -102,7 +112,8 @@ namespace VideoGame.Classes {
             else {
                 Missed = true;
                 if (MissModifier != null) {
-                    user.Stats = MissModifier.ApplyModifiers(user);
+                    if (MissModifier.ApplyToOpponent) receiver.Stats = MissModifier.Modifier.ApplyModifiers(receiver);
+                    if (MissModifier.ApplyToUser) user.Stats = MissModifier.Modifier.ApplyModifiers(user);
                     //receiver.Stats = MissModifier.ApplyModifiers(receiver);
                 }
             }
@@ -195,143 +206,179 @@ namespace VideoGame.Classes {
 
         #region Preset Moves
 
+        #region Physical
         #region Normal
         public static Move Tackle() {
-                    return new Move("Tackle", "A fullbody tackle",
-                        60, 100, 40, Kind.Physical, Type.Normal);
-                }
-                public static Move Headbutt() {
-                    return new Move("Headbutt", "A headbutt",
-                        70, 100, 25, Kind.Physical, Type.Normal);
-                }
+            return new Move("Tackle", "A fullbody tackle",
+                60, 100, 40, Kind.Physical, Type.Normal);
+        }
+        public static Move Headbutt() {
+            return new Move("Headbutt", "A headbutt",
+                70, 100, 25, Kind.Physical, Type.Normal);
+        }
 
-                public static Move Strangle() {
-                    return new Move("Strangle", "The monster strangles the foe",
-                        40, 100, 20, Kind.Physical, Type.Normal);
-                }
+        public static Move Strangle() {
+            return new Move("Strangle", "The monster strangles the foe",
+                40, 100, 20, Kind.Physical, Type.Normal);
+        }
 
-                public static Move InstantKill() {
-                    return new Move("InstantKill", "Test Attack, not to be used in final game",
-                        5000, 1500, 60, Kind.Physical, Type.Normal);
-                }
+        public static Move InstantKill() {
+            return new Move("InstantKill", "Test Attack, not to be used in final game",
+                5000, 1500, 60, Kind.Physical, Type.Normal);
+        }
         #endregion
         #region Fight
-        public static Move MultiPunch()
-        {
+        #endregion
+        #region Fire
+        #endregion
+        #region Water
+        #endregion
+        #region Grass
+        #endregion
+        #region Rock
+        #endregion
+        #region Ice
+        #endregion
+        #region Poison
+        #endregion
+        #region Ghost
+        #endregion
+        #region Psych
+        #endregion
+        #region Flying
+        #endregion
+        #region Sound
+        #endregion
+        #endregion
+        #region Special
+        #region Normal
+        #endregion
+        #region Fight
+        public static Move MultiPunch() {
             return new Move("Multipunch", "punches the foe at a high speed",
                 70, 75, 15, Kind.Special, Type.Fire);
         }
         #endregion
         #region Fire
-        public static Move Meteor()
-        {
+        public static Move Meteor() {
             return new Move("Meteor", "Cast down a meteor uppon the foe",
                 100, 70, 5, Kind.Special, Type.Fire);
         }
-        public static Move Implode()
-        {
+        public static Move Implode() {
             return new Move("Implode", "Implodes the foe",
-                70, 75, 20,Ailment.Burned,20, Kind.Special, Type.Fire);
+                70, 75, 20, Ailment.Burned, 20, Kind.Special, Type.Fire);
         }
         #endregion
         #region Water
         public static Move Bubble() {
-                    return new Move("Bubble", "The monster spits bubbles",
-                        40, 100, 30, Kind.Special, Type.Water);
-                }
+            return new Move("Bubble", "The monster spits bubbles",
+                40, 100, 30, Kind.Special, Type.Water);
+        }
         #endregion
         #region Grass
-        public static Move LeafCut()
-        {
+        public static Move LeafCut() {
             return new Move("LeafCut", "Cuts the target with a sharp leaf",
                 60, 80, 20, Kind.Special, Type.Grass);
         }
         #endregion
         #region Rock
-        public static Move RockThrow()
-        {
+        public static Move RockThrow() {
             return new Move("Rock throw", "Throw a rock at the foe",
                 65, 80, 20, Kind.Special, Type.Rock);
         }
         #endregion
         #region Ice
-        public static Move Freeze()
-        {
+        public static Move Freeze() {
             return new Move("Freeze", "Freezes the foe",
-                60, 80, 15,Ailment.Frozen,20, Kind.Special, Type.Ice);
+                60, 80, 15, Ailment.Frozen, 20, Kind.Special, Type.Ice);
         }
-        public static Move Icicle()
-        {
+        public static Move Icicle() {
             return new Move("Icicle", "Fires icicles at the foe",
                 75, 70, 10, Kind.Special, Type.Ice);
         }
         #endregion
         #region Poison
-        public static Move PoisonDart()
-        {
+        public static Move PoisonDart() {
             return new Move("Poison dart", "Shoots a poison dart at the target",
-                40, 70, 60,Ailment.Poisoned,60, Kind.Physical, Type.Normal);
+                40, 70, 60, Ailment.Poisoned, 60, Kind.Physical, Type.Normal);
         }
         #endregion
         #region Ghost
-        public static Move Torment()
-        {
+        public static Move Torment() {
             return new Move("Torment", "Torments the foe",
                 70, 75, 15, Kind.Special, Type.Ghost);
         }
-        public static Move SoulHunt()
-        {
+        public static Move SoulHunt() {
             return new Move("Soul hunt", "Hunt for the foes soul",
                 120, 40, 10, Kind.Special, Type.Ghost);
         }
         #endregion
         #region Psych
-        public static Move MindTrick()
-        {
+        public static Move MindTrick() {
             return new Move("MindTrick", "Tricks the foes mind causing him to hurt itself",
                 80, 60, 15, Kind.Special, Type.Psych);
         }
-        public static Move MindClose()
-        {
+        public static Move MindClose() {
             return new Move("Mind close", "Closes the foes mind",
-                20, 75, 5,Ailment.Sleep,80, Kind.Special, Type.Fire);
+                20, 75, 5, Ailment.Sleep, 80, Kind.Special, Type.Fire);
         }
         #endregion
         #region Flying
-        public static Move Tornado()
-        {
+        public static Move Tornado() {
             return new Move("Tornado", "Twists the foe in a tornado",
                 50, 90, 15, Kind.Special, Type.Flying);
         }
         #endregion
         #region Sound
-        public static Move Scream()
-        {
+        public static Move Scream() {
             return new Move("Scream", "Screams loudly at the foe",
                 60, 80, 20, Kind.Special, Type.Sound);
         }
-        public static Move HighPitch()
-        {
+        public static Move HighPitch() {
             return new Move("High pitch", "Make a high pitch sound, deafening the foe",
                 75, 65, 15, Kind.Special, Type.Sound);
         }
         #endregion
-
+        #endregion
         #region NonDamage
+
+        #region Normal
         public static Move Glare() {
-            //TODO: Test if this will keep reducing stats if used more than once
-            var statMod = new StatModifier(1, 1, 1, 1, .75);
+            var statMod = new ModApplyer(new StatModifier(1, 1, 1, 1, .75), false, true);
             return new Move("Glare", "The monster gives a cold glare and slightly lowers opponents speed",
-                0, 70, 25, statMod, statMod, Kind.NonDamage, Type.Normal);
+                0, 70, 25, statMod, null, Kind.NonDamage, Type.Normal);
         }
         public static Move Intimidate() {
-            var hit = new StatModifier(1, 0.75, 1, 1, 1);
-            var miss = new StatModifier(1, 1, 0.75, 1, 1);
+            var hit = new ModApplyer(new StatModifier(1, 0.75, 1, 1, 1), false, true);
+            var miss = new ModApplyer(new StatModifier(1, 1, 0.75, 1, 1), true, false);
             return new Move("Intimidate", "The monster shows the opponent just how intimidating it can be," +
                                           "which will slightly lower the opponents attack," +
                                           "if it misses will lower the users defense",
                 0, 75, 20, hit, miss, Kind.NonDamage, Type.Normal);
         }
+        #endregion
+        #region Fight
+        #endregion
+        #region Fire
+        #endregion
+        #region Water
+        #endregion
+        #region Grass
+        #endregion
+        #region Rock
+        #endregion
+        #region Ice
+        #endregion
+        #region Poison
+        #endregion
+        #region Ghost
+        #endregion
+        #region Psych
+        #endregion
+        #region Flying
+        #endregion
+        #region Sound
+        #endregion
         #endregion
         #endregion
     }
