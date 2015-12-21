@@ -6,14 +6,17 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Sandbox.Classes.UI;
 
 namespace VideoGame.Classes {
     public static class Drawer {
         public static SpriteBatch Batch;
-        private static Button LastClicked;
+        private static Button LastClickedButton;
+        private static ContainerButton LastClickedContainer;
         public static bool DrawMedicine, DrawCapture;
         public static Button bMedicine, bCapture;
-        public static List<Button> MoveButtons, InventoryButtons, ItemButtons, MedicineButtons, CaptureButtons, PartyButtons;
+        public static List<ContainerButton> MoveButtons, ItemButtons, MedicineButtons, CaptureButtons, PartyButtons;
+        public static List<Button> InventoryButtons;
 
         private static Rectangle userpos, opponentpos;
 
@@ -31,7 +34,7 @@ namespace VideoGame.Classes {
             foreach (var move in player.Monsters[0].Moves) {
                 var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height), ContentLoader.Button, $"{move.Name}", ContentLoader.Arial);
                 b.Draw(batch);
-                MoveButtons.Add(b);
+                MoveButtons.Add(new ContainerButton(b, move));
             }
         }
 
@@ -57,9 +60,9 @@ namespace VideoGame.Classes {
             if (DrawMedicine) {
                 foreach (var item in player.Inventory.Medicine) {
                     var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + (ContentLoader.Button.Height * 2), rec.Width, rec.Height),
-                            ContentLoader.Button) { Text = item.Value.Name };
+                            ContentLoader.Button);
                     b.Draw(batch);
-                    MedicineButtons.Add(b);
+                    MedicineButtons.Add(new ContainerButton(b, item.Value));
                     batch.Draw(item.Value.Sprite, new Vector2(b.Position.X + (item.Value.Sprite.Width / 2), b.Position.Y), Color.White);
                     batch.DrawString(ContentLoader.Arial, $"{item.Value.Amount}x",
                         new Vector2(b.Position.X, b.Position.Y + ContentLoader.Button.Height), Color.White);
@@ -70,7 +73,7 @@ namespace VideoGame.Classes {
                     var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + (ContentLoader.Button.Height * 2), rec.Width, rec.Height),
                         ContentLoader.Button) { Text = item.Value.Name };
                     b.Draw(batch);
-                    CaptureButtons.Add(b);
+                    CaptureButtons.Add(new ContainerButton(b, item.Value));
                     batch.Draw(item.Value.Sprite, new Vector2(b.Position.X + (item.Value.Sprite.Width / 2), b.Position.Y), Color.White);
                     batch.DrawString(ContentLoader.Arial, $"{item.Value.Amount}x",
                         new Vector2(b.Position.X, b.Position.Y + ContentLoader.Button.Height), Color.White);
@@ -89,22 +92,22 @@ namespace VideoGame.Classes {
                     if (!monster.IsDead) {
                         var rect = new Rectangle(rec.X += ContentLoader.Button.Width,
                             rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height);
-                        var b = new Button(rect, ContentLoader.Button) {Text = monster.Name};
+                        var b = new Button(rect, ContentLoader.Button);
                         b.Draw(batch);
                         batch.Draw(monster.PartySprite, new Vector2(rect.X + monster.PartySpriteSize.X - 4, rect.Y + 4),
                             monster.SourceRectangle, Color.White);
-                        PartyButtons.Add(b);
+                        PartyButtons.Add(new ContainerButton(b, monster));
                     }
                 }
             }
         }
 
         public static void DrawHealth(SpriteBatch batch, Monster user, Monster opponent) {
-            var userHealthPerc = (user.Stats.Health * 100) / user.PreviousStats.Health;
+            var userHealthPerc = (user.Stats.Health * 100) / user.MaxHealth;
             var currentUserHealthSize = new Vector2(userHealthPerc, 5);
             var userHealthRec = new Rectangle(userpos.X + 32, userpos.Y, (int)currentUserHealthSize.X, (int)currentUserHealthSize.Y);
 
-            var opponentHealthPerc = (opponent.Stats.Health * 100) / opponent.PreviousStats.Health;
+            var opponentHealthPerc = (opponent.Stats.Health * 100) / opponent.MaxHealth;
             var currentOpponentHealthSize = new Vector2(opponentHealthPerc, 5);
             var opponentHealthRec = new Rectangle(opponentpos.X - 32, opponentpos.Y + 32, (int)currentOpponentHealthSize.X, (int)currentOpponentHealthSize.Y);
 
@@ -178,56 +181,49 @@ namespace VideoGame.Classes {
         }
 
         public static void ClearLists() {
-            MoveButtons = new List<Button>();
             InventoryButtons = new List<Button>();
-            ItemButtons = new List<Button>();
-            MedicineButtons = new List<Button>();
-            CaptureButtons = new List<Button>();
-            PartyButtons = new List<Button>();
+            MoveButtons = new List<ContainerButton>();
+            ItemButtons = new List<ContainerButton>();
+            MedicineButtons = new List<ContainerButton>();
+            CaptureButtons = new List<ContainerButton>();
+            PartyButtons = new List<ContainerButton>();
         }
+
+        //public static void ClearButtons() {
+        //    LastClickedContainer = null;
+        //    LastClickedButton = null;
+        //}
 
         public static void UpdateBattleButtons(MouseState cur, MouseState prev) {
             if (ItemButtons != null)
                 foreach (var btn in ItemButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) {
-                        LastClicked = btn;
-                    }
+                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn; 
                 }
             if (MedicineButtons != null)
                 foreach (var btn in MedicineButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) {
-                        LastClicked = btn;
-                    }
+                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn; 
                 }
             if (CaptureButtons != null)
                 foreach (var btn in CaptureButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) {
-                        LastClicked = btn;
-                    }
+                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn; 
                 }
             if (InventoryButtons != null)
                 foreach (var btn in InventoryButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) {
-                        LastClicked = btn;
-                    }
+                    if (btn.IsClicked(cur, prev)) LastClickedButton = btn; 
                 }
             if (MoveButtons != null)
                 foreach (var btn in MoveButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) {
-                        LastClicked = btn;
-                    }
+                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn;
                 }
             if (PartyButtons != null)
                 foreach (var btn in PartyButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) {
-                        LastClicked = btn;
-                    }
+                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn;
                 }
 
             if (bMedicine != null)
@@ -244,7 +240,10 @@ namespace VideoGame.Classes {
         #endregion
 
         public static Button GetClickedButton() {
-            return LastClicked;
+            return LastClickedButton;
+        }
+        public static ContainerButton GetClickedContainerButton() {
+            return LastClickedContainer;
         }
     }
 }
