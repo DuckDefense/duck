@@ -49,7 +49,7 @@ namespace VideoGame.Classes {
         /// <summary>
         /// new Base stat and automatically calculate all stats
         /// </summary>
-        public Stats(int health, int attack, int defense, int specialattack, int specialdefense, int speed, int level) {
+        public Stats(int health, int attack, int defense, int specialattack, int specialdefense, int speed, int level, bool randomize = true) {
             BaseHealth = health;
             BaseAttack = attack;
             BaseDefense = defense;
@@ -57,24 +57,28 @@ namespace VideoGame.Classes {
             BaseSpecialDefense = specialdefense;
             BaseSpeed = speed;
 
-            //TODO: Change the random to crypto random
-            Random rand = new Random();
-            RandAttack = rand.Next(0, 31);
-            RandDefense = rand.Next(0, 31);
-            RandSpecialAttack = rand.Next(0, 31);
-            RandSpecialDefense = rand.Next(0, 31);
-            RandSpeed = rand.Next(0, 31);
-
+            if (randomize) {
+                var rand = new CryptoRandom();
+                RandAttack = rand.Next(0, 31);
+                RandDefense = rand.Next(0, 31);
+                RandSpecialAttack = rand.Next(0, 31);
+                RandSpecialDefense = rand.Next(0, 31);
+                RandSpeed = rand.Next(0, 31);
+            }
             CalculateStats(level);
         }
         private void CalculateStats(int level) {
-            //Shamelessly stolen from Pokemon, without EVs
             Health = ((((BaseHealth * 20) * 2) * level) / 250) + 5;
             Attack = ((((BaseAttack * RandAttack) * 2) * level) / 250) + 5;
             Defense = ((((BaseDefense * RandDefense) * 2) * level) / 250) + 5;
             SpecialAttack = ((((BaseSpecialAttack * RandSpecialAttack) * 2) * level) / 250) + 5;
             SpecialDefense = ((((BaseSpecialDefense * RandSpecialDefense) * 2) * level) / 250) + 5;
             Speed = ((((BaseSpeed * RandSpeed) * 2) * level) / 250) + 5;
+        }
+
+        public void RestorePreviousStats(Monster monster) {
+            var stats = monster.Stats;
+            monster.PreviousStats = new Stats(monster.MaxHealth, stats.BaseAttack, stats.BaseDefense, stats.BaseSpecialAttack, stats.BaseSpecialDefense, stats.BaseSpeed, monster.Level);
         }
     }
 
@@ -106,16 +110,13 @@ namespace VideoGame.Classes {
         public Stats ApplyModifiers(Monster monster) {
             var stats = monster.Stats;
             CheckMinimum(monster.Stats, monster.PreviousStats);
-            //double att = stats.Attack * AttackMod;
-            //double def = stats.Defense * DefenseMod;
-            //double specAtt = stats.SpecialAttack * SpecialAttackMod;
-            //double specDef = stats.SpecialDefense * SpecialDefenseMod;
-            //double spd = stats.Speed * SpeedMod;
             stats.Attack = Convert.ToInt32(stats.Attack * AttackMod);
             stats.Defense = Convert.ToInt32(stats.Defense * DefenseMod);
             stats.SpecialAttack = Convert.ToInt32(stats.SpecialAttack * SpecialAttackMod);
             stats.SpecialDefense = Convert.ToInt32(stats.SpecialDefense * SpecialDefenseMod);
             stats.Speed = Convert.ToInt32(stats.Speed * SpeedMod);
+            //Actually set the right stats to PreviousStats
+            monster.PreviousStats.RestorePreviousStats(monster);
             return stats;
         }
 
