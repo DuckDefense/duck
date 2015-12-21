@@ -47,9 +47,36 @@ namespace VideoGame.Classes {
         public Stats() { }
 
         /// <summary>
+        /// Stats with randomize disabled
+        /// </summary>
+        /// <param name="stats">Current stats</param>
+        /// <param name="level">Level</param>
+        /// <param name="randAttack"></param>
+        /// <param name="randDefense"></param>
+        /// <param name="randSpecialAttack"></param>
+        /// <param name="randSpecialDefense"></param>
+        /// <param name="randSpeed"></param>
+        public Stats(Stats stats, int level, int randAttack, int randDefense, int randSpecialAttack, int randSpecialDefense, int randSpeed) {
+            BaseHealth = stats.BaseHealth;
+            BaseAttack = stats.BaseAttack;
+            BaseDefense = stats.BaseDefense;
+            BaseSpecialAttack = stats.BaseSpecialAttack;
+            BaseSpecialDefense = stats.BaseSpecialDefense;
+            BaseSpeed = stats.BaseSpeed;
+
+            RandAttack = randAttack;
+            RandDefense = randDefense;
+            RandSpecialAttack = randSpecialAttack;
+            RandSpecialDefense = randSpecialDefense;
+            RandSpeed = randSpeed;
+
+            CalculateStats(level);
+        }
+
+        /// <summary>
         /// new Base stat and automatically calculate all stats
         /// </summary>
-        public Stats(int health, int attack, int defense, int specialattack, int specialdefense, int speed, int level, bool randomize = true) {
+        public Stats(int health, int attack, int defense, int specialattack, int specialdefense, int speed, int level) {
             BaseHealth = health;
             BaseAttack = attack;
             BaseDefense = defense;
@@ -57,14 +84,13 @@ namespace VideoGame.Classes {
             BaseSpecialDefense = specialdefense;
             BaseSpeed = speed;
 
-            if (randomize) {
-                var rand = new CryptoRandom();
-                RandAttack = rand.Next(0, 31);
-                RandDefense = rand.Next(0, 31);
-                RandSpecialAttack = rand.Next(0, 31);
-                RandSpecialDefense = rand.Next(0, 31);
-                RandSpeed = rand.Next(0, 31);
-            }
+            var rand = new CryptoRandom();
+            RandAttack = rand.Next(0, 31);
+            RandDefense = rand.Next(0, 31);
+            RandSpecialAttack = rand.Next(0, 31);
+            RandSpecialDefense = rand.Next(0, 31);
+            RandSpeed = rand.Next(0, 31);
+
             CalculateStats(level);
         }
         private void CalculateStats(int level) {
