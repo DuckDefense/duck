@@ -68,7 +68,10 @@ namespace VideoGame {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ContentLoader.SetContent(Content, graphics);
             _contentLoader.LoadContent();
-
+            var tegenstanderMonsters = new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) };
+            tegenstander = new Character("Nice guy", 6700, new Inventory(), tegenstanderMonsters, 
+                ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman, new Vector2(200, 195));
+            tegenstander.AI = new AI(tegenstander, 8, "YOOOOOOOOOOOOOOOOOOOOOOO");
             player = new Character("Pietertje", 5000, new Inventory(), new List<Monster>(),
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.Christman, new Vector2(150, 100), true);
             player.Debug = true;
@@ -89,6 +92,7 @@ namespace VideoGame {
                 battleOver = true,
                 battleStart = false
             };
+            player.Monsters[0].ReceiveExp(Monster.Gronkey(50));
 
             // TODO: use this.Content to load your game content here
         }
@@ -117,6 +121,8 @@ namespace VideoGame {
                 player.MonsterUpdate(gameTime);
             }
             else {
+                tegenstander.Update(gameTime, currentKeyboardState, previousKeyboardState);
+                tegenstander.AI.Update(player, ref currentBattle);
                 player.Update(gameTime, currentKeyboardState, previousKeyboardState);
                 player.CurrentArea.GetCollision(player);
                 player.CurrentArea.GetEncounters(player, ref currentBattle, ref battling);
@@ -146,6 +152,7 @@ namespace VideoGame {
                 player.CurrentArea.Draw(camera, spriteBatch);
                 player.CurrentArea.EnteredArea = false;
                 player.Draw(spriteBatch);
+                tegenstander.Draw(spriteBatch);
             }
             spriteBatch.DrawString(ContentLoader.Arial, $"FPS: {fpsCounter.AverageFramesPerSecond}", new Vector2(5, 5), Color.Yellow);
             spriteBatch.End();
