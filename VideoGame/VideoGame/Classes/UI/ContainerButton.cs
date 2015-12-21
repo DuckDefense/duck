@@ -10,27 +10,39 @@ using Microsoft.Xna.Framework.Input;
 using VideoGame.Classes;
 
 namespace Sandbox.Classes.UI {
-    class ContainerButton {
+    public class ContainerButton {
         private Vector2 middlePos;
         public Button Button;
+        public Move Move;
         public Monster Monster;
         public Medicine Medicine;
         public Capture Capture;
 
+        public ContainerButton(Button button, Move move) {
+            Button = button;
+            Move = move;
+            Monster = null;
+            Medicine = null;
+            Capture = null;
+        }
+
         public ContainerButton(Button button, Monster monster) {
             Button = button;
+            Move = null;
             Monster = monster;
             Medicine = null;
             Capture = null;
         }
         public ContainerButton(Button button, Medicine medicine) {
             Button = button;
+            Move = null;
             Monster = null;
             Medicine = medicine;
             Capture = null;
         }
         public ContainerButton(Button button, Capture capture) {
             Button = button;
+            Move = null;
             Monster = null;
             Medicine = null;
             Capture = capture;
