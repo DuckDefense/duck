@@ -75,11 +75,6 @@ namespace VideoGame.Classes {
             SpecialDefense = ((((BaseSpecialDefense * RandSpecialDefense) * 2) * level) / 250) + 5;
             Speed = ((((BaseSpeed * RandSpeed) * 2) * level) / 250) + 5;
         }
-
-        public void RestorePreviousStats(Monster monster) {
-            var stats = monster.Stats;
-            monster.PreviousStats = new Stats(monster.MaxHealth, stats.BaseAttack, stats.BaseDefense, stats.BaseSpecialAttack, stats.BaseSpecialDefense, stats.BaseSpeed, monster.Level);
-        }
     }
 
     public class StatModifier {
@@ -116,7 +111,7 @@ namespace VideoGame.Classes {
             stats.SpecialDefense = Convert.ToInt32(stats.SpecialDefense * SpecialDefenseMod);
             stats.Speed = Convert.ToInt32(stats.Speed * SpeedMod);
             //Actually set the right stats to PreviousStats
-            monster.PreviousStats.RestorePreviousStats(monster);
+            monster.RestorePreviousStats();
             return stats;
         }
 

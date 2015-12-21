@@ -27,15 +27,16 @@ namespace VideoGame.Classes {
         public bool IsDead => Stats.Health <= 0; //Returns true if health is 0 or below it
         public bool DeadCount = false;
         public bool IsWild;
+        public bool Fought;
 
         public Texture2D FrontSprite; //Sprite that is shown when you're fighting this monster
         public Texture2D BackSprite; //Sprite that is shown when you've send out this monster
         public Texture2D PartySprite; //Sprite that is shown if you open the party
-                                      //Maybe add Points for Sprite sizes
                                       //If we are going add monsters in the world we need to add a position and a collision box
-        private int experience;
 
-        public int Experience {
+        private int experience;
+        public int Experience
+        {
             get { return Level * Level * 5; }
             set { experience = value; }
         }
@@ -66,9 +67,11 @@ namespace VideoGame.Classes {
         /// Monster with one type
         /// </summary>
         /// <param name="id">ID of the monster</param>
+        /// <param name="level">Level</param>
         /// <param name="name">Name</param>
         /// <param name="description">Short description of the monster</param>
         /// <param name="maleChance">Chance for the monster to be male</param>
+        /// <param name="captureChance">Chance to capture this monster</param>
         /// <param name="helditem">Item the monster is carrying</param>
         /// <param name="stats">Stats the monster has</param>
         /// <param name="type">Type which changes how much damage certain moves do</param>
@@ -103,8 +106,10 @@ namespace VideoGame.Classes {
         /// Monster with two types
         /// </summary>
         /// <param name="id">Id of the monster</param>
+        /// <param name="level">Level</param>
         /// <param name="name">Name</param>
         /// <param name="maleChance">Chance for the monster to be male</param>
+        /// <param name="captureChance">Chance to capture this monster</param>
         /// <param name="helditem">Item the monster is carrying</param>
         /// <param name="stats">Stats the monster has</param>
         /// <param name="description">Short description of the monster</param>
@@ -147,8 +152,16 @@ namespace VideoGame.Classes {
             var expGain = (a * l * y) / 3;
 
             Experience += Convert.ToInt32(expGain);
-
+            CheckLevelUp();
             //TODO: Add a experience calculation which will return level based on the amount of experience it has
+        }
+        public void RestorePreviousStats() {
+            var stats = Stats;
+            PreviousStats = new Stats(MaxHealth, stats.BaseAttack, stats.BaseDefense, stats.BaseSpecialAttack, stats.BaseSpecialDefense, stats.BaseSpeed, Level);
+        }
+
+        public void CheckLevelUp() {
+            var level = Experience / 5 / Level;
         }
 
         public void LevelUp(int amount, int id) {
@@ -276,8 +289,7 @@ namespace VideoGame.Classes {
                 ContentLoader.HuffsteinFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
         }
 
-        public static Monster Fester(int level, Item item = null)
-        {
+        public static Monster Fester(int level, Item item = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
                 Ability.Fuzzy()
