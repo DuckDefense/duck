@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="4">
+ <tileset firstgid="1" name="city tiles" tilewidth="32" tileheight="32" tilecount="180">
+  <image source="city tiles.png" width="192" height="960"/>
+ </tileset>
+ <layer name="Tilelaag 1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt0TEKgEAUQ8EUaqP3P6/VnuAvEmQG0gfemeQY7Ao7TVqssY8eXfTookcXPbro0UWPLnp00aPLnVmL5/vLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBbLx+kAv8=
+  </data>
+ </layer>
+ <layer name="detail" width="100" height="100">
+  <properties>
+   <property name="Collision" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0bEJACAUQ0FrB9D9N9VSJ/hB7yB94LUGALyuVx/gokcWPbLokUWPLGePsTerjgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADABxYoHQBq
+  </data>
+ </layer>
+ <layer name="Change To Shop" width="100" height="100">
+  <properties>
+   <property name="EnterArea" value="shop"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAIA6C3sX9DY3w6SEACAHw37QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcsjXJACg=
+  </data>
+ </layer>
+ <layer name="Change Area" width="100" height="100">
+  <properties>
+   <property name="EnterArea" value="Route 1"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7Dd+BeMhh2Ep1XQBAAAAIDGfAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLUJ+gAL
+  </data>
+ </layer>
+ <layer name="obstackles" width="100" height="100">
+  <properties>
+   <property name="Collision" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1sEKgCAMAFDrUpeg/v9nC6LbRGg7yXsgiCKMTaatvc5nXD/nMKs1eX4riYLPHqz1chzV7iiMhVgvx1HtqDXqV8tgX7+qlb3z+hUzy/6vqOWNBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACI3RREAQs=
+  </data>
+ </layer>
+ <layer name="obstackles2" width="100" height="100">
+  <properties>
+   <property name="Collision" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1DkKQjEARdEvFmJh5YQTTii6/w36NpAi/qgfPAduExJI9boOqDVPi7RMq7Qu3Jt87Uf/YVw436Rt2qV9OlS+5z3TwvkxndI5XdK18j1t3dI9jdIjPQv37FVbfffGXrXVd2/s1bDYq2GZ/foDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf8gL2lwKF
+  </data>
+ </layer>
+</map>
