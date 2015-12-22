@@ -12,12 +12,18 @@ namespace VideoGame.Classes {
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDevice;
         public static Texture2D Health;
+
+        #region Monsters
         public static Texture2D MonsterViewer;
         public static Texture2D GronkeyFront, GronkeyBack, GronkeyParty;
         public static Texture2D ArmlerFront, ArmlerBack, ArmlerParty;
         public static Texture2D BrassFront, BrassBack, BrassParty;
         public static Texture2D HuffsteinFront, HuffsteinBack, HuffsteinParty;
         public static Texture2D FesterFront;
+        #endregion
+        
+        public static Texture2D NormalType, FightType, FireType, WaterType, GrassType, PoisonType, PsychType, GhostType, IceType, RockType, FlyingType, SoundType;
+
         public static Texture2D GrassyBackground;
         public static Texture2D Christman;
         public static Texture2D Button;
@@ -58,6 +64,21 @@ namespace VideoGame.Classes {
             GrassyBackground = Content.Load<Texture2D>(@"Sprites/Battle/Backgrounds/Grassy");
             Button = Content.Load<Texture2D>(@"Sprites/Buttons/Button");
             Health = new Texture2D(GraphicsDevice, 5, 5, false, SurfaceFormat.Color);
+            #endregion
+
+            #region Types
+            NormalType = Content.Load<Texture2D>(@"Sprites/Type/Normal");
+            FightType = Content.Load<Texture2D>(@"Sprites/Type/Fight");
+            FireType = Content.Load<Texture2D>(@"Sprites/Type/Fire");
+            WaterType = Content.Load<Texture2D>(@"Sprites/Type/Water");
+            GrassType = Content.Load<Texture2D>(@"Sprites/Type/Grass");
+            PoisonType = Content.Load<Texture2D>(@"Sprites/Type/Poison");
+            PsychType = Content.Load<Texture2D>(@"Sprites/Type/Psych");
+            GhostType = Content.Load<Texture2D>(@"Sprites/Type/Ghost");
+            IceType = Content.Load<Texture2D>(@"Sprites/Type/Ice");
+            RockType = Content.Load<Texture2D>(@"Sprites/Type/Rock");
+            FlyingType = Content.Load<Texture2D>(@"Sprites/Type/Flying");
+            SoundType = Content.Load<Texture2D>(@"Sprites/Type/Sound");
             #endregion
 
             #region Maps
