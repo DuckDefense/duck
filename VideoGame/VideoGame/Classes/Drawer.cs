@@ -22,6 +22,24 @@ namespace VideoGame.Classes {
 
         #region Battle
 
+        private static Texture2D GetTypeTexture(Type type) {
+            switch (type) {
+            case Type.Normal: return ContentLoader.NormalType;
+            case Type.Fight: return ContentLoader.FightType;
+            case Type.Fire: return ContentLoader.FireType;
+            case Type.Water: return ContentLoader.WaterType;
+            case Type.Grass: return ContentLoader.GrassType;
+            case Type.Rock: return ContentLoader.RockType;
+            case Type.Poison: return ContentLoader.PoisonType;
+            case Type.Psych: return ContentLoader.PsychType;
+            case Type.Flying: return ContentLoader.FlyingType;
+            case Type.Ice: return ContentLoader.IceType;
+            case Type.Ghost: return ContentLoader.GhostType;
+            case Type.Sound: return ContentLoader.SoundType;
+            }
+            return ContentLoader.NormalType;
+        }
+
         public static void Initialize(GraphicsDeviceManager graphics) {
             Batch = new SpriteBatch(graphics.GraphicsDevice);
         }
@@ -33,7 +51,11 @@ namespace VideoGame.Classes {
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
             foreach (var move in player.Monsters[0].Moves) {
                 var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height), ContentLoader.Button, $"{move.Name}", ContentLoader.Arial);
+                var typeRec = new Rectangle(rec.X + (ContentLoader.Button.Width / 4), rec.Y + ContentLoader.Button.Height + (ContentLoader.NormalType.Height * 2), ContentLoader.NormalType.Width, ContentLoader.NormalType.Height);
+                var usesRec = new Rectangle(rec.X + (ContentLoader.Button.Width / 5), rec.Y + (ContentLoader.Button.Height + (ContentLoader.NormalType.Height * 3)),ContentLoader.NormalType.Width, ContentLoader.NormalType.Height);
                 b.Draw(batch);
+                batch.Draw(GetTypeTexture(move.Type), typeRec, Color.White);
+                batch.DrawString(ContentLoader.Arial, $"{move.Uses}/{move.MaxUses}", new Vector2(usesRec.X, usesRec.Y), Color.White);
                 MoveButtons.Add(new ContainerButton(b, move));
             }
         }
@@ -198,22 +220,22 @@ namespace VideoGame.Classes {
             if (ItemButtons != null)
                 foreach (var btn in ItemButtons) {
                     btn.Update(cur, prev);
-                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn; 
+                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn;
                 }
             if (MedicineButtons != null)
                 foreach (var btn in MedicineButtons) {
                     btn.Update(cur, prev);
-                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn; 
+                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn;
                 }
             if (CaptureButtons != null)
                 foreach (var btn in CaptureButtons) {
                     btn.Update(cur, prev);
-                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn; 
+                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn;
                 }
             if (InventoryButtons != null)
                 foreach (var btn in InventoryButtons) {
                     btn.Update(cur, prev);
-                    if (btn.IsClicked(cur, prev)) LastClickedButton = btn; 
+                    if (btn.IsClicked(cur, prev)) LastClickedButton = btn;
                 }
             if (MoveButtons != null)
                 foreach (var btn in MoveButtons) {
