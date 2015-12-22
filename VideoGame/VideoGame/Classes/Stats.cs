@@ -130,6 +130,7 @@ namespace VideoGame.Classes {
 
         public Stats ApplyModifiers(Monster monster) {
             var stats = monster.Stats;
+            monster.RestorePreviousStats();
             CheckMinimum(monster.Stats, monster.PreviousStats);
             stats.Attack = Convert.ToInt32(stats.Attack * AttackMod);
             stats.Defense = Convert.ToInt32(stats.Defense * DefenseMod);
@@ -137,22 +138,21 @@ namespace VideoGame.Classes {
             stats.SpecialDefense = Convert.ToInt32(stats.SpecialDefense * SpecialDefenseMod);
             stats.Speed = Convert.ToInt32(stats.Speed * SpeedMod);
             //Actually set the right stats to PreviousStats
-            monster.RestorePreviousStats();
             return stats;
         }
 
         private void CheckMinimum(Stats curStats, Stats prevStats) {
-            var attDif = curStats.Attack - prevStats.Attack;
-            var defDif = curStats.Defense - prevStats.Defense;
-            var specAttDif = curStats.SpecialAttack - prevStats.SpecialAttack;
-            var specDefDif = curStats.SpecialDefense - prevStats.SpecialDefense;
-            var spdDif = curStats.Speed - prevStats.Speed;
+            double attDif = prevStats.Attack - curStats.Attack;
+            double defDif = prevStats.Defense - curStats.Defense;
+            double specAttDif = prevStats.SpecialAttack - curStats.SpecialAttack;
+            double specDefDif = prevStats.SpecialDefense - curStats.SpecialDefense;
+            double spdDif = prevStats.Speed - curStats.Speed;
             //Check if stats are below 40% of the original
-            if (attDif != 0) if ((attDif / prevStats.Attack) <= 0.4) { curStats.Attack = Convert.ToInt32(prevStats.Attack * 0.4); AttackMod = 1; }
-            if (defDif != 0) if ((defDif / prevStats.Defense) <= 0.4) { curStats.Defense = Convert.ToInt32(prevStats.Defense * 0.4); DefenseMod = 1; }
-            if (specAttDif != 0) if ((specAttDif / prevStats.SpecialAttack) <= 0.4) { curStats.SpecialAttack = Convert.ToInt32(prevStats.SpecialAttack * 0.4); SpecialAttackMod = 1; }
-            if (specAttDif != 0) if ((specDefDif / prevStats.SpecialDefense) <= 0.4) { curStats.SpecialDefense = Convert.ToInt32(prevStats.SpecialDefense * 0.4); SpecialDefenseMod = 1; }
-            if (spdDif != 0) if ((spdDif / prevStats.Speed) <= 0.4) { curStats.Speed = Convert.ToInt32(prevStats.Speed * 0.4); SpeedMod = 1; }
+            if (attDif != 0) if ((attDif / prevStats.Attack) >= 0.75) { curStats.Attack = Convert.ToInt32(prevStats.Attack * 0.25); AttackMod = 1; }
+            if (defDif != 0) if ((defDif / prevStats.Defense) >= 0.75) { curStats.Defense = Convert.ToInt32(prevStats.Defense * 0.25); DefenseMod = 1; }
+            if (specAttDif != 0) if ((specAttDif / prevStats.SpecialAttack) >= 0.75) { curStats.SpecialAttack = Convert.ToInt32(prevStats.SpecialAttack * 0.25); SpecialAttackMod = 1; }
+            if (specAttDif != 0) if ((specDefDif / prevStats.SpecialDefense) >= 0.75) { curStats.SpecialDefense = Convert.ToInt32(prevStats.SpecialDefense * 0.25); SpecialDefenseMod = 1; }
+            if (spdDif != 0) if ((spdDif / prevStats.Speed) >= 0.75) { curStats.Speed = Convert.ToInt32(prevStats.Speed * 0.25); SpeedMod = 1; }
         }
     }
 }
