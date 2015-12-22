@@ -67,18 +67,18 @@ namespace VideoGame.Classes {
             #endregion
 
             #region Types
-            NormalType = Content.Load<Texture2D>(@"Sprites/Type/Normal");
-            FightType = Content.Load<Texture2D>(@"Sprites/Type/Fight");
-            FireType = Content.Load<Texture2D>(@"Sprites/Type/Fire");
-            WaterType = Content.Load<Texture2D>(@"Sprites/Type/Water");
-            GrassType = Content.Load<Texture2D>(@"Sprites/Type/Grass");
-            PoisonType = Content.Load<Texture2D>(@"Sprites/Type/Poison");
-            PsychType = Content.Load<Texture2D>(@"Sprites/Type/Psych");
-            GhostType = Content.Load<Texture2D>(@"Sprites/Type/Ghost");
-            IceType = Content.Load<Texture2D>(@"Sprites/Type/Ice");
-            RockType = Content.Load<Texture2D>(@"Sprites/Type/Rock");
-            FlyingType = Content.Load<Texture2D>(@"Sprites/Type/Flying");
-            SoundType = Content.Load<Texture2D>(@"Sprites/Type/Sound");
+            NormalType = Content.Load<Texture2D>(@"Sprites/Types/Normal");
+            FightType = Content.Load<Texture2D>(@"Sprites/Types/Fight");
+            FireType = Content.Load<Texture2D>(@"Sprites/Types/Fire");
+            WaterType = Content.Load<Texture2D>(@"Sprites/Types/Water");
+            GrassType = Content.Load<Texture2D>(@"Sprites/Types/Grass");
+            PoisonType = Content.Load<Texture2D>(@"Sprites/Types/Poison");
+            PsychType = Content.Load<Texture2D>(@"Sprites/Types/Psych");
+            GhostType = Content.Load<Texture2D>(@"Sprites/Types/Ghost");
+            IceType = Content.Load<Texture2D>(@"Sprites/Types/Ice");
+            RockType = Content.Load<Texture2D>(@"Sprites/Types/Rock");
+            FlyingType = Content.Load<Texture2D>(@"Sprites/Types/Flying");
+            SoundType = Content.Load<Texture2D>(@"Sprites/Types/Sound");
             #endregion
 
             #region Maps
