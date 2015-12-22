@@ -33,6 +33,7 @@ namespace VideoGame.Classes {
         public Kind Kind;
         public int Accuracy;
         public int Uses;
+        public int MaxUses;
         public Type Type;
         public double AilmentChance;
         public Ailment Ailment;
@@ -46,6 +47,7 @@ namespace VideoGame.Classes {
             BaseDamage = damage;
             Accuracy = accuracy;
             Uses = uses;
+            MaxUses = uses;
             Kind = kind;
             Type = type;
         }
@@ -55,6 +57,7 @@ namespace VideoGame.Classes {
             BaseDamage = damage;
             Accuracy = accuracy;
             Uses = uses;
+            MaxUses = uses;
             HitModifier = hitModifier;
             MissModifier = missModifier;
             Kind = kind;
@@ -67,6 +70,7 @@ namespace VideoGame.Classes {
             BaseDamage = damage;
             Accuracy = accuracy;
             Uses = uses;
+            MaxUses = uses;
             Ailment = ailment;
             AilmentChance = ailmentChance;
             Kind = kind;
@@ -79,6 +83,8 @@ namespace VideoGame.Classes {
         /// <param name="user">Monster that is using this move</param>
         /// <param name="receiver">Monster that is receiving this move</param>
         public void Execute(Monster user, Monster receiver) {
+            //TODO: Actually remove uses here
+            Uses += 1;
             double critMultiplier = 1;
             //Check if the move hit
             var chanceToHit = Accuracy + ((user.Stats.Speed - receiver.Stats.Speed) / 3);
@@ -112,13 +118,13 @@ namespace VideoGame.Classes {
             else {
                 Missed = true;
                 if (MissModifier != null) {
-                    if (MissModifier.ApplyToOpponent) receiver.Stats = MissModifier.Modifier.ApplyModifiers(receiver);
+                    if (MissModifier.ApplyToOpponent)
+                        receiver.Stats = MissModifier.Modifier.ApplyModifiers(receiver);
                     if (MissModifier.ApplyToUser) user.Stats = MissModifier.Modifier.ApplyModifiers(user);
                     //receiver.Stats = MissModifier.ApplyModifiers(receiver);
                 }
             }
-            Uses -= 1;
-            // Check if either pokemon died
+            // Check if either monster died
             if (user.Stats.Health >= 0) user.Ailment = Ailment.Fainted;
             if (receiver.Stats.Health >= 0) receiver.Ailment = Ailment.Fainted;
         }
