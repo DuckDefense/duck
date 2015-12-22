@@ -78,13 +78,11 @@ namespace VideoGame.Classes {
         }
 
         public void Attack(Monster user, Monster opponent, Move chosen) {
-            if (SelectedMove != null || !playerTurn) {
-                //Execute chosen move here
+            if (chosen != null || !playerTurn) {
                 chosen.Execute(user, opponent);
-                //Wait for the move to complete
-                //choose opponent move here with ai
             }
         }
+
 
         public void Run(Monster user, Monster opponent) {
             int a = user.Stats.Speed;
@@ -341,8 +339,13 @@ namespace VideoGame.Classes {
                         SelectedMove = m;
                         break;
                     }
-                    Attack(CurrentUserMonster, CurrentOpponentMonster, SelectedMove);
-                    playerTurn = false;
+                    if (SelectedMove.Uses != 0) {
+                        Attack(CurrentUserMonster, CurrentOpponentMonster, SelectedMove);
+                        playerTurn = false;
+                    }
+                    else {
+                        //TODO: Display a message here saying the move has no remaining uses
+                    }
                 }
                 //Get selected monster from party
                 if (drawParty) {
