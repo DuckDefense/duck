@@ -9,10 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
 
-namespace VideoGame.Classes
-{
-    public class Area
-    {
+namespace VideoGame.Classes {
+    public class Area {
 
         private static Point Levelrange;
         public string Name;
@@ -29,56 +27,67 @@ namespace VideoGame.Classes
         static int tileHeight = 32;
         private Vector2 previousPos = new Vector2();
 
-        public Area(string name, Point levelrange, List<Monster> monsters, TiledMap map)
-        {
+        public Area(string name, Point levelrange, List<Monster> monsters, TiledMap map) {
             Levelrange = levelrange;
             Name = name;
             Monsters = monsters;
             Map = map;
         }
 
-        public void Draw(Camera2D camera, SpriteBatch batch)
-        {
+        public void Draw(Camera2D camera, SpriteBatch batch) {
             //Map.Draw(camera, true);
-            foreach (var layer in Map.Layers)
-            {
+            foreach (var layer in Map.Layers) {
                 layer.Draw(camera);
             }
             foreach (var encounterColider in EncounterColiders) { batch.Draw(ContentLoader.Button, encounterColider, Color.Green); }
             foreach (var collisionColider in CollisionColiders) { batch.Draw(ContentLoader.Button, collisionColider, Color.Blue); }
-            foreach (var areaCollider in AreaColiders) { batch.Draw(ContentLoader.Button, areaCollider.Value, Color.Aqua);}
+            foreach (var areaCollider in AreaColiders) { batch.Draw(ContentLoader.Button, areaCollider.Value, Color.Aqua); }
         }
 
-        public void GetCollision(Character player)
-        {
+        public void GetCollision(Character player) {
             CollisionColiders.Clear();
             var collisionLayers = Map.TileLayers.Where(layer => layer.Properties.ContainsKey("Collision") && layer.Properties.ContainsValue("true")).ToList();
-            foreach (var layer in collisionLayers)
-            {
-                foreach (var tile in layer.Tiles)
-                {
-                    if (tile.Id != 0)
-                    {
+            foreach (var layer in collisionLayers) {
+                foreach (var tile in layer.Tiles) {
+                    if (tile.Id != 0) {
                         collisionHitbox = new Rectangle((tile.X * tileWidth), (tile.Y * tileHeight), tileWidth, tileHeight);
                         CollisionColiders.Add(collisionHitbox);
                     }
                 }
             }
-            if (CollisionColiders.Count != 0)
-            {
-                foreach (var collision in CollisionColiders)
-                {
-                    if (player.Hitbox.Intersects(collision))
-                    {
+            if (CollisionColiders.Count != 0) {
+                foreach (var collision in CollisionColiders) {
+                    if (player.Hitbox.Intersects(collision)) {
+                        var moduloX = player.Position.X % 32;
+                        var moduloY = player.Position.Y % 32;
                         var vector = new Vector2(collision.X, collision.Y);
                         //If right of it
-                        if (vector.X >= player.Position.X) { player.Position.X -= 1; }
+                        if (vector.X >= player.Position.X) {
+                            if (player.RightCollide(collision)) {
+                                if (moduloX >= 16) moduloX -= 32;
+                                player.Position.X -= moduloX;
+                            }
+                        }
                         //if left of it
-                        if (vector.X <= player.Position.X) { player.Position.X += 1; }
+                        if (vector.X <= player.Position.X) {
+                            if (player.LeftCollide(collision)) {
+                                if (moduloX >= 16) moduloX -= 32;
+                                player.Position.X -= moduloX;
+                            }
+                        }
                         //if above it
-                        if (vector.Y >= player.Position.Y) { player.Position.Y -= 1; }
+                        if (player.UpperCollide(collision))
+                            if (vector.Y >= player.Position.Y - 32) {
+                                if (moduloY >= 16) moduloY -= 32;
+                                player.Position.Y -= moduloY;
+                            }
+                        //}
                         //if below it
-                        if (vector.Y <= player.Position.Y) { player.Position.Y += 1; }
+                        if (player.LowerCollide(collision))
+                            if (vector.Y <= player.Position.Y + 32) {
+                                if (moduloY >= 16) moduloY -= 32;
+                                player.Position.Y -= moduloY;
+                            }
                     }
                 }
             }
@@ -86,37 +95,28 @@ namespace VideoGame.Classes
 
 
 
-        public void GetEncounters(Character player, ref Battle battle, ref bool battling)
-        {
+        public void GetEncounters(Character player, ref Battle battle, ref bool battling) {
             bool test = true;
             EncounterColiders.Clear();
             var encounterLayers = Map.TileLayers.Where(layer => layer.Properties.ContainsKey("Encounters") && layer.Properties.ContainsValue("true")).ToList();
-            foreach (var layer in encounterLayers)
-            {
-                foreach (var tile in layer.Tiles)
-                {
-                    if (tile.Id != 0)
-                    {
+            foreach (var layer in encounterLayers) {
+                foreach (var tile in layer.Tiles) {
+                    if (tile.Id != 0) {
                         encounterHitbox = new Rectangle((tile.X * tileWidth), (tile.Y * tileHeight), tileWidth, tileHeight);
                         EncounterColiders.Add(encounterHitbox);
                     }
                 }
             }
-            if (EncounterColiders.Count != 0)
-            {
-                foreach (var collision in EncounterColiders)
-                {
-                    if (player.Hitbox.Intersects(collision))
-                    {
+            if (EncounterColiders.Count != 0) {
+                foreach (var collision in EncounterColiders) {
+                    if (player.Hitbox.Intersects(collision)) {
                         Random rand = new Random();
 
-                        if (player.Position != previousPos && player.Moved >= 30.5f)
-                        {
+                        if (player.Position != previousPos && player.Moved >= 30.5f) {
                             var chanceToEncounter = rand.Next(0, 100);
 
 
-                            if (chanceToEncounter <= 5)
-                            {
+                            if (chanceToEncounter <= 5) {
                                 battling = true;
                                 battle = new Battle(player, GetRandomMonster());
                             }
@@ -127,26 +127,22 @@ namespace VideoGame.Classes
             previousPos = player.Position;
         }
 
-        public void GetArea(Character player)
-        {
+
+        public void GetArea(Character player) {
             AreaColiders.Clear();
             var collisionLayers = Map.TileLayers.Where(layer => layer.Properties.ContainsKey("EnterArea")).ToList();
-            foreach (var layer in collisionLayers)
-            {
-                foreach (var tile in layer.Tiles.Where(tile => tile.Id != 0))
-                {
+            foreach (var layer in collisionLayers) {
+                foreach (var tile in layer.Tiles.Where(tile => tile.Id != 0)) {
                     //if(AreaColiders.ContainsKey(layer.Properties.Values))
                     collisionHitbox = new Rectangle((tile.X * tileWidth), (tile.Y * tileHeight), tileWidth, tileHeight);
                     var areaName = layer.Properties.Values.ElementAt(0);
-                    if (!AreaColiders.ContainsKey(areaName)) { 
+                    if (!AreaColiders.ContainsKey(areaName)) {
                         AreaColiders.Add(areaName, collisionHitbox);
                     }
                 }
             }
-            if (AreaColiders.Count != 0)
-            {
-                foreach (var entry in AreaColiders.Where(entry => player.Hitbox.Intersects(entry.Value)))
-                {
+            if (AreaColiders.Count != 0) {
+                foreach (var entry in AreaColiders.Where(entry => player.Hitbox.Intersects(entry.Value))) {
                     //Enter area
                     player.CurrentArea = GetAreaFromName(entry.Key);
                     break;
@@ -154,34 +150,30 @@ namespace VideoGame.Classes
             }
         }
 
-        private Area GetAreaFromName(string n)
-        {
+        private Area GetAreaFromName(string n) {
             //return area if n is the name
-            switch (n)
-            {
-                case "Route 1":
-                    return Route1();
-                case "City":
-                    return City();
+            switch (n) {
+            case "Route 1":
+                return Route1();
+            case "City":
+                return City();
             }
             return null;
         }
 
-        public Monster GetRandomMonster()
-        {
+        public Monster GetRandomMonster() {
             CryptoRandom rand = new CryptoRandom();
             int index = rand.Next(0, Monsters.Count);
-            if (Monsters[index].Stats.Health != Monsters[index].MaxHealth) Monsters[index].Stats.Health = Monsters[index].MaxHealth;
+            Monsters[index].Stats.Health = Monsters[index].MaxHealth;
             return Monsters[index];
         }
 
         #region Route1
         public static
-        Area Route1()
-        {
+        Area Route1() {
             Random random = new Random();
             Point levelrange = new Point(3, 8);
-            
+
             var map = ContentLoader.Map;
 
             List<Monster> monsters = new List<Monster> {
@@ -194,8 +186,7 @@ namespace VideoGame.Classes
         }
         #endregion
 
-        public static Area City()
-        {
+        public static Area City() {
             Random random = new Random();
             Point levelrange = new Point(3, 8);
 
