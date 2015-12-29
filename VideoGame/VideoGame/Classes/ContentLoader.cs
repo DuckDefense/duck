@@ -24,8 +24,11 @@ namespace VideoGame.Classes {
         
         public static Texture2D NormalType, FightType, FireType, WaterType, GrassType, PoisonType, PsychType, GhostType, IceType, RockType, FlyingType, SoundType;
 
+        public static Texture2D Grid;
+
         public static Texture2D GrassyBackground;
         public static Texture2D Christman;
+        public static Texture2D MCGirl;
         public static Texture2D Button;
         public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt;
         public static Texture2D RottenNet, RegularNet, GreatNet;
@@ -39,6 +42,8 @@ namespace VideoGame.Classes {
 
         //Add all Textures in here
         public void LoadContent() {
+            Grid = Content.Load<Texture2D>(@"Sprites/Debug/32grid");
+
             #region Monsters
             GronkeyFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Gronkey");
             GronkeyBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Gronkey");
@@ -58,6 +63,7 @@ namespace VideoGame.Classes {
 
             #region Characters
             Christman = Content.Load<Texture2D>(@"Sprites/Characters/World/Christman");
+            MCGirl = Content.Load<Texture2D>(@"Sprites/Characters/World/MC Girl");
             #endregion
 
             #region Battle
