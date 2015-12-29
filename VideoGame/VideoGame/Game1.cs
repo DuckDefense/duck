@@ -70,10 +70,10 @@ namespace VideoGame {
             _contentLoader.LoadContent();
             var tegenstanderMonsters = new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) };
             tegenstander = new Character("Nice guy", 6700, new Inventory(), tegenstanderMonsters, 
-                ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman, new Vector2(200, 195));
+                ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman, new Vector2(192, 192));
             tegenstander.AI = new AI(tegenstander, 8, "YOOOOOOOOOOOOOOOOOOOOOOO");
             player = new Character("Pietertje", 5000, new Inventory(), new List<Monster>(),
-                ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.Christman, new Vector2(150, 100), true);
+                ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.MCGirl, new Vector2(96, 96), true);
             player.Debug = true;
             player.CurrentArea = Area.City();
             player.CurrentArea.EnteredArea = true;
@@ -144,6 +144,7 @@ namespace VideoGame {
             GraphicsDevice.Clear(Color.Gray);
 
             spriteBatch.Begin();
+            spriteBatch.Draw(ContentLoader.Grid, Vector2.Zero, Color.White);
             if (!currentBattle.battleOver) {
                 spriteBatch.Draw(ContentLoader.GrassyBackground, Vector2.Zero);
                 currentBattle.Draw(spriteBatch, player);
