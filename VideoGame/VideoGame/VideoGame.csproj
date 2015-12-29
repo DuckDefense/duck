@@ -92,6 +92,7 @@
     <Content Include="Content\Sprites\Battle\Backgrounds\Grassy.png" />
     <Content Include="Content\Sprites\Buttons\Button.png" />
     <Content Include="Content\Sprites\Characters\World\Christman.png" />
+    <Content Include="Content\Sprites\Debug\32grid.png" />
     <Content Include="Content\Sprites\Items\Capture\Great Net.png" />
     <Content Include="Content\Sprites\Items\Capture\Regular Net.png" />
     <Content Include="Content\Sprites\Items\Capture\Rotten Net.png" />
