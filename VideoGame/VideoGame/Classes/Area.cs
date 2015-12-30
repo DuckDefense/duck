@@ -20,6 +20,7 @@ namespace VideoGame.Classes {
         private static Texture2D tileset;
         private Rectangle encounterHitbox;
         private Rectangle collisionHitbox;
+        private Vector2 SpawnLocation;
         Dictionary<string, Rectangle> AreaColiders = new Dictionary<string, Rectangle>();
         List<Rectangle> EncounterColiders = new List<Rectangle>();
         List<Rectangle> CollisionColiders = new List<Rectangle>();
@@ -27,10 +28,11 @@ namespace VideoGame.Classes {
         static int tileHeight = 32;
         private Vector2 previousPos = new Vector2();
 
-        public Area(string name, Point levelrange, List<Monster> monsters, TiledMap map) {
+        public Area(string name, Point levelrange, List<Monster> monsters, Vector2 spawnLocation, TiledMap map) {
             Levelrange = levelrange;
             Name = name;
             Monsters = monsters;
+            SpawnLocation = spawnLocation;
             Map = map;
         }
 
@@ -93,8 +95,6 @@ namespace VideoGame.Classes {
             }
         }
 
-
-
         public void GetEncounters(Character player, ref Battle battle, ref bool battling) {
             bool test = true;
             EncounterColiders.Clear();
@@ -127,7 +127,6 @@ namespace VideoGame.Classes {
             previousPos = player.Position;
         }
 
-
         public void GetArea(Character player) {
             AreaColiders.Clear();
             var collisionLayers = Map.TileLayers.Where(layer => layer.Properties.ContainsKey("EnterArea")).ToList();
@@ -145,6 +144,7 @@ namespace VideoGame.Classes {
                 foreach (var entry in AreaColiders.Where(entry => player.Hitbox.Intersects(entry.Value))) {
                     //Enter area
                     player.CurrentArea = GetAreaFromName(entry.Key);
+                    player.Position = player.CurrentArea.SpawnLocation;
                     break;
                 }
             }
@@ -173,32 +173,30 @@ namespace VideoGame.Classes {
         Area Route1() {
             Random random = new Random();
             Point levelrange = new Point(3, 8);
-
             var map = ContentLoader.Map;
-
+            var spawn = new Vector2(96, 96);
             List<Monster> monsters = new List<Monster> {
                 Monster.Armler(random.Next(levelrange.X, levelrange.Y)),
                 Monster.Gronkey(random.Next(levelrange.X, levelrange.Y)),
                 Monster.Brass(random.Next(levelrange.X, levelrange.Y))
             };
 
-            return new Area("Route 1", levelrange, monsters, map);
+            return new Area("Route 1", levelrange, monsters, spawn, map);
         }
         #endregion
 
         public static Area City() {
             Random random = new Random();
             Point levelrange = new Point(3, 8);
-
             var map = ContentLoader.City;
-
+            var spawn = new Vector2(96, 96);
             List<Monster> monsters = new List<Monster> {
                 Monster.Armler(random.Next(levelrange.X, levelrange.Y)),
                 Monster.Gronkey(random.Next(levelrange.X, levelrange.Y)),
                 Monster.Brass(random.Next(levelrange.X, levelrange.Y))
             };
 
-            return new Area("City", levelrange, monsters, map);
+            return new Area("City", levelrange, monsters, spawn, map);
         }
     }
 }
