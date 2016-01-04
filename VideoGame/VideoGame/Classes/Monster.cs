@@ -37,7 +37,7 @@ namespace VideoGame.Classes {
         private int experience;
         public int Experience
         {
-            get { return Level * Level * 5; }
+            get { return experience; }
             set { experience = value; }
         }
 
@@ -84,7 +84,7 @@ namespace VideoGame.Classes {
             Id = id;
             UId = RandomId.GenerateRandomUId();
             Level = level;
-            Experience = level * 5;
+            experience = level * level * 5;
             Name = name;
             Description = description;
             PrimaryType = type;
@@ -124,7 +124,7 @@ namespace VideoGame.Classes {
             Id = id;
             UId = RandomId.GenerateRandomUId();
             Level = level;
-            Experience = level * 5;
+            experience = level * level * 5;
             Name = name;
             Description = description;
             PrimaryType = primaryType;
@@ -149,9 +149,10 @@ namespace VideoGame.Classes {
             double l = opponent.Level;
             double y = Level >= l ? 1 : 1.2f;
 
-            var expGain = (a * l * y) / 3;
+            var expGain = (a * l * y) ;
+// / 3
 
-            Experience += Convert.ToInt32(expGain);
+            experience += Convert.ToInt32(expGain);
             CheckLevelUp();
             //TODO: Add a experience calculation which will return level based on the amount of experience it has
         }
@@ -161,7 +162,8 @@ namespace VideoGame.Classes {
         }
 
         public void CheckLevelUp() {
-            var level = Experience / 5 / Level;
+            var level = Experience / Level / 5;
+
         }
 
         public void LevelUp(int amount, int id) {
