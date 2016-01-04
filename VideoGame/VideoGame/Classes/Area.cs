@@ -112,7 +112,7 @@ namespace VideoGame.Classes {
                     if (player.Hitbox.Intersects(collision)) {
                         Random rand = new Random();
 
-                        if (player.Position != previousPos && player.Moved >= 30.5f) {
+                        if (player.Position != previousPos && player.Moved >= 29f) {
                             var chanceToEncounter = rand.Next(0, 100);
 
 
@@ -172,9 +172,9 @@ namespace VideoGame.Classes {
         public static
         Area Route1() {
             Random random = new Random();
-            Point levelrange = new Point(3, 8);
+            Point levelrange = new Point(15, 18);
             var map = ContentLoader.Map;
-            var spawn = new Vector2(96, 96);
+            var spawn = new Vector2(320, 320);
             List<Monster> monsters = new List<Monster> {
                 Monster.Armler(random.Next(levelrange.X, levelrange.Y)),
                 Monster.Gronkey(random.Next(levelrange.X, levelrange.Y)),
