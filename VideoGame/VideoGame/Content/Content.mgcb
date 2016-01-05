@@ -585,3 +585,14 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Ailments/SLP.png
 
+#begin Sprites/Battle/Health.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Battle/Health.png
+
