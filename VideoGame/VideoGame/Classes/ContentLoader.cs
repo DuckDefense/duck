@@ -23,6 +23,7 @@ namespace VideoGame.Classes {
         #endregion
         
         public static Texture2D NormalType, FightType, FireType, WaterType, GrassType, PoisonType, PsychType, GhostType, IceType, RockType, FlyingType, SoundType;
+        public static Texture2D SLP, PSN, BRN, DZL, FRZ, FZD, FNT;
 
         public static Texture2D Grid;
 
@@ -85,6 +86,17 @@ namespace VideoGame.Classes {
             RockType = Content.Load<Texture2D>(@"Sprites/Types/Rock");
             FlyingType = Content.Load<Texture2D>(@"Sprites/Types/Flying");
             SoundType = Content.Load<Texture2D>(@"Sprites/Types/Sound");
+            #endregion
+
+            #region Ailments
+
+            SLP = Content.Load<Texture2D>(@"Sprites/Ailments/SLP");
+            PSN = Content.Load<Texture2D>(@"Sprites/Ailments/PSN");
+            BRN = Content.Load<Texture2D>(@"Sprites/Ailments/BRN");
+            DZL = Content.Load<Texture2D>(@"Sprites/Ailments/DZL");
+            FRZ = Content.Load<Texture2D>(@"Sprites/Ailments/FRZ");
+            FZD = Content.Load<Texture2D>(@"Sprites/Ailments/FZD");
+            FNT = Content.Load<Texture2D>(@"Sprites/Ailments/FNT");
             #endregion
 
             #region Maps
