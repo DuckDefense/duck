@@ -291,6 +291,12 @@ namespace VideoGame.Classes {
                     }
                 }
                 if (CurrentOpponentMonster.IsDead) {
+                    foreach (var monster in User.Monsters)
+                    {
+                        if (monster.Fought)
+                            if (!monster.IsDead)
+                                monster.ReceiveExp(CurrentOpponentMonster);
+                    }
                     if (IsDefeated(Opponent))
                         SetWin();
                     else {
