@@ -162,14 +162,25 @@ namespace VideoGame.Classes {
         }
 
         public void CheckLevelUp() {
-            var level = Experience / Level / 5;
-
+            //var level = Experience / Level / 5;
+            int level = Level;
+            for (int i = level; i < 100; i++)
+            {
+                var lvl = i*i*5;
+                if (lvl < Experience)
+                {
+                    level++;
+                }
+                else break;
+            }
+            if (level - 1 > Level)
+            {
+                Level = level - 1;
+                GetMoves();
+                Stats.LevelUp(Level, ref MaxHealth);
+            }
         }
 
-        public void LevelUp(int amount, int id) {
-            GetMoves();
-            //If we are limiting moves put a prompt here asking if the monster should learn this move
-        }
 
         private static Gender GetGender(int maleChance) {
             Random rand = new Random();

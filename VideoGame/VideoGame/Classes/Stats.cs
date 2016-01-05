@@ -101,6 +101,12 @@ namespace VideoGame.Classes {
             SpecialDefense = ((((BaseSpecialDefense * RandSpecialDefense) * 2) * level) / 250) + 5;
             Speed = ((((BaseSpeed * RandSpeed) * 2) * level) / 250) + 5;
         }
+
+        public void LevelUp(int level, ref int maxhealth)
+        {
+            CalculateStats(level);
+            maxhealth = Health;
+        }
     }
 
     public class StatModifier {
