@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -33,7 +34,7 @@ namespace VideoGame.Classes {
         public Texture2D BackSprite; //Sprite that is shown when you've send out this monster
         public Texture2D PartySprite; //Sprite that is shown if you open the party
                                       //If we are going add monsters in the world we need to add a position and a collision box
-
+        public int RemainingExp;
         private int experience;
         public int Experience
         {
@@ -167,9 +168,11 @@ namespace VideoGame.Classes {
             for (int i = level; i < 100; i++)
             {
                 var lvl = i*i*5;
+                RemainingExp = lvl - Experience;
                 if (lvl < Experience)
                 {
                     level++;
+                    
                 }
                 else break;
             }
@@ -179,6 +182,7 @@ namespace VideoGame.Classes {
                 GetMoves();
                 Stats.LevelUp(Level, ref MaxHealth);
             }
+            
         }
 
 
