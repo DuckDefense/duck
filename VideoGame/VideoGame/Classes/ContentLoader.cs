@@ -70,7 +70,7 @@ namespace VideoGame.Classes {
             #region Battle
             GrassyBackground = Content.Load<Texture2D>(@"Sprites/Battle/Backgrounds/Grassy");
             Button = Content.Load<Texture2D>(@"Sprites/Buttons/Button");
-            Health = new Texture2D(GraphicsDevice, 5, 5, false, SurfaceFormat.Color);
+            Health = Content.Load<Texture2D>(@"Sprites/Battle/Health");
             #endregion
 
             #region Types
