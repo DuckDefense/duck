@@ -139,39 +139,41 @@ namespace VideoGame.Classes {
 
         public static void DrawStatus(SpriteBatch batch, Monster user, Monster opponent) {
             var font = ContentLoader.Arial;
+            float prevFullExp = user.Level * user.Level * 5;
             float fullExp = ((user.Level + 1) * (user.Level + 1) * 5);
-            float experiencePerc = user.Experience / fullExp;
+            float difference = fullExp - prevFullExp;
+            float experiencePerc = 100 - ((user.RemainingExp / difference) * 100);
 
             var userHealthPerc = (user.Stats.Health * 100) / user.MaxHealth;
             var userExpSize = new Vector2(experiencePerc, 2);
             var userHealthSize = new Vector2(userHealthPerc, 10);
             var userHealthRec = new Rectangle(userpos.X + 48, userpos.Y - 20, (int)userHealthSize.X, (int)userHealthSize.Y);
-            var userExpRec = new Rectangle(userHealthRec.X, userHealthRec.Y, (int)userExpSize.X, (int)userExpSize.Y);
+            var userExpRec = new Rectangle(userHealthRec.X, userHealthRec.Y + 31, (int)userExpSize.X, (int)userExpSize.Y);
 
             var opponentHealthPerc = (opponent.Stats.Health * 100) / opponent.MaxHealth;
             var currentOpponentHealthSize = new Vector2(opponentHealthPerc, 10);
             var opponentHealthRec = new Rectangle(opponentpos.X, opponentpos.Y - 12, (int)currentOpponentHealthSize.X, (int)currentOpponentHealthSize.Y);
 
-            var userCol = Color.LightGreen;
-            var opponentCol = Color.LightGreen;
+            var userCol = Color.SpringGreen;
+            var opponentCol = Color.SpringGreen;
             if (userHealthPerc <= 50) userCol = Color.Orange; if (userHealthPerc <= 20) userCol = Color.Red;
             if (opponentHealthPerc <= 50) opponentCol = Color.Orange; if (opponentHealthPerc <= 20) opponentCol = Color.Red;
 
-            batch.Draw(ContentLoader.HealthBorderUser, new Vector2(userHealthRec.X -33, userHealthRec.Y -4) , Color.Gray);
+            batch.Draw(ContentLoader.HealthBorderUser, new Vector2(userHealthRec.X - 33, userHealthRec.Y - 4), Color.Gray);
             batch.DrawString(ContentLoader.Arial, user.Name, new Vector2(userHealthRec.X - 31, userHealthRec.Y - 22), Color.Black);
             batch.DrawString(ContentLoader.Arial, $"Lv. {user.Level}", new Vector2(userHealthRec.X + (font.MeasureString($"{user.Name} Lv. {user.Level}").X) - 48, userHealthRec.Y - 22), Color.Black);
             if (user.Stats.Health < 0) user.Stats.Health = 0;
-            batch.DrawString(ContentLoader.Arial, $"{user.Stats.Health}/{user.MaxHealth}", new Vector2(userHealthRec.X - 16, userHealthRec.Y + 12), Color.Black);
+            batch.DrawString(ContentLoader.Arial, $"{user.Stats.Health}/{user.MaxHealth}", new Vector2(userHealthRec.X - 12, userHealthRec.Y + 12), Color.Black);
             if (user.Ailment != Ailment.Normal)
                 batch.Draw(GetAilmentTexture(user.Ailment), new Vector2(userHealthRec.X - 31, userHealthRec.Y - 2), Color.White);
-            batch.Draw(ContentLoader.Health, userExpRec, Color.AliceBlue);
             batch.Draw(ContentLoader.Health, userHealthRec, userCol);
+            batch.Draw(ContentLoader.Health, userExpRec, Color.DeepSkyBlue);
 
-            batch.Draw(ContentLoader.HealthBorder, new Vector2(opponentHealthRec.X - 33, opponentHealthRec.Y -4), Color.Gray);
-            batch.DrawString(ContentLoader.Arial, opponent.Name, new Vector2(opponentpos.X, opponentpos.Y - 2), Color.Black);
-            batch.DrawString(ContentLoader.Arial, $"Lv. {opponent.Level}", new Vector2(opponentpos.X + (font.MeasureString($"{opponent.Name} Lv. {opponent.Level}").X) - 8, opponentpos.Y - 2), Color.Black);
+            batch.Draw(ContentLoader.HealthBorder, new Vector2(opponentHealthRec.X - 33, opponentHealthRec.Y - 4), Color.Gray);
+            batch.DrawString(ContentLoader.Arial, opponent.Name, new Vector2(opponentpos.X - 31, opponentpos.Y - 33), Color.Black);
+            batch.DrawString(ContentLoader.Arial, $"Lv. {opponent.Level}", new Vector2(opponentpos.X + (font.MeasureString($"{opponent.Name} Lv. {opponent.Level}").X) - 48, opponentpos.Y - 33), Color.Black);
             //batch.DrawString(ContentLoader.Arial, $"{opponent.Stats.Health}/{opponent.MaxHealth}", new Vector2(opponentpos.X, opponentpos.Y), Color.Blue);
-            if(opponent.Ailment != Ailment.Normal)
+            if (opponent.Ailment != Ailment.Normal)
                 batch.Draw(GetAilmentTexture(opponent.Ailment), new Vector2(opponentHealthRec.X - 31, opponentHealthRec.Y - 2), Color.White);
             batch.Draw(ContentLoader.Health, opponentHealthRec, opponentCol);
         }
