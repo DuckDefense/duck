@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
 
@@ -21,6 +22,7 @@ namespace VideoGame.Classes {
         private Rectangle encounterHitbox;
         private Rectangle collisionHitbox;
         private Vector2 SpawnLocation;
+        List<Character> OpponentList = new List<Character>();
         Dictionary<string, Rectangle> AreaColiders = new Dictionary<string, Rectangle>();
         List<Rectangle> EncounterColiders = new List<Rectangle>();
         List<Rectangle> CollisionColiders = new List<Rectangle>();
@@ -28,22 +30,33 @@ namespace VideoGame.Classes {
         static int tileHeight = 32;
         private Vector2 previousPos = new Vector2();
 
-        public Area(string name, Point levelrange, List<Monster> monsters, Vector2 spawnLocation, TiledMap map) {
+        public Area(string name, Point levelrange, List<Monster> monsters, List<Character> opponentList, Vector2 spawnLocation, TiledMap map) {
             Levelrange = levelrange;
             Name = name;
             Monsters = monsters;
+            OpponentList = opponentList;
             SpawnLocation = spawnLocation;
             Map = map;
         }
 
         public void Draw(Camera2D camera, SpriteBatch batch) {
-            //Map.Draw(camera, true);
-            foreach (var layer in Map.Layers) {
-                layer.Draw(camera);
-            }
+            Map.Draw(camera, true);
+            foreach (var opponent in OpponentList) opponent.Draw(batch);
+            //foreach (var layer in Map.Layers) layer.Draw(camera);
+            
             foreach (var encounterColider in EncounterColiders) { batch.Draw(ContentLoader.Button, encounterColider, Color.Green); }
             foreach (var collisionColider in CollisionColiders) { batch.Draw(ContentLoader.Button, collisionColider, Color.Blue); }
             foreach (var areaCollider in AreaColiders) { batch.Draw(ContentLoader.Button, areaCollider.Value, Color.Aqua); }
+        }
+
+        public void Update(GameTime gameTime, KeyboardState currentKeyboardState, KeyboardState previousKeyboardState,
+            Character player, ref Battle currentBattle) {
+            if (OpponentList == null) return;
+            if (OpponentList.Count == 0) return;
+                foreach (var opponent in OpponentList) {
+                    opponent.Update(gameTime, currentKeyboardState, previousKeyboardState);
+                    opponent.AI.Update(player, ref currentBattle);
+                }
         }
 
         public void GetCollision(Character player) {
@@ -171,17 +184,28 @@ namespace VideoGame.Classes {
         #region Route1
         public static
         Area Route1() {
+            Character tegenstander;
+            tegenstander = new Character("Nice guy", 6700,
+                new Inventory(),
+                new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
+                ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman,
+                new Vector2(192, 192));
+            tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
+
             Random random = new Random();
             Point levelrange = new Point(15, 18);
-            var map = ContentLoader.Map;
+            var map = ContentLoader.Route2;
             var spawn = new Vector2(320, 320);
             List<Monster> monsters = new List<Monster> {
                 Monster.Armler(random.Next(levelrange.X, levelrange.Y)),
                 Monster.Gronkey(random.Next(levelrange.X, levelrange.Y)),
                 Monster.Brass(random.Next(levelrange.X, levelrange.Y))
             };
+            List<Character> opponents = new List<Character> {
+                tegenstander
+            };
 
-            return new Area("Route 1", levelrange, monsters, spawn, map);
+            return new Area("Route 1", levelrange, monsters, opponents, spawn, map);
         }
         #endregion
 
@@ -190,13 +214,10 @@ namespace VideoGame.Classes {
             Point levelrange = new Point(3, 8);
             var map = ContentLoader.City;
             var spawn = new Vector2(96, 96);
-            List<Monster> monsters = new List<Monster> {
-                Monster.Armler(random.Next(levelrange.X, levelrange.Y)),
-                Monster.Gronkey(random.Next(levelrange.X, levelrange.Y)),
-                Monster.Brass(random.Next(levelrange.X, levelrange.Y))
-            };
+            List<Monster> monsters = new List<Monster>();
+            List<Character> opponents = new List<Character>();
 
-            return new Area("City", levelrange, monsters, spawn, map);
+            return new Area("City", levelrange, monsters, opponents, spawn, map);
         }
     }
 }
