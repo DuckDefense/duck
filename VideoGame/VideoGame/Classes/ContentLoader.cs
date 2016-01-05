@@ -32,7 +32,7 @@ namespace VideoGame.Classes {
         public static Texture2D Button;
         public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt;
         public static Texture2D RottenNet, RegularNet, GreatNet;
-        public static TiledMap Map, City;
+        public static TiledMap Map, City, Route2;
         public static SpriteFont Arial;
 
         public static void SetContent(ContentManager content, GraphicsDeviceManager graphicsDevice) {
@@ -90,6 +90,7 @@ namespace VideoGame.Classes {
             #region Maps
             Map = Content.Load<TiledMap>("map");
             City = Content.Load<TiledMap>("city");
+            Route2 = Content.Load<TiledMap>("nicemap");
             #endregion
 
             #region Fonts

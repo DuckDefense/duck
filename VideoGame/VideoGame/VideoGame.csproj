@@ -116,7 +116,6 @@
     <Content Include="Content\Sprites\Monsters\Party\Gronkey.png" />
     <Content Include="Content\Sprites\Monsters\Party\Huffstein.png" />
     <Content Include="Content\Sprites\Monsters\Viewer.png" />
-    <Content Include="Content\tileset.png" />
     <Content Include="Resources\Grassy.png" />
     <None Include="Content\Fonts\Arial.spritefont" />
     <None Include="Content\Fonts\courier-new-32.fnt" />
