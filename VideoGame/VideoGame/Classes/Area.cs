@@ -12,7 +12,7 @@ using MonoGame.Extended.Maps.Tiled;
 
 namespace VideoGame.Classes {
     public class Area {
-
+        public bool Debug = true;
         private static Point Levelrange;
         public string Name;
         public List<Monster> Monsters;
@@ -41,12 +41,17 @@ namespace VideoGame.Classes {
 
         public void Draw(Camera2D camera, SpriteBatch batch) {
             Map.Draw(camera, true);
-            foreach (var opponent in OpponentList) opponent.Draw(batch);
             //foreach (var layer in Map.Layers) layer.Draw(camera);
-            
+
+            if (Debug) {
+                foreach (var opponent in OpponentList) {
+                    batch.Draw(ContentLoader.Health, opponent.AI.Hitbox, Color.White);
+                }
             foreach (var encounterColider in EncounterColiders) { batch.Draw(ContentLoader.Button, encounterColider, Color.Green); }
             foreach (var collisionColider in CollisionColiders) { batch.Draw(ContentLoader.Button, collisionColider, Color.Blue); }
             foreach (var areaCollider in AreaColiders) { batch.Draw(ContentLoader.Button, areaCollider.Value, Color.Aqua); }
+            }
+            foreach (var opponent in OpponentList) opponent.Draw(batch);
         }
 
         public void Update(GameTime gameTime, KeyboardState currentKeyboardState, KeyboardState previousKeyboardState,
@@ -191,6 +196,7 @@ namespace VideoGame.Classes {
                 ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman,
                 new Vector2(192, 192));
             tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
+            tegenstander.Debug = true;
 
             Random random = new Random();
             Point levelrange = new Point(15, 18);
