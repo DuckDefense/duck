@@ -125,8 +125,8 @@ namespace VideoGame.Classes {
                 }
             }
             // Check if either monster died
-            if (user.Stats.Health >= 0) user.Ailment = Ailment.Fainted;
-            if (receiver.Stats.Health >= 0) receiver.Ailment = Ailment.Fainted;
+            if (user.Stats.Health <= 0) user.Ailment = Ailment.Fainted;
+            if (receiver.Stats.Health <= 0) receiver.Ailment = Ailment.Fainted;
         }
 
 
