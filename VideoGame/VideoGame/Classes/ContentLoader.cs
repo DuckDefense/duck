@@ -11,7 +11,7 @@ namespace VideoGame.Classes {
     public class ContentLoader {
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDevice;
-        public static Texture2D Health;
+        public static Texture2D Health, HealthBorder, HealthBorderUser;
 
         #region Monsters
         public static Texture2D MonsterViewer;
@@ -71,6 +71,8 @@ namespace VideoGame.Classes {
             GrassyBackground = Content.Load<Texture2D>(@"Sprites/Battle/Backgrounds/Grassy");
             Button = Content.Load<Texture2D>(@"Sprites/Buttons/Button");
             Health = Content.Load<Texture2D>(@"Sprites/Battle/Health");
+            HealthBorder = Content.Load<Texture2D>(@"Sprites/Battle/HealthBorder");
+            HealthBorderUser = Content.Load<Texture2D>(@"Sprites/Battle/HealthBorderUser");
             #endregion
 
             #region Types
