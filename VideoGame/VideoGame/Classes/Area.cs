@@ -40,8 +40,7 @@ namespace VideoGame.Classes {
         }
 
         public void Draw(Camera2D camera, SpriteBatch batch) {
-            Map.Draw(camera, true);
-            //foreach (var layer in Map.Layers) layer.Draw(camera);
+            foreach (var layer in Map.Layers) layer.Draw();
 
             if (Debug) {
                 foreach (var opponent in OpponentList) {
