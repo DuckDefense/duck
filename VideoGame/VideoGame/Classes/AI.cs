@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace VideoGame.Classes {
     public class AI {
+        private bool Chase;
         private Character character;
         public Rectangle Hitbox;
         private int tiles;
@@ -23,8 +24,10 @@ namespace VideoGame.Classes {
             Hitbox = new Rectangle((int)character.Position.X - (character.SpriteSize.X / 2), (int)character.Position.Y - (character.SpriteSize.Y / 2),
               character.SpriteSize.X * 2, character.SpriteSize.Y * 2);
             if (character.LineOfSightRectangle.Contains(player.Position)) {
-                MoveToPoint(player.Position, 100, player, ref player.Controllable, ref battle);
+                Chase = true;
             }
+            if(Chase)
+                MoveToPoint(player.Position, 100, player, ref player.Controllable, ref battle);
         }
 
         public void RandomizeDirection() {
@@ -50,12 +53,13 @@ namespace VideoGame.Classes {
                 var moveX = distanceX/delay;
                 var moveY = distanceY/delay;
 
-                Hitbox = new Rectangle((int)character.Position.X - (character.SpriteSize.X / 2), (int)character.Position.Y - (character.SpriteSize.Y / 2),
-             character.SpriteSize.X * 2, character.SpriteSize.Y * 2);
+                Hitbox = new Rectangle((int) character.Position.X - (character.SpriteSize.X/2),
+                    (int) character.Position.Y - (character.SpriteSize.Y/2),
+                    character.SpriteSize.X*2, character.SpriteSize.Y*2);
                 if (!Hitbox.Contains(player.Position)) {
                     allowedToWalk = false;
-                    character.Position.X += moveX * 2;
-                    character.Position.Y += moveY * 2;
+                    character.Position.X += moveX*2;
+                    character.Position.Y += moveY*2;
                 }
                 else {
                     //Hou dat lekkere gesprek
@@ -63,6 +67,7 @@ namespace VideoGame.Classes {
                     allowedToWalk = true;
                 }
             }
+            else Chase = false;
         }
     }
 
