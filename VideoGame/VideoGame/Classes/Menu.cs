@@ -16,6 +16,7 @@ namespace Sandbox.Classes {
         Item,
         Player,
         Save,
+        Mute
     }
     public class Menu {
         public Selection Selection;
@@ -26,7 +27,7 @@ namespace Sandbox.Classes {
         private List<ContainerButton> knownMonsterList = new List<ContainerButton>();
 
         public bool DrawMonsterInfo;
-        public Button KnownMonstersButton, PartyButton, ItemButton, PlayerButton, SaveButton;
+        public Button KnownMonstersButton, PartyButton, ItemButton, PlayerButton, SaveButton, MuteButton;
         public List<Button> ButtonList;
 
         public Menu(Character player, Vector2 pos) {
@@ -43,6 +44,7 @@ namespace Sandbox.Classes {
             ItemButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 2), width, height), buttonTexture, hoverTexture, clickedTexture, "Item", ContentLoader.Arial);
             PlayerButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 3), width, height), buttonTexture, hoverTexture, clickedTexture, player.Name, ContentLoader.Arial);
             SaveButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 4), width, height), buttonTexture, hoverTexture, clickedTexture, "Save", ContentLoader.Arial);
+            MuteButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 5), width, height), buttonTexture, hoverTexture, clickedTexture, "Mute", ContentLoader.Arial);
 
             ButtonList.AddMany(KnownMonstersButton, PartyButton, ItemButton, PlayerButton, SaveButton);
         }
@@ -57,6 +59,7 @@ namespace Sandbox.Classes {
             if (ItemButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Item;
             if (PlayerButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Player;
             if (SaveButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Save;
+            if (MuteButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Mute;
 
             switch (Selection) {
             case Selection.KnownMonsters:
@@ -69,6 +72,8 @@ namespace Sandbox.Classes {
             case Selection.Player:
                 break;
             case Selection.Save:
+                break;
+            case Selection.Mute:
                 break;
             }
         }
@@ -96,6 +101,8 @@ namespace Sandbox.Classes {
             case Selection.Player:
                 break;
             case Selection.Save:
+                break;
+            case Selection.Mute:
                 break;
             }
         }
