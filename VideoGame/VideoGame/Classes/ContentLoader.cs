@@ -21,9 +21,22 @@ namespace VideoGame.Classes {
         public static Texture2D ArmlerFront, ArmlerBack, ArmlerParty;
         public static Texture2D BrassFront, BrassBack, BrassParty;
         public static Texture2D HuffsteinFront, HuffsteinBack, HuffsteinParty;
-        public static Texture2D FesterFront;
+        public static Texture2D FesterFront, FesterBack, FesterParty;
+        public static Texture2D BonsantaiFront, BonsantaiBack, BonsantaiParty;
+        public static Texture2D DrumbyFront, DrumbyBack, DrumbyParty;
+        public static Texture2D DvallalinFront, DvallalinBack, DvallalinParty;
+        public static Texture2D GladkeyFront, GladkeyBack, GladkeyParty;
+        public static Texture2D HippolaciousFront, HippolaciousBack, HippolaciousParty;
+        public static Texture2D JoiantlerFront, JoiantlerBack, JoiantlerParty;
+        public static Texture2D KolfieFront, KolfieBack, KolfieParty;
+        public static Texture2D KrabbleFront, KrabbleBack, KrabbleParty;
+        public static Texture2D MimirdFront, MimirdBack, MimirdParty;
+        public static Texture2D NjortorFront, NjortorBack, NjortorParty;
+        public static Texture2D PantslerFront, PantslerBack, PantslerParty;
+        public static Texture2D PrestlerFront, PrestlerBack, PrestlerParty;
+        public static Texture2D RasionFront, RasionBack, RasionParty;
         #endregion
-        
+
         public static Texture2D NormalType, FightType, FireType, WaterType, GrassType, PoisonType, PsychType, GhostType, IceType, RockType, FlyingType, SoundType;
         public static Texture2D SLP, PSN, BRN, DZL, FRZ, FZD, FNT;
 
@@ -50,12 +63,15 @@ namespace VideoGame.Classes {
         public void LoadContent() {
             Grid = Content.Load<Texture2D>(@"Sprites/Debug/32grid");
 
-
+            #region Button
             Button = Content.Load<Texture2D>(@"Sprites/Buttons/Button");
             ButtonHover = Content.Load<Texture2D>(@"Sprites/Buttons/ButtonHover");
             ButtonClicked = Content.Load<Texture2D>(@"Sprites/Buttons/ButtonClicked");
+            #endregion
 
             #region Monsters
+            MonsterViewer = Content.Load<Texture2D>(@"Sprites/Monsters/Viewer");
+
             GronkeyFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Gronkey");
             GronkeyBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Gronkey");
             GronkeyParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Gronkey");
@@ -68,8 +84,63 @@ namespace VideoGame.Classes {
             HuffsteinFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Huffstein");
             HuffsteinBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Huffstein");
             HuffsteinParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Huffstein");
+
             FesterFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Fester");
-            MonsterViewer = Content.Load<Texture2D>(@"Sprites/Monsters/Viewer");
+            FesterBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Fester");
+            FesterParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+
+            BonsantaiFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Bonsantai");
+            BonsantaiBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
+            BonsantaiParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+
+            DrumbyFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Drumby");
+            DrumbyBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
+            DrumbyParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+
+            DvallalinFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Dvallalin");
+            DvallalinBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Dvallalin");
+            DvallalinParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+
+            GladkeyFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Gladkey");
+            GladkeyBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Gladkey");
+            GladkeyParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+
+            HippolaciousFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Hippolacious");
+            HippolaciousBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
+            HippolaciousParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+
+            JoiantlerFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Joiantler");
+            JoiantlerBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Joiantler");
+            JoiantlerParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+
+            KolfieFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Kolfie");
+            KolfieBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
+            KolfieParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+
+            KrabbleFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Krabble");
+            KrabbleBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
+            KrabbleParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+
+            MimirdFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Mimird");
+            MimirdBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Mimird");
+            MimirdParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Mimird");
+
+            NjortorFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Njortor");
+            NjortorBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Njortor");
+            NjortorParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+
+            PantslerFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Pantsler");
+            PantslerBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Pantsler");
+            PantslerParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Pantsler");
+
+            PrestlerFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Prestler");
+            PrestlerBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Prestler");
+            PrestlerParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Prestler");
+
+            RasionFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Rasion");
+            RasionBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
+            RasionParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+
             #endregion
 
             #region Characters
@@ -152,37 +223,37 @@ namespace VideoGame.Classes {
         }
 
         public void UnloadContent() {
-            GronkeyFront.Dispose();  
-            GronkeyBack.Dispose();  
-            GronkeyParty.Dispose();  
+            GronkeyFront.Dispose();
+            GronkeyBack.Dispose();
+            GronkeyParty.Dispose();
             ArmlerFront.Dispose();
-            ArmlerBack.Dispose(); 
-            ArmlerParty.Dispose(); 
+            ArmlerBack.Dispose();
+            ArmlerParty.Dispose();
             BrassFront.Dispose();
-            BrassBack.Dispose(); 
+            BrassBack.Dispose();
             BrassParty.Dispose();
-            HuffsteinFront.Dispose();  
-            HuffsteinBack.Dispose();  
-            HuffsteinParty.Dispose(); 
+            HuffsteinFront.Dispose();
+            HuffsteinBack.Dispose();
+            HuffsteinParty.Dispose();
             MonsterViewer.Dispose();
-            
-            Christman.Dispose();
-            
-            GrassyBackground.Dispose();
-            Button.Dispose();  
-            Health.Dispose();  
-            
-            Map.Dispose(); 
 
-            RottenNet.Dispose(); 
-            RegularNet.Dispose();  
-            GreatNet.Dispose();  
-      
-            AirHorn.Dispose(); 
-            AntiPoison.Dispose(); 
-            BucketOfWater.Dispose();  
-            LeafBandage.Dispose();  
-            MagicStone.Dispose(); 
+            Christman.Dispose();
+
+            GrassyBackground.Dispose();
+            Button.Dispose();
+            Health.Dispose();
+
+            Map.Dispose();
+
+            RottenNet.Dispose();
+            RegularNet.Dispose();
+            GreatNet.Dispose();
+
+            AirHorn.Dispose();
+            AntiPoison.Dispose();
+            BucketOfWater.Dispose();
+            LeafBandage.Dispose();
+            MagicStone.Dispose();
             RoosVicee.Dispose();
         }
     }
