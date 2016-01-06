@@ -174,7 +174,6 @@ namespace VideoGame.Classes {
                 if (lvl < Experience)
                 {
                     level++;
-                    
                 }
                 else break;
             }
@@ -262,8 +261,72 @@ namespace VideoGame.Classes {
                 Type.Grass, 75, 5, item, stats, abilities,
                 ContentLoader.ArmlerFront, ContentLoader.ArmlerBack, ContentLoader.ArmlerParty);
         }
-        // 2 to 3 evolutions of Armler
-        // 4 to 6 water starter
+        public static Monster Pantsler(int level, Item item = null) {
+            if (item == null) item = new Item();
+            List<Ability> abilities = new List<Ability> {
+                Ability.Buff(),
+                Ability.Enraged()
+            };
+            //Calculate level so we can determine what moves it could have learned
+
+            Stats stats = new Stats(60, 64, 90, 50, 75, 56, level);
+            return new Monster(2, level, "Pantsler", "While desperately trying to escape from the clutches of its' pants this monster is still able to battle",
+                Type.Grass, Type.Fight, 75, 5, item, stats, abilities,
+                ContentLoader.PantslerFront, ContentLoader.PantslerBack, ContentLoader.PantslerParty);
+        }
+
+        public static Monster Prestler(int level, Item item = null) {
+            if (item == null) item = new Item();
+            List<Ability> abilities = new List<Ability> {
+                Ability.StrongFist()
+            };
+            //Calculate level so we can determine what moves it could have learned
+
+            Stats stats = new Stats(60, 121, 60, 50, 60, 85, level);
+            return new Monster(3, level, "Prestler", "These pants are the ultimate fighter, having consumed it's prior wearer",
+                Type.Grass, Type.Fight, 75, 5, item, stats, abilities,
+                ContentLoader.PrestlerFront, ContentLoader.PrestlerBack, ContentLoader.PrestlerParty);
+        }
+        public static Monster Mimird(int level, Item item = null) {
+            if (item == null) item = new Item();
+            List<Ability> abilities = new List<Ability> {
+                Ability.Swift(),
+                Ability.Evasive()
+            };
+            //Calculate level so we can determine what moves it could have learned
+
+            Stats stats = new Stats(40, 43, 49, 73, 50, 71, level);
+            return new Monster(4, level, "Mimird", "This fish has crafted its own beak! Ain't that endearing",
+                Type.Water, 75, 5, item, stats, abilities,
+                ContentLoader.MimirdFront, ContentLoader.MimirdBack, ContentLoader.MimirdParty);
+        }
+        public static Monster Njortor(int level, Item item = null) {
+            if (item == null) item = new Item();
+            List<Ability> abilities = new List<Ability> {
+                Ability.Swift(),
+                Ability.Evasive()
+            };
+            //Calculate level so we can determine what moves it could have learned
+
+            Stats stats = new Stats(55, 43, 52, 83, 59, 109, level);
+            return new Monster(5, level, "Njortor", "This mammal has created its own helicopter and attached it to its back",
+                Type.Water, 75, 5, item, stats, abilities,
+                ContentLoader.NjortorFront, ContentLoader.NjortorBack, ContentLoader.NjortorParty);
+        }
+        public static Monster Dvallalin(int level, Item item = null) {
+            if (item == null) item = new Item();
+            List<Ability> abilities = new List<Ability> {
+                Ability.Swift(),
+                Ability.Evasive()
+            };
+            //Calculate level so we can determine what moves it could have learned
+
+            Stats stats = new Stats(95, 30, 39, 93, 65, 112, level);
+            return new Monster(6, level, "Dvallalin", "This whale, being weighed down by its troubles, made a blimp to carry his burdens",
+                Type.Water, 75, 5, item, stats, abilities,
+                ContentLoader.MimirdFront, ContentLoader.MimirdBack, ContentLoader.MimirdParty);
+        }
+        
         // 7 to 9 fire starter
 
         public static Monster Gronkey(int level, Item item = null) {
