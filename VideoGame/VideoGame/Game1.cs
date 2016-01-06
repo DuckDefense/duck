@@ -8,6 +8,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended.ViewportAdapters;
+using Sandbox.Classes;
 using VideoGame.Classes;
 using Settings = VideoGame.Classes.Settings;
 using Type = VideoGame.Classes.Type;
@@ -19,6 +20,7 @@ namespace VideoGame {
     public class Game1 : Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private Menu menu;
         private Character player;
         private ContentLoader _contentLoader = new ContentLoader();
         private KeyboardState currentKeyboardState, previousKeyboardState;
@@ -89,8 +91,16 @@ namespace VideoGame {
                 battleStart = false
             };
             player.Monsters[0].ReceiveExp(Monster.Gronkey(50));
-
-            // TODO: use this.Content to load your game content here
+            player.KnownMonsters.Add(Monster.Gronkey(5).Id, Monster.Gronkey(5));
+            player.KnownMonsters.Add(Monster.Armler(5).Id, Monster.Armler(5));
+            player.KnownMonsters.Add(Monster.Huffstein(5).Id, Monster.Huffstein(5));
+            player.KnownMonsters.Add(Monster.Brass(5).Id, Monster.Brass(5));
+            player.KnownMonsters.Add(Monster.Pantsler(5).Id, Monster.Pantsler(5));
+            player.KnownMonsters.Add(Monster.Prestler(5).Id, Monster.Prestler(5));
+            player.KnownMonsters.Add(Monster.Mimird(5).Id, Monster.Mimird(5));
+            player.KnownMonsters.Add(Monster.Fester(5).Id, Monster.Fester(5));
+            
+            menu = new Menu(player, new Vector2(Settings.ResolutionWidth - 64, 0));
         }
 
         /// <summary>
@@ -118,6 +128,7 @@ namespace VideoGame {
             }
             else {
                 player.Update(gameTime, currentKeyboardState, previousKeyboardState);
+                menu.Update(gameTime, currentMouseState, previousMouseState, currentKeyboardState, previousKeyboardState);
                 player.CurrentArea.Update(gameTime, currentKeyboardState, previousKeyboardState, player, ref currentBattle);
                 player.CurrentArea.GetArea(player);
                 player.CurrentArea.GetCollision(player);
@@ -149,6 +160,7 @@ namespace VideoGame {
                 player.CurrentArea.Draw(camera, spriteBatch);
                 player.CurrentArea.EnteredArea = false;
                 player.Draw(spriteBatch);
+                menu.Draw(spriteBatch);
             }
             spriteBatch.DrawString(ContentLoader.Arial, $"FPS: {fpsCounter.AverageFramesPerSecond}", new Vector2(5, 5), Color.Yellow);
             spriteBatch.End();
