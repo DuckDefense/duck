@@ -26,7 +26,7 @@ namespace VideoGame.Classes {
         private Rectangle collisionHitbox;
         private Vector2 SpawnLocation;
         List<Character> OpponentList = new List<Character>();
-        Dictionary<string, Rectangle> AreaColiders = new Dictionary<string, Rectangle>();
+        Dictionary<Rectangle, string> AreaColiders = new Dictionary<Rectangle, string>();
         List<Rectangle> EncounterColiders = new List<Rectangle>();
         List<Rectangle> CollisionColiders = new List<Rectangle>();
         static int tileWidth = 32;
@@ -51,7 +51,7 @@ namespace VideoGame.Classes {
                 }
             foreach (var encounterColider in EncounterColiders) { batch.Draw(ContentLoader.Button, encounterColider, Color.Green); }
             foreach (var collisionColider in CollisionColiders) { batch.Draw(ContentLoader.Button, collisionColider, Color.Blue); }
-            foreach (var areaCollider in AreaColiders) { batch.Draw(ContentLoader.Button, areaCollider.Value, Color.Aqua); }
+            foreach (var areaCollider in AreaColiders) { batch.Draw(ContentLoader.Button, areaCollider.Key, Color.Aqua); }
             }
             foreach (var opponent in OpponentList) opponent.Draw(batch);
         }
@@ -155,29 +155,30 @@ namespace VideoGame.Classes {
                     //if(AreaColiders.ContainsKey(layer.Properties.Values))
                     collisionHitbox = new Rectangle((tile.X * tileWidth), (tile.Y * tileHeight), tileWidth, tileHeight);
                     var areaName = layer.Properties.Values.ElementAt(0);
-                    if (!AreaColiders.ContainsKey(areaName)) {
-                        AreaColiders.Add(areaName, collisionHitbox);
-                    }
+                     if(!AreaColiders.ContainsKey(collisionHitbox))
+                        AreaColiders.Add(collisionHitbox, areaName);
                 }
             }
             if (AreaColiders.Count != 0) {
-                foreach (var entry in AreaColiders.Where(entry => player.Hitbox.Intersects(entry.Value))) {
+                foreach (var entry in AreaColiders.Where(entry => player.Hitbox.Intersects(entry.Key))) {
                     //Enter area
-
-                    player.CurrentArea = GetAreaFromName(entry.Key);
+                    player.PreviousArea = player.CurrentArea;
+                    player.CurrentArea = GetAreaFromName(entry.Value, player);
                     player.Position = player.CurrentArea.SpawnLocation;
                     break;
                 }
             }
         }
 
-        private Area GetAreaFromName(string n) {
+        private Area GetAreaFromName(string n, Character player) {
             //return area if n is the name
             switch (n) {
             case "Route 1":
                 return Route1();
             case "City":
-                return City();
+                return City(player);
+            case "shop":
+                return Shop();
             }
             return null;
         }
@@ -225,7 +226,7 @@ namespace VideoGame.Classes {
         }
         #endregion
 
-        public static Area City()
+        public static Area City(Character player)
         {
             if (Sound != null)
             Sound.Stop();
@@ -234,11 +235,21 @@ namespace VideoGame.Classes {
             Sound.IsLooped = true;
             Sound.Play();
 
-
             Random random = new Random();
             Point levelrange = new Point(3, 8);
             var map = ContentLoader.City;
-            var spawn = new Vector2(96, 96);
+
+            Vector2 spawn = Vector2.One;
+            if(player.PreviousArea != null)
+            if (player.PreviousArea.Name == "Shop")
+            {
+                spawn = new Vector2(256, 224);
+            }
+            else
+            {
+                spawn = new Vector2(256, 320);
+            }
+             
             List<Monster> monsters = new List<Monster>();
             List<Character> opponents = new List<Character>();
             //Sound = ContentLoader.RouteSong;
@@ -246,6 +257,14 @@ namespace VideoGame.Classes {
             //Sound.Play();
 
             return new Area("City", levelrange, monsters, opponents, spawn, map);
+        }
+
+        public static Area Shop()
+        {
+            var spawn = new Vector2(96,128);
+            var map = ContentLoader.Shop;
+
+            return new Area("Shop", Point.Zero, new List<Monster>(), new List<Character>(), spawn,map);
         }
     }
 }

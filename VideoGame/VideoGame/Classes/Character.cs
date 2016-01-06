@@ -51,6 +51,7 @@ namespace VideoGame.Classes {
         public Dictionary<int, Monster> CaughtMonster = new Dictionary<int, Monster>();
         public List<Monster> Box = new List<Monster>();
         public Area CurrentArea;
+        public Area PreviousArea;
         public AI AI;
         public float MovementSpeed = 2f;
         public float Moved;
