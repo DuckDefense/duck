@@ -86,6 +86,7 @@ namespace VideoGame.Classes {
             UId = RandomId.GenerateRandomUId();
             Level = level;
             experience = level * level * 5;
+            RemainingExp = ((level +1)*(level + 1)*5) - experience;
             Name = name;
             Description = description;
             PrimaryType = type;
@@ -126,6 +127,7 @@ namespace VideoGame.Classes {
             UId = RandomId.GenerateRandomUId();
             Level = level;
             experience = level * level * 5;
+            RemainingExp = ((level + 1) * (level + 1) * 5) - experience;
             Name = name;
             Description = description;
             PrimaryType = primaryType;
