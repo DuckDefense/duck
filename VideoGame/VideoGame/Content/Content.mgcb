@@ -618,3 +618,15 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Battle/HealthBorderUser.png
 
+#begin Music/rustige stad.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/rustige stad.wav
+
+#begin Music/seasong.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/seasong.wav
+

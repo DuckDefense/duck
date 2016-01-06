@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
 
 namespace VideoGame.Classes {
     public class Area {
         public bool Debug = true;
+        private static SoundEffectInstance Sound;
         private static Point Levelrange;
         public string Name;
         public List<Monster> Monsters;
@@ -160,6 +163,7 @@ namespace VideoGame.Classes {
             if (AreaColiders.Count != 0) {
                 foreach (var entry in AreaColiders.Where(entry => player.Hitbox.Intersects(entry.Value))) {
                     //Enter area
+
                     player.CurrentArea = GetAreaFromName(entry.Key);
                     player.Position = player.CurrentArea.SpawnLocation;
                     break;
@@ -188,6 +192,13 @@ namespace VideoGame.Classes {
         #region Route1
         public static
         Area Route1() {
+            if (Sound != null)
+                Sound.Stop();
+
+            Sound = ContentLoader.RouteSong.CreateInstance();
+            Sound.IsLooped = true;
+            Sound.Play();
+
             Character tegenstander;
             tegenstander = new Character("Nice guy", 6700,
                 new Inventory(),
@@ -214,13 +225,25 @@ namespace VideoGame.Classes {
         }
         #endregion
 
-        public static Area City() {
+        public static Area City()
+        {
+            if (Sound != null)
+            Sound.Stop();
+
+            Sound = ContentLoader.TownSong.CreateInstance();
+            Sound.IsLooped = true;
+            Sound.Play();
+
+
             Random random = new Random();
             Point levelrange = new Point(3, 8);
             var map = ContentLoader.City;
             var spawn = new Vector2(96, 96);
             List<Monster> monsters = new List<Monster>();
             List<Character> opponents = new List<Character>();
+            //Sound = ContentLoader.RouteSong;
+            //Sound.IsLooped = true;
+            //Sound.Play();
 
             return new Area("City", levelrange, monsters, opponents, spawn, map);
         }

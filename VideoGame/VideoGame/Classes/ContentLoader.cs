@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.Maps.Tiled;
 
 namespace VideoGame.Classes {
@@ -35,6 +37,9 @@ namespace VideoGame.Classes {
         public static Texture2D RottenNet, RegularNet, GreatNet;
         public static TiledMap Map, City, Route2;
         public static SpriteFont Arial;
+
+        public static SoundEffect TownSong;
+        public static SoundEffect RouteSong;
 
         public static void SetContent(ContentManager content, GraphicsDeviceManager graphicsDevice) {
             GraphicsDevice = graphicsDevice.GraphicsDevice;
@@ -132,6 +137,12 @@ namespace VideoGame.Classes {
             Salt = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
             #endregion
 
+            #region Music
+
+            TownSong = Content.Load<SoundEffect>(@"Music/rustige stad");
+            RouteSong = Content.Load<SoundEffect>(@"Music/seasong");
+
+            #endregion
 
             #endregion
         }
