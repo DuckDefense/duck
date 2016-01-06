@@ -113,7 +113,9 @@ namespace VideoGame.Classes {
     }
 
     public class Medicine : Item {
-        public enum Cure { None, Sleep, Poisoned, Paralyzed, Burned, Frozen, All }
+        public enum Cure { None, Sleep, Poisoned, Burned, Frozen, All, Frenzied}
+
+        private Cure inflict;
 
         public int HealAmount { get; private set; }
         public Cure Cures { get; private set; }
@@ -178,14 +180,15 @@ namespace VideoGame.Classes {
         /// <param name="worth"></param>
         /// <param name="amount"></param>
         /// <param name="maxAmount"></param>
-        public Medicine(int id, string name, string description, Texture2D sprite, int healAmount, Cure cure, int worth, int amount, int maxAmount) {
+        public Medicine(int id, string name, string description, Texture2D sprite, int healAmount, Cure cure, int worth, int amount, int maxAmount, bool cureAilment = true) {
             Useable = true;
             Id = id;
             Name = name;
             Description = description;
             Sprite = sprite;
             HealAmount = healAmount;
-            Cures = cure;
+            if(cureAilment) Cures = cure;
+            else inflict = cure;
             Useable = true;
             Worth = worth;
             Amount = amount;
@@ -200,6 +203,10 @@ namespace VideoGame.Classes {
                 if (monster.Ailment == (Ailment)Cures) {
                     monster.Ailment = Ailment.Normal;
                 }
+            }
+            if (inflict != Cure.None)
+            {
+                monster.Ailment = (Ailment) inflict;
             }
             if ((monster.Stats.Health + HealAmount) >= monster.MaxHealth) {
                 monster.Stats.Health = monster.MaxHealth;
@@ -244,6 +251,10 @@ namespace VideoGame.Classes {
 
         public static Medicine RoosVicee() {
             return new Medicine(8, "RoosVicee", "Komt wel goed schatje", ContentLoader.RoosVicee, Cure.All, 586, 1, 99);
+        }
+
+        public static Medicine MotherPicture(){
+            return  new Medicine(8, "Mother picture", "Causes the user to go into a frenzy", ContentLoader.Health, 0, Cure.Frenzied, 200, 1, 99, false);
         }
     }
 
