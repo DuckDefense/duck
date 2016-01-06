@@ -46,7 +46,7 @@ namespace Sandbox.Classes {
             SaveButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 4), width, height), buttonTexture, hoverTexture, clickedTexture, "Save", ContentLoader.Arial);
             MuteButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 5), width, height), buttonTexture, hoverTexture, clickedTexture, "Mute", ContentLoader.Arial);
 
-            ButtonList.AddMany(KnownMonstersButton, PartyButton, ItemButton, PlayerButton, SaveButton);
+            ButtonList.AddMany(KnownMonstersButton, PartyButton, ItemButton, PlayerButton, SaveButton, MuteButton);
         }
 
         public void Update(GameTime gameTime, MouseState curMouseState, MouseState prevMouseState, KeyboardState curKeyboardState, KeyboardState prevKeyboardState) {
