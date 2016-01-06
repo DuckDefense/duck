@@ -73,7 +73,7 @@ namespace VideoGame {
             player = new Character("Pietertje", 5000, new Inventory(), new List<Monster>(),
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.MCGirl, new Vector2(96, 96), true);
             player.Debug = true;
-            player.CurrentArea = Area.City();
+            player.CurrentArea = Area.City(player);
             player.CurrentArea.EnteredArea = true;
             player.Monsters.Add(Monster.Gronkey(15));
             player.Monsters.Add(Monster.Brass(15));
