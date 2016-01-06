@@ -57,7 +57,7 @@ namespace VideoGame.Classes {
             Random random = new Random();
             int capturechance = 0;
 
-            CaptureAnimation(new List<Vector2>()
+            CaptureAnimation(new List<Vector2>
             {
                 new Vector2(20,20),
                 new Vector2(50,50)
@@ -84,6 +84,8 @@ namespace VideoGame.Classes {
             if (capturechance < 5) capturechance = 5; 
             var dice = random.Next(0, 100);
             if (dice < capturechance) {
+                //Add monster to caught list
+                if (!player.CaughtMonster.ContainsKey(monster.Id)) player.CaughtMonster.Add(monster.Id, monster);
                 monster.UId = RandomId.GenerateRandomUId();
                 if (player.Monsters.Count >= 6) player.Box.Add(monster); 
                 else player.Monsters.Add(monster);
@@ -207,8 +209,8 @@ namespace VideoGame.Classes {
             else {
                 Amount++;
             }
-            if (monster.Stats.Health < monster.PreviousStats.Health) {
-                monster.Stats.Health = monster.PreviousStats.Health;
+            if (monster.Stats.Health < monster.MaxHealth) {
+                monster.Stats.Health = monster.MaxHealth;
             }
             Amount--;
 

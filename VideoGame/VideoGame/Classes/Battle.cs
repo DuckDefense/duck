@@ -117,6 +117,8 @@ namespace VideoGame.Classes {
                 CurrentUserMonster.Ability.GetEffects(CurrentUserMonster, CurrentOpponentMonster);
                 CurrentOpponentMonster.Ability.GetEffects(CurrentOpponentMonster, CurrentUserMonster);
                 CurrentUserMonster.Fought = true;
+                //Check if player has seen the monster
+                if (!User.KnownMonsters.ContainsKey(CurrentOpponentMonster.Id)) User.KnownMonsters.Add(CurrentOpponentMonster.Id, CurrentOpponentMonster);
                 battleStart = false;
                 drawBattleButtons = true;
             }
@@ -164,8 +166,6 @@ namespace VideoGame.Classes {
             switch (BattleState) {
             case State.Won:
                 if (Opponent != null) User.Money += Opponent.Money / 3;
-
-                
                 break;
             case State.Loss:
                 break;
@@ -192,6 +192,8 @@ namespace VideoGame.Classes {
                     CurrentOpponentMonster = monster;
                     break;
                 }
+                //Check if player has seen the monster
+                if (!User.KnownMonsters.ContainsKey(CurrentOpponentMonster.Id)) User.KnownMonsters.Add(CurrentOpponentMonster.Id, CurrentOpponentMonster);
             }
             Selection = Selection.None;
         }
@@ -215,17 +217,15 @@ namespace VideoGame.Classes {
             //If battling against a wild monster
             else {
                 //If neither the user monsters or the wild monster are alive draw the buttons
-                if (!IsDefeated(User) && !CurrentOpponentMonster.IsDead) 
-                {
+                if (!IsDefeated(User) && !CurrentOpponentMonster.IsDead) {
                     drawBattleButtons = true;
                 }
                 //If either all user monsters are dead, or if the wild monster is dead
                 else {
-                    foreach (var monster in User.Monsters)
-                    {
+                    foreach (var monster in User.Monsters) {
                         if (monster.Fought)
                             if (!monster.IsDead)
-                        monster.ReceiveExp(CurrentOpponentMonster);
+                                monster.ReceiveExp(CurrentOpponentMonster);
                     }
                     if (IsDefeated(User)) SetLoss();
                     if (CurrentOpponentMonster.IsDead) SetWin();
@@ -291,8 +291,7 @@ namespace VideoGame.Classes {
                     }
                 }
                 if (CurrentOpponentMonster.IsDead) {
-                    foreach (var monster in User.Monsters)
-                    {
+                    foreach (var monster in User.Monsters) {
                         if (monster.Fought)
                             if (!monster.IsDead)
                                 monster.ReceiveExp(CurrentOpponentMonster);
@@ -412,8 +411,7 @@ namespace VideoGame.Classes {
             SelectedMove = null;
             if (passTurn) playerTurn = false;
         }
-        private bool IsDefeated(Character character)
-        {
+        private bool IsDefeated(Character character) {
             if (Opponent == null) if (CurrentOpponentMonster.IsDead) return true;
             var deadMonsters = character.Monsters.Count(m => m.IsDead);
             //Check if any monsters of the opponent are dead
