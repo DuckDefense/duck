@@ -32,7 +32,7 @@ namespace VideoGame.Classes {
         public static Texture2D GrassyBackground;
         public static Texture2D Christman;
         public static Texture2D MCGirl;
-        public static Texture2D Button;
+        public static Texture2D Button, ButtonHover, ButtonClicked;
         public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt;
         public static Texture2D RottenNet, RegularNet, GreatNet;
         public static TiledMap Map, City, Route2;
@@ -49,6 +49,11 @@ namespace VideoGame.Classes {
         //Add all Textures in here
         public void LoadContent() {
             Grid = Content.Load<Texture2D>(@"Sprites/Debug/32grid");
+
+
+            Button = Content.Load<Texture2D>(@"Sprites/Buttons/Button");
+            ButtonHover = Content.Load<Texture2D>(@"Sprites/Buttons/ButtonHover");
+            ButtonClicked = Content.Load<Texture2D>(@"Sprites/Buttons/ButtonClicked");
 
             #region Monsters
             GronkeyFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Gronkey");
@@ -74,7 +79,6 @@ namespace VideoGame.Classes {
 
             #region Battle
             GrassyBackground = Content.Load<Texture2D>(@"Sprites/Battle/Backgrounds/Grassy");
-            Button = Content.Load<Texture2D>(@"Sprites/Buttons/Button");
             Health = Content.Load<Texture2D>(@"Sprites/Battle/Health");
             HealthBorder = Content.Load<Texture2D>(@"Sprites/Battle/HealthBorder");
             HealthBorderUser = Content.Load<Texture2D>(@"Sprites/Battle/HealthBorderUser");
