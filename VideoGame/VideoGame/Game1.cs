@@ -104,6 +104,7 @@ namespace VideoGame {
             player.KnownMonsters.Add(Monster.Gladkey(5).Id, Monster.Gladkey(5));
             player.KnownMonsters.Add(Monster.Bonsantai(5).Id, Monster.Bonsantai(5));
             player.KnownMonsters.Add(Monster.Joiantler(5).Id, Monster.Joiantler(5));
+            player.KnownMonsters.Add(Monster.Rasion(5).Id, Monster.Rasion(5));
             
             menu = new Menu(player, new Vector2(Settings.ResolutionWidth - 64, 0));
         }

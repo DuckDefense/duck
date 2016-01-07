@@ -417,8 +417,21 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(100, 85, 100, 78, 97, 110, level);
             return new Monster(16, level, "Joiantler", "Having found its hat nothing can ruin its day",
-                Type.Poison, Type.Ghost, 50, 50, item, stats, abilities,
+                Type.Normal, Type.Grass, 50, 50, item, stats, abilities,
                 ContentLoader.JoiantlerFront, ContentLoader.JoiantlerBack, ContentLoader.JoiantlerParty);
+        }
+        public static Monster Rasion(int level, Item item = null) {
+            if (item == null) item = new Item();
+            List<Ability> abilities = new List<Ability> {
+                Ability.Squishy(),
+                Ability.Silly()
+            };
+            //Calculate level so we can determine what moves it could have learned
+
+            Stats stats = new Stats(58, 68, 40, 50, 48, 87, level);
+            return new Monster(17, level, "Rasion", "This creature has been completely consumed by poison, \nlosing its conscience",
+                Type.Poison, Type.Normal, 50, 50, item, stats, abilities,
+                ContentLoader.RasionFront, ContentLoader.RasionBack, ContentLoader.RasionParty);
         }
         #endregion
     }
