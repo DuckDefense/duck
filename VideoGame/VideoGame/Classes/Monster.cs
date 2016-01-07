@@ -352,12 +352,10 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(160, 110, 75, 60, 90, 5, level);
-            return new Monster(10, level, "Gronkey", "This creature is on cloud 9 after its mustache grew back",
+            return new Monster(11, level, "Gladkey", "This creature is on cloud 9 after its mustache grew back",
                 Type.Fight, 50, 50, item, stats, abilities,
                 ContentLoader.GladkeyFront, ContentLoader.GladkeyBack, ContentLoader.GladkeyParty);
         }
-
-
         public static Monster Brass(int level, Item item = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
@@ -371,23 +369,18 @@ namespace VideoGame.Classes {
                 Type.Rock, 75, 50, item, stats, abilities,
                 ContentLoader.BrassFront, ContentLoader.BrassBack, ContentLoader.BrassParty);
         }
-
         public static Monster Bonsantai(int level, Item item = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
-                Ability.Ordinary(),
-                Ability.Unmovable()
+                Ability.StrongFist()
             };
             //Calculate level so we can determine what moves it could have learned
 
-            Stats stats = new Stats(78, 15, 90, 10, 80, 5, level);
-            return new Monster(12, level, "Brass", "This brick is pretty useless, all it can do is lie and wait\nuntil is undeniably faints.",
-                Type.Rock, 75, 50, item, stats, abilities,
-                ContentLoader.BrassFront, ContentLoader.BrassBack, ContentLoader.BrassParty);
+            Stats stats = new Stats(88, 115, 65, 10, 75, 75, level);
+            return new Monster(13, level, "Bonsantai", "After years of training and getting teased, \nthis brick learned the ways of the earth",
+                Type.Rock, Type.Grass, 75, 50, item, stats, abilities,
+                ContentLoader.BonsantaiFront, ContentLoader.BonsantaiBack, ContentLoader.BonsantaiParty);
         }
-
-
-
         public static Monster Huffstein(int level, Item item = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
@@ -396,24 +389,36 @@ namespace VideoGame.Classes {
             };
             //Calculate level so we can determine what moves it could have learned
 
-            Stats stats = new Stats(40, 42, 50, 76, 65, 55, level);
+            Stats stats = new Stats(60, 42, 83, 76, 65, 55, level);
             return new Monster(14, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its body",
                 Type.Poison, Type.Rock, 50, 50, item, stats, abilities,
                 ContentLoader.HuffsteinFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
         }
-
         public static Monster Fester(int level, Item item = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
-                Ability.Fuzzy()
+                Ability.AfterImage(),
+                Ability.Deaf()
             };
             //Calculate level so we can determine what moves it could have learned
 
-            Stats stats = new Stats(38, 80, 40, 76, 65, 78, level);
+            Stats stats = new Stats(68, 40, 40, 79, 65, 128, level);
             return new Monster(15, level, "Fester", "Being haunted in life, he now haunts his enemies in the afterlife",
                 Type.Poison, Type.Ghost, 50, 50, item, stats, abilities,
                 ContentLoader.FesterFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
-            //TODO: Fix the Back and Party sprite for Fester
+        }
+        public static Monster Joiantler(int level, Item item = null) {
+            if (item == null) item = new Item();
+            List<Ability> abilities = new List<Ability> {
+                Ability.Enjoyer(),
+                Ability.Relaxed()
+            };
+            //Calculate level so we can determine what moves it could have learned
+
+            Stats stats = new Stats(100, 85, 100, 78, 97, 110, level);
+            return new Monster(16, level, "Joiantler", "Having found its hat nothing can ruin its day",
+                Type.Poison, Type.Ghost, 50, 50, item, stats, abilities,
+                ContentLoader.JoiantlerFront, ContentLoader.JoiantlerBack, ContentLoader.JoiantlerParty);
         }
         #endregion
     }
