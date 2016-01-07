@@ -107,6 +107,19 @@ namespace VideoGame.Classes {
             CalculateStats(level);
             maxhealth = Health;
         }
+
+        public string PrintStats() {
+            return $"";
+        }
+
+        public string PintBaseStats() {
+            return $"Base Health: {BaseHealth}\n" +
+                   $"Base Attack: {BaseAttack}\n" +
+                   $"Base Defense: {BaseDefense}\n" +
+                   $"Base SpecialAttack: {BaseSpecialAttack}\n" +
+                   $"Base SpecialDefense: {BaseSpecialDefense}\n" +
+                   $"Base Speed: {BaseSpeed}";
+        }
     }
 
     public class StatModifier {
