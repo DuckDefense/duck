@@ -57,6 +57,7 @@ namespace VideoGame.Classes {
         public Item HeldItem; //Item the monster is currently holding
         public Ailment Ailment;
         public Gender Gender;
+        public List<Ability> PossibleAbilities = new List<Ability>(2);
         public Ability Ability;
         public double CriticalHitChance = 5;
         public double CriticalHitMultiplier = 2;
@@ -95,6 +96,7 @@ namespace VideoGame.Classes {
             CaptureChance = captureChance;
             HeldItem = helditem;
             Stats = stats;
+            PossibleAbilities = abilities;
             Ability = GetAbility(abilities);
             FrontSprite = front;
             BackSprite = back;
@@ -136,6 +138,7 @@ namespace VideoGame.Classes {
             CaptureChance = captureChance;
             HeldItem = helditem;
             Stats = stats;
+            PossibleAbilities = abilities;
             Ability = GetAbility(abilities);
             FrontSprite = front;
             BackSprite = back;
@@ -257,7 +260,7 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(45, 50, 71, 40, 60, 66, level);
-            return new Monster(1, level, "Armler", "This shifty creature Likes to pretend that his pockets are its eyes",
+            return new Monster(1, level, "Armler", "This shifty creature Likes to pretend that its pockets are its eyes",
                 Type.Grass, 75, 5, item, stats, abilities,
                 ContentLoader.ArmlerFront, ContentLoader.ArmlerBack, ContentLoader.ArmlerParty);
         }
@@ -270,7 +273,7 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(60, 64, 90, 50, 75, 56, level);
-            return new Monster(2, level, "Pantsler", "While desperately trying to escape from the clutches of its' pants this monster is still able to battle",
+            return new Monster(2, level, "Pantsler", "While desperately trying to escape from the clutches of its \npants this monster is still able to battle",
                 Type.Grass, Type.Fight, 75, 5, item, stats, abilities,
                 ContentLoader.PantslerFront, ContentLoader.PantslerBack, ContentLoader.PantslerParty);
         }
@@ -283,7 +286,7 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(60, 121, 60, 50, 60, 85, level);
-            return new Monster(3, level, "Prestler", "These pants are the ultimate fighter, having consumed it's prior wearer",
+            return new Monster(3, level, "Prestler", "These pants are the ultimate fighter, having consumed its prior wearer",
                 Type.Grass, Type.Fight, 75, 5, item, stats, abilities,
                 ContentLoader.PrestlerFront, ContentLoader.PrestlerBack, ContentLoader.PrestlerParty);
         }
@@ -322,7 +325,7 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(95, 30, 39, 93, 65, 112, level);
-            return new Monster(6, level, "Dvallalin", "This whale, being weighed down by its troubles, made a blimp to carry his burdens",
+            return new Monster(6, level, "Dvallalin", "This whale, being weighed down by its troubles, \nmade a blimp to carry his burdens",
                 Type.Water, 75, 5, item, stats, abilities,
                 ContentLoader.MimirdFront, ContentLoader.MimirdBack, ContentLoader.MimirdParty);
         }
@@ -366,7 +369,7 @@ namespace VideoGame.Classes {
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(40, 42, 50, 76, 65, 55, level);
-            return new Monster(14, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its' body",
+            return new Monster(14, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its body",
                 Type.Poison, Type.Rock, 50, 50, item, stats, abilities,
                 ContentLoader.HuffsteinFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
         }
