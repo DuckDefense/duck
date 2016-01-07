@@ -76,28 +76,26 @@ namespace Sandbox.Classes {
             case Selection.Save:
                 break;
             case Selection.Mute:
-                    if (SoundEffect.MasterVolume != 0f)
-                    {
-                        SoundEffect.MasterVolume = 0f;
-                        MuteButton.Text = "Unmute";
-                    }
-                    else
-                    {
-                        SoundEffect.MasterVolume = 1f;
-                    }
-                    Selection = Selection.None;
+                if (SoundEffect.MasterVolume != 0f) {
+                    SoundEffect.MasterVolume = 0f;
+                    MuteButton.Text = "Unmute";
+                }
+                else {
+                    SoundEffect.MasterVolume = 1f;
+                }
+                Selection = Selection.None;
                 break;
             }
         }
 
-        public void Toggle(KeyboardState cur, KeyboardState prev) {
+        private void Toggle(KeyboardState cur, KeyboardState prev) {
             if (cur.IsKeyDown(Keys.Enter) && prev.IsKeyUp(Keys.Enter)) {
                 Visible = !Visible;
                 Selection = Selection.None;
             }
         }
-
-        public void Draw(SpriteBatch batch) {
+        
+        public void Draw(SpriteBatch batch, MouseState curMouseState) {
             if (!Visible) return;
             foreach (var button in ButtonList) {
                 button.Draw(batch);
@@ -105,6 +103,9 @@ namespace Sandbox.Classes {
             switch (Selection) {
             case Selection.KnownMonsters:
                 DrawKnownMonsters(batch);
+                foreach (var con in knownMonsterList) {
+                    if (con.Button.IsHovering(curMouseState)) Drawer.DrawMonsterInfo(batch, con.Monster, true); 
+                }
                 break;
             case Selection.Party:
                 break;
@@ -135,10 +136,32 @@ namespace Sandbox.Classes {
         }
 
         private void DrawKnownMonsters(SpriteBatch batch) {
-            knownMonsterList.Sort((con1, con2) => con1.Monster.Id.CompareTo(con2.Monster.Id));
+            batch.Draw(ContentLoader.Health, new Rectangle(0, 0, (96 * 7) + 1, (96 * 7) + 1), Color.DarkRed);
             foreach (var con in knownMonsterList) {
-                batch.Draw(ContentLoader.Health, new Rectangle(con.Button.Position.X - 1, con.Button.Position.Y - 1, 98, 98), Color.Brown);
-                batch.Draw(con.Monster.FrontSprite, new Rectangle(con.Button.Position.X, con.Button.Position.Y, 96, 96), Color.White);
+                if (con.Monster.Id <= 7) {
+                    var rect = new Rectangle(((con.Monster.Id - 1) * 96), 0, 96, 96);
+                    batch.Draw(ContentLoader.Health, new Rectangle(rect.X - 1, rect.Y - 1, rect.Width + 2, rect.Height + 2), Color.Brown);
+                    batch.Draw(con.Monster.FrontSprite, rect, Color.White);
+                    con.Button.Position = rect;
+                }
+                else if (con.Monster.Id <= 14) {
+                    var rect = new Rectangle(((con.Monster.Id - 8) * 96), 96, 96, 96);
+                    batch.Draw(ContentLoader.Health, new Rectangle(rect.X - 1, rect.Y - 1, rect.Width + 2, rect.Height + 2), Color.Brown);
+                    batch.Draw(con.Monster.FrontSprite, rect, Color.White);
+                    con.Button.Position = rect;
+                }
+                else if (con.Monster.Id <= 21) {
+                    var rect = new Rectangle(((con.Monster.Id - 15) * 96), 96 * 2, 96, 96);
+                    batch.Draw(ContentLoader.Health, new Rectangle(rect.X - 1, rect.Y - 1, rect.Width + 2, rect.Height + 2), Color.Brown);
+                    batch.Draw(con.Monster.FrontSprite, rect, Color.White);
+                    con.Button.Position = rect;
+                }
+                else if (con.Monster.Id <= 28) {
+                    var rect = new Rectangle(((con.Monster.Id - 22) * 96), 96 * 3, 96, 96);
+                    batch.Draw(ContentLoader.Health, new Rectangle(rect.X - 1, rect.Y - 1, rect.Width + 2, rect.Height + 2), Color.Brown);
+                    batch.Draw(con.Monster.FrontSprite, rect, Color.White);
+                    con.Button.Position = rect;
+                }
             }
         }
 
