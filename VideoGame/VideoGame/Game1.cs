@@ -160,9 +160,9 @@ namespace VideoGame {
                 player.CurrentArea.Draw(camera, spriteBatch);
                 player.CurrentArea.EnteredArea = false;
                 player.Draw(spriteBatch);
-                menu.Draw(spriteBatch);
+                menu.Draw(spriteBatch, currentMouseState);
             }
-            spriteBatch.DrawString(ContentLoader.Arial, $"FPS: {fpsCounter.AverageFramesPerSecond}", new Vector2(5, 5), Color.Yellow);
+            //spriteBatch.DrawString(ContentLoader.Arial, $"FPS: {fpsCounter.AverageFramesPerSecond}", new Vector2(5, 5), Color.Yellow);
             spriteBatch.End();
 
             base.Draw(gameTime);
