@@ -277,7 +277,6 @@ namespace VideoGame.Classes {
                 Type.Grass, Type.Fight, 75, 5, item, stats, abilities,
                 ContentLoader.PantslerFront, ContentLoader.PantslerBack, ContentLoader.PantslerParty);
         }
-
         public static Monster Prestler(int level, Item item = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
@@ -313,21 +312,21 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(55, 43, 52, 83, 59, 109, level);
             return new Monster(5, level, "Njortor", "This mammal has created its own helicopter and attached it to its back",
-                Type.Water, 75, 5, item, stats, abilities,
+                Type.Water, Type.Flying, 75, 5, item, stats, abilities,
                 ContentLoader.NjortorFront, ContentLoader.NjortorBack, ContentLoader.NjortorParty);
         }
         public static Monster Dvallalin(int level, Item item = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
                 Ability.Swift(),
-                Ability.Evasive()
+                Ability.Relaxed()
             };
             //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(95, 30, 39, 93, 65, 112, level);
             return new Monster(6, level, "Dvallalin", "This whale, being weighed down by its troubles, \nmade a blimp to carry his burdens",
-                Type.Water, 75, 5, item, stats, abilities,
-                ContentLoader.MimirdFront, ContentLoader.MimirdBack, ContentLoader.MimirdParty);
+                Type.Water, Type.Flying, 75, 5, item, stats, abilities,
+                ContentLoader.DvallalinFront, ContentLoader.DvallalinBack, ContentLoader.DvallalinParty);
         }
         
         // 7 to 9 fire starter
@@ -344,7 +343,21 @@ namespace VideoGame.Classes {
                 Type.Fight, 50, 50, item, stats, abilities,
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.GronkeyParty);
         }
-        //11: Evolution of Gronkey?
+        public static Monster Gladkey(int level, Item item = null) {
+            if (item == null) item = new Item();
+            List<Ability> abilities = new List<Ability> {
+                Ability.Relaxed(),
+                Ability.Unmovable()
+            };
+            //Calculate level so we can determine what moves it could have learned
+
+            Stats stats = new Stats(160, 110, 75, 60, 90, 5, level);
+            return new Monster(10, level, "Gronkey", "This creature is on cloud 9 after its mustache grew back",
+                Type.Fight, 50, 50, item, stats, abilities,
+                ContentLoader.GladkeyFront, ContentLoader.GladkeyBack, ContentLoader.GladkeyParty);
+        }
+
+
         public static Monster Brass(int level, Item item = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
@@ -358,7 +371,22 @@ namespace VideoGame.Classes {
                 Type.Rock, 75, 50, item, stats, abilities,
                 ContentLoader.BrassFront, ContentLoader.BrassBack, ContentLoader.BrassParty);
         }
-        //13: Bonsantai
+
+        public static Monster Bonsantai(int level, Item item = null) {
+            if (item == null) item = new Item();
+            List<Ability> abilities = new List<Ability> {
+                Ability.Ordinary(),
+                Ability.Unmovable()
+            };
+            //Calculate level so we can determine what moves it could have learned
+
+            Stats stats = new Stats(78, 15, 90, 10, 80, 5, level);
+            return new Monster(12, level, "Brass", "This brick is pretty useless, all it can do is lie and wait\nuntil is undeniably faints.",
+                Type.Rock, 75, 50, item, stats, abilities,
+                ContentLoader.BrassFront, ContentLoader.BrassBack, ContentLoader.BrassParty);
+        }
+
+
 
         public static Monster Huffstein(int level, Item item = null) {
             if (item == null) item = new Item();
