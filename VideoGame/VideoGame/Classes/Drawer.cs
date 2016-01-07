@@ -187,22 +187,37 @@ namespace VideoGame.Classes {
             Batch.End();
         }
 
-        public static void DrawMonsterInfo(SpriteBatch batch, Monster m) {
+        public static void DrawMonsterInfo(SpriteBatch batch, Monster m, bool baseStats = false) {
             Texture2D background = ContentLoader.MonsterViewer;
-            var nameSize = ContentLoader.Arial.MeasureString(m.Name);
-            var descriptionSize = ContentLoader.Arial.MeasureString(m.Name);
-            Rectangle backgroundRectangle = new Rectangle(8, 8, background.Width, background.Height);
-            var frontPos = new Vector2(backgroundRectangle.X - 22, backgroundRectangle.Y - 8);
-            var namePos = new Vector2(backgroundRectangle.X - nameSize.X, backgroundRectangle.Y);
-            var descriptionPos = new Vector2(backgroundRectangle.X - descriptionSize.X, backgroundRectangle.Y - descriptionSize.Y);
-            var statsPos = new Vector2();
-            var abilityNamePos = new Vector2();
-            var abilityDescriptionPos = new Vector2();
+            var nameSize = ContentLoader.Arial.MeasureString(m.Ability.Name);
+            var descriptionSize = ContentLoader.Arial.MeasureString(m.Ability.Description);
+            Rectangle backgroundRectangle = new Rectangle(16, 16, background.Width, background.Height);
+            var frontPos = new Vector2(backgroundRectangle.X + 10, backgroundRectangle.Y + 24);
+            var namePos = new Vector2(frontPos.X, backgroundRectangle.Y + 6);
+            var descriptionPos = new Vector2(backgroundRectangle.X + frontPos.X + 89, backgroundRectangle.Y + 28);
+            var statsPos = new Vector2(frontPos.X, backgroundRectangle.Y + 130);
+            var abilityNamePos = new Vector2(backgroundRectangle.X + 230, statsPos.Y);
+            var abilityDescriptionPos = new Vector2(abilityNamePos.X, abilityNamePos.Y + 17);
 
+            batch.Draw(background, backgroundRectangle, Color.White);
             batch.Draw(m.FrontSprite, frontPos, Color.White);
-            batch.DrawString(ContentLoader.Arial, m.Name, namePos, Color.White);
-            batch.DrawString(ContentLoader.Arial, m.Description, descriptionPos, Color.White);
-            //Unfinished
+            batch.DrawString(ContentLoader.Arial, m.Name, namePos, Color.Black);
+            batch.DrawString(ContentLoader.Arial, m.Description, descriptionPos, Color.Black);
+            if(baseStats) batch.DrawString(ContentLoader.Arial, m.Stats.PintBaseStats(), statsPos, Color.Black);
+            else batch.DrawString(ContentLoader.Arial, m.Stats.PrintStats(), statsPos, Color.Black);
+            if (m.PossibleAbilities.Count == 1) {
+                batch.DrawString(ContentLoader.Arial, $"{m.Ability.Name}", abilityNamePos, Color.Black);
+                batch.DrawString(ContentLoader.Arial, m.Ability.Description, abilityDescriptionPos, Color.Black);
+            }
+            else {
+                batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[0].Name}", abilityNamePos, Color.Black);
+                batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[0].Description}", abilityDescriptionPos, Color.Black);
+
+                var pos = new Vector2(abilityNamePos.X, abilityNamePos.Y + nameSize.Y + descriptionPos.Y);
+
+                batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[1].Name}", pos, Color.Black);
+                batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[1].Description}", new Vector2(pos.X, pos.Y + 17), Color.Black);
+            }
         }
 
         public static void DrawBattle(SpriteBatch batch, Monster user, Monster opponent) {
