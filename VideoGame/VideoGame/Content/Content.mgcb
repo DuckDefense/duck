@@ -1009,3 +1009,25 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Monsters/Party/Njortor.png
 
+#begin Sprites/Monsters/Back/Rasion.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Monsters/Back/Rasion.png
+
+#begin Sprites/Monsters/Party/Rasion.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Monsters/Party/Rasion.png
+

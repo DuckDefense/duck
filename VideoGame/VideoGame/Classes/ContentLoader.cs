@@ -138,8 +138,8 @@ namespace VideoGame.Classes {
             PrestlerParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Prestler");
 
             RasionFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Rasion");
-            //RasionBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
-            //RasionParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+            RasionBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Rasion");
+            RasionParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Rasion");
 
             #endregion
 
