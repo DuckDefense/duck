@@ -75,11 +75,11 @@ namespace VideoGame {
             player.Debug = true;
             player.CurrentArea = Area.City(player);
             player.CurrentArea.EnteredArea = true;
-            player.Monsters.Add(Monster.Gronkey(15));
+            player.Monsters.Add(Monster.Gronkey(100));
             player.Monsters.Add(Monster.Brass(15));
             player.Monsters.Add(Monster.Huffstein(15));
             player.Monsters.Add(Monster.Armler(15));
-            player.Monsters.Add(Monster.Armler(15));
+            player.Monsters.Add(Monster.Pantsler(19));
             player.Inventory.Add(Medicine.RoosVicee(), 1);
             player.Inventory.Add(Medicine.MagicStone(), 3);
             player.Inventory.Add(Medicine.Salt(), 2);
@@ -99,6 +99,11 @@ namespace VideoGame {
             player.KnownMonsters.Add(Monster.Prestler(5).Id, Monster.Prestler(5));
             player.KnownMonsters.Add(Monster.Mimird(5).Id, Monster.Mimird(5));
             player.KnownMonsters.Add(Monster.Fester(5).Id, Monster.Fester(5));
+            player.KnownMonsters.Add(Monster.Njortor(5).Id, Monster.Njortor(5));
+            player.KnownMonsters.Add(Monster.Dvallalin(5).Id, Monster.Dvallalin(5));
+            player.KnownMonsters.Add(Monster.Gladkey(5).Id, Monster.Gladkey(5));
+            player.KnownMonsters.Add(Monster.Bonsantai(5).Id, Monster.Bonsantai(5));
+            player.KnownMonsters.Add(Monster.Joiantler(5).Id, Monster.Joiantler(5));
             
             menu = new Menu(player, new Vector2(Settings.ResolutionWidth - 64, 0));
         }
