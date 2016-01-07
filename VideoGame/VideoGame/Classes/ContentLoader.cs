@@ -87,11 +87,11 @@ namespace VideoGame.Classes {
 
             FesterFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Fester");
             FesterBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Fester");
-            //FesterParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+            FesterParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Fester");
 
             BonsantaiFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Bonsantai");
-            //BonsantaiBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
-            //BonsantaiParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+            BonsantaiBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Bonsantai");
+            BonsantaiParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Bonsantai");
 
             DrumbyFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Drumby");
             //DrumbyBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
@@ -99,11 +99,11 @@ namespace VideoGame.Classes {
 
             DvallalinFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Dvallalin");
             DvallalinBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Dvallalin");
-            //DvallalinParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+            DvallalinParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Dvallalin");
 
             GladkeyFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Gladkey");
             GladkeyBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Gladkey");
-            //GladkeyParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+            GladkeyParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Gladkey");
 
             HippolaciousFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Hippolacious");
             //HippolaciousBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
@@ -111,7 +111,7 @@ namespace VideoGame.Classes {
 
             JoiantlerFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Joiantler");
             JoiantlerBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Joiantler");
-            //JoiantlerParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+            JoiantlerParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Joiantler");
 
             KolfieFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Kolfie");
             //KolfieBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
@@ -127,7 +127,7 @@ namespace VideoGame.Classes {
 
             NjortorFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Njortor");
             NjortorBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Njortor");
-            //NjortorParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+            NjortorParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Njortor");
 
             PantslerFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Pantsler");
             PantslerBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Pantsler");
