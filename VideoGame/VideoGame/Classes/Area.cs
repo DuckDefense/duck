@@ -187,6 +187,7 @@ namespace VideoGame.Classes {
             CryptoRandom rand = new CryptoRandom();
             int index = rand.Next(0, Monsters.Count);
             Monsters[index].Stats.Health = Monsters[index].MaxHealth;
+            Monsters[index].Ailment = Ailment.Normal;
             return Monsters[index];
         }
 
