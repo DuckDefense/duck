@@ -85,11 +85,11 @@ namespace VideoGame.Classes {
             BaseSpeed = speed;
 
             var rand = new CryptoRandom();
-            RandAttack = rand.Next(0, 31);
-            RandDefense = rand.Next(0, 31);
-            RandSpecialAttack = rand.Next(0, 31);
-            RandSpecialDefense = rand.Next(0, 31);
-            RandSpeed = rand.Next(0, 31);
+            RandAttack = rand.Next(1, 31);
+            RandDefense = rand.Next(1, 31);
+            RandSpecialAttack = rand.Next(1, 31);
+            RandSpecialDefense = rand.Next(1, 31);
+            RandSpeed = rand.Next(1, 31);
 
             CalculateStats(level);
         }
@@ -108,8 +108,13 @@ namespace VideoGame.Classes {
             maxhealth = Health;
         }
 
-        public string PrintStats() {
-            return $"";
+        public string PrintStats(int maxHealth) {
+            return $"Health: {Health}/{maxHealth}\n" +
+                   $"Attack: {Attack}\n" +
+                   $"Defense: {Defense}\n" +
+                   $"SpecialAttack: {SpecialAttack}\n" +
+                   $"SpecialDefense: {SpecialDefense}\n" +
+                   $"Speed: {Speed}";
         }
 
         public string PintBaseStats() {
