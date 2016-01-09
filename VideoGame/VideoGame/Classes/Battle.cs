@@ -166,6 +166,12 @@ namespace VideoGame.Classes {
             switch (BattleState) {
             case State.Won:
                 if (Opponent != null) User.Money += Opponent.Money / 3;
+                    for (int i = 0; i < User.Monsters.Count; i++) {
+                        var m = User.Monsters[i];
+                        if (m.CanEvolve()) {
+                            User.Monsters[i] = m.GetEvolution();
+                        }
+                    }
                 break;
             case State.Loss:
                 break;

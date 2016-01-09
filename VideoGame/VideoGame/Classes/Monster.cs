@@ -182,10 +182,6 @@ namespace VideoGame.Classes {
                 Level = level - 1;
                 GetMoves();
                 Stats.LevelUp(Level, ref MaxHealth);
-                //Check if this monster has an evolution
-                if (this.CanEvolve()) {
-                    GetEvolution();
-                }
             }
         }
 
