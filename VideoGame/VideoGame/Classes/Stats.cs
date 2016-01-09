@@ -94,7 +94,7 @@ namespace VideoGame.Classes {
             }
             CalculateStats(level);
         }
-        private void CalculateStats(int level) {
+        public void CalculateStats(int level) {
             Health = ((((BaseHealth * 20) * 2) * level) / 250) + 5;
             Attack = ((((BaseAttack * RandAttack) * 2) * level) / 250) + 5;
             Defense = ((((BaseDefense * RandDefense) * 2) * level) / 250) + 5;
