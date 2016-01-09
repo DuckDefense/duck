@@ -202,38 +202,37 @@ namespace VideoGame.Classes {
 
         public bool CanEvolve() {
             switch (Id) {
-            case 1: if (Level == 18) return true; break;
-            case 2: if (Level == 32) return true; break;
+            case 1: if (Level >= 18) return true; break;
+            case 2: if (Level >= 32) return true; break;
 
-            case 4: if (Level == 16) return true; break;
-            case 5: if (Level == 36) return true; break;
+            case 4: if (Level >= 16) return true; break;
+            case 5: if (Level >= 36) return true; break;
 
-            case 7: if (Level == 14) return true; break;
-            case 8: if (Level == 38) return true; break;
+            case 7: if (Level >= 14) return true; break;
+            case 8: if (Level >= 38) return true; break;
 
-            case 10: if (Level == 28) return true; break;
+            case 10: if (Level >= 28) return true; break;
 
-            case 12: if (Level == 18) return true; break;
+            case 12: if (Level >= 18) return true; break;
             }
             return false;
         }
 
         public Monster GetEvolution() {
-
             switch (Id) {
-            case 1: if (Level == 16) return Pantsler(16, HeldItem, Stats); break;
-            case 2: if (Level == 32) return Prestler(32, HeldItem, Stats); break;
+            case 1: return Pantsler(Level, HeldItem, Stats);
+            case 2: return Prestler(Level, HeldItem, Stats);
 
-            case 4: if (Level == 16) return Njortor(32, HeldItem, Stats); break;
-            case 5: if (Level == 36) return Dvallalin(32, HeldItem, Stats); break;
+            case 4: return Njortor(Level, HeldItem, Stats);
+            case 5: return Dvallalin(Level, HeldItem, Stats);
 
             //TODO: Update with fire starters
-            case 7: if (Level == 14) return Prestler(14, HeldItem, Stats); break;
-            case 8: if (Level == 38) return Prestler(38, HeldItem, Stats); break;
+            case 7: return Prestler(Level, HeldItem, Stats);
+            case 8: return Prestler(Level, HeldItem, Stats);
 
-            case 10: if (Level == 28) return Gladkey(28, HeldItem, Stats); break;
+            case 10: return Gladkey(Level, HeldItem, Stats); 
 
-            case 12: if (Level == 18) return Bonsantai(18, HeldItem, Stats); break;
+            case 12: return Bonsantai(Level, HeldItem, Stats);
             }
             return this;
         }
