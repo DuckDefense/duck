@@ -77,9 +77,13 @@ namespace VideoGame {
             player.CurrentArea.EnteredArea = true;
             player.Monsters.Add(Monster.Gronkey(100));
             player.Monsters.Add(Monster.Brass(15));
-            player.Monsters.Add(Monster.Huffstein(15));
-            player.Monsters.Add(Monster.Armler(15));
-            player.Monsters.Add(Monster.Pantsler(19));
+            player.Monsters.Add(Monster.Mimird(16));
+            player.Monsters.Add(Monster.Armler(18));
+            player.Monsters.Add(Monster.Pantsler(32));
+
+            if (player.Monsters[3].CanEvolve()) { player.Monsters[3] = player.Monsters[3].GetEvolution(); }
+            if (player.Monsters[4].CanEvolve()) { player.Monsters[4] = player.Monsters[4].GetEvolution(); }
+
             player.Inventory.Add(Medicine.RoosVicee(), 1);
             player.Inventory.Add(Medicine.MagicStone(), 3);
             player.Inventory.Add(Medicine.Salt(), 2);
@@ -166,9 +170,9 @@ namespace VideoGame {
                 player.CurrentArea.Draw(camera, spriteBatch);
                 player.CurrentArea.EnteredArea = false;
                 player.Draw(spriteBatch);
-                menu.Draw(spriteBatch, currentMouseState);
+                menu.Draw(spriteBatch, currentMouseState, previousMouseState);
             }
-            //spriteBatch.DrawString(ContentLoader.Arial, $"FPS: {fpsCounter.AverageFramesPerSecond}", new Vector2(5, 5), Color.Yellow);
+            spriteBatch.DrawString(ContentLoader.Arial, $"FPS: {fpsCounter.AverageFramesPerSecond}", new Vector2(5, 5), Color.Yellow);
             spriteBatch.End();
 
             base.Draw(gameTime);

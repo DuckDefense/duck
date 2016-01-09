@@ -87,7 +87,7 @@ namespace VideoGame.Classes {
             UId = RandomId.GenerateRandomUId();
             Level = level;
             experience = level * level * 5;
-            RemainingExp = ((level +1)*(level + 1)*5) - experience;
+            RemainingExp = ((level + 1) * (level + 1) * 5) - experience;
             Name = name;
             Description = description;
             PrimaryType = type;
@@ -155,8 +155,8 @@ namespace VideoGame.Classes {
             double l = opponent.Level;
             double y = Level >= l ? 1 : 1.2f;
 
-            var expGain = (a * l * y) ;
-// / 3
+            var expGain = (a * l * y);
+            // / 3
 
             experience += Convert.ToInt32(expGain);
             CheckLevelUp();
@@ -170,25 +170,24 @@ namespace VideoGame.Classes {
         public void CheckLevelUp() {
             //var level = Experience / Level / 5;
             int level = Level;
-            for (int i = level; i < 100; i++)
-            {
-                var lvl = i*i*5;
+            for (int i = level; i < 100; i++) {
+                var lvl = i * i * 5;
                 RemainingExp = lvl - Experience;
-                if (lvl < Experience)
-                {
+                if (lvl < Experience) {
                     level++;
                 }
                 else break;
             }
-            if (level - 1 > Level)
-            {
+            if (level - 1 > Level) {
                 Level = level - 1;
                 GetMoves();
                 Stats.LevelUp(Level, ref MaxHealth);
+                //Check if this monster has an evolution
+                if (this.CanEvolve()) {
+                    GetEvolution();
+                }
             }
-            
         }
-
 
         private static Gender GetGender(int maleChance) {
             Random rand = new Random();
@@ -201,7 +200,44 @@ namespace VideoGame.Classes {
             return abilities[rand.Next(0, abilities.Count)];
         }
 
-        //TODO: Find a way to do this nicer and cleaner
+        public bool CanEvolve() {
+            switch (Id) {
+            case 1: if (Level == 18) return true; break;
+            case 2: if (Level == 32) return true; break;
+
+            case 4: if (Level == 16) return true; break;
+            case 5: if (Level == 36) return true; break;
+
+            case 7: if (Level == 14) return true; break;
+            case 8: if (Level == 38) return true; break;
+
+            case 10: if (Level == 28) return true; break;
+
+            case 12: if (Level == 18) return true; break;
+            }
+            return false;
+        }
+
+        public Monster GetEvolution() {
+
+            switch (Id) {
+            case 1: if (Level == 16) return Pantsler(16, HeldItem, Stats); break;
+            case 2: if (Level == 32) return Prestler(32, HeldItem, Stats); break;
+
+            case 4: if (Level == 16) return Njortor(32, HeldItem, Stats); break;
+            case 5: if (Level == 36) return Dvallalin(32, HeldItem, Stats); break;
+
+            //TODO: Update with fire starters
+            case 7: if (Level == 14) return Prestler(14, HeldItem, Stats); break;
+            case 8: if (Level == 38) return Prestler(38, HeldItem, Stats); break;
+
+            case 10: if (Level == 28) return Gladkey(28, HeldItem, Stats); break;
+
+            case 12: if (Level == 18) return Bonsantai(18, HeldItem, Stats); break;
+            }
+            return this;
+        }
+
         public void GetMoves() {
             Moves = new List<Move>();
             switch (Id) {
@@ -209,6 +245,10 @@ namespace VideoGame.Classes {
                 if (Level >= 1) {
                     Moves.Add(Move.Tackle());
                 }
+                break;
+            case 4:
+                if (Level >= 1) Moves.AddMany(Move.Bubble(), Move.Tackle(), Move.Scream());
+                if (Level >= 9) Moves.Add(Move.Icicle());
                 break;
             case 10:
                 if (Level >= 1) {
@@ -230,15 +270,12 @@ namespace VideoGame.Classes {
         public void AnimateWorld(GameTime gametime) {
             throw new NotImplementedException();
         }
-
         public void AnimateFront(GameTime gametime) {
             throw new NotImplementedException();
         }
-
         public void AnimateBack(GameTime gametime) {
             throw new NotImplementedException();
         }
-
         public void AnimateParty(GameTime gametime) {
             Timer += (float)gametime.ElapsedGameTime.TotalMilliseconds;
             if (Timer > Interval) {
@@ -257,34 +294,55 @@ namespace VideoGame.Classes {
                 Ability.Buff(),
                 Ability.Enraged()
             };
-            //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(45, 50, 71, 40, 60, 66, level);
             return new Monster(1, level, "Armler", "This shifty creature Likes to pretend that its pockets are its eyes",
                 Type.Grass, 75, 5, item, stats, abilities,
                 ContentLoader.ArmlerFront, ContentLoader.ArmlerBack, ContentLoader.ArmlerParty);
         }
-        public static Monster Pantsler(int level, Item item = null) {
+        public static Monster Pantsler(int level, Item item = null, Stats randStats = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
                 Ability.Buff(),
                 Ability.Enraged()
             };
-            //Calculate level so we can determine what moves it could have learned
 
-            Stats stats = new Stats(60, 64, 90, 50, 75, 56, level);
+            Stats stats;
+            if (randStats != null) {
+                stats = new Stats(60, 64, 90, 50, 75, 56, level, false) {
+                    RandAttack = randStats.RandAttack,
+                    RandDefense = randStats.RandDefense,
+                    RandSpecialAttack = randStats.RandSpecialAttack,
+                    RandSpecialDefense = randStats.RandSpecialDefense,
+                    RandSpeed = randStats.RandSpeed
+                };
+                stats.CalculateStats(level);
+            }
+            else stats = new Stats(60, 64, 90, 50, 75, 56, level);
+
             return new Monster(2, level, "Pantsler", "While desperately trying to escape from the clutches of its \npants this monster is still able to battle",
                 Type.Grass, Type.Fight, 75, 5, item, stats, abilities,
                 ContentLoader.PantslerFront, ContentLoader.PantslerBack, ContentLoader.PantslerParty);
         }
-        public static Monster Prestler(int level, Item item = null) {
+        public static Monster Prestler(int level, Item item = null, Stats randStats = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
                 Ability.StrongFist()
             };
-            //Calculate level so we can determine what moves it could have learned
 
-            Stats stats = new Stats(60, 121, 60, 50, 60, 85, level);
+            Stats stats;
+            if (randStats != null) {
+                stats = new Stats(60, 121, 60, 50, 60, 85, level, false) {
+                    RandAttack = randStats.RandAttack,
+                    RandDefense = randStats.RandDefense,
+                    RandSpecialAttack = randStats.RandSpecialAttack,
+                    RandSpecialDefense = randStats.RandSpecialDefense,
+                    RandSpeed = randStats.RandSpeed
+                };
+                stats.CalculateStats(level);
+            }
+            else stats = new Stats(60, 121, 60, 50, 60, 85, level);
+
             return new Monster(3, level, "Prestler", "These pants are the ultimate fighter, having consumed its prior wearer",
                 Type.Grass, Type.Fight, 75, 5, item, stats, abilities,
                 ContentLoader.PrestlerFront, ContentLoader.PrestlerBack, ContentLoader.PrestlerParty);
@@ -295,40 +353,62 @@ namespace VideoGame.Classes {
                 Ability.Swift(),
                 Ability.Evasive()
             };
-            //Calculate level so we can determine what moves it could have learned
+
 
             Stats stats = new Stats(40, 43, 49, 73, 50, 71, level);
             return new Monster(4, level, "Mimird", "This fish has crafted its own beak! Ain't that endearing",
                 Type.Water, 75, 5, item, stats, abilities,
                 ContentLoader.MimirdFront, ContentLoader.MimirdBack, ContentLoader.MimirdParty);
         }
-        public static Monster Njortor(int level, Item item = null) {
+        public static Monster Njortor(int level, Item item = null, Stats randStats = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
                 Ability.Swift(),
                 Ability.Evasive()
             };
-            //Calculate level so we can determine what moves it could have learned
 
-            Stats stats = new Stats(55, 43, 52, 83, 59, 109, level);
+            Stats stats;
+            if (randStats != null) {
+                stats = new Stats(55, 43, 52, 83, 59, 109, level, false) {
+                    RandAttack = randStats.RandAttack,
+                    RandDefense = randStats.RandDefense,
+                    RandSpecialAttack = randStats.RandSpecialAttack,
+                    RandSpecialDefense = randStats.RandSpecialDefense,
+                    RandSpeed = randStats.RandSpeed
+                };
+                stats.CalculateStats(level);
+            }
+            else stats = new Stats(95, 43, 52, 83, 59, 109, level);
+
             return new Monster(5, level, "Njortor", "This mammal has created its own helicopter and attached it to its back",
                 Type.Water, Type.Flying, 75, 5, item, stats, abilities,
                 ContentLoader.NjortorFront, ContentLoader.NjortorBack, ContentLoader.NjortorParty);
         }
-        public static Monster Dvallalin(int level, Item item = null) {
+        public static Monster Dvallalin(int level, Item item = null, Stats randStats = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
                 Ability.Swift(),
                 Ability.Relaxed()
             };
-            //Calculate level so we can determine what moves it could have learned
 
-            Stats stats = new Stats(95, 30, 39, 93, 65, 112, level);
+            Stats stats;
+            if (randStats != null) {
+                stats = new Stats(95, 30, 39, 93, 65, 112, level, false) {
+                    RandAttack = randStats.RandAttack,
+                    RandDefense = randStats.RandDefense,
+                    RandSpecialAttack = randStats.RandSpecialAttack,
+                    RandSpecialDefense = randStats.RandSpecialDefense,
+                    RandSpeed = randStats.RandSpeed
+                };
+                stats.CalculateStats(level);
+            }
+            else stats = new Stats(95, 30, 39, 93, 65, 112, level);
+
             return new Monster(6, level, "Dvallalin", "This whale, being weighed down by its troubles, \nmade a blimp to carry his burdens",
                 Type.Water, Type.Flying, 75, 5, item, stats, abilities,
                 ContentLoader.DvallalinFront, ContentLoader.DvallalinBack, ContentLoader.DvallalinParty);
         }
-        
+
         // 7 to 9 fire starter
 
         public static Monster Gronkey(int level, Item item = null) {
@@ -336,22 +416,32 @@ namespace VideoGame.Classes {
             List<Ability> abilities = new List<Ability> {
                 Ability.Enraged()
             };
-            //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(45, 66, 40, 40, 45, 85, level);
             return new Monster(10, level, "Gronkey", "This creature is absolutely vivid because someone shaved its face.",
                 Type.Fight, 50, 50, item, stats, abilities,
                 ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.GronkeyParty);
         }
-        public static Monster Gladkey(int level, Item item = null) {
+        public static Monster Gladkey(int level, Item item = null, Stats randStats = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
                 Ability.Relaxed(),
                 Ability.Unmovable()
             };
-            //Calculate level so we can determine what moves it could have learned
 
-            Stats stats = new Stats(160, 110, 75, 60, 90, 5, level);
+            Stats stats;
+            if (randStats != null) {
+                stats = new Stats(160, 110, 75, 60, 90, 5, level, false) {
+                    RandAttack = randStats.RandAttack,
+                    RandDefense = randStats.RandDefense,
+                    RandSpecialAttack = randStats.RandSpecialAttack,
+                    RandSpecialDefense = randStats.RandSpecialDefense,
+                    RandSpeed = randStats.RandSpeed
+                };
+                stats.CalculateStats(level);
+            }
+            else stats = new Stats(160, 110, 75, 60, 90, 5, level);
+
             return new Monster(11, level, "Gladkey", "This creature is on cloud 9 after its mustache grew back",
                 Type.Fight, 50, 50, item, stats, abilities,
                 ContentLoader.GladkeyFront, ContentLoader.GladkeyBack, ContentLoader.GladkeyParty);
@@ -362,21 +452,31 @@ namespace VideoGame.Classes {
                 Ability.Ordinary(),
                 Ability.Unmovable()
             };
-            //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(78, 15, 90, 10, 80, 5, level);
             return new Monster(12, level, "Brass", "This brick is pretty useless, all it can do is lie and wait\nuntil is undeniably faints.",
                 Type.Rock, 75, 50, item, stats, abilities,
                 ContentLoader.BrassFront, ContentLoader.BrassBack, ContentLoader.BrassParty);
         }
-        public static Monster Bonsantai(int level, Item item = null) {
+        public static Monster Bonsantai(int level, Item item = null, Stats randStats = null) {
             if (item == null) item = new Item();
             List<Ability> abilities = new List<Ability> {
                 Ability.StrongFist()
             };
-            //Calculate level so we can determine what moves it could have learned
 
-            Stats stats = new Stats(88, 115, 65, 10, 75, 75, level);
+            Stats stats;
+            if (randStats != null) {
+                stats = new Stats(88, 115, 65, 10, 75, 75, level, false) {
+                    RandAttack = randStats.RandAttack,
+                    RandDefense = randStats.RandDefense,
+                    RandSpecialAttack = randStats.RandSpecialAttack,
+                    RandSpecialDefense = randStats.RandSpecialDefense,
+                    RandSpeed = randStats.RandSpeed
+                };
+                stats.CalculateStats(level);
+            }
+            else stats = new Stats(88, 115, 65, 10, 75, 75, level);
+
             return new Monster(13, level, "Bonsantai", "After years of training and getting teased, \nthis brick learned the ways of the earth",
                 Type.Rock, Type.Grass, 75, 50, item, stats, abilities,
                 ContentLoader.BonsantaiFront, ContentLoader.BonsantaiBack, ContentLoader.BonsantaiParty);
@@ -387,7 +487,6 @@ namespace VideoGame.Classes {
                 Ability.Fuzzy(),
                 Ability.ToxicBody()
             };
-            //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(60, 42, 83, 76, 65, 55, level);
             return new Monster(14, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its body",
@@ -400,7 +499,6 @@ namespace VideoGame.Classes {
                 Ability.AfterImage(),
                 Ability.Deaf()
             };
-            //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(68, 40, 40, 79, 65, 128, level);
             return new Monster(15, level, "Fester", "Being haunted in life, he now haunts his enemies in the afterlife",
@@ -413,7 +511,6 @@ namespace VideoGame.Classes {
                 Ability.Enjoyer(),
                 Ability.Relaxed()
             };
-            //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(100, 85, 100, 78, 97, 110, level);
             return new Monster(16, level, "Joiantler", "Having found its hat nothing can ruin its day",
@@ -426,7 +523,6 @@ namespace VideoGame.Classes {
                 Ability.Squishy(),
                 Ability.Silly()
             };
-            //Calculate level so we can determine what moves it could have learned
 
             Stats stats = new Stats(58, 68, 40, 50, 48, 87, level);
             return new Monster(17, level, "Rasion", "This creature has been completely consumed by poison, \nlosing its conscience",
