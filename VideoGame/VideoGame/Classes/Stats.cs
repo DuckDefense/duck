@@ -19,11 +19,11 @@ namespace VideoGame.Classes {
 
     public class Stats {
         //Randomized stats which will be multiplied with Base and Level
-        public int RandAttack { get; }
-        public int RandDefense { get; }
-        public int RandSpecialAttack { get; }
-        public int RandSpecialDefense { get; }
-        public int RandSpeed { get; }
+        public int RandAttack { get; set; }
+        public int RandDefense { get; set; }
+        public int RandSpecialAttack { get; set; }
+        public int RandSpecialDefense { get; set; }
+        public int RandSpeed { get; set; }
 
         //Base stats, which will be multiplied to level
         public int BaseHealth { get; }
