@@ -76,7 +76,7 @@ namespace VideoGame.Classes {
         /// <summary>
         /// new Base stat and automatically calculate all stats
         /// </summary>
-        public Stats(int health, int attack, int defense, int specialattack, int specialdefense, int speed, int level) {
+        public Stats(int health, int attack, int defense, int specialattack, int specialdefense, int speed, int level, bool randomize = true) {
             BaseHealth = health;
             BaseAttack = attack;
             BaseDefense = defense;
@@ -84,13 +84,14 @@ namespace VideoGame.Classes {
             BaseSpecialDefense = specialdefense;
             BaseSpeed = speed;
 
-            var rand = new CryptoRandom();
-            RandAttack = rand.Next(1, 31);
-            RandDefense = rand.Next(1, 31);
-            RandSpecialAttack = rand.Next(1, 31);
-            RandSpecialDefense = rand.Next(1, 31);
-            RandSpeed = rand.Next(1, 31);
-
+            if (randomize) {
+                var rand = new CryptoRandom();
+                RandAttack = rand.Next(1, 31);
+                RandDefense = rand.Next(1, 31);
+                RandSpecialAttack = rand.Next(1, 31);
+                RandSpecialDefense = rand.Next(1, 31);
+                RandSpeed = rand.Next(1, 31);
+            }
             CalculateStats(level);
         }
         private void CalculateStats(int level) {
