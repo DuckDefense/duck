@@ -22,7 +22,7 @@ namespace VideoGame.Classes {
 
         #region Battle
 
-        private static Texture2D GetAilmentTexture(Ailment ailment) {
+        public static Texture2D GetAilmentTexture(Ailment ailment) {
             switch (ailment) {
             case Ailment.Sleep: return ContentLoader.SLP;
             case Ailment.Poisoned: return ContentLoader.PSN;
@@ -35,7 +35,7 @@ namespace VideoGame.Classes {
             return null;
         }
 
-        private static Texture2D GetTypeTexture(Type type) {
+        public static Texture2D GetTypeTexture(Type type) {
             switch (type) {
             case Type.Normal: return ContentLoader.NormalType;
             case Type.Fight: return ContentLoader.FightType;
@@ -187,7 +187,7 @@ namespace VideoGame.Classes {
             Batch.End();
         }
 
-        public static void DrawMonsterInfo(SpriteBatch batch, Monster m, bool baseStats = false) {
+        public static void DrawMonsterInfo(SpriteBatch batch, Monster m, bool knownMonsters = false) {
             Texture2D background = ContentLoader.MonsterViewer;
             var nameSize = ContentLoader.Arial.MeasureString(m.Ability.Name);
             var descriptionSize = ContentLoader.Arial.MeasureString(m.Ability.Description);
@@ -201,22 +201,29 @@ namespace VideoGame.Classes {
 
             batch.Draw(background, backgroundRectangle, Color.White);
             batch.Draw(m.FrontSprite, frontPos, Color.White);
-            batch.DrawString(ContentLoader.Arial, m.Name, namePos, Color.Black);
             batch.DrawString(ContentLoader.Arial, m.Description, descriptionPos, Color.Black);
-            if(baseStats) batch.DrawString(ContentLoader.Arial, m.Stats.PintBaseStats(), statsPos, Color.Black);
-            else batch.DrawString(ContentLoader.Arial, m.Stats.PrintStats(), statsPos, Color.Black);
-            if (m.PossibleAbilities.Count == 1) {
-                batch.DrawString(ContentLoader.Arial, $"{m.Ability.Name}", abilityNamePos, Color.Black);
-                batch.DrawString(ContentLoader.Arial, m.Ability.Description, abilityDescriptionPos, Color.Black);
+            if (knownMonsters) {
+                batch.DrawString(ContentLoader.Arial, m.Name, namePos, Color.Black);
+                batch.DrawString(ContentLoader.Arial, m.Stats.PintBaseStats(), statsPos, Color.Black);
+                if (m.PossibleAbilities.Count == 1) {
+                    batch.DrawString(ContentLoader.Arial, $"{m.Ability.Name}", abilityNamePos, Color.Black);
+                    batch.DrawString(ContentLoader.Arial, m.Ability.Description, abilityDescriptionPos, Color.Black);
+                }
+                else {
+                    batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[0].Name}", abilityNamePos, Color.Black);
+                    batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[0].Description}", abilityDescriptionPos, Color.Black);
+
+                    var pos = new Vector2(abilityNamePos.X, abilityNamePos.Y + nameSize.Y + descriptionPos.Y);
+
+                    batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[1].Name}", pos, Color.Black);
+                    batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[1].Description}", new Vector2(pos.X, pos.Y + 17), Color.Black);
+                }
             }
             else {
-                batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[0].Name}", abilityNamePos, Color.Black);
-                batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[0].Description}", abilityDescriptionPos, Color.Black);
-
-                var pos = new Vector2(abilityNamePos.X, abilityNamePos.Y + nameSize.Y + descriptionPos.Y);
-
-                batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[1].Name}", pos, Color.Black);
-                batch.DrawString(ContentLoader.Arial, $"{ m.PossibleAbilities[1].Description}", new Vector2(pos.X, pos.Y + 17), Color.Black);
+                batch.DrawString(ContentLoader.Arial, $"{m.Name} - Lv. {m.Level}", namePos, Color.Black);
+                batch.DrawString(ContentLoader.Arial, m.Stats.PrintStats(m.MaxHealth), statsPos, Color.Black);
+                batch.DrawString(ContentLoader.Arial, $"{m.Ability.Name}", abilityNamePos, Color.Black);
+                batch.DrawString(ContentLoader.Arial, m.Ability.Description, abilityDescriptionPos, Color.Black);
             }
         }
 
