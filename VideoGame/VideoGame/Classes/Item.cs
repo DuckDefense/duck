@@ -81,22 +81,21 @@ namespace VideoGame.Classes {
             capturechance += (player.Monsters[0].Level - monster.Level);
             capturechance -= monster.CaptureChance;
 
-            if (capturechance < 5) capturechance = 5; 
+            if (capturechance < 5) capturechance = 5;
             var dice = random.Next(0, 100);
             if (dice < capturechance) {
                 //Add monster to caught list
                 if (!player.CaughtMonster.ContainsKey(monster.Id)) player.CaughtMonster.Add(monster.Id, monster);
                 monster.UId = RandomId.GenerateRandomUId();
-                if (player.Monsters.Count >= 6) player.Box.Add(monster); 
+                if (player.Monsters.Count >= 6) player.Box.Add(monster);
                 else player.Monsters.Add(monster);
             }
             Amount--;
 
-            if (Amount < 1) player.Inventory.Captures.Remove(Id); 
+            if (Amount < 1) player.Inventory.Captures.Remove(Id);
         }
 
-        public void CaptureAnimation(List<Vector2> PatrolList)
-        {
+        public void CaptureAnimation(List<Vector2> PatrolList) {
             Patrols = PatrolList;
             lastPatrol = PatrolList.Count;
         }
@@ -113,7 +112,7 @@ namespace VideoGame.Classes {
     }
 
     public class Medicine : Item {
-        public enum Cure { None, Sleep, Poisoned, Burned, Frozen, All, Frenzied}
+        public enum Cure { None, Sleep, Poisoned, Burned, Frozen, All, Frenzied }
 
         private Cure inflict;
 
@@ -187,7 +186,7 @@ namespace VideoGame.Classes {
             Description = description;
             Sprite = sprite;
             HealAmount = healAmount;
-            if(cureAilment) Cures = cure;
+            if (cureAilment) Cures = cure;
             else inflict = cure;
             Useable = true;
             Worth = worth;
@@ -204,9 +203,8 @@ namespace VideoGame.Classes {
                     monster.Ailment = Ailment.Normal;
                 }
             }
-            if (inflict != Cure.None)
-            {
-                monster.Ailment = (Ailment) inflict;
+            if (inflict != Cure.None) {
+                monster.Ailment = (Ailment)inflict;
             }
             if ((monster.Stats.Health + HealAmount) >= monster.MaxHealth) {
                 monster.Stats.Health = monster.MaxHealth;
@@ -230,7 +228,7 @@ namespace VideoGame.Classes {
             return new Medicine(1, "Leaf Bandage", "Bandage that heals 10 HP", ContentLoader.LeafBandage, 10, 50, 1, 99);
         }
         public static Medicine MagicStone() {
-            return new Medicine(2, "Magic Stone", "Stone that heals 20 HP", ContentLoader.MagicStone, 50, 500, 1, 99);
+            return new Medicine(2, "Magic Stone", "Stone that heals 20 HP", ContentLoader.MagicStone, 20, 500, 1, 99);
         }
 
         public static Medicine AntiPoison() {
@@ -253,8 +251,8 @@ namespace VideoGame.Classes {
             return new Medicine(8, "RoosVicee", "Komt wel goed schatje", ContentLoader.RoosVicee, Cure.All, 586, 1, 99);
         }
 
-        public static Medicine MotherPicture(){
-            return  new Medicine(8, "Mother picture", "Causes the user to go into a frenzy", ContentLoader.Health, 0, Cure.Frenzied, 200, 1, 99, false);
+        public static Medicine MotherPicture() {
+            return new Medicine(9, "Picture of Mother", "Causes the user to go into a frenzy", ContentLoader.Health, 0, Cure.Frenzied, 200, 1, 99, false);
         }
     }
 
