@@ -248,11 +248,11 @@ namespace VideoGame.Classes {
         }
 
         public static Medicine RoosVicee() {
-            return new Medicine(8, "RoosVicee", "Komt wel goed schatje", ContentLoader.RoosVicee, Cure.All, 586, 1, 99);
+            return new Medicine(7, "RoosVicee", "Komt wel goed schatje", ContentLoader.RoosVicee, Cure.All, 586, 1, 99);
         }
 
         public static Medicine MotherPicture() {
-            return new Medicine(9, "Picture of Mother", "Causes the user to go into a frenzy", ContentLoader.Health, 0, Cure.Frenzied, 200, 1, 99, false);
+            return new Medicine(8, "Picture of Mother", "Causes the user to go into a frenzy", ContentLoader.Health, 0, Cure.Frenzied, 200, 1, 99, false);
         }
     }
 
