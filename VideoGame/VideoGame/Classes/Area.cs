@@ -170,7 +170,7 @@ namespace VideoGame.Classes {
             }
         }
 
-        private Area GetAreaFromName(string n, Character player) {
+        public static Area GetAreaFromName(string n, Character player) {
             //return area if n is the name
             switch (n) {
             case "Route 1":
@@ -205,7 +205,7 @@ namespace VideoGame.Classes {
             tegenstander = new Character("Nice guy", 6700,
                 new Inventory(),
                 new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
-                ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman,
+                ContentLoader.Button, ContentLoader.Button, ContentLoader.ChristmanWorld,
                 new Vector2(192, 192));
             tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
             tegenstander.Debug = true;
