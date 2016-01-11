@@ -52,6 +52,8 @@ namespace VideoGame.Classes {
         public Medicine SelectedMedicine;
         public Capture SelectedCapture;
 
+        private Dictionary<int, int> levelList = new Dictionary<int, int>();
+
         private ContainerButton prevContainer;
 
         /// <summary>
@@ -117,6 +119,9 @@ namespace VideoGame.Classes {
                 CurrentUserMonster.Ability.GetEffects(CurrentUserMonster, CurrentOpponentMonster);
                 CurrentOpponentMonster.Ability.GetEffects(CurrentOpponentMonster, CurrentUserMonster);
                 CurrentUserMonster.Fought = true;
+
+                foreach (var m in User.Monsters) { levelList.Add(m.Id, m.Level); }
+
                 //Check if player has seen the monster
                 if (!User.KnownMonsters.ContainsKey(CurrentOpponentMonster.Id)) User.KnownMonsters.Add(CurrentOpponentMonster.Id, CurrentOpponentMonster);
                 battleStart = false;
@@ -166,12 +171,21 @@ namespace VideoGame.Classes {
             switch (BattleState) {
             case State.Won:
                 if (Opponent != null) User.Money += Opponent.Money / 3;
-                    for (int i = 0; i < User.Monsters.Count; i++) {
-                        var m = User.Monsters[i];
-                        if (m.CanEvolve()) {
-                            User.Monsters[i] = m.GetEvolution();
+                for (var i = 0; i < User.Monsters.Count; i++) {
+                    var m = User.Monsters[i];
+                    if (m.Level != 100) {
+                        foreach (var levels in levelList) {
+                            if (levels.Key == m.Id)
+                                //Only check if monster can evolve if it leveled up in this battle
+                                if (m.Level <= levels.Value) {
+                                    if (m.CanEvolve()) {
+                                        User.Monsters[i] = m.GetEvolution();
+                                    }
+                                }
                         }
+
                     }
+                }
                 break;
             case State.Loss:
                 break;
