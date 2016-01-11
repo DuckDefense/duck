@@ -112,61 +112,23 @@ namespace VideoGame.Classes {
     }
 
     public class Medicine : Item {
+        public static Cure GetCureFromString(string s) {
+            switch (s) {
+            case "Sleep": return Cure.Sleep;
+            case "Poisoned": return Cure.Poisoned;
+            case "Burned": return Cure.Burned;
+            case "Frozen": return Cure.Frozen;
+            case "All": return Cure.All;
+            case "Frenzied": return Cure.Frenzied;
+            }
+            return Cure.None;
+        }
         public enum Cure { None, Sleep, Poisoned, Burned, Frozen, All, Frenzied }
 
         private Cure inflict;
 
         public int HealAmount { get; private set; }
         public Cure Cures { get; private set; }
-
-        /// <summary>
-        /// Default healing medicine
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        /// <param name="sprite"></param>
-        /// <param name="healAmount"></param>
-        /// <param name="worth"></param>
-        /// <param name="amount"></param>
-        /// <param name="maxAmount"></param>
-        public Medicine(int id, string name, string description, Texture2D sprite, int healAmount, int worth, int amount, int maxAmount) {
-            Useable = true;
-            Id = id;
-            Name = name;
-            Description = description;
-            Sprite = sprite;
-            HealAmount = healAmount;
-            Cures = Cure.None;
-            Useable = true;
-            Worth = worth;
-            Amount = amount;
-            MaxAmount = maxAmount;
-        }
-
-        /// <summary>
-        /// Medicine that heals and cures an ailment
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        /// <param name="cure"></param>
-        /// <param name="worth"></param>
-        /// <param name="amount"></param>
-        /// <param name="maxAmount"></param>
-        public Medicine(int id, string name, string description, Texture2D sprite, Cure cure, int worth, int amount, int maxAmount) {
-            Useable = true;
-            Id = id;
-            Name = name;
-            Description = description;
-            Sprite = sprite;
-            HealAmount = 0;
-            Cures = cure;
-            Useable = true;
-            Worth = worth;
-            Amount = amount;
-            MaxAmount = maxAmount;
-        }
 
         /// <summary>
         /// Medicine that heals and cures an ailment
@@ -225,14 +187,14 @@ namespace VideoGame.Classes {
         }
 
         public static Medicine LeafBandage() {
-            return new Medicine(1, "Leaf Bandage", "Bandage that heals 10 HP", ContentLoader.LeafBandage, 10, 50, 1, 99);
+            return new Medicine(1, "Leaf Bandage", "Bandage that heals 10 HP", ContentLoader.LeafBandage, 10, Cure.None, 50, 1, 99);
         }
         public static Medicine MagicStone() {
-            return new Medicine(2, "Magic Stone", "Stone that heals 20 HP", ContentLoader.MagicStone, 20, 500, 1, 99);
+            return new Medicine(2, "Magic Stone", "Stone that heals 20 HP", ContentLoader.MagicStone, 20, Cure.None, 500, 1, 99);
         }
 
         public static Medicine AntiPoison() {
-            return new Medicine(3, "Anti Poison", "Cures poison", ContentLoader.AntiPoison, Cure.Poisoned, 200, 1, 99);
+            return new Medicine(3, "Anti Poison", "Cures poison", ContentLoader.AntiPoison, 0, Cure.Poisoned, 200, 1, 99);
         }
 
         public static Medicine BucketOfWater() {
@@ -240,15 +202,15 @@ namespace VideoGame.Classes {
         }
 
         public static Medicine Salt() {
-            return new Medicine(5, "Salt", "Throw salt at the frozen monster\n" + " !WARNING if your monster is a snail it WILL die!", ContentLoader.Salt, Cure.Frozen, 150, 1, 99);
+            return new Medicine(5, "Salt", "Throw salt at the frozen monster\n" + " !WARNING if your monster is a snail it WILL die!", ContentLoader.Salt, 0, Cure.Frozen, 150, 1, 99);
         }
 
         public static Medicine AirHorn() {
-            return new Medicine(6, "Air Horn", "Blow the horn in the ears of the monster", ContentLoader.AirHorn, Cure.Sleep, 200, 1, 99);
+            return new Medicine(6, "Air Horn", "Blow the horn in the ears of the monster", ContentLoader.AirHorn, 0, Cure.Sleep, 200, 1, 99);
         }
 
         public static Medicine RoosVicee() {
-            return new Medicine(7, "RoosVicee", "Komt wel goed schatje", ContentLoader.RoosVicee, Cure.All, 586, 1, 99);
+            return new Medicine(7, "RoosVicee", "Komt wel goed schatje", ContentLoader.RoosVicee, 0, Cure.All, 586, 1, 99);
         }
 
         public static Medicine MotherPicture() {
