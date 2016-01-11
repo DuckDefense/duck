@@ -513,7 +513,7 @@ namespace VideoGame.Classes {
 
             Stats stats = new Stats(68, 40, 40, 79, 65, 128, level);
             return new Monster(15, level, "Fester", "Being haunted in life, he now haunts his enemies in the afterlife",
-                Type.Poison, Type.Ghost, 50, 50, item, stats, abilities,
+                Type.Ghost, 50, 50, item, stats, abilities,
                 ContentLoader.FesterFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
         }
         public static Monster Joiantler(int level, Item item = null) {
