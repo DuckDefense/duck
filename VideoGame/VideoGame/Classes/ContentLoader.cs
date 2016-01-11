@@ -10,6 +10,12 @@ using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.Maps.Tiled;
 
 namespace VideoGame.Classes {
+    public enum TextureFace {
+        Front,
+        Back,
+        World
+    }
+
     public class ContentLoader {
         public static ContentManager Content;
         public static GraphicsDevice GraphicsDevice;
@@ -43,8 +49,8 @@ namespace VideoGame.Classes {
         public static Texture2D Grid;
 
         public static Texture2D GrassyBackground;
-        public static Texture2D Christman;
-        public static Texture2D MCGirl;
+        public static Texture2D ChristmanWorld, ChristmanFront, ChristmanBack;
+        public static Texture2D MCGirlWorld, MCGirlFront, MCGirlBack;
         public static Texture2D Button, ButtonHover, ButtonClicked;
         public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt;
         public static Texture2D RottenNet, RegularNet, GreatNet;
@@ -144,8 +150,12 @@ namespace VideoGame.Classes {
             #endregion
 
             #region Characters
-            Christman = Content.Load<Texture2D>(@"Sprites/Characters/World/Christman");
-            MCGirl = Content.Load<Texture2D>(@"Sprites/Characters/World/MC Girl");
+            ChristmanFront = Content.Load<Texture2D>(@"Sprites/Characters/Front/Christman");
+            //ChristmanBack = Content.Load<Texture2D>(@"Sprites/Characters/Back/Christman");
+            ChristmanWorld = Content.Load<Texture2D>(@"Sprites/Characters/World/Christman");
+            MCGirlFront = Content.Load<Texture2D>(@"Sprites/Characters/Front/MC Girl");
+            //MCGirlBack = Content.Load<Texture2D>(@"Sprites/Characters/Back/MC Girl");
+            MCGirlWorld = Content.Load<Texture2D>(@"Sprites/Characters/World/MC Girl");
             #endregion
 
             #region Battle
@@ -225,39 +235,104 @@ namespace VideoGame.Classes {
         }
 
         public void UnloadContent() {
-            GronkeyFront.Dispose();
-            GronkeyBack.Dispose();
-            GronkeyParty.Dispose();
-            ArmlerFront.Dispose();
-            ArmlerBack.Dispose();
-            ArmlerParty.Dispose();
-            BrassFront.Dispose();
-            BrassBack.Dispose();
-            BrassParty.Dispose();
-            HuffsteinFront.Dispose();
-            HuffsteinBack.Dispose();
-            HuffsteinParty.Dispose();
-            MonsterViewer.Dispose();
-
-            Christman.Dispose();
-
-            GrassyBackground.Dispose();
-            Button.Dispose();
-            Health.Dispose();
-
-            Map.Dispose();
-
-            RottenNet.Dispose();
-            RegularNet.Dispose();
-            GreatNet.Dispose();
-
-            AirHorn.Dispose();
-            AntiPoison.Dispose();
-            BucketOfWater.Dispose();
-            LeafBandage.Dispose();
-            MagicStone.Dispose();
-            RoosVicee.Dispose();
+            //TODO: Add all textures here
         }
+
+        #region TextureReturns
+
+        //TODO: Add other textures
+        public static Texture2D GetTextureFromMonsterId(int id, TextureFace face) {
+            switch (id) {
+            case 1:
+                switch (face) {
+                case TextureFace.Front: return ArmlerFront;
+                case TextureFace.Back: return ArmlerBack;
+                case TextureFace.World: return ArmlerParty;
+                }
+                break;
+            case 2:
+                switch (face) {
+                case TextureFace.Front: return PantslerFront;
+                case TextureFace.Back: return PantslerBack;
+                case TextureFace.World: return PantslerParty;
+                }
+                break;
+            case 3:
+                switch (face) {
+                case TextureFace.Front: return PrestlerFront;
+                case TextureFace.Back: return PrestlerBack;
+                case TextureFace.World: return PrestlerParty;
+                }
+                break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+                break;
+            }
+
+            return null;
+        }
+
+        public static Texture2D GetTextureFromCapture(int id) {
+            switch (id) {
+            case 1: return RottenNet;
+            case 2: return RegularNet;
+            case 3: return GreatNet;
+            }
+            return null;
+        }
+
+        public static Texture2D GetTextureFromMedicine(int id) {
+            switch (id) {
+            case 1: return LeafBandage;
+            case 2: return MagicStone;
+            case 3: return AntiPoison;
+            case 4: return BucketOfWater;
+            case 5: return Salt;
+            case 6: return AirHorn;
+            case 7: return RoosVicee;
+                //case 8: return PictureOfMother;
+            }
+            return null;
+        }
+
+        public static Texture2D GetTextureFromPlayer(int id, TextureFace face) {
+            switch (id) {
+            case 1:
+                switch (face) {
+                case TextureFace.Front: return MCGirlFront;
+                case TextureFace.Back: return MCGirlBack;
+                case TextureFace.World: return MCGirlWorld;
+                }
+                break;
+            case 2:
+                switch (face) {
+                case TextureFace.Front: return ChristmanFront;
+                case TextureFace.Back: return ChristmanBack;
+                case TextureFace.World: return ChristmanWorld;
+                }
+                break;
+            }
+            return null;
+        }
+
+        #endregion
     }
 }
 
