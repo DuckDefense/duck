@@ -226,7 +226,7 @@ namespace VideoGame.Classes {
             case 7: return Prestler(Level, HeldItem, Stats);
             case 8: return Prestler(Level, HeldItem, Stats);
 
-            case 10: return Gladkey(Level, HeldItem, Stats); 
+            case 10: return Gladkey(Level, HeldItem, Stats);
 
             case 12: return Bonsantai(Level, HeldItem, Stats);
             }
@@ -240,20 +240,36 @@ namespace VideoGame.Classes {
                 if (Level >= 1) {
                     Moves.Add(Move.Tackle());
                 }
+                if (Level >= 8) Moves.Add(Move.RockThrow());
+                break;
+            case 2:
+                Moves.AddMany(Move.Tackle(), Move.RockThrow());
+                break;
+            case 3:
+                Moves.AddMany(Move.Tackle(), Move.RockThrow(), Move.MultiPunch(), Move.LeafCut());
                 break;
             case 4:
                 if (Level >= 1) Moves.AddMany(Move.Bubble(), Move.Tackle(), Move.Scream());
                 if (Level >= 9) Moves.Add(Move.Icicle());
                 break;
+            case 5:
+                Moves.AddMany(Move.Bubble(), Move.Tackle(), Move.Scream(), Move.Icicle());
+                break;
+            case 6:
+                Moves.AddMany(Move.Bubble(), Move.Tackle(), Move.Scream(), Move.Icicle());
+                break;
             case 10:
                 if (Level >= 1) {
                     Moves.Add(Move.Strangle());
                     Moves.Add(Move.Glare());
-                    Moves.Add(Move.InstantKill());
                 }
                 if (Level >= 5) { Moves.Add(Move.Tackle()); }
                 if (Level >= 9) { Moves.Add(Move.Intimidate()); }
                 if (Level >= 11) { Moves.Add(Move.Headbutt()); }
+                if (Level >= 18) Moves.Add(Move.MultiPunch());
+                break;
+            case 11:
+                Moves.AddMany(Move.Strangle(), Move.Glare(), Move.Tackle(), Move.Intimidate(), Move.Headbutt(), Move.MultiPunch());
                 break;
             }
         }
