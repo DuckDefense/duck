@@ -15,5 +15,16 @@ public static class ExtensionManager {
         list[position] = movable;
         list[pos] = item;
     }
+
+    public static void AddIfNotNull<T>(this List<T> list, T value) {
+        if ((object)value != null)
+            list.Add(value);
+    }
+
+    public static void AddManyIfNotNull<T>(this List<T> list, params T[] elements) {
+        foreach (var el in elements) {
+            list.AddIfNotNull(el);
+        }
+    }
 }
 
