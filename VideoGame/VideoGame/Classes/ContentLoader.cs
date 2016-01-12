@@ -54,7 +54,7 @@ namespace VideoGame.Classes {
         public static Texture2D Button, ButtonHover, ButtonClicked;
         public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt;
         public static Texture2D RottenNet, RegularNet, GreatNet;
-        public static TiledMap Map, City, Route2, Shop;
+        public static TiledMap City, Route1, Route2, Route3, Route4, Shop;
         public static SpriteFont Arial;
 
         public static SoundEffect TownSong;
@@ -192,9 +192,12 @@ namespace VideoGame.Classes {
             #endregion
 
             #region Maps
-            Map = Content.Load<TiledMap>("map");
+            //TODO: FIX THIS
             City = Content.Load<TiledMap>("city");
-            Route2 = Content.Load<TiledMap>("nicemap");
+            Route1 = Content.Load<TiledMap>("nicemap");
+            Route2 = Content.Load<TiledMap>("Route2");
+            Route3 = Content.Load<TiledMap>("Route3");
+            Route4 = Content.Load<TiledMap>("Route4");
             Shop = Content.Load<TiledMap>("shop");
 
             #endregion
