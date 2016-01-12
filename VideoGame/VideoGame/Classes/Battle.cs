@@ -204,12 +204,14 @@ namespace VideoGame.Classes {
             if (playerTurn) {
                 character.Monsters.Move(SelectedMonster, 0);
                 CurrentUserMonster = SelectedMonster;
+                CurrentUserMonster.PreviousStats = CurrentUserMonster.Stats;
                 CurrentUserMonster.Fought = true;
             }
             else {
                 foreach (var monster in character.Monsters.Where(x => !x.IsDead)) {
                     character.Monsters.Move(monster, 0);
                     CurrentOpponentMonster = monster;
+                    CurrentUserMonster.PreviousStats = CurrentUserMonster.Stats;
                     break;
                 }
                 //Check if player has seen the monster
