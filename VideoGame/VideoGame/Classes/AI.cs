@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Microsoft.Xna.Framework;
 
@@ -74,6 +75,26 @@ namespace VideoGame.Classes {
     public static class BattleAI
     {
         private static Move strongestAttack = Move.Glare();
+
+        public static void MakeDecision(Battle b, Move m, Monster user, Monster receiver)
+        {
+            if (m.Damage != null)
+            {
+                if (m.Damage > user.Stats.Health)
+                {
+                    EnemyAttack(b, user, receiver);
+                }
+                else
+                {
+                    UseBuff(b, user, receiver);
+                }
+            }
+            else
+            {
+                UseBuff(b,user,receiver);
+            }
+            
+        }
         public static void EnemyAttack(Battle b, Monster user, Monster receiver)
         {
             strongestAttack = Move.Glare();
@@ -88,6 +109,24 @@ namespace VideoGame.Classes {
                 }
             }
             b.Attack(user, receiver, strongestAttack);
+        }
+
+        public static void UseBuff(Battle b, Monster user, Monster receiver)
+        {
+            List<Move>moveList = new List<Move>();
+            foreach (var move in user.Moves)
+            {
+                if (move.Kind == Kind.NonDamage)
+                {
+                    moveList.Add(move);
+                }
+            }
+            if (moveList.Count != 0)
+            {
+                Random r = new Random();
+
+                b.Attack(user,receiver,moveList[r.Next(0,moveList.Count)]);
+            }
         }
     }
 }
