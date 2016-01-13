@@ -197,6 +197,8 @@ namespace VideoGame.Classes
                 foreach (var entry in AreaColiders.Where(entry => player.Hitbox.Intersects(entry.Key)))
                 {
                     //Enter area
+                    player.CountingDown = false;
+                    player.Moved = 0;
                     player.PreviousArea = player.CurrentArea;
                     player.CurrentArea = GetAreaFromName(entry.Value, player);
                     player.Position = player.CurrentArea.SpawnLocation;
