@@ -51,6 +51,7 @@ namespace VideoGame.Classes {
         public string Name;
         public string Description;
         public Stats PreviousStats;
+        public int StatId;
         public Stats Stats;
         public Type PrimaryType;
         public Type SecondaryType;
@@ -82,9 +83,12 @@ namespace VideoGame.Classes {
         /// <param name="back">Texture that is shown when you've send out this monster</param>
         /// <param name="party">Texture that is shown in the party view</param>
         public Monster(int id, int level, string name, string description, Type type, int maleChance, int captureChance, Item helditem, Stats stats, List<Ability> abilities,
-            Texture2D front, Texture2D back, Texture2D party) {
+            Texture2D front, Texture2D back, Texture2D party, bool database = false) {
             Id = id;
-            UId = RandomId.GenerateRandomUId();
+            if (!database) {
+                StatId = RandomId.GenerateStatsId();
+                UId = RandomId.GenerateRandomUId();
+            }
             Level = level;
             experience = level * level * 5;
             RemainingExp = ((level + 1) * (level + 1) * 5) - experience;
@@ -124,9 +128,12 @@ namespace VideoGame.Classes {
         /// <param name="back">Texture that is shown when you've send out this monster</param>
         /// <param name="party">Texture that is shown in the party view</param>
         public Monster(int id, int level, string name, string description, Type primaryType, Type secondaryType, int maleChance, int captureChance, Item helditem, Stats stats, List<Ability> abilities,
-        Texture2D front, Texture2D back, Texture2D party) {
+        Texture2D front, Texture2D back, Texture2D party, bool database = false) {
             Id = id;
-            UId = RandomId.GenerateRandomUId();
+            if (!database) {
+                StatId = RandomId.GenerateStatsId();
+                UId = RandomId.GenerateRandomUId();
+            }
             Level = level;
             experience = level * level * 5;
             RemainingExp = ((level + 1) * (level + 1) * 5) - experience;

@@ -71,8 +71,8 @@ namespace VideoGame.Classes {
         /// <param name="position">Position of the character</param>
         /// <param name="controllable"></param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters,
-        Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable) {
-            if (controllable) Id = RandomId.GenerateUserId();
+        Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable, bool database = false) {
+            if (!database) if (controllable) Id = RandomId.GenerateUserId();
             Name = name;
             Money = money;
             Inventory = inventory;
