@@ -20,9 +20,10 @@ namespace VideoGame.Classes {
     }
 
     public class Character : IAnimatable, ITimer {
+        public int Id;
         public float Interval { get; set; } = 200; // Interval at which the animation should update
         public float Timer { get; set; } = 0; // Timer that keeps getting updated until the Interval is reached
-        
+
         public Vector2 Position; //Position of the character
         public Rectangle LeftTile, RightTile, UpperTile, LowerTile; //Tiles that surround the character
         public Point SpriteSize = new Point(32, 32);//Height and Width of the sprite
@@ -71,6 +72,7 @@ namespace VideoGame.Classes {
         /// <param name="controllable"></param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters,
         Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable) {
+            if (controllable) Id = RandomId.GenerateUserId();
             Name = name;
             Money = money;
             Inventory = inventory;
