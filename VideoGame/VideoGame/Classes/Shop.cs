@@ -20,7 +20,7 @@ namespace VideoGame.Classes
         public Shop(int money, Inventory inventory, string name, SpriteBatch batch)
         {
             Name = name;
-            ShopKeeper  = new Character("ShopKeeper", money, inventory,new List<Monster>(), null, null, ContentLoader.Christman, Vector2.Zero);
+            ShopKeeper  = new Character("ShopKeeper", money, inventory,new List<Monster>(), null, null, ContentLoader.ChristmanWorld, Vector2.Zero);
             Batch = batch;
         }
 
