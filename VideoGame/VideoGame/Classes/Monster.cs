@@ -538,7 +538,7 @@ namespace VideoGame.Classes {
             Stats stats = new Stats(58, 68, 40, 50, 48, 87, level);
             return new Monster(17, level, "Rasion", "This creature has been completely consumed by poison, \nlosing its conscience",
                 Type.Poison, Type.Normal, 50, 50, item, stats, abilities,
-                ContentLoader.RasionFront, ContentLoader.RasionBack, ContentLoader.RasionParty);
+                ContentLoader.RaisonFront, ContentLoader.RaisonBack, ContentLoader.RaisonParty);
         }
         #endregion
     }
