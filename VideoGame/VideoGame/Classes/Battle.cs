@@ -358,7 +358,7 @@ namespace VideoGame.Classes {
                         //Reset all choices
                         ResetDraws();
                         Selection = Selection.None;
-                        BattleAI.EnemyAttack(this, CurrentOpponentMonster, CurrentUserMonster);
+                        BattleAI.MakeDecision(this,SelectedMove, CurrentOpponentMonster, CurrentUserMonster);
                         playerTurn = true;
                     }
                 }
