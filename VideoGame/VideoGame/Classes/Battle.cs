@@ -120,7 +120,7 @@ namespace VideoGame.Classes {
                 CurrentOpponentMonster.Ability.GetEffects(CurrentOpponentMonster, CurrentUserMonster);
                 CurrentUserMonster.Fought = true;
 
-                foreach (var m in User.Monsters) { levelList.Add(m.Id, m.Level); }
+                foreach (var m in User.Monsters) { if(!levelList.ContainsKey(m.Id)) levelList.Add(m.Id, m.Level); }
 
                 //Check if player has seen the monster
                 if (!User.KnownMonsters.ContainsKey(CurrentOpponentMonster.Id)) User.KnownMonsters.Add(CurrentOpponentMonster.Id, CurrentOpponentMonster);
@@ -358,7 +358,7 @@ namespace VideoGame.Classes {
                         //Reset all choices
                         ResetDraws();
                         Selection = Selection.None;
-                        BattleAI.MakeDecision(this,SelectedMove, CurrentOpponentMonster, CurrentUserMonster);
+                        BattleAI.MakeDecision(this,SelectedMove, CurrentOpponentMonster, CurrentUserMonster, Opponent);
                         playerTurn = true;
                     }
                 }

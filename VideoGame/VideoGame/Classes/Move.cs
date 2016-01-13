@@ -132,7 +132,10 @@ namespace VideoGame.Classes {
 
         public int GetDamage(int offensive, int defensive, int modifier, double crit) {
             if (modifier == 0) return 0;
-            return Convert.ToInt32(((BaseDamage * ((double)offensive / (double)defensive)) * modifier) * crit);
+            var d = Convert.ToInt32(((BaseDamage * ((double)offensive / (double)defensive)) * modifier) * crit);
+            if (d < 1)
+                return 1;
+            return d;
         }
 
         public int GetDamageModifier(Monster receiver) {
