@@ -61,7 +61,7 @@ namespace Sandbox.Classes {
                     var back = ContentLoader.GetTextureFromMonsterId(id, TextureFace.Back);
                     var party = ContentLoader.GetTextureFromMonsterId(id, TextureFace.World);
                     monsterReader.Close();
-                    return new Monster(id, level, name, description, primaryType, secondType, maleChance, captureChance, new Item(), baseStats, abilities, front, back, party);
+                    return new Monster(id, level, name, description, primaryType, secondType, maleChance, captureChance, new Item(), baseStats, abilities, front, back, party, true);
                 }
             }
             monsterReader.Close();
@@ -187,7 +187,8 @@ namespace Sandbox.Classes {
                         var worth = itemReader.GetInt32("Worth");
                         var maxAmount = itemReader.GetInt32("MaxAmount");
 
-                        if (capture) { item = new Capture(itemId, name, description, ContentLoader.GetTextureFromCapture(itemId), captureChance, true, worth, 1, maxAmount);
+                        if (capture) {
+                            item = new Capture(itemId, name, description, ContentLoader.GetTextureFromCapture(itemId), captureChance, true, worth, 1, maxAmount);
                         }
                         else {
                             item = new Medicine(itemId, name, description, ContentLoader.GetTextureFromMedicine(itemId),
@@ -269,7 +270,7 @@ namespace Sandbox.Classes {
             cmd.CommandText = $"SELECT COUNT(*) FROM `character` where `Name` = @X";
             cmd.Parameters.AddWithValue("@X", name);
             int count = Convert.ToInt32(cmd.ExecuteScalar());
-            if (count == 0) return charactersList;
+            if (count == 0) { return charactersList; }
             if (count > 1) {
                 //TODO: Think of a way to handle multiple returns
                 //Multiple characters found with the same name, how do we handle this?
@@ -278,7 +279,10 @@ namespace Sandbox.Classes {
             cmd.CommandText = $"SELECT * FROM `character` WHERE `Name` = @X";
             cmd.Parameters.AddWithValue("@X", name);
             reader = cmd.ExecuteReader();
-            if (!reader.HasRows) return charactersList;
+            if (!reader.HasRows) {
+                reader.Close();
+                return charactersList;
+            }
             while (reader.Read()) {
                 var id = reader.GetInt32("Id");
                 idList.Add(id);
@@ -302,7 +306,7 @@ namespace Sandbox.Classes {
                     Vector2 position = new Vector2(reader.GetInt32("PositionX"), reader.GetInt32("PositionY"));
 
                     Character character = new Character(name, money, inventory, monsters, front, back,
-                        world, position, true);
+                        world, position, true, true);
 
                     var area = Area.GetAreaFromName(reader.GetString("Area"), character);
 
@@ -327,9 +331,10 @@ namespace Sandbox.Classes {
             var cmd = connection.CreateCommand();
             cmd.CommandText = $"SELECT `Id` FROM `Character`";
             var reader = cmd.ExecuteReader();
-            while (reader.Read()) {
-                ids.Add(reader.GetInt32("Id"));
-            }
+            if (reader.HasRows)
+                while (reader.Read()) {
+                    ids.Add(reader.GetInt32("Id"));
+                }
             reader.Close();
             return ids;
         }
@@ -339,9 +344,10 @@ namespace Sandbox.Classes {
             var cmd = connection.CreateCommand();
             cmd.CommandText = $"SELECT `Id` FROM `stats`";
             var reader = cmd.ExecuteReader();
-            while (reader.Read()) {
-                ids.Add(reader.GetInt32("Id"));
-            }
+            if (reader.HasRows)
+                while (reader.Read()) {
+                    ids.Add(reader.GetInt32("Id"));
+                }
             reader.Close();
             return ids;
         }
