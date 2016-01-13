@@ -178,9 +178,7 @@ namespace Sandbox.Classes {
                         var captureChance = 0;
                         var name = itemReader.GetString("Name");
                         var description = itemReader.GetString("Description");
-                        if (capture) {
-                            captureChance = itemReader.GetInt32("CaptureChance");
-                        }
+                        if (capture) { captureChance = itemReader.GetInt32("CaptureChance"); }
                         else {
                             healAmount = itemReader.GetInt32("HealAmount");
                             cure = Medicine.GetCureFromString(itemReader.GetString("Cures"));
@@ -189,9 +187,7 @@ namespace Sandbox.Classes {
                         var worth = itemReader.GetInt32("Worth");
                         var maxAmount = itemReader.GetInt32("MaxAmount");
 
-                        if (capture) {
-                            item = new Capture(itemId, name, description, ContentLoader.GetTextureFromCapture(itemId),
-                     captureChance, true, worth, 1, maxAmount);
+                        if (capture) { item = new Capture(itemId, name, description, ContentLoader.GetTextureFromCapture(itemId), captureChance, true, worth, 1, maxAmount);
                         }
                         else {
                             item = new Medicine(itemId, name, description, ContentLoader.GetTextureFromMedicine(itemId),
@@ -268,63 +264,63 @@ namespace Sandbox.Classes {
             MySqlDataReader reader;
             MySqlCommand cmd;
             connection.Open();
-            try {
-                cmd = connection.CreateCommand();
-                cmd.CommandText = $"SELECT COUNT(*) FROM `character` where `Name` = @X";
-                cmd.Parameters.AddWithValue("@X", name);
-                int count = Convert.ToInt32(cmd.ExecuteScalar());
-                if (count == 0) return charactersList;
-                if (count > 1) {
-                    //TODO: Think of a way to handle multiple returns
-                    //Multiple characters found with the same name, how do we handle this?
-                }
-                cmd = connection.CreateCommand();
-                cmd.CommandText = $"SELECT * FROM `character` WHERE `Name` = @X";
-                cmd.Parameters.AddWithValue("@X", name);
+            //try {
+            cmd = connection.CreateCommand();
+            cmd.CommandText = $"SELECT COUNT(*) FROM `character` where `Name` = @X";
+            cmd.Parameters.AddWithValue("@X", name);
+            int count = Convert.ToInt32(cmd.ExecuteScalar());
+            if (count == 0) return charactersList;
+            if (count > 1) {
+                //TODO: Think of a way to handle multiple returns
+                //Multiple characters found with the same name, how do we handle this?
+            }
+            cmd = connection.CreateCommand();
+            cmd.CommandText = $"SELECT * FROM `character` WHERE `Name` = @X";
+            cmd.Parameters.AddWithValue("@X", name);
+            reader = cmd.ExecuteReader();
+            if (!reader.HasRows) return charactersList;
+            while (reader.Read()) {
+                var id = reader.GetInt32("Id");
+                idList.Add(id);
+            }
+            reader.Close();
+
+            foreach (var id in idList) {
+                var inventory = GetInventory(id);
+                List<Monster> box = new List<Monster>();
+                var monsters = GetMonsters(id, ref box);
+                var caughtMonster = new Dictionary<int, Monster>();
+                var knownMonsters = GetKnownMonsters(id, ref caughtMonster);
+
                 reader = cmd.ExecuteReader();
-                if (!reader.HasRows) return charactersList;
                 while (reader.Read()) {
-                    var id = reader.GetInt32("Id");
-                    idList.Add(id);
+                    var money = reader.GetInt32("Money");
+                    var textureId = reader.GetInt32("TextureId");
+                    var front = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.Front);
+                    var back = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.Back);
+                    var world = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.World);
+                    Vector2 position = new Vector2(reader.GetInt32("PositionX"), reader.GetInt32("PositionY"));
+
+                    Character character = new Character(name, money, inventory, monsters, front, back,
+                        world, position, true);
+
+                    var area = Area.GetAreaFromName(reader.GetString("Area"), character);
+
+                    character.CurrentArea = area;
+                    character.Box = box;
+                    character.KnownMonsters = knownMonsters;
+                    character.CaughtMonster = caughtMonster;
+                    charactersList.Add(character);
                 }
                 reader.Close();
-
-                foreach (var id in idList) {
-                    var inventory = GetInventory(id);
-                    List<Monster> box = new List<Monster>();
-                    var monsters = GetMonsters(id, ref box);
-                    var caughtMonster = new Dictionary<int, Monster>();
-                    var knownMonsters = GetKnownMonsters(id, ref caughtMonster);
-
-                    reader = cmd.ExecuteReader();
-                    while (reader.Read()) {
-                        var money = reader.GetInt32("Money");
-                        var textureId = reader.GetInt32("TextureId");
-                        var front = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.Front);
-                        var back = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.Back);
-                        var world = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.World);
-                        Vector2 position = new Vector2(reader.GetInt32("PositionX"), reader.GetInt32("PositionY"));
-
-                        Character character = new Character(name, money, inventory, monsters, front, back,
-                            world, position, true);
-
-                        var area = Area.GetAreaFromName(reader.GetString("Area"), character);
-
-                        character.CurrentArea = area;
-                        character.Box = box;
-                        character.KnownMonsters = knownMonsters;
-                        character.CaughtMonster = caughtMonster;
-                        charactersList.Add(character);
-                    }
-                    reader.Close();
-                }
-                return charactersList;
             }
-            catch (MySqlException) {
-                //Error with connecting
-                return charactersList;
-            }
+            return charactersList;
         }
+        //catch (MySqlException) {
+        //    //Error with connecting
+        //    return charactersList;
+        //}
+        //}
 
         public static List<int> GetPlayerIds() {
             List<int> ids = new List<int>();
@@ -334,14 +330,29 @@ namespace Sandbox.Classes {
             while (reader.Read()) {
                 ids.Add(reader.GetInt32("Id"));
             }
+            reader.Close();
+            return ids;
+        }
+
+        public static List<int> GetStatsIds() {
+            List<int> ids = new List<int>();
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = $"SELECT `Id` FROM `stats`";
+            var reader = cmd.ExecuteReader();
+            while (reader.Read()) {
+                ids.Add(reader.GetInt32("Id"));
+            }
+            reader.Close();
             return ids;
         }
 
         public static void SaveData(Character user) {
-            //Get playerId, monsterId and linkIds
+            //Get playerId, monsterId, item ids
             var playerId = user.Id;
             //Monster ids
             List<int> monsterIds = user.Monsters.Select(m => m.Id).ToList();
+            List<int> captureIds = user.Inventory.Captures.Select(m => m.Value.Id).ToList();
+            List<int> medicineIds = user.Inventory.Medicine.Select(m => m.Value.Id).ToList();
         }
     }
 }
