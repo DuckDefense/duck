@@ -40,7 +40,7 @@ namespace VideoGame.Classes {
         public static Texture2D NjortorFront, NjortorBack, NjortorParty;
         public static Texture2D PantslerFront, PantslerBack, PantslerParty;
         public static Texture2D PrestlerFront, PrestlerBack, PrestlerParty;
-        public static Texture2D RasionFront, RasionBack, RasionParty;
+        public static Texture2D RaisonFront, RaisonBack, RaisonParty;
         #endregion
 
         public static Texture2D NormalType, FightType, FireType, WaterType, GrassType, PoisonType, PsychType, GhostType, IceType, RockType, FlyingType, SoundType;
@@ -143,9 +143,9 @@ namespace VideoGame.Classes {
             PrestlerBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Prestler");
             PrestlerParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Prestler");
 
-            RasionFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Rasion");
-            RasionBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Rasion");
-            RasionParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Rasion");
+            RaisonFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Rasion");
+            RaisonBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Rasion");
+            RaisonParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Rasion");
 
             #endregion
 
@@ -192,7 +192,6 @@ namespace VideoGame.Classes {
             #endregion
 
             #region Maps
-            //TODO: FIX THIS
             City = Content.Load<TiledMap>("city");
             Route1 = Content.Load<TiledMap>("nicemap");
             Route2 = Content.Load<TiledMap>("Route2");
@@ -243,7 +242,6 @@ namespace VideoGame.Classes {
 
         #region TextureReturns
 
-        //TODO: Add other textures
         public static Texture2D GetTextureFromMonsterId(int id, TextureFace face) {
             switch (id) {
             case 1:
@@ -268,19 +266,85 @@ namespace VideoGame.Classes {
                 }
                 break;
             case 4:
+                switch (face) {
+                case TextureFace.Front: return MimirdFront;
+                case TextureFace.Back: return MimirdBack;
+                case TextureFace.World: return MimirdParty;
+                }
+                break;
             case 5:
+                switch (face) {
+                case TextureFace.Front: return NjortorFront;
+                case TextureFace.Back: return NjortorBack;
+                case TextureFace.World: return NjortorParty;
+                }
+                break;
             case 6:
+                switch (face) {
+                case TextureFace.Front: return DvallalinFront;
+                case TextureFace.Back: return DvallalinBack;
+                case TextureFace.World: return DvallalinParty;
+                }
+                break;
             case 7:
             case 8:
             case 9:
             case 10:
+                switch (face) {
+                case TextureFace.Front: return GronkeyFront;
+                case TextureFace.Back: return GronkeyBack;
+                case TextureFace.World: return GronkeyParty;
+                }
+                break;
             case 11:
+                switch (face) {
+                case TextureFace.Front: return GladkeyFront;
+                case TextureFace.Back: return GladkeyBack;
+                case TextureFace.World: return GladkeyParty;
+                }
+                break;
             case 12:
+                switch (face) {
+                case TextureFace.Front: return BrassFront;
+                case TextureFace.Back: return BrassBack;
+                case TextureFace.World: return BrassParty;
+                }
+                break;
             case 13:
+                switch (face) {
+                case TextureFace.Front: return BonsantaiFront;
+                case TextureFace.Back: return BonsantaiBack;
+                case TextureFace.World: return BonsantaiParty;
+                }
+                break;
             case 14:
+                switch (face) {
+                case TextureFace.Front: return HuffsteinFront;
+                case TextureFace.Back: return HuffsteinBack;
+                case TextureFace.World: return HuffsteinParty;
+                }
+                break;
             case 15:
+                switch (face) {
+                case TextureFace.Front: return FesterFront;
+                case TextureFace.Back: return FesterBack;
+                case TextureFace.World: return FesterParty;
+                }
+                break;
             case 16:
+                switch (face) {
+                case TextureFace.Front: return JoiantlerFront;
+                case TextureFace.Back: return JoiantlerBack;
+                case TextureFace.World: return JoiantlerParty;
+                }
+                break;
             case 17:
+                switch (face) {
+                case TextureFace.Front: return RaisonFront;
+                case TextureFace.Back: return RaisonBack;
+                case TextureFace.World: return RaisonParty;
+                }
+                break;
             case 18:
             case 19:
             case 20:
