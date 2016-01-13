@@ -249,8 +249,10 @@ namespace VideoGame.Classes
             Sound.Play();
 
             Character tegenstander;
+            Inventory inventory = new Inventory();
+            inventory.Add(Medicine.MagicStone(),5);
             tegenstander = new Character("Nice guy", 6700,
-                new Inventory(),
+                inventory,
                 new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
                 ContentLoader.Button, ContentLoader.Button, ContentLoader.ChristmanWorld,
                 new Vector2(192, 192));
