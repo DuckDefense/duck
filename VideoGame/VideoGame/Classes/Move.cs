@@ -265,7 +265,7 @@ namespace VideoGame.Classes {
         #region Fight
         public static Move MultiPunch() {
             return new Move("Multipunch", "punches the foe at a high speed",
-                70, 75, 15, Kind.Special, Type.Fire);
+                70, 90, 15, Kind.Special, Type.Fight);
         }
         #endregion
         #region Fire
