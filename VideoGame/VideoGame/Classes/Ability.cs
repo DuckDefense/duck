@@ -60,6 +60,31 @@ namespace VideoGame.Classes {
             Description = description;
         }
 
+        public static Ability GetAbilityFromString(string s) {
+            switch (s) {
+            case "Buff": return Buff();
+            case "Fuzzy": return Fuzzy();
+            case "Enraged": return Enraged();
+            case "Ordinary": return Ordinary();
+            case "Unmovable": return Unmovable();
+            case "ToxicBody": return ToxicBody();
+            case "Swift": return Swift();
+            case "Relaxed": return Relaxed();
+            case "StrongFist": return StrongFist();
+            case "AfterImage": return AfterImage();
+            case "Evasive": return Evasive();
+            case "Enjoyer": return Enjoyer();
+            case "Squishy": return Squishy();
+            case "Confident": return Confident();
+            case "Warm": return Warm();
+            case "OnFire": return OnFire();
+            case "Silly": return Silly();
+            case "Deaf": return Deaf();
+            case "Musician": return Musician();
+            }
+            return null;
+        }
+
         public void GetEffects(Monster user, Monster opponent) {
             Random rand = new Random();
 
