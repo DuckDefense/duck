@@ -21,20 +21,20 @@ namespace VideoGame.Classes {
         }
 
         public static int GenerateUserId() {
-            //var list = DatabaseConnector.GetPlayerIds();
+            var list = DatabaseConnector.GetPlayerIds();
             var num = random.Next(0, 999999);
-            //while (list.Contains(num)) {
-            //    num = random.Next(0, 999999);
-            //}
+            while (list.Contains(num)) {
+                num = random.Next(0, 999999);
+            }
             return num;
         }
 
         public static int GenerateStatsId() {
-            //var list = DatabaseConnector.GetStatsIds();
+            var list = DatabaseConnector.GetStatsIds();
             var num = random.Next(0, 999999);
-            //while (list.Contains(num)) {
-            //    num = random.Next(999999);
-            //}
+            while (list.Contains(num)) {
+                num = random.Next(999999);
+            }
             return num;
         }
     }
