@@ -90,7 +90,17 @@ namespace VideoGame.Classes
 
         public static void MakeDecision(Battle b, Move m, Monster user, Monster receiver, Character player)
         {
-            
+            if (user.Ailment != Ailment.Normal)
+            {
+                foreach (var value in player.Inventory.Medicine.Values)
+                {
+                    if(Medicine.CuresAilment(user.Ailment))
+                    {
+                        UseMedicine(b,player,user);
+                    }
+                }
+            }
+
             if (user.Stats.Health < user.MaxHealth / 100 * 20)
             {
                 if (player != null)

@@ -111,7 +111,38 @@ namespace VideoGame.Classes {
         }
     }
 
-    public class Medicine : Item {
+    public class Medicine : Item
+    {
+        public static bool CuresAilment(Ailment ailment)
+        {
+            switch (Cures)
+            {
+                case Cure.Sleep:
+                    if (ailment == Ailment.Sleep)
+                        return true;
+                    break;
+                case Cure.Poisoned:
+                    if (ailment == Ailment.Poisoned)
+                        return true;
+                    break;
+                case Cure.Burned:
+                    if (ailment == Ailment.Burned)
+                        return true;
+                    break;
+                case Cure.Frozen:
+                    if (ailment == Ailment.Frozen)
+                        return true;
+                    break;
+                case Cure.All:
+                        return true;
+                    break;
+                case Cure.Frenzied:
+                    if (ailment == Ailment.Frenzied)
+                        return true;
+                    break;
+            }
+            return false;
+        }
         public static Cure GetCureFromString(string s) {
             switch (s) {
             case "Sleep": return Cure.Sleep;
@@ -128,7 +159,7 @@ namespace VideoGame.Classes {
         private Cure inflict;
 
         public int HealAmount { get; private set; }
-        public Cure Cures { get; private set; }
+        public static Cure Cures { get; private set; }
 
         /// <summary>
         /// Medicine that heals and cures an ailment
