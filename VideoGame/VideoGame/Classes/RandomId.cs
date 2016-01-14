@@ -10,13 +10,11 @@ namespace VideoGame.Classes {
         public static List<int> UsedNumbers = new List<int>();
 
         public static int GenerateRandomUId() {
+            var list = DatabaseConnector.GetUids();
             var num = random.Next(0, int.MaxValue);
-            if (UsedNumbers.Contains(num)) {
-                do {
-                    num = random.Next(0, int.MaxValue);
-                } while (UsedNumbers.Contains(num));
+            while (list.Contains(num)) {
+                num = random.Next(0, int.MaxValue);
             }
-            UsedNumbers.Add(num);
             return num;
         }
 

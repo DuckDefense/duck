@@ -118,6 +118,7 @@ namespace Sandbox.Classes {
 
         public static List<Monster> GetMonsters(int playerId, ref List<Monster> box) {
             bool capture = false;
+            int Uid = 0;
             int statsId = 0;
             int level = 0;
             int experience = 0;
@@ -151,6 +152,7 @@ namespace Sandbox.Classes {
                 linkReader = linkCmd.ExecuteReader();
                 if (!linkReader.HasRows) return monsterList;
                 while (linkReader.Read()) {
+                    Uid = linkReader.GetInt32("Uid");
                     statsId = linkReader.GetInt32("statsId");
                     level = linkReader.GetInt32("Level");
                     experience = linkReader.GetInt32("Experience");
@@ -203,6 +205,7 @@ namespace Sandbox.Classes {
                 mon.Ability = ability;
                 mon.HeldItem = item;
                 mon.Gender = gender;
+                mon.UId = Uid;
 
                 var statCmd = connection.CreateCommand();
                 statCmd.CommandText = $"SELECT * FROM `stats` WHERE `Id` = {statsId}";
@@ -339,6 +342,19 @@ namespace Sandbox.Classes {
             return ids;
         }
 
+        public static List<int> GetUids() {
+            List<int> ids = new List<int>();
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = $"SELECT `Uid` FROM `monsterlink`";
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+                while (reader.Read()) {
+                    ids.Add(reader.GetInt32("Uid"));
+                }
+            reader.Close();
+            return ids;
+        } 
+
         public static List<int> GetStatsIds() {
             List<int> ids = new List<int>();
             var cmd = connection.CreateCommand();
@@ -357,6 +373,8 @@ namespace Sandbox.Classes {
             var playerId = user.Id;
             //Monster ids
             List<int> monsterIds = user.Monsters.Select(m => m.Id).ToList();
+            List<int> monsterUids = user.Monsters.Select(m => m.UId).ToList();
+            List<int> statIds = user.Monsters.Select(m => m.StatId).ToList();
             List<int> captureIds = user.Inventory.Captures.Select(m => m.Value.Id).ToList();
             List<int> medicineIds = user.Inventory.Medicine.Select(m => m.Value.Id).ToList();
         }
