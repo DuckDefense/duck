@@ -27,6 +27,15 @@ namespace VideoGame.Classes {
             return num;
         }
 
+        public static int GenerateLinkId() {
+            var list = DatabaseConnector.GetLinkIds();
+            var num = random.Next(0, int.MaxValue);
+            while (list.Contains(num)) {
+                num = random.Next(0, int.MaxValue);
+            }
+            return num;
+        }
+
         public static int GenerateStatsId() {
             var list = DatabaseConnector.GetStatsIds();
             var num = random.Next(0, 999999);
