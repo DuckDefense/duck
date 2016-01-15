@@ -8,6 +8,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace VideoGame.Classes {
+    public enum ItemKind {
+        Item,
+        Capture,
+        Medicine
+    }
+
     public class Item {
         public int Id;
         public string Name;
@@ -17,6 +23,7 @@ namespace VideoGame.Classes {
         public int Amount;
         public int MaxAmount;
         public Texture2D Sprite;
+        public ItemKind Kind = ItemKind.Item;
     }
 
     public class Capture : Item {
@@ -50,6 +57,7 @@ namespace VideoGame.Classes {
             Worth = worth;
             Amount = amount;
             MaxAmount = maxAmount;
+            Kind = ItemKind.Capture;
         }
 
         public void Use(Monster monster, Character player) {
@@ -185,6 +193,7 @@ namespace VideoGame.Classes {
             Worth = worth;
             Amount = amount;
             MaxAmount = maxAmount;
+            Kind = ItemKind.Medicine;
         }
 
         public void Use(Monster monster, Character player) {
