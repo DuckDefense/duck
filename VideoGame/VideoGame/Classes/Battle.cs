@@ -403,7 +403,7 @@ namespace VideoGame.Classes {
                 if (Drawer.DrawCapture) {
                     foreach (var m in User.Inventory.Captures.Where(x => x.Value == container.Capture))
                         SelectedCapture = m.Value;
-                    SelectedCapture?.Use(CurrentUserMonster, User);
+                    SelectedCapture?.Use(CurrentOpponentMonster, User);
                     //Check if the monster has been caught
                     if (User.Monsters.Count == partySize) {
                         if (User.Box.Count != boxSize) {
