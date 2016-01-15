@@ -130,7 +130,7 @@ namespace VideoGame.Classes {
         }
 
 
-        public int GetDamage(int offensive, int defensive, int modifier, double crit) {
+        public int GetDamage(int offensive, int defensive, double modifier, double crit) {
             if (modifier == 0) return 0;
             var d = Convert.ToInt32(((BaseDamage * ((double)offensive / (double)defensive)) * modifier) * crit);
             if (d < 1)
@@ -138,7 +138,7 @@ namespace VideoGame.Classes {
             return d;
         }
 
-        public int GetDamageModifier(Monster receiver) {
+        public double GetDamageModifier(Monster receiver) {
             double modifier = 1;
             var prim = receiver.PrimaryType;
             var secon = receiver.SecondaryType;
@@ -210,7 +210,7 @@ namespace VideoGame.Classes {
             default:
                 throw new ArgumentOutOfRangeException();
             }
-            return (int)modifier;
+            return modifier;
         }
 
         #region Preset Moves
