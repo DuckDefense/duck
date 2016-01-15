@@ -399,6 +399,11 @@ namespace VideoGame.Classes {
             return null;
         }
 
+        public static int GetIdFromCharacterWorldTexture(Texture tex) {
+            if (tex == MCGirlWorld) return 1;
+            if (tex == ChristmanWorld) return 2;
+            return 0;
+        }
         #endregion
     }
 }
