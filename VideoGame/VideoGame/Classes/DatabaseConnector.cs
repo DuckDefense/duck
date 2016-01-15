@@ -30,7 +30,7 @@ namespace Sandbox.Classes {
             return inventory;
         }
 
-        private static Monster GetMonster(int monsterId, int level) {
+        public static Monster GetMonster(int monsterId, int level) {
             var monsterCmd = connection.CreateCommand();
             monsterCmd.CommandText = $"SELECT * FROM `monster` WHERE `Id` = @id";
             monsterCmd.Parameters.AddWithValue("@id", monsterId);
@@ -53,8 +53,7 @@ namespace Sandbox.Classes {
                     var baseSpecialAttack = monsterReader.GetInt32("BaseSpecialAttack");
                     var baseSpecialDefense = monsterReader.GetInt32("BaseSpecialDefense");
                     var baseSpeed = monsterReader.GetInt32("BaseSpeed");
-                    var baseStats = new Stats(baseHealth, baseAttack, baseDefense, baseSpecialAttack,
-                        baseSpecialDefense, baseSpeed, level);
+                    var baseStats = new Stats(baseHealth, baseAttack, baseDefense, baseSpecialAttack, baseSpecialDefense, baseSpeed, level);
                     var abilities = new List<Ability>();
                     abilities.AddManyIfNotNull(abilityOne, abilityTwo);
                     var front = ContentLoader.GetTextureFromMonsterId(id, TextureFace.Front);
@@ -90,28 +89,29 @@ namespace Sandbox.Classes {
                 cmd.CommandText = capture ? $"SELECT * FROM `capture`" : $"SELECT * FROM `medicine`";
 
                 var reader = cmd.ExecuteReader();
-                if (!reader.HasRows) continue;
-                while (reader.Read()) {
-                    var id = reader.GetInt32("Id");
-                    if (linkId != id) continue;
-                    var cause = false;
-                    var cure = Medicine.Cure.None;
-                    var healAmount = 0;
-                    var captureChance = 0;
-                    var name = reader.GetString("Name");
-                    var description = reader.GetString("Description");
-                    if (capture) { captureChance = reader.GetInt32("CaptureChance"); }
-                    else {
-                        healAmount = reader.GetInt32("HealAmount");
-                        cure = Medicine.GetCureFromString(reader.GetString("Cures"));
-                        cause = reader.GetBoolean("Cause");
-                    }
-                    var worth = reader.GetInt32("Worth");
-                    var maxAmount = reader.GetInt32("MaxAmount");
+                if (reader.HasRows)
+                    while (reader.Read()) {
+                        var id = reader.GetInt32("Id");
+                        if (linkId == id) {
+                            var cause = false;
+                            var cure = Medicine.Cure.None;
+                            var healAmount = 0;
+                            var captureChance = 0;
+                            var name = reader.GetString("Name");
+                            var description = reader.GetString("Description");
+                            if (capture) { captureChance = reader.GetInt32("CaptureChance"); }
+                            else {
+                                healAmount = reader.GetInt32("HealAmount");
+                                cure = Medicine.GetCureFromString(reader.GetString("Cures"));
+                                cause = reader.GetBoolean("Cause");
+                            }
+                            var worth = reader.GetInt32("Worth");
+                            var maxAmount = reader.GetInt32("MaxAmount");
 
-                    if (capture) inventory.Add(new Capture(id, name, description, ContentLoader.GetTextureFromCapture(id), captureChance, true, worth, amount, maxAmount), amount);
-                    else inventory.Add(new Medicine(id, name, description, ContentLoader.GetTextureFromMedicine(id), healAmount, cure, worth, amount, maxAmount, cause), amount);
-                }
+                            if (capture) inventory.Add(new Capture(id, name, description, ContentLoader.GetTextureFromCapture(id), captureChance, true, worth, amount, maxAmount), amount);
+                            else inventory.Add(new Medicine(id, name, description, ContentLoader.GetTextureFromMedicine(id), healAmount, cure, worth, amount, maxAmount, cause), amount);
+                        }
+                    }
                 reader.Close();
             }
         }
@@ -189,13 +189,8 @@ namespace Sandbox.Classes {
                         var worth = itemReader.GetInt32("Worth");
                         var maxAmount = itemReader.GetInt32("MaxAmount");
 
-                        if (capture) {
-                            item = new Capture(itemId, name, description, ContentLoader.GetTextureFromCapture(itemId), captureChance, true, worth, 1, maxAmount);
-                        }
-                        else {
-                            item = new Medicine(itemId, name, description, ContentLoader.GetTextureFromMedicine(itemId),
-                             healAmount, cure, worth, 1, maxAmount, cause);
-                        }
+                        if (capture) item = new Capture(itemId, name, description, ContentLoader.GetTextureFromCapture(itemId), captureChance, true, worth, 1, maxAmount); 
+                        else item = new Medicine(itemId, name, description, ContentLoader.GetTextureFromMedicine(itemId), healAmount, cure, worth, 1, maxAmount, cause); 
                     }
                 }
                 itemReader.Close();
@@ -206,6 +201,7 @@ namespace Sandbox.Classes {
                 mon.HeldItem = item;
                 mon.Gender = gender;
                 mon.UId = Uid;
+                mon.StatId = statsId;
 
                 var statCmd = connection.CreateCommand();
                 statCmd.CommandText = $"SELECT * FROM `stats` WHERE `Id` = {statsId}";
@@ -263,6 +259,7 @@ namespace Sandbox.Classes {
         /// </summary>
         /// <param name="name">Name of the character</param>
         public static List<Character> GetCharacters(string name) {
+            //TODO: Find a way to use the id as a parameter instead of the name
             var charactersList = new List<Character>();
             connection = new MySqlConnection(stringBuilder.ToString());
             MySqlDataReader reader;
@@ -310,16 +307,21 @@ namespace Sandbox.Classes {
 
                     Character character = new Character(name, money, inventory, monsters, front, back,
                         world, position, true, true);
-
-                    var area = Area.GetAreaFromName(reader.GetString("Area"), character);
-
-                    character.CurrentArea = area;
+                    character.CurrentArea = new Area { Name = reader.GetString("Area") };
+                    character.Id = id;
                     character.Box = box;
                     character.KnownMonsters = knownMonsters;
                     character.CaughtMonster = caughtMonster;
                     charactersList.Add(character);
                 }
                 reader.Close();
+
+            }
+            foreach (var player in charactersList) {
+                var areaName = player.CurrentArea.Name;
+                //TODO: Find out how to actually load the correct map
+                player.CurrentArea = null;
+                player.CurrentArea = Area.GetAreaFromName(areaName, player);
             }
             return charactersList;
         }
@@ -353,6 +355,19 @@ namespace Sandbox.Classes {
                 }
             reader.Close();
             return ids;
+        }
+
+        public static List<int> GetLinkIds() {
+            List<int> ids = new List<int>();
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = "SELECT `Id` FROM `monsterlink`";
+            var reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+                while (reader.Read()) {
+                    ids.Add(reader.GetInt32("Id"));
+                }
+            reader.Close();
+            return ids;
         } 
 
         public static List<int> GetStatsIds() {
@@ -369,14 +384,122 @@ namespace Sandbox.Classes {
         }
 
         public static void SaveData(Character user) {
-            //Get playerId, monsterId, item ids
+            //Get ids
             var playerId = user.Id;
-            //Monster ids
-            List<int> monsterIds = user.Monsters.Select(m => m.Id).ToList();
-            List<int> monsterUids = user.Monsters.Select(m => m.UId).ToList();
-            List<int> statIds = user.Monsters.Select(m => m.StatId).ToList();
             List<int> captureIds = user.Inventory.Captures.Select(m => m.Value.Id).ToList();
             List<int> medicineIds = user.Inventory.Medicine.Select(m => m.Value.Id).ToList();
+
+            //Get player data
+            var name = user.Name;
+            var money = user.Money;
+            var textureId = ContentLoader.GetIdFromCharacterWorldTexture(user.WorldSprite);
+            var area = user.CurrentArea;
+            var posX = user.Position.X;
+            var posY = user.Position.Y;
+
+            var cmd = connection.CreateCommand();
+            //Store player
+            cmd.CommandText = "SELECT COUNT(*) FROM `character` WHERE `Id` = @id";
+            cmd.Parameters.AddWithValue("@id", playerId);
+            var count = Convert.ToInt32(cmd.ExecuteScalar());
+            cmd = connection.CreateCommand();
+            if (count > 0) {
+                //User is already in database
+                cmd.CommandText = "UPDATE `character` SET `Money` = @money, `Area` = @area, `PositionX` = @posX, `PositionY` = @posY";
+                cmd.Parameters.AddWithValue("@money", money);
+                cmd.Parameters.AddWithValue("@area", area.Name);
+                cmd.Parameters.AddWithValue("@posX", posX);
+                cmd.Parameters.AddWithValue("@posY", posY);
+                cmd.ExecuteNonQuery();
+            }
+            else {
+                cmd.CommandText = "INSERT INTO `character`(`Id`, `Name`, `Money`, `TextureId`, `Area`, `PositionX`, `PositionY`) VALUES (@pid, @name, @money, @textureId, @area, @posX, @posY)";
+                cmd.Parameters.AddWithValue("@pid", playerId);
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@money", money);
+                cmd.Parameters.AddWithValue("@textureId", textureId);
+                cmd.Parameters.AddWithValue("@area", area);
+                cmd.Parameters.AddWithValue("@posX", posX);
+                cmd.Parameters.AddWithValue("@posY", posY);
+                cmd.ExecuteNonQuery();
+            }
+
+            //Store monsters
+            foreach (var mon in user.Monsters) {
+                cmd = connection.CreateCommand();
+                cmd.CommandText = "SELECT COUNT(*) FROM `monsterlink` WHERE `Uid` = @monUid";
+                cmd.Parameters.AddWithValue("@monUid", mon.UId);
+                count = Convert.ToInt32(cmd.ExecuteScalar());
+
+                if (count > 0) {
+                    //Monster is already in database
+                    //Update stats
+                    cmd.CommandText = "UPDATE `stats` SET `Health` = @health, `Attack` = @attack, `Defense` = @defense, `SpecialAttack` = @specAttack, `SpecialDefense` = @specDefense, `Speed` = @speed," +
+                                      "`RandAttack` = @randAttack, `RandDefense` = @randDefense, `RandSpecialAttack` = @randSpecAttack, `RandSpecialDefense` = @randSpecDefense, `RandSpeed` = @randSpeed " +
+                                      "WHERE `stats`.`Id` = @statid";
+                    cmd.Parameters.AddWithValue("@health", mon.Stats.Health);
+                    cmd.Parameters.AddWithValue("@attack", mon.Stats.Attack);
+                    cmd.Parameters.AddWithValue("@defense", mon.Stats.Defense);
+                    cmd.Parameters.AddWithValue("@specAttack", mon.Stats.SpecialAttack);
+                    cmd.Parameters.AddWithValue("@specDefense", mon.Stats.SpecialDefense);
+                    cmd.Parameters.AddWithValue("@speed", mon.Stats.Speed);
+                    cmd.Parameters.AddWithValue("@randAttack", mon.Stats.RandAttack);
+                    cmd.Parameters.AddWithValue("@randDefense", mon.Stats.RandDefense);
+                    cmd.Parameters.AddWithValue("@randSpecAttack", mon.Stats.RandSpecialAttack);
+                    cmd.Parameters.AddWithValue("@randSpecDefense", mon.Stats.RandSpecialDefense);
+                    cmd.Parameters.AddWithValue("@randSpeed", mon.Stats.RandSpeed);
+                    cmd.Parameters.AddWithValue("@statid", mon.StatId);
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "UPDATE `monsterlink` SET `monsterId` = @monId, `Level` = @level, `Experience` = @exp, `Ability` = @ability, `ItemId` = @itemId, `ItemKind` = @itemKind, `Boxed` = @box";
+                    cmd.Parameters.AddWithValue("@monId", mon.Id);
+                    cmd.Parameters.AddWithValue("@uid", mon.UId);
+                    cmd.Parameters.AddWithValue("@level", mon.Level);
+                    cmd.Parameters.AddWithValue("@exp", mon.Experience);
+                    cmd.Parameters.AddWithValue("@ability", mon.Ability.Name);
+                    cmd.Parameters.AddWithValue("@itemId", mon.HeldItem);
+                    cmd.Parameters.AddWithValue("@itemKind", mon.HeldItem.Kind.ToString());
+                    cmd.Parameters.AddWithValue("@box", user.Box.Contains(mon));
+                    cmd.ExecuteNonQuery();
+                }
+                else {
+                    //Insert stats
+                    cmd.CommandText = "INSERT INTO `stats`(`Id`, `Health`, `Attack`, `Defense`, `SpecialAttack`, `SpecialDefense`, `Speed`, `RandAttack`, `RandDefense`, `RandSpecialAttack`, `RandSpecialDefense`, `RandSpeed`) " +
+                                      "VALUES(@statid, @health, @attack, @defense, @specAttack, @specDefense, @speed, @randAttack, @randDefense, @randSpecAttack, @randSpecDefense, @randSpeed)";
+                    cmd.Parameters.AddWithValue("@health", mon.Stats.Health);
+                    cmd.Parameters.AddWithValue("@attack", mon.Stats.Attack);
+                    cmd.Parameters.AddWithValue("@defense", mon.Stats.Defense);
+                    cmd.Parameters.AddWithValue("@specAttack", mon.Stats.SpecialAttack);
+                    cmd.Parameters.AddWithValue("@specDefense", mon.Stats.SpecialDefense);
+                    cmd.Parameters.AddWithValue("@speed", mon.Stats.Speed);
+                    cmd.Parameters.AddWithValue("@randAttack", mon.Stats.RandAttack);
+                    cmd.Parameters.AddWithValue("@randDefense", mon.Stats.RandDefense);
+                    cmd.Parameters.AddWithValue("@randSpecAttack", mon.Stats.RandSpecialAttack);
+                    cmd.Parameters.AddWithValue("@randSpecDefense", mon.Stats.RandSpecialDefense);
+                    cmd.Parameters.AddWithValue("@randSpeed", mon.Stats.RandSpeed);
+                    cmd.Parameters.AddWithValue("@statid", mon.StatId);
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "INSERT INTO `monsterlink`(`Id`, `Uid`, `playerId`, `monsterId`, `statsId`, `Level`, `Experience`, `Ability`, `ItemId`, `ItemKind`, `Gender`, `Boxed`) " +
+                                      "VALUES (@id, @uid, @pid, @mid, @sid, @level, @exp, @ability, @itemId, @itemKind, @gender, @box)";
+                    var id = RandomId.GenerateLinkId();
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@uid", mon.UId);
+                    cmd.Parameters.AddWithValue("@pid", playerId);
+                    cmd.Parameters.AddWithValue("@mid", mon.Id);
+                    cmd.Parameters.AddWithValue("@sid", mon.StatId);
+                    cmd.Parameters.AddWithValue("@level", mon.Level);
+                    cmd.Parameters.AddWithValue("@exp", mon.Experience);
+                    cmd.Parameters.AddWithValue("@ability", mon.Ability.Name);
+                    cmd.Parameters.AddWithValue("@itemId", mon.HeldItem);
+                    cmd.Parameters.AddWithValue("@itemKind", mon.HeldItem.Kind.ToString());
+                    cmd.Parameters.AddWithValue("@gender", mon.Gender.ToString());
+                    cmd.Parameters.AddWithValue("@box", user.Box.Contains(mon));
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            //Store items
         }
     }
 }
