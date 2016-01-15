@@ -95,6 +95,8 @@ namespace Sandbox.Classes {
             case Selection.Player:
                 break;
             case Selection.Save:
+                DatabaseConnector.SaveData(player);
+                    Selection = Selection.None;
                 break;
             case Selection.Mute:
                 if (SoundEffect.MasterVolume != 0f) {
