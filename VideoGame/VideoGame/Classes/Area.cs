@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
+using Sandbox.Classes;
 
 namespace VideoGame.Classes
 {
@@ -34,6 +35,8 @@ namespace VideoGame.Classes
         static int tileWidth = 32;
         static int tileHeight = 32;
         private Vector2 previousPos = new Vector2();
+
+        public Area() { }
 
         public Area(string name, Point levelrange, List<Monster> monsters, List<Character> opponentList, Vector2 spawnLocation, TiledMap map)
         {
@@ -253,7 +256,10 @@ namespace VideoGame.Classes
             inventory.Add(Medicine.MagicStone(),5);
             tegenstander = new Character("Nice guy", 6700,
                 inventory,
-                new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
+                new List<Monster> {
+                    DatabaseConnector.GetMonster(1, 5),
+                    DatabaseConnector.GetMonster(4, 15)
+                },
                 ContentLoader.Button, ContentLoader.Button, ContentLoader.ChristmanWorld,
                 new Vector2(192, 192));
             tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
@@ -273,9 +279,9 @@ namespace VideoGame.Classes
                     spawn = new Vector2(192, 416);
                 }
             List<Monster> monsters = new List<Monster> {
-                Monster.Armler(random.Next(levelrange.X, levelrange.Y)),
-                Monster.Gronkey(random.Next(levelrange.X, levelrange.Y)),
-                Monster.Brass(random.Next(levelrange.X, levelrange.Y))
+                DatabaseConnector.GetMonster(1, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
             List<Character> opponents = new List<Character> {
                 tegenstander
@@ -319,9 +325,9 @@ namespace VideoGame.Classes
                     spawn = new Vector2(32, 384);
                 }
             List<Monster> monsters = new List<Monster> {
-                Monster.Armler(random.Next(levelrange.X, levelrange.Y)),
-                Monster.Gronkey(random.Next(levelrange.X, levelrange.Y)),
-                Monster.Brass(random.Next(levelrange.X, levelrange.Y))
+                DatabaseConnector.GetMonster(1, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
             List<Character> opponents = new List<Character>
             {
@@ -365,9 +371,9 @@ namespace VideoGame.Classes
                     spawn = new Vector2(352, 32);
                 }
             List<Monster> monsters = new List<Monster> {
-                Monster.Armler(random.Next(levelrange.X, levelrange.Y)),
-                Monster.Gronkey(random.Next(levelrange.X, levelrange.Y)),
-                Monster.Brass(random.Next(levelrange.X, levelrange.Y))
+                DatabaseConnector.GetMonster(1, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
             List<Character> opponents = new List<Character>
             {
@@ -411,9 +417,9 @@ namespace VideoGame.Classes
                     spawn = new Vector2(256, 320);
                 }
             List<Monster> monsters = new List<Monster> {
-                Monster.Armler(random.Next(levelrange.X, levelrange.Y)),
-                Monster.Gronkey(random.Next(levelrange.X, levelrange.Y)),
-                Monster.Brass(random.Next(levelrange.X, levelrange.Y))
+                DatabaseConnector.GetMonster(1, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
             List<Character> opponents = new List<Character>
             {
