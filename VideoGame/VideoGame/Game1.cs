@@ -74,46 +74,12 @@ namespace VideoGame {
 
             var playerList = DatabaseConnector.GetCharacters("Pieter");
             player = playerList[0];
-
-            //player = new Character("Pietertje", 5000, new Inventory(), new List<Monster>(),
-            //    ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.MCGirlWorld, new Vector2(96, 96), true);
-            //player.Debug = true;
             player.CurrentArea = Area.City(player);
             player.CurrentArea.EnteredArea = true;
-            //player.Monsters.Add(Monster.Gronkey(100));
-            //player.Monsters.Add(Monster.Brass(15));
-            //player.Monsters.Add(Monster.Mimird(16));
-            //player.Monsters.Add(Monster.Armler(18));
-            //player.Monsters.Add(Monster.Pantsler(32));
-
-            //if (player.Monsters[3].CanEvolve()) { player.Monsters[3] = player.Monsters[3].GetEvolution(); }
-            //if (player.Monsters[4].CanEvolve()) { player.Monsters[4] = player.Monsters[4].GetEvolution(); }
-
-            //player.Inventory.Add(Medicine.RoosVicee(), 1);
-            //player.Inventory.Add(Medicine.MagicStone(), 3);
-            //player.Inventory.Add(Medicine.Salt(), 2);
-            //player.Inventory.Add(Capture.RottenNet(), 198);
-            //player.Inventory.Add(Capture.RegularNet(), 1);
-            //player.Inventory.Add(Capture.GreatNet(), 4);
-            currentBattle = new Battle(player, Monster.Gronkey(40000)) {
+            currentBattle = new Battle(player, DatabaseConnector.GetMonster(1, 1)) {
                 battleOver = true,
                 battleStart = false
             };
-            //player.Monsters[0].ReceiveExp(Monster.Gronkey(50));
-            //player.KnownMonsters.Add(Monster.Gronkey(5).Id, Monster.Gronkey(5));
-            //player.KnownMonsters.Add(Monster.Armler(5).Id, Monster.Armler(5));
-            //player.KnownMonsters.Add(Monster.Huffstein(5).Id, Monster.Huffstein(5));
-            //player.KnownMonsters.Add(Monster.Brass(5).Id, Monster.Brass(5));
-            //player.KnownMonsters.Add(Monster.Pantsler(5).Id, Monster.Pantsler(5));
-            //player.KnownMonsters.Add(Monster.Prestler(5).Id, Monster.Prestler(5));
-            //player.KnownMonsters.Add(Monster.Mimird(5).Id, Monster.Mimird(5));
-            //player.KnownMonsters.Add(Monster.Fester(5).Id, Monster.Fester(5));
-            //player.KnownMonsters.Add(Monster.Njortor(5).Id, Monster.Njortor(5));
-            //player.KnownMonsters.Add(Monster.Dvallalin(5).Id, Monster.Dvallalin(5));
-            //player.KnownMonsters.Add(Monster.Gladkey(5).Id, Monster.Gladkey(5));
-            //player.KnownMonsters.Add(Monster.Bonsantai(5).Id, Monster.Bonsantai(5));
-            //player.KnownMonsters.Add(Monster.Joiantler(5).Id, Monster.Joiantler(5));
-            //player.KnownMonsters.Add(Monster.Rasion(5).Id, Monster.Rasion(5));
 
             menu = new Menu(player, new Vector2(Settings.ResolutionWidth - 64, 0));
         }
