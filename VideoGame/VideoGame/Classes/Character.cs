@@ -145,7 +145,7 @@ namespace VideoGame.Classes {
                 batch.Draw(ContentLoader.Button, UpperTile, Color.Turquoise);
                 batch.Draw(ContentLoader.Button, LowerTile, Color.BurlyWood);
             }
-            batch.Draw(WorldSprite, Position, SourceRectangle, Color.White);
+            batch.Draw(WorldSprite, new Vector2(Position.X, Position.Y - 10), SourceRectangle, Color.White);
         }
 
         public void GetDirection(KeyboardState cur, KeyboardState prev) {
