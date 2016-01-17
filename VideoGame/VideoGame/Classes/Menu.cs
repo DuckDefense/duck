@@ -42,7 +42,7 @@ namespace Sandbox.Classes {
         private Button statusButton;
         private Button movesButton;
 
-        public Button KnownMonstersButton, PartyButton, ItemButton, PlayerButton, SaveButton, MuteButton;
+        public Button KnownMonstersButton, PartyButton, ItemButton, PlayerButton, SaveButton, MuteButton, CloseButton;
         private Button generalItems, medicineItems, captureItems;
         public List<Button> ButtonList;
 
@@ -61,8 +61,9 @@ namespace Sandbox.Classes {
             PlayerButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 3), width, height), buttonTexture, hoverTexture, clickedTexture, player.Name, ContentLoader.Arial);
             SaveButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 4), width, height), buttonTexture, hoverTexture, clickedTexture, "Save", ContentLoader.Arial);
             MuteButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 5), width, height), buttonTexture, hoverTexture, clickedTexture, "Mute", ContentLoader.Arial);
+            CloseButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 6), width, height), buttonTexture, hoverTexture, clickedTexture, "Close", ContentLoader.Arial);
 
-            ButtonList.AddMany(KnownMonstersButton, PartyButton, ItemButton, PlayerButton, SaveButton, MuteButton);
+            ButtonList.AddMany(KnownMonstersButton, PartyButton, ItemButton, PlayerButton, SaveButton, MuteButton, CloseButton);
         }
 
         public void Update(GameTime gameTime, MouseState curMouseState, MouseState prevMouseState, KeyboardState curKeyboardState, KeyboardState prevKeyboardState) {
@@ -76,6 +77,7 @@ namespace Sandbox.Classes {
             if (PlayerButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Player;
             if (SaveButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Save;
             if (MuteButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Mute;
+            if (CloseButton.IsClicked(curMouseState, prevMouseState)) Hide();
 
             switch (Selection) {
             case Selection.KnownMonsters:
@@ -165,12 +167,17 @@ namespace Sandbox.Classes {
             }
         }
 
+        private void Hide() {
+            ResetDraws();
+            Visible = false;
+            Selection = Selection.None;
+        }
+
         private void ResetDraws() {
             drawStatus = false;
             drawMoves = false;
             drawMove = false;
             movable = false;
-
         }
 
         private void Toggle(KeyboardState cur, KeyboardState prev) {
