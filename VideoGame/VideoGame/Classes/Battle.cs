@@ -179,7 +179,7 @@ namespace VideoGame.Classes {
                         foreach (var levels in levelList) {
                             if (levels.Key == m.Id)
                                 //Only check if monster can evolve if it leveled up in this battle
-                                if (m.Level <= levels.Value) {
+                                if (m.Level > levels.Value) {
                                     if (m.CanEvolve()) {
                                         User.Monsters[i] = m.GetEvolution();
                                     }
