@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using OpenTK.Graphics.ES20;
+using Sandbox.Classes;
 
 namespace VideoGame.Classes {
 
@@ -223,19 +224,19 @@ namespace VideoGame.Classes {
 
         public Monster GetEvolution() {
             switch (Id) {
-            case 1: return Pantsler(Level, HeldItem, Stats);
-            case 2: return Prestler(Level, HeldItem, Stats);
+            case 1: return ReturnEvolution(2);
+            case 2: return ReturnEvolution(3);
 
-            case 4: return Njortor(Level, HeldItem, Stats);
-            case 5: return Dvallalin(Level, HeldItem, Stats);
+            case 4: return ReturnEvolution(5);
+            case 5: return ReturnEvolution(6);
 
             //TODO: Update with fire starters
-            case 7: return Prestler(Level, HeldItem, Stats);
-            case 8: return Prestler(Level, HeldItem, Stats);
+            case 7: return ReturnEvolution(8);
+            case 8: return ReturnEvolution(9);
 
-            case 10: return Gladkey(Level, HeldItem, Stats);
+            case 10: return ReturnEvolution(10);
 
-            case 12: return Bonsantai(Level, HeldItem, Stats);
+            case 12: return ReturnEvolution(13);
             }
             return this;
         }
@@ -304,249 +305,15 @@ namespace VideoGame.Classes {
                 Timer = 0f;
             }
         }
-        #region Monsters
 
-        public static Monster Armler(int level, Item item = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.Buff(),
-                Ability.Enraged()
-            };
-
-            Stats stats = new Stats(45, 50, 71, 40, 60, 66, level);
-            return new Monster(1, level, "Armler", "This shifty creature Likes to pretend that its pockets are its eyes",
-                Type.Grass, 75, 5, item, stats, abilities,
-                ContentLoader.ArmlerFront, ContentLoader.ArmlerBack, ContentLoader.ArmlerParty);
+        private Monster ReturnEvolution(int id) {
+            var mon = DatabaseConnector.GetMonster(id, Level);
+            var stats = Stats;
+            var heldItem = HeldItem;
+            mon.Stats = stats;
+            mon.Stats.CalculateStats(Level);
+            mon.HeldItem = heldItem;
+            return mon;
         }
-        public static Monster Pantsler(int level, Item item = null, Stats randStats = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.Buff(),
-                Ability.Enraged()
-            };
-
-            Stats stats;
-            if (randStats != null) {
-                stats = new Stats(60, 64, 90, 50, 75, 56, level, false) {
-                    RandAttack = randStats.RandAttack,
-                    RandDefense = randStats.RandDefense,
-                    RandSpecialAttack = randStats.RandSpecialAttack,
-                    RandSpecialDefense = randStats.RandSpecialDefense,
-                    RandSpeed = randStats.RandSpeed
-                };
-                stats.CalculateStats(level);
-            }
-            else stats = new Stats(60, 64, 90, 50, 75, 56, level);
-
-            return new Monster(2, level, "Pantsler", "While desperately trying to escape from the clutches of its \npants this monster is still able to battle",
-                Type.Grass, Type.Fight, 75, 5, item, stats, abilities,
-                ContentLoader.PantslerFront, ContentLoader.PantslerBack, ContentLoader.PantslerParty);
-        }
-        public static Monster Prestler(int level, Item item = null, Stats randStats = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.StrongFist()
-            };
-
-            Stats stats;
-            if (randStats != null) {
-                stats = new Stats(60, 121, 60, 50, 60, 85, level, false) {
-                    RandAttack = randStats.RandAttack,
-                    RandDefense = randStats.RandDefense,
-                    RandSpecialAttack = randStats.RandSpecialAttack,
-                    RandSpecialDefense = randStats.RandSpecialDefense,
-                    RandSpeed = randStats.RandSpeed
-                };
-                stats.CalculateStats(level);
-            }
-            else stats = new Stats(60, 121, 60, 50, 60, 85, level);
-
-            return new Monster(3, level, "Prestler", "These pants are the ultimate fighter, having consumed its prior wearer",
-                Type.Grass, Type.Fight, 75, 5, item, stats, abilities,
-                ContentLoader.PrestlerFront, ContentLoader.PrestlerBack, ContentLoader.PrestlerParty);
-        }
-        public static Monster Mimird(int level, Item item = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.Swift(),
-                Ability.Evasive()
-            };
-
-
-            Stats stats = new Stats(40, 43, 49, 73, 50, 71, level);
-            return new Monster(4, level, "Mimird", "This fish has crafted its own beak! Ain't that endearing",
-                Type.Water, 75, 5, item, stats, abilities,
-                ContentLoader.MimirdFront, ContentLoader.MimirdBack, ContentLoader.MimirdParty);
-        }
-        public static Monster Njortor(int level, Item item = null, Stats randStats = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.Swift(),
-                Ability.Evasive()
-            };
-
-            Stats stats;
-            if (randStats != null) {
-                stats = new Stats(55, 43, 52, 83, 59, 109, level, false) {
-                    RandAttack = randStats.RandAttack,
-                    RandDefense = randStats.RandDefense,
-                    RandSpecialAttack = randStats.RandSpecialAttack,
-                    RandSpecialDefense = randStats.RandSpecialDefense,
-                    RandSpeed = randStats.RandSpeed
-                };
-                stats.CalculateStats(level);
-            }
-            else stats = new Stats(95, 43, 52, 83, 59, 109, level);
-
-            return new Monster(5, level, "Njortor", "This mammal has created its own helicopter and attached it to its back",
-                Type.Water, Type.Flying, 75, 5, item, stats, abilities,
-                ContentLoader.NjortorFront, ContentLoader.NjortorBack, ContentLoader.NjortorParty);
-        }
-        public static Monster Dvallalin(int level, Item item = null, Stats randStats = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.Swift(),
-                Ability.Relaxed()
-            };
-
-            Stats stats;
-            if (randStats != null) {
-                stats = new Stats(95, 30, 39, 93, 65, 112, level, false) {
-                    RandAttack = randStats.RandAttack,
-                    RandDefense = randStats.RandDefense,
-                    RandSpecialAttack = randStats.RandSpecialAttack,
-                    RandSpecialDefense = randStats.RandSpecialDefense,
-                    RandSpeed = randStats.RandSpeed
-                };
-                stats.CalculateStats(level);
-            }
-            else stats = new Stats(95, 30, 39, 93, 65, 112, level);
-
-            return new Monster(6, level, "Dvallalin", "This whale, being weighed down by its troubles, \nmade a blimp to carry his burdens",
-                Type.Water, Type.Flying, 75, 5, item, stats, abilities,
-                ContentLoader.DvallalinFront, ContentLoader.DvallalinBack, ContentLoader.DvallalinParty);
-        }
-
-        // 7 to 9 fire starter
-
-        public static Monster Gronkey(int level, Item item = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.Enraged()
-            };
-
-            Stats stats = new Stats(45, 66, 40, 40, 45, 85, level);
-            return new Monster(10, level, "Gronkey", "This creature is absolutely vivid because someone shaved its face.",
-                Type.Fight, 50, 50, item, stats, abilities,
-                ContentLoader.GronkeyFront, ContentLoader.GronkeyBack, ContentLoader.GronkeyParty);
-        }
-        public static Monster Gladkey(int level, Item item = null, Stats randStats = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.Relaxed(),
-                Ability.Unmovable()
-            };
-
-            Stats stats;
-            if (randStats != null) {
-                stats = new Stats(160, 110, 75, 60, 90, 5, level, false) {
-                    RandAttack = randStats.RandAttack,
-                    RandDefense = randStats.RandDefense,
-                    RandSpecialAttack = randStats.RandSpecialAttack,
-                    RandSpecialDefense = randStats.RandSpecialDefense,
-                    RandSpeed = randStats.RandSpeed
-                };
-                stats.CalculateStats(level);
-            }
-            else stats = new Stats(160, 110, 75, 60, 90, 5, level);
-
-            return new Monster(11, level, "Gladkey", "This creature is on cloud 9 after its mustache grew back",
-                Type.Fight, 50, 50, item, stats, abilities,
-                ContentLoader.GladkeyFront, ContentLoader.GladkeyBack, ContentLoader.GladkeyParty);
-        }
-        public static Monster Brass(int level, Item item = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.Ordinary(),
-                Ability.Unmovable()
-            };
-
-            Stats stats = new Stats(78, 15, 90, 10, 80, 5, level);
-            return new Monster(12, level, "Brass", "This brick is pretty useless, all it can do is lie and wait\nuntil is undeniably faints.",
-                Type.Rock, 75, 50, item, stats, abilities,
-                ContentLoader.BrassFront, ContentLoader.BrassBack, ContentLoader.BrassParty);
-        }
-        public static Monster Bonsantai(int level, Item item = null, Stats randStats = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.StrongFist()
-            };
-
-            Stats stats;
-            if (randStats != null) {
-                stats = new Stats(88, 115, 65, 10, 75, 75, level, false) {
-                    RandAttack = randStats.RandAttack,
-                    RandDefense = randStats.RandDefense,
-                    RandSpecialAttack = randStats.RandSpecialAttack,
-                    RandSpecialDefense = randStats.RandSpecialDefense,
-                    RandSpeed = randStats.RandSpeed
-                };
-                stats.CalculateStats(level);
-            }
-            else stats = new Stats(88, 115, 65, 10, 75, 75, level);
-
-            return new Monster(13, level, "Bonsantai", "After years of training and getting teased, \nthis brick learned the ways of the earth",
-                Type.Rock, Type.Grass, 75, 50, item, stats, abilities,
-                ContentLoader.BonsantaiFront, ContentLoader.BonsantaiBack, ContentLoader.BonsantaiParty);
-        }
-        public static Monster Huffstein(int level, Item item = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.Fuzzy(),
-                Ability.ToxicBody()
-            };
-
-            Stats stats = new Stats(60, 42, 83, 76, 65, 55, level);
-            return new Monster(14, level, "Huffstein", "Being exposed to smog for so long, it has started to orbit around its body",
-                Type.Poison, Type.Rock, 50, 50, item, stats, abilities,
-                ContentLoader.HuffsteinFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
-        }
-        public static Monster Fester(int level, Item item = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.AfterImage(),
-                Ability.Deaf()
-            };
-
-            Stats stats = new Stats(68, 40, 40, 79, 65, 128, level);
-            return new Monster(15, level, "Fester", "Being haunted in life, he now haunts his enemies in the afterlife",
-                Type.Ghost, 50, 50, item, stats, abilities,
-                ContentLoader.FesterFront, ContentLoader.HuffsteinBack, ContentLoader.HuffsteinParty);
-        }
-        public static Monster Joiantler(int level, Item item = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.Enjoyer(),
-                Ability.Relaxed()
-            };
-
-            Stats stats = new Stats(100, 85, 100, 78, 97, 110, level);
-            return new Monster(16, level, "Joiantler", "Having found its hat nothing can ruin its day",
-                Type.Normal, Type.Grass, 50, 50, item, stats, abilities,
-                ContentLoader.JoiantlerFront, ContentLoader.JoiantlerBack, ContentLoader.JoiantlerParty);
-        }
-        public static Monster Rasion(int level, Item item = null) {
-            if (item == null) item = new Item();
-            List<Ability> abilities = new List<Ability> {
-                Ability.Squishy(),
-                Ability.Silly()
-            };
-
-            Stats stats = new Stats(58, 68, 40, 50, 48, 87, level);
-            return new Monster(17, level, "Rasion", "This creature has been completely consumed by poison, \nlosing its conscience",
-                Type.Poison, Type.Normal, 50, 50, item, stats, abilities,
-                ContentLoader.RaisonFront, ContentLoader.RaisonBack, ContentLoader.RaisonParty);
-        }
-        #endregion
     }
 }
