@@ -11,36 +11,36 @@ namespace VideoGame.Classes {
 
         public static int GenerateRandomUId() {
             var list = DatabaseConnector.GetUids();
-            var num = random.Next(0, int.MaxValue);
+            var num = random.Next(2, int.MaxValue);
             while (list.Contains(num)) {
-                num = random.Next(0, int.MaxValue);
+                num = random.Next(2, int.MaxValue);
             }
             return num;
         }
 
         public static int GenerateUserId() {
             var list = DatabaseConnector.GetPlayerIds();
-            var num = random.Next(0, 999999);
+            var num = random.Next(2, 999999);
             while (list.Contains(num)) {
-                num = random.Next(0, 999999);
+                num = random.Next(2, 999999);
             }
             return num;
         }
 
         public static int GenerateLinkId() {
             var list = DatabaseConnector.GetLinkIds();
-            var num = random.Next(0, int.MaxValue);
+            var num = random.Next(2, int.MaxValue);
             while (list.Contains(num)) {
-                num = random.Next(0, int.MaxValue);
+                num = random.Next(2, int.MaxValue);
             }
             return num;
         }
 
         public static int GenerateStatsId() {
             var list = DatabaseConnector.GetStatsIds();
-            var num = random.Next(0, 999999);
+            var num = random.Next(2, 999999);
             while (list.Contains(num)) {
-                num = random.Next(999999);
+                num = random.Next(2, 999999);
             }
             return num;
         }
