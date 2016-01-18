@@ -189,8 +189,8 @@ namespace Sandbox.Classes {
                         var worth = itemReader.GetInt32("Worth");
                         var maxAmount = itemReader.GetInt32("MaxAmount");
 
-                        if (capture) item = new Capture(itemId, name, description, ContentLoader.GetTextureFromCapture(itemId), captureChance, true, worth, 1, maxAmount); 
-                        else item = new Medicine(itemId, name, description, ContentLoader.GetTextureFromMedicine(itemId), healAmount, cure, worth, 1, maxAmount, cause); 
+                        if (capture) item = new Capture(itemId, name, description, ContentLoader.GetTextureFromCapture(itemId), captureChance, true, worth, 1, maxAmount);
+                        else item = new Medicine(itemId, name, description, ContentLoader.GetTextureFromMedicine(itemId), healAmount, cure, worth, 1, maxAmount, cause);
                     }
                 }
                 itemReader.Close();
@@ -319,7 +319,6 @@ namespace Sandbox.Classes {
             }
             foreach (var player in charactersList) {
                 var areaName = player.CurrentArea.Name;
-                //TODO: Find out how to actually load the correct map
                 player.CurrentArea = null;
                 player.CurrentArea = Area.GetAreaFromName(areaName, player);
             }
@@ -368,7 +367,7 @@ namespace Sandbox.Classes {
                 }
             reader.Close();
             return ids;
-        } 
+        }
 
         public static List<int> GetStatsIds() {
             List<int> ids = new List<int>();
@@ -398,14 +397,17 @@ namespace Sandbox.Classes {
             var posY = user.Position.Y;
 
             var cmd = connection.CreateCommand();
-            //Store player
+
+            #region Player
+
             cmd.CommandText = "SELECT COUNT(*) FROM `character` WHERE `Id` = @id";
             cmd.Parameters.AddWithValue("@id", playerId);
             var count = Convert.ToInt32(cmd.ExecuteScalar());
             cmd = connection.CreateCommand();
             if (count > 0) {
                 //User is already in database
-                cmd.CommandText = "UPDATE `character` SET `Money` = @money, `Area` = @area, `PositionX` = @posX, `PositionY` = @posY";
+                cmd.CommandText =
+                    "UPDATE `character` SET `Money` = @money, `Area` = @area, `PositionX` = @posX, `PositionY` = @posY";
                 cmd.Parameters.AddWithValue("@money", money);
                 cmd.Parameters.AddWithValue("@area", area.Name);
                 cmd.Parameters.AddWithValue("@posX", posX);
@@ -413,7 +415,8 @@ namespace Sandbox.Classes {
                 cmd.ExecuteNonQuery();
             }
             else {
-                cmd.CommandText = "INSERT INTO `character`(`Id`, `Name`, `Money`, `TextureId`, `Area`, `PositionX`, `PositionY`) VALUES (@pid, @name, @money, @textureId, @area, @posX, @posY)";
+                cmd.CommandText =
+                    "INSERT INTO `character`(`Id`, `Name`, `Money`, `TextureId`, `Area`, `PositionX`, `PositionY`) VALUES (@pid, @name, @money, @textureId, @area, @posX, @posY)";
                 cmd.Parameters.AddWithValue("@pid", playerId);
                 cmd.Parameters.AddWithValue("@name", name);
                 cmd.Parameters.AddWithValue("@money", money);
@@ -422,9 +425,10 @@ namespace Sandbox.Classes {
                 cmd.Parameters.AddWithValue("@posX", posX);
                 cmd.Parameters.AddWithValue("@posY", posY);
                 cmd.ExecuteNonQuery();
-            }
+            } 
+            #endregion
 
-            //Store monsters
+            #region Monsters
             foreach (var mon in user.Monsters) {
                 cmd = connection.CreateCommand();
                 cmd.CommandText = "SELECT COUNT(*) FROM `monsterlink` WHERE `Uid` = @monUid";
@@ -434,9 +438,10 @@ namespace Sandbox.Classes {
                 if (count > 0) {
                     //Monster is already in database
                     //Update stats
-                    cmd.CommandText = "UPDATE `stats` SET `Health` = @health, `Attack` = @attack, `Defense` = @defense, `SpecialAttack` = @specAttack, `SpecialDefense` = @specDefense, `Speed` = @speed," +
-                                      "`RandAttack` = @randAttack, `RandDefense` = @randDefense, `RandSpecialAttack` = @randSpecAttack, `RandSpecialDefense` = @randSpecDefense, `RandSpeed` = @randSpeed " +
-                                      "WHERE `stats`.`Id` = @statid";
+                    cmd.CommandText =
+                        "UPDATE `stats` SET `Health` = @health, `Attack` = @attack, `Defense` = @defense, `SpecialAttack` = @specAttack, `SpecialDefense` = @specDefense, `Speed` = @speed," +
+                        "`RandAttack` = @randAttack, `RandDefense` = @randDefense, `RandSpecialAttack` = @randSpecAttack, `RandSpecialDefense` = @randSpecDefense, `RandSpeed` = @randSpeed " +
+                        "WHERE `stats`.`Id` = @statid";
                     cmd.Parameters.AddWithValue("@health", mon.Stats.Health);
                     cmd.Parameters.AddWithValue("@attack", mon.Stats.Attack);
                     cmd.Parameters.AddWithValue("@defense", mon.Stats.Defense);
@@ -451,7 +456,8 @@ namespace Sandbox.Classes {
                     cmd.Parameters.AddWithValue("@statid", mon.StatId);
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "UPDATE `monsterlink` SET `monsterId` = @monId, `Level` = @level, `Experience` = @exp, `Ability` = @ability, `ItemId` = @itemId, `ItemKind` = @itemKind, `Boxed` = @box";
+                    cmd.CommandText =
+                        "UPDATE `monsterlink` SET `monsterId` = @monId, `Level` = @level, `Experience` = @exp, `Ability` = @ability, `ItemId` = @itemId, `ItemKind` = @itemKind, `Boxed` = @box";
                     cmd.Parameters.AddWithValue("@monId", mon.Id);
                     cmd.Parameters.AddWithValue("@uid", mon.UId);
                     cmd.Parameters.AddWithValue("@level", mon.Level);
@@ -464,8 +470,9 @@ namespace Sandbox.Classes {
                 }
                 else {
                     //Insert stats
-                    cmd.CommandText = "INSERT INTO `stats`(`Id`, `Health`, `Attack`, `Defense`, `SpecialAttack`, `SpecialDefense`, `Speed`, `RandAttack`, `RandDefense`, `RandSpecialAttack`, `RandSpecialDefense`, `RandSpeed`) " +
-                                      "VALUES(@statid, @health, @attack, @defense, @specAttack, @specDefense, @speed, @randAttack, @randDefense, @randSpecAttack, @randSpecDefense, @randSpeed)";
+                    cmd.CommandText =
+                        "INSERT INTO `stats`(`Id`, `Health`, `Attack`, `Defense`, `SpecialAttack`, `SpecialDefense`, `Speed`, `RandAttack`, `RandDefense`, `RandSpecialAttack`, `RandSpecialDefense`, `RandSpeed`) " +
+                        "VALUES(@statid, @health, @attack, @defense, @specAttack, @specDefense, @speed, @randAttack, @randDefense, @randSpecAttack, @randSpecDefense, @randSpeed)";
                     cmd.Parameters.AddWithValue("@health", mon.Stats.Health);
                     cmd.Parameters.AddWithValue("@attack", mon.Stats.Attack);
                     cmd.Parameters.AddWithValue("@defense", mon.Stats.Defense);
@@ -480,8 +487,9 @@ namespace Sandbox.Classes {
                     cmd.Parameters.AddWithValue("@statid", mon.StatId);
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO `monsterlink`(`Id`, `Uid`, `playerId`, `monsterId`, `statsId`, `Level`, `Experience`, `Ability`, `ItemId`, `ItemKind`, `Gender`, `Boxed`) " +
-                                      "VALUES (@id, @uid, @pid, @mid, @sid, @level, @exp, @ability, @itemId, @itemKind, @gender, @box)";
+                    cmd.CommandText =
+                        "INSERT INTO `monsterlink`(`Id`, `Uid`, `playerId`, `monsterId`, `statsId`, `Level`, `Experience`, `Ability`, `ItemId`, `ItemKind`, `Gender`, `Boxed`) " +
+                        "VALUES (@id, @uid, @pid, @mid, @sid, @level, @exp, @ability, @itemId, @itemKind, @gender, @box)";
                     var id = RandomId.GenerateLinkId();
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.Parameters.AddWithValue("@uid", mon.UId);
@@ -497,9 +505,48 @@ namespace Sandbox.Classes {
                     cmd.Parameters.AddWithValue("@box", user.Box.Contains(mon));
                     cmd.ExecuteNonQuery();
                 }
+            } 
+            #endregion
+            #region Inventory
+            foreach (var cap in user.Inventory.Captures.Values) {
+                cmd = connection.CreateCommand();
+                cmd.CommandText = "SELECT COUNT(*) FROM `capturelink` WHERE `playerId` = @playerId AND `captureId` = @captureId";
+                cmd.Parameters.AddWithValue("@playerId", playerId);
+                cmd.Parameters.AddWithValue("@captureId", cap.Id);
+                count = Convert.ToInt32(cmd.ExecuteScalar());
+                if (count > 0) {
+                    //player already has item
+                    cmd.CommandText = "UPDATE `capturelink` SET `Amount` = @amount";
+                    cmd.Parameters.AddWithValue("@amount", cap.Amount);
+                    cmd.ExecuteScalar();
+                }
+                else {
+                    //player recently receiver item
+                    cmd.CommandText = "INSERT INTO `capturelink`(`playerId`, `captureId`, `Amount`) VALUES (@playerId, @captureId, @amount)";
+                    cmd.Parameters.AddWithValue("@amount", cap.Amount);
+                    cmd.ExecuteScalar();
+                }
             }
-
-            //Store items
+            foreach (var med in user.Inventory.Medicine.Values) {
+                cmd = connection.CreateCommand();
+                cmd.CommandText = "SELECT COUNT(*) FROM `medicinelink` WHERE `playerId` = @playerId AND `medicineId` = @medicineId";
+                cmd.Parameters.AddWithValue("@playerId", playerId);
+                cmd.Parameters.AddWithValue("@medicineId", med.Id);
+                count = Convert.ToInt32(cmd.ExecuteScalar());
+                if (count > 0) {
+                    //player already has item
+                    cmd.CommandText = "UPDATE `medicinelink` SET `Amount` = @amount";
+                    cmd.Parameters.AddWithValue("@amount", med.Amount);
+                    cmd.ExecuteScalar();
+                }
+                else {
+                    //player recently receiver item
+                    cmd.CommandText = "INSERT INTO `medicinelink`(`playerId`, `medicineId`, `Amount`) VALUES (@playerId, @medicineId, @amount)";
+                    cmd.Parameters.AddWithValue("@amount", med.Amount);
+                    cmd.ExecuteScalar();
+                }
+            }
+            #endregion
         }
     }
 }
