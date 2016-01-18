@@ -74,8 +74,6 @@ namespace VideoGame {
 
             var playerList = DatabaseConnector.GetCharacters("Pieter");
             player = playerList[0];
-            player.CurrentArea = Area.City(player);
-            player.CurrentArea.EnteredArea = true;
             currentBattle = new Battle(player, DatabaseConnector.GetMonster(1, 1)) {
                 battleOver = true,
                 battleStart = false
