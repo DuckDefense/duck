@@ -90,32 +90,106 @@ namespace VideoGame.Classes
 
         public static void MakeDecision(Battle b, Move m, Monster user, Monster receiver, Character player)
         {
-            if (user.Ailment != Ailment.Normal)
-            {
-                foreach (var value in player.Inventory.Medicine.Values)
-                {
-                    if(Medicine.CuresAilment(user.Ailment))
-                    {
-                        UseMedicine(b,player,user);
-                    }
-                }
-            }
+            Random random = new Random();
 
-            if (user.Stats.Health < user.MaxHealth / 100 * 20)
+            switch (random.Next(1, 5))
             {
-                if (player != null)
-                {
-                    if (player.Inventory.Medicine.Count != 0)
+                case 1:
+                    EnemyAttack(b, user, receiver);
+                    break;
+                case 2:
+                    UseBuff(b, user, receiver);
+                    break;
+                case 3:
+                    if (user.Ailment != Ailment.Normal)
                     {
-                        UseMedicine(b, player, user);
+                        foreach (var value in player.Inventory.Medicine.Values)
+                        {
+                            if (Medicine.CuresAilment(user.Ailment))
+                            {
+                                UseMedicine(b, player, user);
+                            }
+                        }
                     }
                     else
                     {
-                        if (m.Damage != null)
+                        EnemyAttack(b, user, receiver);
+                    }
+                    break;
+                case 4:
+                    if (user.Stats.Health < user.MaxHealth / 100 * 20)
+                    {
+                        if (player != null)
                         {
-                            if (m.Damage > user.Stats.Health)
+                            if (player.Inventory.Medicine.Count != 0)
+                            {
+                                UseMedicine(b, player, user);
+                            }
+                            else
                             {
                                 EnemyAttack(b, user, receiver);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        EnemyAttack(b, user, receiver);
+                    }
+                    break;
+                case 5:
+                    if (user.Ailment != Ailment.Normal)
+                    {
+                        foreach (var value in player.Inventory.Medicine.Values)
+                        {
+                            if (Medicine.CuresAilment(user.Ailment))
+                            {
+                                UseMedicine(b, player, user);
+                            }
+                        }
+                    }
+
+                    if (user.Stats.Health < user.MaxHealth / 100 * 20)
+                    {
+                        if (player != null)
+                        {
+                            if (player.Inventory.Medicine.Count != 0)
+                            {
+                                UseMedicine(b, player, user);
+                            }
+                            else
+                            {
+                                if (m.Damage != null)
+                                {
+                                    if (m.Damage > user.Stats.Health)
+                                    {
+                                        EnemyAttack(b, user, receiver);
+                                    }
+                                    else
+                                    {
+                                        UseBuff(b, user, receiver);
+                                    }
+                                }
+                                else
+                                {
+                                    UseBuff(b, user, receiver);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (m != null)
+                        {
+                            if (m.Damage != 0)
+                            {
+                                if (m.Damage > user.Stats.Health)
+                                {
+                                    EnemyAttack(b, user, receiver);
+                                }
+                                else
+                                {
+                                    UseBuff(b, user, receiver);
+                                }
                             }
                             else
                             {
@@ -127,33 +201,10 @@ namespace VideoGame.Classes
                             UseBuff(b, user, receiver);
                         }
                     }
-                }
+                    break;
             }
-            else
-            {
-                if (m != null)
-                {
-                    if (m.Damage != 0)
-                    {
-                        if (m.Damage > user.Stats.Health)
-                        {
-                            EnemyAttack(b, user, receiver);
-                        }
-                        else
-                        {
-                            UseBuff(b, user, receiver);
-                        }
-                    }
-                    else
-                    {
-                        UseBuff(b, user, receiver);
-                    }
-                }
-                else
-                {
-                    UseBuff(b, user, receiver);
-                }
-            }
+
+
         }
         public static void EnemyAttack(Battle b, Monster user, Monster receiver)
         {
