@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="4">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="15" tilewidth="32" tileheight="32" nextobjectid="4">
  <tileset firstgid="1" name="city tiles" tilewidth="32" tileheight="32" tilecount="180">
   <image source="city tiles.png" width="192" height="960"/>
  </tileset>
- <layer name="Tilelaag 1" width="100" height="100">
+ <layer name="Tilelaag 1" width="25" height="15">
   <data encoding="base64" compression="zlib">
-   eJzt0TEKgEAUQ8EUaqP3P6/VnuAvEmQG0gfemeQY7Ao7TVqssY8eXfTookcXPbro0UWPLnp00aPLnVmL5/vLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBbLx+kAv8=
+   eJxjYWBgYBnFo3gUj+JRPKwwAD0bBd0=
   </data>
  </layer>
- <layer name="detail" width="100" height="100">
+ <layer name="detail" width="25" height="15">
   <properties>
    <property name="Collision" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzt0bEJACAUQ0FrB9D9N9VSJ/hB7yB94LUGALyuVx/gokcWPbLokUWPLGePsTerjgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADABxYoHQBq
+   eJxjYBgFowAVcOGR0yESj9oxagcpYCj5Y6jYAQB0NBGL
   </data>
  </layer>
- <layer name="Change To Shop" width="100" height="100">
+ <layer name="Change To Shop" width="25" height="15">
   <properties>
    <property name="EnterArea" value="shop"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztzgENAAAIA6C3sX9DY3w6SEACAHw37QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcsjXJACg=
+   eJxjYBgFowAVqA+0A0bBKBgFFAMAmVQAKA==
   </data>
  </layer>
- <layer name="Change Area" width="100" height="100">
+ <layer name="Change Area" width="25" height="15">
   <properties>
    <property name="EnterArea" value="Route 1"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztzjENAAAIA7Dd+BeMhh2Ep1XQBAAAAIDGfAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLUJ+gAL
+   eJxjYBgFo2AUjALaA66BdsAIAwAUPAAL
   </data>
  </layer>
- <layer name="obstackles" width="100" height="100">
+ <layer name="obstackles" width="25" height="15">
   <properties>
    <property name="Collision" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzt1sEKgCAMAFDrUpeg/v9nC6LbRGg7yXsgiCKMTaatvc5nXD/nMKs1eX4riYLPHqz1chzV7iiMhVgvx1HtqDXqV8tgX7+qlb3z+hUzy/6vqOWNBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACI3RREAQs=
+   eJxjYIAAASAWJJENAs5A7AjEDkDsiiTmBhXzZqAcgMxzgWKYHf5AHADFgUDMRKEdnkDsBcW43MyBRYwdh1ps7gkC4mAoDiHBbbwkuIcYQCisGCkwCxYe5LoNG0A3C1d40AJQmq7wmTXcwmoUDC4AANbxB+8=
   </data>
  </layer>
- <layer name="obstackles2" width="100" height="100">
+ <layer name="obstackles2" width="25" height="15">
   <properties>
    <property name="Collision" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzt1DkKQjEARdEvFmJh5YQTTii6/w36NpAi/qgfPAduExJI9boOqDVPi7RMq7Qu3Jt87Uf/YVw436Rt2qV9OlS+5z3TwvkxndI5XdK18j1t3dI9jdIjPQv37FVbfffGXrXVd2/s1bDYq2GZ/foDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf8gL2lwKF
+   eJzt0j0PAUEQxvETlRKHeDtvIZQouMJLggIFvv+X8b9iks1mR9ZuofEkv2Inc7O5zSRJeKqO2hIrrHGMmP0pG2yRe/TWkaKBJlqed+ywx8GolZXeNjroooe+o8f17QNPvIyeinLHAEOMMMbE0aN969szxQwlzLHwmCfJrLP2ViGxZ8m5+Bdz32Ii71KzzkW+2bfQnHDGJWKG9uZSv+KGe8Qd2v5I3d7pf36XN7HhCdQ=
   </data>
  </layer>
 </map>

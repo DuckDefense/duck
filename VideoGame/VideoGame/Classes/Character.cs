@@ -216,10 +216,10 @@ namespace VideoGame.Classes {
             float move = (float)(32 * time.ElapsedGameTime.TotalSeconds * 4);
             Moved += move;
             switch (Direction) {
-            case Direction.Up: Position.Y -= move; break;
-            case Direction.Down: Position.Y += move; break;
-            case Direction.Right: Position.X += move; break;
-            case Direction.Left: Position.X -= move; break;
+            case Direction.Up: if(Position.Y >0) Position.Y -= move; break;
+            case Direction.Down: if (Position.Y < (Settings.ResolutionHeight - 32)) Position.Y += move; break;
+            case Direction.Right: if (Position.X < (Settings.ResolutionWidth - 32)) Position.X += move; break;
+            case Direction.Left: if (Position.X > 0) Position.X -= move; break;
             }
             SetTilePositions();
             if (Moved >= 32) {

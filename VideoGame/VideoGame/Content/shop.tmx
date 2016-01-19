@@ -5,7 +5,7 @@
  </tileset>
  <layer name="Tilelaag 1" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt0UsKAlEMRcG8PfjDbgUVtd3/Bo2QqeLIOKiCAyHTu4qIdbapttkuG0GHfTZlc3XIjmGPLq8NTtm5utTPHj3mN42wSYdrdsvu2VL3I+zRZXyI37PH/7IBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwjSdQCgOU
+   eJzt0TEOgCAQRFG8h60o97+gFJRaUBAn8b1kqm02+aWQap8c68y20GQtPbLokWEb0yODHpn0yHL01YedfdfLrX3yKQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf3QDL1cMng==
   </data>
  </layer>
  <layer name="gocity1" width="100" height="100">
@@ -13,7 +13,15 @@
    <property name="EnterArea" value="City"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztwzENAAAIA7B5wL9XningJG3SBAD4YhoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC4W6SuACc=
+   eJztw7ENAAAIA6D6/9Mu3TxBSEgAAADgmgYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+GYBuGsAAw==
+  </data>
+ </layer>
+ <layer name="Obstackles" width="100" height="100">
+  <properties>
+   <property name="Collision" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0UEKwjAQBdDpHWwrigXr/e9oCl2EUKuSCkHegw8TyGzmR0R0KaeUYU2fzWXGbD6vuxxruekle193/t6yeQp9/EJ500/72NqlXnnTe8r8Io83u9Sruak+jqePtuijLfpoiz7a0u3kmz8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/kCdN0Aw0=
   </data>
  </layer>
 </map>
