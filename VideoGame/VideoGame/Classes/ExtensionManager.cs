@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VideoGame.Classes;
 
 public static class ExtensionManager {
     public static void AddMany<T>(this List<T> list, params T[] elements) {
@@ -25,6 +26,14 @@ public static class ExtensionManager {
         foreach (var el in elements) {
             list.AddIfNotNull(el);
         }
+    }
+
+    public static Dictionary<int, Monster> CombineDictionaries(Dictionary<int, Monster> dic, Dictionary<int, Monster> dic2) {
+        var dictionary = dic.ToDictionary(v => v.Key, v => v.Value);
+        foreach (var v2 in dic2.Where(v2 => !dictionary.ContainsKey(v2.Key))) {
+            dictionary.Add(v2.Key, v2.Value);
+        }
+        return dictionary;
     }
 }
 
