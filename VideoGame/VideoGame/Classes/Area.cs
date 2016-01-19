@@ -247,6 +247,8 @@ namespace VideoGame.Classes
                     return Shop();
                 case "secrettunnel":
                     return SecretTunnel(player);
+                case "secretcity":
+                    return SecretCity(player);
             }
             return null;
         }
@@ -537,6 +539,34 @@ namespace VideoGame.Classes
             //Sound.Play();
 
             return new Area("SecretTunnel", levelrange, monsters, opponents, spawn, map);
+        }
+        #endregion
+
+        #region Secret City
+
+        public static Area SecretCity(Character player)
+        {
+            if (Sound != null)
+                Sound.Stop();
+
+            Sound = ContentLoader.TownSong.CreateInstance();
+            Sound.IsLooped = true;
+            Sound.Play();
+
+            Random random = new Random();
+            Point levelrange = new Point(3, 8);
+            var map = ContentLoader.SecretCity;
+
+            Vector2 spawn = Vector2.One;
+            spawn = new Vector2(256, 320);
+
+            List<Monster> monsters = new List<Monster>();
+            List<Character> opponents = new List<Character>();
+            //Sound = ContentLoader.RouteSong;
+            //Sound.IsLooped = true;
+            //Sound.Play();
+
+            return new Area("SecretCity", levelrange, monsters, opponents, spawn, map);
         }
         #endregion
     }
