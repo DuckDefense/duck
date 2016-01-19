@@ -213,17 +213,17 @@ namespace VideoGame.Classes
         public static Area GetAreaFromName(string n, Character player)
         {
             //return area if n is the name
-            switch (n)
+            switch (n.ToLower())
             {
-                case "Route 1":
+                case "route 1":
                     return Route1(player);
-                case "Route 2":
+                case "route 2":
                     return Route2(player);
-                case "Route 3":
+                case "route 3":
                     return Route3(player);
-                case "Route 4":
+                case "route 4":
                     return Route4(player);
-                case "City":
+                case "city":
                     return City(player);
                 case "shop":
                     return Shop();
@@ -445,7 +445,7 @@ namespace VideoGame.Classes
             if (player.PreviousArea != null)
                 if (player.PreviousArea.Name == "Shop")
                 {
-                    spawn = new Vector2(256, 224);
+                    spawn = new Vector2(256, 192);
                 }
                 else
                 {
@@ -463,7 +463,7 @@ namespace VideoGame.Classes
 
         public static Area Shop()
         {
-            var spawn = new Vector2(96, 128);
+            var spawn = new Vector2(288, 256);
             var map = ContentLoader.Shop;
 
             return new Area("Shop", Point.Zero, new List<Monster>(), new List<Character>(), spawn, map);
