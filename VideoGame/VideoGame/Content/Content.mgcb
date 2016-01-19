@@ -1063,3 +1063,8 @@
 /processor:TiledMapProcessor
 /build:shop.tmx
 
+#begin SecretTunnel.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:SecretTunnel.tmx
+

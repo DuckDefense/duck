@@ -28,17 +28,20 @@ namespace VideoGame.Classes
         private Rectangle encounterHitbox;
         private Rectangle collisionHitbox;
         private Vector2 SpawnLocation;
-        List<Character> OpponentList = new List<Character>();
-        Dictionary<Rectangle, string> AreaColiders = new Dictionary<Rectangle, string>();
-        List<Rectangle> EncounterColiders = new List<Rectangle>();
-        List<Rectangle> CollisionColiders = new List<Rectangle>();
-        static int tileWidth = 32;
-        static int tileHeight = 32;
+        private List<Character> OpponentList = new List<Character>();
+        private Dictionary<Rectangle, string> AreaColiders = new Dictionary<Rectangle, string>();
+        private List<Rectangle> EncounterColiders = new List<Rectangle>();
+        private List<Rectangle> CollisionColiders = new List<Rectangle>();
+        private static int tileWidth = 32;
+        private static int tileHeight = 32;
         private Vector2 previousPos = new Vector2();
 
-        public Area() { }
+        public Area()
+        {
+        }
 
-        public Area(string name, Point levelrange, List<Monster> monsters, List<Character> opponentList, Vector2 spawnLocation, TiledMap map)
+        public Area(string name, Point levelrange, List<Monster> monsters, List<Character> opponentList,
+            Vector2 spawnLocation, TiledMap map)
         {
             Levelrange = levelrange;
             Name = name;
@@ -58,9 +61,18 @@ namespace VideoGame.Classes
                 {
                     batch.Draw(ContentLoader.Health, opponent.AI.Hitbox, Color.White);
                 }
-                foreach (var encounterColider in EncounterColiders) { batch.Draw(ContentLoader.Button, encounterColider, Color.Green); }
-                foreach (var collisionColider in CollisionColiders) { batch.Draw(ContentLoader.Button, collisionColider, Color.Blue); }
-                foreach (var areaCollider in AreaColiders) { batch.Draw(ContentLoader.Button, areaCollider.Key, Color.Aqua); }
+                foreach (var encounterColider in EncounterColiders)
+                {
+                    batch.Draw(ContentLoader.Button, encounterColider, Color.Green);
+                }
+                foreach (var collisionColider in CollisionColiders)
+                {
+                    batch.Draw(ContentLoader.Button, collisionColider, Color.Blue);
+                }
+                foreach (var areaCollider in AreaColiders)
+                {
+                    batch.Draw(ContentLoader.Button, areaCollider.Key, Color.Aqua);
+                }
             }
             foreach (var opponent in OpponentList) opponent.Draw(batch);
         }
@@ -80,7 +92,10 @@ namespace VideoGame.Classes
         public void GetCollision(Character player)
         {
             CollisionColiders.Clear();
-            var collisionLayers = Map.TileLayers.Where(layer => layer.Properties.ContainsKey("Collision") && layer.Properties.ContainsValue("true")).ToList();
+            var collisionLayers =
+                Map.TileLayers.Where(
+                    layer => layer.Properties.ContainsKey("Collision") && layer.Properties.ContainsValue("true"))
+                    .ToList();
             foreach (var layer in collisionLayers)
             {
                 foreach (var tile in layer.Tiles)
@@ -143,7 +158,10 @@ namespace VideoGame.Classes
         {
             bool test = true;
             EncounterColiders.Clear();
-            var encounterLayers = Map.TileLayers.Where(layer => layer.Properties.ContainsKey("Encounters") && layer.Properties.ContainsValue("true")).ToList();
+            var encounterLayers =
+                Map.TileLayers.Where(
+                    layer => layer.Properties.ContainsKey("Encounters") && layer.Properties.ContainsValue("true"))
+                    .ToList();
             foreach (var layer in encounterLayers)
             {
                 foreach (var tile in layer.Tiles)
@@ -227,6 +245,8 @@ namespace VideoGame.Classes
                     return City(player);
                 case "shop":
                     return Shop();
+                case "secrettunnel":
+                    return SecretTunnel(player);
             }
             return null;
         }
@@ -241,8 +261,9 @@ namespace VideoGame.Classes
         }
 
         #region Route1
+
         public static
-        Area Route1(Character player)
+            Area Route1(Character player)
         {
             if (Sound != null)
                 Sound.Stop();
@@ -253,10 +274,11 @@ namespace VideoGame.Classes
 
             Character tegenstander;
             Inventory inventory = new Inventory();
-            inventory.Add(Medicine.MagicStone(),5);
+            inventory.Add(Medicine.MagicStone(), 5);
             tegenstander = new Character("Nice guy", 6700,
                 inventory,
-                new List<Monster> {
+                new List<Monster>
+                {
                     DatabaseConnector.GetMonster(1, 5),
                     DatabaseConnector.GetMonster(4, 15)
                 },
@@ -278,22 +300,26 @@ namespace VideoGame.Classes
                 {
                     spawn = new Vector2(192, 416);
                 }
-            List<Monster> monsters = new List<Monster> {
+            List<Monster> monsters = new List<Monster>
+            {
                 DatabaseConnector.GetMonster(1, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
-            List<Character> opponents = new List<Character> {
+            List<Character> opponents = new List<Character>
+            {
                 tegenstander
             };
 
             return new Area("Route 1", levelrange, monsters, opponents, spawn, map);
         }
+
         #endregion
 
         #region Route2
+
         public static
-        Area Route2(Character player)
+            Area Route2(Character player)
         {
             if (Sound != null)
                 Sound.Stop();
@@ -324,7 +350,8 @@ namespace VideoGame.Classes
                 {
                     spawn = new Vector2(32, 384);
                 }
-            List<Monster> monsters = new List<Monster> {
+            List<Monster> monsters = new List<Monster>
+            {
                 DatabaseConnector.GetMonster(1, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
@@ -335,11 +362,13 @@ namespace VideoGame.Classes
 
             return new Area("Route 2", levelrange, monsters, opponents, spawn, map);
         }
+
         #endregion
 
         #region Route3
+
         public static
-        Area Route3(Character player)
+            Area Route3(Character player)
         {
             if (Sound != null)
                 Sound.Stop();
@@ -370,7 +399,8 @@ namespace VideoGame.Classes
                 {
                     spawn = new Vector2(352, 32);
                 }
-            List<Monster> monsters = new List<Monster> {
+            List<Monster> monsters = new List<Monster>
+            {
                 DatabaseConnector.GetMonster(1, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
@@ -381,11 +411,13 @@ namespace VideoGame.Classes
 
             return new Area("Route 3", levelrange, monsters, opponents, spawn, map);
         }
+
         #endregion
 
         #region Route4
+
         public static
-        Area Route4(Character player)
+            Area Route4(Character player)
         {
             if (Sound != null)
                 Sound.Stop();
@@ -416,7 +448,8 @@ namespace VideoGame.Classes
                 {
                     spawn = new Vector2(256, 320);
                 }
-            List<Monster> monsters = new List<Monster> {
+            List<Monster> monsters = new List<Monster>
+            {
                 DatabaseConnector.GetMonster(1, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
@@ -427,7 +460,9 @@ namespace VideoGame.Classes
 
             return new Area("Route 4", levelrange, monsters, opponents, spawn, map);
         }
+
         #endregion
+
         public static Area City(Character player)
         {
             if (Sound != null)
@@ -468,5 +503,41 @@ namespace VideoGame.Classes
 
             return new Area("Shop", Point.Zero, new List<Monster>(), new List<Character>(), spawn, map);
         }
+
+        #region Secret tunnel
+
+        public static Area SecretTunnel(Character player)
+        {
+            if (Sound != null)
+                Sound.Stop();
+
+            Sound = ContentLoader.TownSong.CreateInstance();
+            Sound.IsLooped = true;
+            Sound.Play();
+
+            Random random = new Random();
+            Point levelrange = new Point(3, 8);
+            var map = ContentLoader.SecretTunnel;
+
+            Vector2 spawn = Vector2.One;
+            if (player.PreviousArea != null)
+                if (player.PreviousArea.Name == "City")
+                {
+                    spawn = new Vector2(384, 416);
+                }
+                else
+                {
+                    spawn = new Vector2(256, 320);
+                }
+
+            List<Monster> monsters = new List<Monster>();
+            List<Character> opponents = new List<Character>();
+            //Sound = ContentLoader.RouteSong;
+            //Sound.IsLooped = true;
+            //Sound.Play();
+
+            return new Area("SecretTunnel", levelrange, monsters, opponents, spawn, map);
+        }
+        #endregion
     }
 }
