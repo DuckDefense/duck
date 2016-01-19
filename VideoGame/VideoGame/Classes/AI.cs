@@ -70,8 +70,10 @@ namespace VideoGame.Classes
                 if (!Hitbox.Contains(player.Position))
                 {
                     allowedToWalk = false;
+                    if(character.Direction == Direction.Right || character.Direction == Direction.Left)
                     character.Position.X += moveX * 2;
-                    character.Position.Y += moveY * 2;
+                    if (character.Direction == Direction.Down || character.Direction == Direction.Up)
+                        character.Position.Y += moveY * 2;
                 }
                 else
                 {
