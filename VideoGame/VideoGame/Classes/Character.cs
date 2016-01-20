@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
+using Sandbox.Classes;
 
 namespace VideoGame.Classes {
 
@@ -43,6 +44,7 @@ namespace VideoGame.Classes {
         public bool Defeated;
         public bool Debug;
         public bool Controllable;
+        public bool Talking;
         public Direction Direction;
         public string Name;
         public int Money;
@@ -51,6 +53,13 @@ namespace VideoGame.Classes {
         public Dictionary<int, Monster> KnownMonsters = new Dictionary<int, Monster>();
         public Dictionary<int, Monster> CaughtMonster = new Dictionary<int, Monster>();
         public List<Monster> Box = new List<Monster>();
+
+        public Conversation.Message BattleMessage;
+        public Conversation.Message WinMessage;
+        public Conversation.Message LoseMessage;
+        public Conversation.Message IntroMessage;
+        public Conversation.Message ByeMessage;
+
         public Area CurrentArea;
         public Area PreviousArea;
         public AI AI;
@@ -72,7 +81,7 @@ namespace VideoGame.Classes {
         /// <param name="controllable"></param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters,
         Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable, bool database = false) {
-            if (!database) if (controllable) Id = RandomId.GenerateUserId();
+            if (!database) Id = RandomId.GenerateUserId();
             Name = name;
             Money = money;
             Inventory = inventory;
@@ -88,25 +97,30 @@ namespace VideoGame.Classes {
         }
 
         /// <summary>
-        /// New Non Playable Character
+        /// Non Playable trainer
         /// </summary>
         /// <param name="name">Characters name</param>
         /// <param name="money">Amount of money the character has</param>
         /// <param name="inventory">Inventory of the character</param>
         /// <param name="monsters">Monsters that the character has</param>
+        /// <param name="battleMessage">Lines the character should say when starting a battle with the player</param>
+        /// <param name="winMessage">Lines the character should say when winning in a battle against the player</param>
+        /// <param name="loseMessage">Lines the character should say when losing in a battle against the player</param>
         /// <param name="front">Sprite that is shown when you're fighting against this character</param>
         /// <param name="back">Sprite that is shown when you're fighting as this character</param>
         /// <param name="world">Sprite that is shown when you're walking around on the area</param>
         /// <param name="position">Position of the character</param>
-        public Character(string name, int money, Inventory inventory, List<Monster> monsters,
-        Texture2D front, Texture2D back, Texture2D world, Vector2 position) {
+        public Character(string name, int money, Inventory inventory, List<Monster> monsters, 
+            List<string> battleMessage, List<string> winMessage, List<string> loseMessage,
+            Texture2D front, Texture2D back, Texture2D world, Vector2 position) {
             Name = name;
             Money = money;
             Inventory = inventory;
             Monsters = monsters;
-            foreach (Monster monster in Monsters) {
-                monster.IsWild = false;
-            }
+            foreach (Monster monster in Monsters) { monster.IsWild = false; }
+            BattleMessage = new Conversation.Message(battleMessage, Color.Black, this);
+            WinMessage = new Conversation.Message(winMessage, Color.Black, this); 
+            LoseMessage = new Conversation.Message(loseMessage, Color.Black, this);
             Controllable = false;
             FrontSprite = front;
             BackSprite = back;
@@ -114,19 +128,49 @@ namespace VideoGame.Classes {
             Position = position;
         }
 
+        /// <summary>
+        /// Shop character
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="money"></param>
+        /// <param name="inventory"></param>
+        /// <param name="introMessage"></param>
+        /// <param name="byeMessage"></param>
+        /// <param name="front"></param>
+        /// <param name="back"></param>
+        /// <param name="world"></param>
+        /// <param name="position"></param>
+        public Character(string name, int money, Inventory inventory, List<string> introMessage, List<string> byeMessage, 
+            Texture2D front, Texture2D back, Texture2D world, Vector2 position) {
+            Name = name;
+            Money = money;
+            Inventory = inventory;
+            Controllable = false;
+            IntroMessage = new Conversation.Message(introMessage, Color.Black, this);
+            ByeMessage = new Conversation.Message(byeMessage, Color.Black, this);
+            FrontSprite = front;
+            BackSprite = back;
+            WorldSprite = world;
+            Position = position;
+        }
+
         public void Update(GameTime time, KeyboardState cur, KeyboardState prev) {
-            if (CountingDown) {
-                MovementTimer(time);
+            if (!Talking) {
+                if (CountingDown) {
+                    MovementTimer(time);
+                }
+                else {
+                    GetDirection(cur, prev);
+                    Movement(cur, time);
+                }
             }
-            else {
-                GetDirection(cur, prev);
-                Movement(cur, time);
-            }
-            SourceRectangle = new Rectangle(CurrentFrame.X * SpriteSize.X, CurrentFrame.Y * SpriteSize.Y, SpriteSize.X, SpriteSize.Y);
+            SourceRectangle = new Rectangle(CurrentFrame.X * SpriteSize.X, CurrentFrame.Y * SpriteSize.Y, SpriteSize.X,
+                    SpriteSize.Y);
             if (CurrentArea != null) Hitbox = new Rectangle((int)Position.X, (int)Position.Y, 32, 32);
             if (Direction == Direction.None) CurrentFrame.X = 0;
             else
                 AnimateWorld(time);
+
         }
 
         public void MonsterUpdate(GameTime time) {
@@ -145,7 +189,32 @@ namespace VideoGame.Classes {
                 batch.Draw(ContentLoader.Button, UpperTile, Color.Turquoise);
                 batch.Draw(ContentLoader.Button, LowerTile, Color.BurlyWood);
             }
+            if (Talking) { DrawMessages(batch); }
             batch.Draw(WorldSprite, new Vector2(Position.X, Position.Y - 10), SourceRectangle, Color.White);
+        }
+
+        public void DrawMessages(SpriteBatch batch) {
+            if (BattleMessage != null) {
+                if (BattleMessage.Visible) BattleMessage.Draw(batch);
+                if (WinMessage.Visible) WinMessage.Draw(batch);
+                if (LoseMessage.Visible) LoseMessage.Draw(batch);
+            }
+            if (IntroMessage != null) {
+                if (IntroMessage.Visible) IntroMessage.Draw(batch);
+                if (ByeMessage.Visible) ByeMessage.Draw(batch);
+            }
+        }
+
+        public void UpdateMessages(KeyboardState curKey, KeyboardState prevKey, Character player) {
+            if (BattleMessage != null) {
+                BattleMessage.Update(curKey, prevKey, player);
+                WinMessage.Update(curKey, prevKey, player);
+                LoseMessage.Update(curKey, prevKey, player);
+            }
+            if (IntroMessage != null) {
+                IntroMessage.Update(curKey, prevKey, player);
+                ByeMessage.Update(curKey, prevKey, player);
+            }
         }
 
         public void GetDirection(KeyboardState cur, KeyboardState prev) {
@@ -216,7 +285,7 @@ namespace VideoGame.Classes {
             float move = (float)(32 * time.ElapsedGameTime.TotalSeconds * 4);
             Moved += move;
             switch (Direction) {
-            case Direction.Up: if(Position.Y >0) Position.Y -= move; break;
+            case Direction.Up: if (Position.Y > 0) Position.Y -= move; break;
             case Direction.Down: if (Position.Y < (Settings.ResolutionHeight - 32)) Position.Y += move; break;
             case Direction.Right: if (Position.X < (Settings.ResolutionWidth - 32)) Position.X += move; break;
             case Direction.Left: if (Position.X > 0) Position.X -= move; break;
