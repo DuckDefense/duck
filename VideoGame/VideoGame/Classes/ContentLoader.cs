@@ -40,7 +40,8 @@ namespace VideoGame.Classes {
         public static Texture2D NjortorFront, NjortorBack, NjortorParty;
         public static Texture2D PantslerFront, PantslerBack, PantslerParty;
         public static Texture2D PrestlerFront, PrestlerBack, PrestlerParty;
-        public static Texture2D RaisonFront, RaisonBack, RaisonParty;
+        public static Texture2D RasionFront, RasionBack, RasionParty;
+        public static Texture2D KirkFront, KirkBack, KirkParty;
         #endregion
 
         public static Texture2D NormalType, FightType, FireType, WaterType, GrassType, PoisonType, PsychType, GhostType, IceType, RockType, FlyingType, SoundType;
@@ -145,9 +146,13 @@ namespace VideoGame.Classes {
             PrestlerBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Prestler");
             PrestlerParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Prestler");
 
-            RaisonFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Rasion");
-            RaisonBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Rasion");
-            RaisonParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Rasion");
+            RasionFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Rasion");
+            RasionBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Rasion");
+            RasionParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Rasion");
+
+            KirkFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Kirk");
+            //KirkBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Kirk");
+            //KirkParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Kirk");
 
             #endregion
 
@@ -345,9 +350,9 @@ namespace VideoGame.Classes {
                 break;
             case 17:
                 switch (face) {
-                case TextureFace.Front: return RaisonFront;
-                case TextureFace.Back: return RaisonBack;
-                case TextureFace.World: return RaisonParty;
+                case TextureFace.Front: return RasionFront;
+                case TextureFace.Back: return RasionBack;
+                case TextureFace.World: return RasionParty;
                 }
                 break;
             case 18:
