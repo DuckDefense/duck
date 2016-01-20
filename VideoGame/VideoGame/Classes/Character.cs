@@ -20,6 +20,13 @@ namespace VideoGame.Classes {
         Left
     }
 
+    public enum NPCKind
+    {
+        Healer,
+        Shop,
+        Trainer
+    }
+
     public class Character : IAnimatable, ITimer {
         public int Id;
         public float Interval { get; set; } = 200; // Interval at which the animation should update
@@ -46,6 +53,7 @@ namespace VideoGame.Classes {
         public bool Controllable;
         public bool Talking;
         public Direction Direction;
+        public NPCKind NpcKind;
         public string Name;
         public int Money;
         public Inventory Inventory;
@@ -126,7 +134,8 @@ namespace VideoGame.Classes {
             BackSprite = back;
             WorldSprite = world;
             Position = position;
-        }
+            NpcKind = NPCKind.Trainer;
+            }
 
         /// <summary>
         /// Shop character
@@ -140,7 +149,7 @@ namespace VideoGame.Classes {
         /// <param name="back"></param>
         /// <param name="world"></param>
         /// <param name="position"></param>
-        public Character(string name, int money, Inventory inventory, List<string> introMessage, List<string> byeMessage, 
+        public Character(string name, int money, Inventory inventory, List<string> introMessage, List<string> byeMessage, NPCKind npcKind, 
             Texture2D front, Texture2D back, Texture2D world, Vector2 position) {
             Name = name;
             Money = money;
@@ -152,7 +161,8 @@ namespace VideoGame.Classes {
             BackSprite = back;
             WorldSprite = world;
             Position = position;
-        }
+            NpcKind = npcKind;
+            }
 
         public void Update(GameTime time, KeyboardState cur, KeyboardState prev) {
             if (!Talking) {
@@ -240,20 +250,20 @@ namespace VideoGame.Classes {
         }
 
         public void SetLineOfSight(int tiles) {
-            var size = (tiles + 1) * 16;
+            var size = (tiles) * 32;
             switch (Direction) {
             case Direction.None: break;
             case Direction.Up:
-                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y - (size - (WorldSprite.Height / 4)), (WorldSprite.Width / 3), size); 
+                LineOfSightRectangle = new Rectangle((int)Position.X + 12, (int)Position.Y - (size), 8, size-1); 
                 break;
             case Direction.Down:
-                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, (WorldSprite.Width / 4), size);
+                LineOfSightRectangle = new Rectangle((int)Position.X + 12, (int)Position.Y + 32, (8), size-1);
                 break;
             case Direction.Right:
-                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y - 12, size, ((WorldSprite.Height) / 4));
+                LineOfSightRectangle = new Rectangle((int)Position.X + 32, (int)Position.Y+12, size-1, (8));
                 break;
             case Direction.Left:
-                LineOfSightRectangle = new Rectangle((int)Position.X - (size - (WorldSprite.Width / 3)), (int)Position.Y - 12, size, (WorldSprite.Height / 4));
+                LineOfSightRectangle = new Rectangle((int)Position.X - (size) , (int)Position.Y + 12, size, (8));
                 break;
             }
         }
