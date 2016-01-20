@@ -151,8 +151,8 @@ namespace VideoGame.Classes {
             RasionParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Rasion");
 
             KirkFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Kirk");
-            KirkBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Kirk");
-            KirkParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Kirk");
+            //KirkBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Kirk");
+            //KirkParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Kirk");
 
             #endregion
 
