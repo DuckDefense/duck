@@ -141,6 +141,10 @@ namespace VideoGame.Classes
             {
                 m.Stats.Health = m.MaxHealth;
                 m.Ailment = Ailment.Normal;
+                foreach (var use in m.Moves)
+                {
+                    use.Uses = use.MaxUses;
+                }
             }
         }
 
