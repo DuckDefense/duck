@@ -288,7 +288,7 @@ namespace VideoGame.Classes
                 battleLine, winLine, loseLine,
                 ContentLoader.Button, ContentLoader.Button, ContentLoader.ChristmanWorld,
                 new Vector2(192, 192));
-            tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
+            tegenstander.AI = new AI(tegenstander, 8);
             tegenstander.Debug = true;
 
             Random random = new Random();
@@ -476,7 +476,6 @@ namespace VideoGame.Classes
             Sound.IsLooped = true;
             Sound.Play();
 
-            Random random = new Random();
             Point levelrange = new Point(3, 8);
             var map = ContentLoader.City;
 
@@ -486,13 +485,13 @@ namespace VideoGame.Classes
                 {
                     spawn = new Vector2(256, 192);
                 }
-                else if(player.PreviousArea.Name == "Route 1")
+                else if (player.PreviousArea.Name == "Route 1")
                 {
                     spawn = new Vector2(256, 416);
                 }
                 else
                 {
-                    spawn = new Vector2(32,64);
+                    spawn = new Vector2(32, 64);
                 }
 
             List<Monster> monsters = new List<Monster>();
@@ -509,7 +508,21 @@ namespace VideoGame.Classes
             var spawn = new Vector2(288, 256);
             var map = ContentLoader.Shop;
 
-            return new Area("Shop", Point.Zero, new List<Monster>(), new List<Character>(), spawn, map);
+            var introLines = new List<string> { "Yello!\n Feel free to buy some of my stock" };
+            var byeLines = new List<string> { "Thanks for stopping by" };
+            var healLady = new Character("HealLady", 0, null, introLines, byeLines, NPCKind.Healer,
+                ContentLoader.ChristmanFront, ContentLoader.ChristmanBack, ContentLoader.ChristmanWorld,
+                new Vector2(256, 64));
+
+            healLady.AI = new AI(healLady, 5);
+            healLady.Debug = true;
+            healLady.Direction = Direction.Down;
+            healLady.SetLineOfSight(5);
+
+            List<Character> opponents = new List<Character>();
+            opponents.Add(healLady);
+
+            return new Area("Shop", Point.Zero, new List<Monster>(), opponents, spawn, map);
         }
 
         #region Secret tunnel
