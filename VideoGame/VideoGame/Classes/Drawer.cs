@@ -60,7 +60,6 @@ namespace VideoGame.Classes {
         public static void DrawMoves(SpriteBatch batch, Character player) {
             ClearLists();
             var buttonPos = 0;
-            player.Monsters[0].GetMoves();
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
             foreach (var move in player.Monsters[0].Moves) {
                 var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height), ContentLoader.Button, $"{move.Name}", ContentLoader.Arial);
