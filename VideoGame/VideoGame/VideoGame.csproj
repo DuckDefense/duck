@@ -42,6 +42,7 @@
     <Compile Include="Classes\Battle.cs" />
     <Compile Include="Classes\Character.cs" />
     <Compile Include="Classes\ContentLoader.cs" />
+    <Compile Include="Classes\Conversation.cs" />
     <Compile Include="Classes\CryptoRandom.cs" />
     <Compile Include="Classes\DatabaseConnector.cs" />
     <Compile Include="Classes\Drawer.cs" />
