@@ -13,7 +13,7 @@
    <property name="Collision" value="false"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBgFowAVcOGR0yESDyU7tNEwte2AmasLxej2UMsOXSQ+zJ6haAetw4oecU5p2sUHiLUDAGnMEX8=
+   eJxjYBg+wH2gHTBMABceOR0i8VCyQxsNU9sOmLm6UIxuD7Xs0EXiw+wZinbQOqzoEeeUpl18gFg7ANFLEcY=
   </data>
  </layer>
  <layer name="Change To Shop" width="25" height="15">
@@ -32,12 +32,20 @@
    eJxjYBgFo2AUjIJRMJgAFxXMAAAIhAAL
   </data>
  </layer>
+ <layer name="Changetosecrettunnel" width="25" height="15">
+  <properties>
+   <property name="EnterArea" value="SecretTunnel"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYKAPsKKTPaNgFIyCUTAKGBgAQjMAOw==
+  </data>
+ </layer>
  <layer name="obstackles" width="25" height="15">
   <properties>
    <property name="Collision" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJwzZ2BgsABiSwbsQACIBXGwQcAZiB2B2AGIXZHEfKBi3lA+sjypAKTfBYphZvgDcQAUBwKxGxC7A7EH1D2kAk8g9oJibxL0seMQZ8IiFgTEwVAcQoIdvDjEOdD4zESah81tyIARjxwnA2o6QAbI4uhuG6qAUFhRA9A7rEhJ36QCfygdSEM7yAXExCWu/EwsICYuceVnagMA7bcLSg==
+   eJwzZ2BgsABiSwbsQACIBXGwQcAZiB2B2AGIXZHEfKBi3lA+A5I8qQCk3wWKYWb4A3EAFAcCsRtU3APqHlKBJxB7QbE3CfrYcYgzYRELAuJgKA4hwQ5eHOIcaHxmIs3D5jZkwIhHjpMBNR0gA2RxdLcNVUAorKgB6B1WpKRvUoE/lA6koR3kAmLiEld+JhYQE5e48jO1AQApKQrD
   </data>
  </layer>
  <layer name="obstackles2" width="25" height="15">

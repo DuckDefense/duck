@@ -1053,11 +1053,6 @@
 /processorParam:TextureFormat=Color
 /build:tileset.png
 
-#begin city.tmx
-/importer:TiledMapImporter
-/processor:TiledMapProcessor
-/build:city.tmx
-
 #begin shop.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor
@@ -1094,4 +1089,14 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:TextureFormat=Color
 /build:SecretCityTiles.png
+
+#begin cityeasteregg.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:cityeasteregg.tmx
+
+#begin city.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:city.tmx
 
