@@ -176,20 +176,15 @@ namespace VideoGame.Classes {
                 for (var i = 0; i < User.Monsters.Count; i++) {
                     var m = User.Monsters[i];
                     if (m.Level != 100) {
-                        foreach (var levels in levelList) {
-                            if (levels.Key == m.Id)
-                                //Only check if monster can evolve if it leveled up in this battle
-                                if (m.Level > levels.Value) {
-                                    if (m.CanEvolve()) {
-                                        User.Monsters[i] = m.GetEvolution();
-                                    }
-                                }
+                        foreach (var levels in from levels in levelList where levels.Key == m.Id where m.Level > levels.Value where m.CanEvolve() select levels) {
+                            User.Monsters[i] = m.GetEvolution();
                         }
-
                     }
+                    Opponent.LoseMessage.Visible = true;
                 }
                 break;
             case State.Loss:
+                Opponent.WinMessage.Visible = true;
                 break;
             case State.Ran:
                 break;
