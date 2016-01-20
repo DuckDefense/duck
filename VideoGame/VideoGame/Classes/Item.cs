@@ -216,9 +216,6 @@ namespace VideoGame.Classes {
             else {
                 Amount++;
             }
-            if (monster.Stats.Health < monster.MaxHealth) {
-                monster.Stats.Health = monster.MaxHealth;
-            }
             Amount--;
 
             if (Amount < 1) {
