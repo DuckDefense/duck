@@ -77,13 +77,13 @@ namespace VideoGame.Classes
             foreach (var opponent in OpponentList) opponent.Draw(batch);
         }
 
-        public void Update(GameTime gameTime, KeyboardState currentKeyboardState, KeyboardState previousKeyboardState,
-            Character player, ref Battle currentBattle)
+        public void Update(GameTime gameTime, KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, Character player, ref Battle currentBattle)
         {
             if (OpponentList == null) return;
             if (OpponentList.Count == 0) return;
             foreach (var opponent in OpponentList)
             {
+                opponent.UpdateMessages(currentKeyboardState, previousKeyboardState, player);
                 opponent.Update(gameTime, currentKeyboardState, previousKeyboardState);
                 opponent.AI.Update(player, ref currentBattle);
             }
@@ -276,14 +276,16 @@ namespace VideoGame.Classes
 
             Character tegenstander;
             Inventory inventory = new Inventory();
-            inventory.Add(Medicine.MagicStone(), 5);
-            tegenstander = new Character("Nice guy", 6700,
-                inventory,
-                new List<Monster>
-                {
+            inventory.Add(Medicine.MagicStone(), 2);
+            List<string> battleLine = new List<string> { "Hah! Almost didn't catch you" };
+            List<string> winLine = new List<string> { "That's what you get for getting caught by me" };
+            List<string> loseLine = new List<string> { "I wish I didn't catch you" };
+            tegenstander = new Character("Christguy", 6700, inventory,
+                new List<Monster> {
                     DatabaseConnector.GetMonster(1, 5),
                     DatabaseConnector.GetMonster(4, 15)
                 },
+                battleLine, winLine, loseLine,
                 ContentLoader.Button, ContentLoader.Button, ContentLoader.ChristmanWorld,
                 new Vector2(192, 192));
             tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
