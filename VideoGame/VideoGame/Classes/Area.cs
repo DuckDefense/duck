@@ -484,9 +484,13 @@ namespace VideoGame.Classes
                 {
                     spawn = new Vector2(256, 192);
                 }
+                else if(player.PreviousArea.Name == "Route 1")
+                {
+                    spawn = new Vector2(256, 416);
+                }
                 else
                 {
-                    spawn = new Vector2(256, 320);
+                    spawn = new Vector2(32,64);
                 }
 
             List<Monster> monsters = new List<Monster>();
@@ -529,7 +533,7 @@ namespace VideoGame.Classes
                 }
                 else
                 {
-                    spawn = new Vector2(256, 320);
+                    spawn = new Vector2(384, 32);
                 }
 
             List<Monster> monsters = new List<Monster>();
@@ -558,7 +562,7 @@ namespace VideoGame.Classes
             var map = ContentLoader.SecretCity;
 
             Vector2 spawn = Vector2.One;
-            spawn = new Vector2(256, 320);
+            spawn = new Vector2(384, 416);
 
             List<Monster> monsters = new List<Monster>();
             List<Character> opponents = new List<Character>();
