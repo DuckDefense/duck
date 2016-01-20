@@ -20,7 +20,7 @@ namespace VideoGame.Classes {
             Name = name;
             var introLines = new List<string> { "Yello!\n Feel free to buy some of my stock" };
             var byeLines = new List<string> { "Thanks for stopping by" };
-            ShopKeeper = new Character("ShopKeeper", money, inventory, introLines, byeLines,
+            ShopKeeper = new Character("ShopKeeper", money, inventory, introLines, byeLines,NPCKind.Shop, 
                 ContentLoader.ChristmanFront, ContentLoader.ChristmanBack, ContentLoader.ChristmanWorld,
                 Vector2.Zero);
             Batch = batch;
