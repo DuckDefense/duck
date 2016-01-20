@@ -181,7 +181,7 @@ namespace VideoGame.Classes {
 
         public void Draw(SpriteBatch batch) {
             if (Debug) {
-                batch.Draw(ContentLoader.Button, null, LineOfSightRectangle, null, null, 0f, Vector2.Zero, Color.White);
+                batch.Draw(ContentLoader.Health, LineOfSightRectangle, Color.White);
                 batch.Draw(ContentLoader.Button, Hitbox, Color.Red);
                 //Tiles
                 batch.Draw(ContentLoader.Button, LeftTile, Color.LemonChiffon);
@@ -242,19 +242,18 @@ namespace VideoGame.Classes {
         public void SetLineOfSight(int tiles) {
             var size = (tiles + 1) * 16;
             switch (Direction) {
-            case Direction.None:
-                break;
+            case Direction.None: break;
             case Direction.Up:
-                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y - (size - (WorldSprite.Height / 3)), (WorldSprite.Width / 3), size);
+                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y - (size - (WorldSprite.Height / 4)), (WorldSprite.Width / 3), size); 
                 break;
             case Direction.Down:
-                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, (WorldSprite.Width / 3), size);
+                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, (WorldSprite.Width / 4), size);
                 break;
             case Direction.Right:
-                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y, size, (WorldSprite.Height) / 4);
+                LineOfSightRectangle = new Rectangle((int)Position.X, (int)Position.Y - 12, size, ((WorldSprite.Height) / 4));
                 break;
             case Direction.Left:
-                LineOfSightRectangle = new Rectangle((int)Position.X - (size - (WorldSprite.Width / 3)), (int)Position.Y, size, (WorldSprite.Height / 4));
+                LineOfSightRectangle = new Rectangle((int)Position.X - (size - (WorldSprite.Width / 3)), (int)Position.Y - 12, size, (WorldSprite.Height / 4));
                 break;
             }
         }
