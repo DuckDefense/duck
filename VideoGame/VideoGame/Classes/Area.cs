@@ -242,7 +242,15 @@ namespace VideoGame.Classes
                 case "route 4":
                     return Route4(player);
                 case "city":
-                    return City(player);
+                    Random random = new Random();
+                    if (random.Next(0, 10) == 2)
+                    {
+                        return EasterCity(player);
+                    }
+                    else
+                    {
+                        return City(player);
+                    }
                 case "shop":
                     return Shop();
                 case "secrettunnel":
@@ -491,7 +499,7 @@ namespace VideoGame.Classes
                 }
                 else
                 {
-                    spawn = new Vector2(32, 64);
+                    spawn = new Vector2(32, 96);
                 }
 
             List<Monster> monsters = new List<Monster>();
@@ -542,7 +550,7 @@ namespace VideoGame.Classes
 
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "City")
+                if (player.PreviousArea.Name == "EasterCity")
                 {
                     spawn = new Vector2(384, 416);
                 }
@@ -588,5 +596,41 @@ namespace VideoGame.Classes
             return new Area("SecretCity", levelrange, monsters, opponents, spawn, map);
         }
         #endregion
+
+        public static Area EasterCity(Character player)
+        {
+            if (Sound != null)
+                Sound.Stop();
+
+            Sound = ContentLoader.TownSong.CreateInstance();
+            Sound.IsLooped = true;
+            Sound.Play();
+
+            Point levelrange = new Point(3, 8);
+            var map = ContentLoader.EasterCity;
+
+            Vector2 spawn = Vector2.One;
+            if (player.PreviousArea != null)
+                if (player.PreviousArea.Name == "Shop")
+                {
+                    spawn = new Vector2(256, 192);
+                }
+                else if (player.PreviousArea.Name == "Route 1")
+                {
+                    spawn = new Vector2(256, 416);
+                }
+                else
+                {
+                    spawn = new Vector2(32, 96);
+                }
+
+            List<Monster> monsters = new List<Monster>();
+            List<Character> opponents = new List<Character>();
+            //Sound = ContentLoader.RouteSong;
+            //Sound.IsLooped = true;
+            //Sound.Play();
+
+            return new Area("EasterCity", levelrange, monsters, opponents, spawn, map);
+        }
     }
 }
