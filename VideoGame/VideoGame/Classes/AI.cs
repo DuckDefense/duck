@@ -16,9 +16,8 @@ namespace VideoGame.Classes
         private int tiles;
         public string Message;
 
-        public AI(Character character, int sightSize, string message)
+        public AI(Character character, int sightSize)
         {
-            Message = message;
             this.character = character;
             tiles = sightSize;
             RandomizeDirection();
@@ -26,15 +25,31 @@ namespace VideoGame.Classes
 
         public void Update(Character player, ref Battle battle)
         {
+            var playerRect = new Rectangle((int)player.Position.X, (int)player.Position.Y, 32,32);
             character.SetLineOfSight(tiles);
             Hitbox = new Rectangle((int)character.Position.X - (character.SpriteSize.X / 2), (int)character.Position.Y - (character.SpriteSize.Y / 2),
               character.SpriteSize.X * 2, character.SpriteSize.Y * 2);
-            if (character.LineOfSightRectangle.Contains(player.Position))
+            if (character.NpcKind == NPCKind.Trainer)
             {
-                Chase = true;
+                if (character.LineOfSightRectangle.Intersects(playerRect))
+                {
+                    Chase = true;
+                }
+                if (Chase)
+                    MoveToPoint(player.Position, 100, player, ref player.Controllable, ref battle);
             }
-            if (Chase)
-                MoveToPoint(player.Position, 100, player, ref player.Controllable, ref battle);
+            else
+            {
+                if (character.LineOfSightRectangle.Intersects(playerRect))
+                {
+                    GetMessages(player, ref battle, ref player.Controllable);
+                }
+                else
+                {
+                    ResetMessages();
+                }
+            }
+
         }
 
         public void RandomizeDirection()
@@ -70,23 +85,78 @@ namespace VideoGame.Classes
                 if (!Hitbox.Contains(player.Position))
                 {
                     allowedToWalk = false;
-                    if(character.Direction == Direction.Right || character.Direction == Direction.Left)
-                    character.Position.X += moveX * 2;
+                    if (character.Direction == Direction.Right || character.Direction == Direction.Left)
+                        character.Position.X += moveX*2;
                     if (character.Direction == Direction.Down || character.Direction == Direction.Up)
-                        character.Position.Y += moveY * 2;
+                        character.Position.Y += moveY*2;
                 }
-                else {
-                    if (!character.BattleMessage.Said) {
-                        character.BattleMessage.Visible = true;
-                        character.Talking = true;
-                    }
-                    if (!character.Talking) {
-                        battle = new Battle(player, character);
-                        allowedToWalk = true;
-                    }
+                else
+                {
+                    GetMessages(player, ref battle, ref allowedToWalk);
                 }
             }
             else Chase = false;
+        }
+
+        public void GetMessages(Character player, ref Battle battle, ref bool allowedToWalk)
+        {
+            switch (character.NpcKind)
+            {
+                case NPCKind.Trainer:
+                    if (!character.BattleMessage.Said)
+                    {
+                        character.BattleMessage.Visible = true;
+                        character.Talking = true;
+                    }
+                    if (!character.Talking)
+                    {
+                        battle = new Battle(player, character);
+                        allowedToWalk = true;
+                    }
+                    break;
+                case NPCKind.Healer:
+                    if (!character.IntroMessage.Said)
+                    {
+                        character.IntroMessage.Visible = true;
+                        character.Talking = true;
+                    }
+                    if (!character.Talking)
+                    {
+                        if (character.ByeMessage.Said == false)
+                        {
+                            HealMonsters(player);
+                            character.ByeMessage.Visible = true;
+                            allowedToWalk = true;
+                        }
+                    }
+                    break;
+                case NPCKind.Shop:
+                    break;
+            }
+        }
+
+        public void HealMonsters(Character player)
+        {
+            foreach (var m in player.Monsters)
+            {
+                m.Stats.Health = m.MaxHealth;
+                m.Ailment = Ailment.Normal;
+            }
+        }
+
+        private void ResetMessages()
+        {
+            if (character.BattleMessage != null)
+            {
+                 character.BattleMessage.Said = false;
+                character.WinMessage.Said = false;
+                character.LoseMessage.Said = false;
+            }
+            if (character.IntroMessage != null)
+            {
+                character.IntroMessage.Said = false;
+                 character.ByeMessage.Said = false;
+            }
         }
     }
 
@@ -135,6 +205,10 @@ namespace VideoGame.Classes
                             {
                                 EnemyAttack(b, user, receiver);
                             }
+                        }
+                        else
+                        {
+                            EnemyAttack(b, user, receiver);
                         }
                     }
                     else
