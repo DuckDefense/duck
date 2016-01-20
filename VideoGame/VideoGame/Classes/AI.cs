@@ -75,11 +75,15 @@ namespace VideoGame.Classes
                     if (character.Direction == Direction.Down || character.Direction == Direction.Up)
                         character.Position.Y += moveY * 2;
                 }
-                else
-                {
-                    //Hou dat lekkere gesprek
-                    battle = new Battle(player, character);
-                    allowedToWalk = true;
+                else {
+                    if (!character.BattleMessage.Said) {
+                        character.BattleMessage.Visible = true;
+                        character.Talking = true;
+                    }
+                    if (!character.Talking) {
+                        battle = new Battle(player, character);
+                        allowedToWalk = true;
+                    }
                 }
             }
             else Chase = false;
