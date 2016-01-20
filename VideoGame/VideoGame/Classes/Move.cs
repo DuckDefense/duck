@@ -84,7 +84,7 @@ namespace VideoGame.Classes {
         /// <param name="receiver">Monster that is receiving this move</param>
         public void Execute(Monster user, Monster receiver) {
             //TODO: Actually remove uses here
-            Uses += 1;
+            Uses -= 1;
             double critMultiplier = 1;
             //Check if the move hit
             var chanceToHit = Accuracy + ((user.Stats.Speed - receiver.Stats.Speed) / 3);
