@@ -43,15 +43,28 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tpGraphics = new System.Windows.Forms.TabPage();
-            this.cbb16to9 = new System.Windows.Forms.ComboBox();
-            this.cbb4to3 = new System.Windows.Forms.ComboBox();
-            this.cbbRatio = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cbbRatio = new System.Windows.Forms.ComboBox();
+            this.cbb4to3 = new System.Windows.Forms.ComboBox();
+            this.cbb16to9 = new System.Windows.Forms.ComboBox();
             this.btnApply = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lblConversation = new System.Windows.Forms.Label();
+            this.btnConversation = new System.Windows.Forms.Button();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tbServerName = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tbDatabaseName = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.tbUsername = new System.Windows.Forms.TextBox();
+            this.tbPassword = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tpKeybinds.SuspendLayout();
             this.tpGraphics.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -59,15 +72,19 @@
             this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.Buttons;
             this.tabControl1.Controls.Add(this.tpKeybinds);
             this.tabControl1.Controls.Add(this.tpGraphics);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(310, 155);
+            this.tabControl1.Size = new System.Drawing.Size(310, 221);
             this.tabControl1.TabIndex = 0;
             // 
             // tpKeybinds
             // 
+            this.tpKeybinds.Controls.Add(this.btnConversation);
+            this.tpKeybinds.Controls.Add(this.lblConversation);
+            this.tpKeybinds.Controls.Add(this.label7);
             this.tpKeybinds.Controls.Add(this.btnMoveLeft);
             this.tpKeybinds.Controls.Add(this.btnMoveRight);
             this.tpKeybinds.Controls.Add(this.btnMoveDown);
@@ -83,7 +100,7 @@
             this.tpKeybinds.Location = new System.Drawing.Point(4, 25);
             this.tpKeybinds.Name = "tpKeybinds";
             this.tpKeybinds.Padding = new System.Windows.Forms.Padding(3);
-            this.tpKeybinds.Size = new System.Drawing.Size(302, 126);
+            this.tpKeybinds.Size = new System.Drawing.Size(302, 192);
             this.tpKeybinds.TabIndex = 0;
             this.tpKeybinds.Text = "Keybinds";
             this.tpKeybinds.UseVisualStyleBackColor = true;
@@ -210,28 +227,41 @@
             this.tpGraphics.Location = new System.Drawing.Point(4, 25);
             this.tpGraphics.Name = "tpGraphics";
             this.tpGraphics.Padding = new System.Windows.Forms.Padding(3);
-            this.tpGraphics.Size = new System.Drawing.Size(302, 146);
+            this.tpGraphics.Size = new System.Drawing.Size(302, 192);
             this.tpGraphics.TabIndex = 1;
             this.tpGraphics.Text = "Graphics";
             this.tpGraphics.UseVisualStyleBackColor = true;
             // 
-            // cbb16to9
+            // label6
             // 
-            this.cbb16to9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbb16to9.FormattingEnabled = true;
-            this.cbb16to9.Items.AddRange(new object[] {
-            "854x480",
-            "960x540",
-            "1280x720",
-            "1600x900",
-            "1920x1080",
-            "2560x1440",
-            "3840x2160"});
-            this.cbb16to9.Location = new System.Drawing.Point(74, 39);
-            this.cbb16to9.Name = "cbb16to9";
-            this.cbb16to9.Size = new System.Drawing.Size(121, 21);
-            this.cbb16to9.TabIndex = 0;
-            this.cbb16to9.SelectedIndexChanged += new System.EventHandler(this.cbb16to9_SelectedIndexChanged);
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 42);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(57, 13);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Resolution";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 15);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 13);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Ratio";
+            // 
+            // cbbRatio
+            // 
+            this.cbbRatio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbRatio.FormattingEnabled = true;
+            this.cbbRatio.Items.AddRange(new object[] {
+            "16:9",
+            "4:3"});
+            this.cbbRatio.Location = new System.Drawing.Point(74, 12);
+            this.cbbRatio.Name = "cbbRatio";
+            this.cbbRatio.Size = new System.Drawing.Size(121, 21);
+            this.cbbRatio.TabIndex = 2;
+            this.cbbRatio.SelectedIndexChanged += new System.EventHandler(this.cbbRatio_SelectedIndexChanged);
             // 
             // cbb4to3
             // 
@@ -252,40 +282,27 @@
             this.cbb4to3.Visible = false;
             this.cbb4to3.SelectedIndexChanged += new System.EventHandler(this.cbb4to3_SelectedIndexChanged);
             // 
-            // cbbRatio
+            // cbb16to9
             // 
-            this.cbbRatio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbRatio.FormattingEnabled = true;
-            this.cbbRatio.Items.AddRange(new object[] {
-            "16:9",
-            "4:3"});
-            this.cbbRatio.Location = new System.Drawing.Point(74, 12);
-            this.cbbRatio.Name = "cbbRatio";
-            this.cbbRatio.Size = new System.Drawing.Size(121, 21);
-            this.cbbRatio.TabIndex = 2;
-            this.cbbRatio.SelectedIndexChanged += new System.EventHandler(this.cbbRatio_SelectedIndexChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 15);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 13);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Ratio";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 42);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 13);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "Resolution";
+            this.cbb16to9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbb16to9.FormattingEnabled = true;
+            this.cbb16to9.Items.AddRange(new object[] {
+            "854x480",
+            "960x540",
+            "1280x720",
+            "1600x900",
+            "1920x1080",
+            "2560x1440",
+            "3840x2160"});
+            this.cbb16to9.Location = new System.Drawing.Point(74, 39);
+            this.cbb16to9.Name = "cbb16to9";
+            this.cbb16to9.Size = new System.Drawing.Size(121, 21);
+            this.cbb16to9.TabIndex = 0;
+            this.cbb16to9.SelectedIndexChanged += new System.EventHandler(this.cbb16to9_SelectedIndexChanged);
             // 
             // btnApply
             // 
-            this.btnApply.Location = new System.Drawing.Point(28, 169);
+            this.btnApply.Location = new System.Drawing.Point(23, 239);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(115, 23);
             this.btnApply.TabIndex = 1;
@@ -293,11 +310,124 @@
             this.btnApply.UseVisualStyleBackColor = true;
             this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(9, 127);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(69, 13);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Conversation";
+            // 
+            // lblConversation
+            // 
+            this.lblConversation.AutoSize = true;
+            this.lblConversation.Location = new System.Drawing.Point(108, 127);
+            this.lblConversation.Name = "lblConversation";
+            this.lblConversation.Size = new System.Drawing.Size(38, 13);
+            this.lblConversation.TabIndex = 13;
+            this.lblConversation.Text = "Space";
+            // 
+            // btnConversation
+            // 
+            this.btnConversation.Location = new System.Drawing.Point(187, 122);
+            this.btnConversation.Name = "btnConversation";
+            this.btnConversation.Size = new System.Drawing.Size(75, 23);
+            this.btnConversation.TabIndex = 14;
+            this.btnConversation.Text = "Change";
+            this.btnConversation.UseVisualStyleBackColor = true;
+            this.btnConversation.Click += new System.EventHandler(this.btnConversation_Click);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.label11);
+            this.tabPage1.Controls.Add(this.tbPassword);
+            this.tabPage1.Controls.Add(this.tbUsername);
+            this.tabPage1.Controls.Add(this.label10);
+            this.tabPage1.Controls.Add(this.label9);
+            this.tabPage1.Controls.Add(this.tbDatabaseName);
+            this.tabPage1.Controls.Add(this.label8);
+            this.tabPage1.Controls.Add(this.tbServerName);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Size = new System.Drawing.Size(302, 192);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Database";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tbServerName
+            // 
+            this.tbServerName.Location = new System.Drawing.Point(107, 12);
+            this.tbServerName.Name = "tbServerName";
+            this.tbServerName.Size = new System.Drawing.Size(180, 20);
+            this.tbServerName.TabIndex = 0;
+            this.tbServerName.Text = "localhost";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(17, 15);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(69, 13);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "Server Name";
+            // 
+            // tbDatabaseName
+            // 
+            this.tbDatabaseName.Location = new System.Drawing.Point(107, 38);
+            this.tbDatabaseName.Name = "tbDatabaseName";
+            this.tbDatabaseName.Size = new System.Drawing.Size(180, 20);
+            this.tbDatabaseName.TabIndex = 2;
+            this.tbDatabaseName.Text = "ripoff";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(17, 41);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(82, 13);
+            this.label9.TabIndex = 3;
+            this.label9.Text = "Database name";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(17, 67);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(55, 13);
+            this.label10.TabIndex = 4;
+            this.label10.Text = "Username";
+            // 
+            // tbUsername
+            // 
+            this.tbUsername.Location = new System.Drawing.Point(107, 64);
+            this.tbUsername.Name = "tbUsername";
+            this.tbUsername.Size = new System.Drawing.Size(180, 20);
+            this.tbUsername.TabIndex = 5;
+            this.tbUsername.Text = "root";
+            // 
+            // tbPassword
+            // 
+            this.tbPassword.Location = new System.Drawing.Point(107, 90);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.PasswordChar = '*';
+            this.tbPassword.Size = new System.Drawing.Size(180, 20);
+            this.tbPassword.TabIndex = 6;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(17, 93);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(53, 13);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "Password";
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(337, 201);
+            this.ClientSize = new System.Drawing.Size(337, 285);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.tabControl1);
             this.Name = "Settings";
@@ -308,6 +438,8 @@
             this.tpKeybinds.PerformLayout();
             this.tpGraphics.ResumeLayout(false);
             this.tpGraphics.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -335,5 +467,17 @@
         private System.Windows.Forms.ComboBox cbb4to3;
         private System.Windows.Forms.ComboBox cbb16to9;
         private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.Button btnConversation;
+        private System.Windows.Forms.Label lblConversation;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TextBox tbUsername;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox tbDatabaseName;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox tbServerName;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox tbPassword;
     }
 }

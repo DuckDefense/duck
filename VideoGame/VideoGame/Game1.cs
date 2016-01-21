@@ -59,7 +59,7 @@ namespace VideoGame {
 
             Window.AllowUserResizing = true;
             Window.ClientSizeChanged += (s, e) => viewportAdapter.OnClientSizeChanged();
-            DatabaseConnector.SetConnectionString("localhost", "root", "", "ripoff");
+            DatabaseConnector.SetConnectionString(Settings.ServerName, Settings.Username, Settings.Password, Settings.DatabaseName);
             base.Initialize();
         }
 

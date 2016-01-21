@@ -234,7 +234,7 @@ namespace VideoGame.Classes {
             case 7: return ReturnEvolution(8);
             case 8: return ReturnEvolution(9);
 
-            case 10: return ReturnEvolution(10);
+            case 10: return ReturnEvolution(11);
 
             case 12: return ReturnEvolution(13);
             }

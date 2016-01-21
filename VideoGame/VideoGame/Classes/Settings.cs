@@ -14,5 +14,10 @@ namespace VideoGame.Classes
         public static Keys moveDown = Keys.S;
         public static Keys moveRight = Keys.D;
         public static Keys moveLeft = Keys.A;
+        public static Keys conversation = Keys.Space;
+        public static string DatabaseName = "ripoff";
+        public static string ServerName = "localhost";
+        public static string Password = "";
+        public static string Username = "root";
     }
 }
