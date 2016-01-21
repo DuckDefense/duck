@@ -22,6 +22,16 @@ namespace VideoGame.Classes {
 
         #region Battle
 
+
+        public static Texture2D GetTextureFromMoveKind(Move m) {
+            switch (m.Kind) {
+            case Kind.Physical: return ContentLoader.PhysicalAttack;
+            case Kind.Special: return ContentLoader.SpecialAttack;
+            case Kind.NonDamage: return ContentLoader.NonDamageAttack;
+            }
+            return null;
+        }
+
         public static Texture2D GetAilmentTexture(Ailment ailment) {
             switch (ailment) {
             case Ailment.Sleep: return ContentLoader.SLP;
