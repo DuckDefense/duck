@@ -41,7 +41,7 @@ namespace Sandbox.Classes {
                 if (Visible) {
                     player.Talking = true;
                     Character.Talking = true;
-                    if (curKey.IsKeyDown(Keys.Space) && prevKey.IsKeyUp(Keys.Space)) {
+                    if (curKey.IsKeyDown(Settings.conversation) && prevKey.IsKeyUp(Settings.conversation)) {
                         if (CurrentIndex < Lines.Count - 1) {
                             CurrentIndex++;
                             CurrentLine = Lines[CurrentIndex];
