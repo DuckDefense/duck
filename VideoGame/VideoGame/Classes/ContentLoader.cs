@@ -57,7 +57,7 @@ namespace VideoGame.Classes {
         public static Texture2D Button, ButtonHover, ButtonClicked;
         public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt;
         public static Texture2D RottenNet, RegularNet, GreatNet;
-        public static TiledMap City, Route1, Route2, Route3, Route4, Shop, SecretTunnel, SecretCity, EasterCity;
+        public static TiledMap City, Route1, Route2, Route3, Route4, Route5, Shop, SecretTunnel, SecretCity, EasterCity;
         public static SpriteFont Arial;
 
         public static SoundEffect TownSong;
@@ -209,10 +209,12 @@ namespace VideoGame.Classes {
             Route2 = Content.Load<TiledMap>("Route2");
             Route3 = Content.Load<TiledMap>("Route3");
             Route4 = Content.Load<TiledMap>("Route4");
+            Route5 = Content.Load<TiledMap>("Route5");
             Shop = Content.Load<TiledMap>("shop");
             SecretTunnel = Content.Load<TiledMap>("SecretTunnel");
             SecretCity = Content.Load<TiledMap>("SecretCity");
             EasterCity = Content.Load<TiledMap>("cityeasteregg");
+
 
             #endregion
 
