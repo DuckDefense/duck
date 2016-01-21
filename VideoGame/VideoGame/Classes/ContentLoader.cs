@@ -361,10 +361,29 @@ namespace VideoGame.Classes {
                 }
                 break;
             case 18:
+                break;
             case 19:
+                switch (face) {
+                case TextureFace.Front: return HippolaciousFront;
+                case TextureFace.Back: return HippolaciousBack;
+                case TextureFace.World: return HippolaciousParty;
+                }
+                break;
             case 20:
+                switch (face) {
+                case TextureFace.Front: return KrabbleFront;
+                case TextureFace.Back: return KrabbleBack;
+                case TextureFace.World: return KrabbleParty;
+                }
+                break;
             case 21:
+                break;
             case 22:
+                switch (face) {
+                case TextureFace.Front: return DrumbyFront;
+                case TextureFace.Back: return DrumbyBack;
+                case TextureFace.World: return DrumbyParty;
+                }
                 break;
             }
 
