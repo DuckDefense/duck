@@ -214,10 +214,10 @@ namespace VideoGame.Classes {
             }
             return s;
         }
-        public static void DrawMonsterInfo(SpriteBatch batch, Monster m, bool knownMonsters = false) {
+        public static void DrawMonsterInfo(SpriteBatch batch, Monster m, Vector2 startPos = default(Vector2), bool knownMonsters = false) {
             Texture2D background = ContentLoader.MonsterViewer;
             var nameSize = ContentLoader.Arial.MeasureString(m.Ability.Name);
-            Rectangle backgroundRectangle = new Rectangle(16, 16, background.Width, background.Height);
+            Rectangle backgroundRectangle = new Rectangle((int)startPos.X, (int)startPos.Y, background.Width, background.Height);
             var frontPos = new Vector2(backgroundRectangle.X + 10, backgroundRectangle.Y + 24);
             var namePos = new Vector2(frontPos.X, backgroundRectangle.Y + 6);
             var descriptionPos = new Vector2(backgroundRectangle.X + frontPos.X + 89, backgroundRectangle.Y + 28);
