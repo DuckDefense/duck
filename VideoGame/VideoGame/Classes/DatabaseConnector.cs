@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using MySql.Data.MySqlClient;
 using OpenTK.Graphics.OpenGL;
@@ -34,36 +35,34 @@ namespace Sandbox.Classes {
             var monsterCmd = connection.CreateCommand();
             monsterCmd.CommandText = $"SELECT * FROM `monster` WHERE `Id` = @id";
             monsterCmd.Parameters.AddWithValue("@id", monsterId);
-            var monsterReader = monsterCmd.ExecuteReader();
-            if (!monsterReader.HasRows) return null;
-            while (monsterReader.Read()) {
-                var id = monsterReader.GetInt32("Id");
-                if (id == monsterId) {
-                    var name = monsterReader.GetString("Name");
-                    var description = monsterReader.GetString("Description");
-                    var primaryType = TypeMethods.GetTypeFromString(monsterReader.GetString("PrimaryType"));
-                    var secondType = TypeMethods.GetTypeFromString(monsterReader.GetString("SecondType"));
-                    var maleChance = monsterReader.GetInt32("MaleChance");
-                    var captureChance = monsterReader.GetInt32("CaptureChance");
-                    var abilityOne = Ability.GetAbilityFromString(monsterReader.GetString("AbilityOne"));
-                    var abilityTwo = Ability.GetAbilityFromString(monsterReader.GetString("AbilityTwo"));
-                    var baseHealth = monsterReader.GetInt32("BaseHealth");
-                    var baseAttack = monsterReader.GetInt32("BaseAttack");
-                    var baseDefense = monsterReader.GetInt32("BaseDefense");
-                    var baseSpecialAttack = monsterReader.GetInt32("BaseSpecialAttack");
-                    var baseSpecialDefense = monsterReader.GetInt32("BaseSpecialDefense");
-                    var baseSpeed = monsterReader.GetInt32("BaseSpeed");
-                    var baseStats = new Stats(baseHealth, baseAttack, baseDefense, baseSpecialAttack, baseSpecialDefense, baseSpeed, level);
-                    var abilities = new List<Ability>();
-                    abilities.AddManyIfNotNull(abilityOne, abilityTwo);
-                    var front = ContentLoader.GetTextureFromMonsterId(id, TextureFace.Front);
-                    var back = ContentLoader.GetTextureFromMonsterId(id, TextureFace.Back);
-                    var party = ContentLoader.GetTextureFromMonsterId(id, TextureFace.World);
-                    monsterReader.Close();
-                    return new Monster(id, level, name, description, primaryType, secondType, maleChance, captureChance, new Item(), baseStats, abilities, front, back, party, true);
+            using (var rdr = monsterCmd.ExecuteReader()) {
+                while (rdr.Read()) {
+                    var id = rdr.GetInt32("Id");
+                    if (id == monsterId) {
+                        var name = rdr.GetString("Name");
+                        var description = rdr.GetString("Description");
+                        var primaryType = TypeMethods.GetTypeFromString(rdr.GetString("PrimaryType"));
+                        var secondType = TypeMethods.GetTypeFromString(rdr.GetString("SecondType"));
+                        var maleChance = rdr.GetInt32("MaleChance");
+                        var captureChance = rdr.GetInt32("CaptureChance");
+                        var abilityOne = Ability.GetAbilityFromString(rdr.GetString("AbilityOne"));
+                        var abilityTwo = Ability.GetAbilityFromString(rdr.GetString("AbilityTwo"));
+                        var baseHealth = rdr.GetInt32("BaseHealth");
+                        var baseAttack = rdr.GetInt32("BaseAttack");
+                        var baseDefense = rdr.GetInt32("BaseDefense");
+                        var baseSpecialAttack = rdr.GetInt32("BaseSpecialAttack");
+                        var baseSpecialDefense = rdr.GetInt32("BaseSpecialDefense");
+                        var baseSpeed = rdr.GetInt32("BaseSpeed");
+                        var baseStats = new Stats(baseHealth, baseAttack, baseDefense, baseSpecialAttack, baseSpecialDefense, baseSpeed, level);
+                        var abilities = new List<Ability>();
+                        abilities.AddManyIfNotNull(abilityOne, abilityTwo);
+                        var front = ContentLoader.GetTextureFromMonsterId(id, TextureFace.Front);
+                        var back = ContentLoader.GetTextureFromMonsterId(id, TextureFace.Back);
+                        var party = ContentLoader.GetTextureFromMonsterId(id, TextureFace.World);
+                        return new Monster(id, level, name, description, primaryType, secondType, maleChance, captureChance, new Item(), baseStats, abilities, front, back, party, true);
+                    }
                 }
             }
-            monsterReader.Close();
             return null;
         }
 
@@ -74,45 +73,42 @@ namespace Sandbox.Classes {
             linkCmd.CommandText = capture ? $"SELECT * FROM `capturelink` WHERE `playerId` = @X"
                 : $"SELECT * FROM `medicinelink` WHERE `playerId` = @X";
             linkCmd.Parameters.AddWithValue("@X", playerId);
-            var linkReader = linkCmd.ExecuteReader();
-            if (linkReader.HasRows) {
-                while (linkReader.Read()) {
-                    var linkId = linkReader.GetInt32(capture ? "captureId" : "medicineId");
-                    amount = linkReader.GetInt32("Amount");
+            using (var rdr = linkCmd.ExecuteReader()) {
+                while (rdr.Read()) {
+                    var linkId = rdr.GetInt32(capture ? "captureId" : "medicineId");
+                    amount = rdr.GetInt32("Amount");
                     itemIdList.Add(linkId);
                 }
             }
-            linkReader.Close();
 
             foreach (var linkId in itemIdList) {
                 var cmd = connection.CreateCommand();
                 cmd.CommandText = capture ? $"SELECT * FROM `capture`" : $"SELECT * FROM `medicine`";
 
-                var reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                    while (reader.Read()) {
-                        var id = reader.GetInt32("Id");
+                using (var rdr = cmd.ExecuteReader()) {
+                    while (rdr.Read()) {
+                        var id = rdr.GetInt32("Id");
                         if (linkId == id) {
                             var cause = false;
                             var cure = Medicine.Cure.None;
                             var healAmount = 0;
                             var captureChance = 0;
-                            var name = reader.GetString("Name");
-                            var description = reader.GetString("Description");
-                            if (capture) { captureChance = reader.GetInt32("CaptureChance"); }
+                            var name = rdr.GetString("Name");
+                            var description = rdr.GetString("Description");
+                            if (capture) { captureChance = rdr.GetInt32("CaptureChance"); }
                             else {
-                                healAmount = reader.GetInt32("HealAmount");
-                                cure = Medicine.GetCureFromString(reader.GetString("Cures"));
-                                cause = reader.GetBoolean("Cause");
+                                healAmount = rdr.GetInt32("HealAmount");
+                                cure = Medicine.GetCureFromString(rdr.GetString("Cures"));
+                                cause = rdr.GetBoolean("Cause");
                             }
-                            var worth = reader.GetInt32("Worth");
-                            var maxAmount = reader.GetInt32("MaxAmount");
+                            var worth = rdr.GetInt32("Worth");
+                            var maxAmount = rdr.GetInt32("MaxAmount");
 
                             if (capture) inventory.Add(new Capture(id, name, description, ContentLoader.GetTextureFromCapture(id), captureChance, true, worth, amount, maxAmount), amount);
                             else inventory.Add(new Medicine(id, name, description, ContentLoader.GetTextureFromMedicine(id), healAmount, cure, worth, amount, maxAmount, cause), amount);
                         }
                     }
-                reader.Close();
+                }
             }
         }
 
@@ -133,15 +129,14 @@ namespace Sandbox.Classes {
             var linkCmd = connection.CreateCommand();
             linkCmd.CommandText = "SELECT * FROM `monsterlink` WHERE `playerId` = @X";
             linkCmd.Parameters.AddWithValue("@X", playerId);
-            var linkReader = linkCmd.ExecuteReader();
-            if (!linkReader.HasRows) return monsterList;
-            while (linkReader.Read()) {
-                if (playerId == linkReader.GetInt32("playerId")) {
-                    var monsterId = linkReader.GetInt32("monsterId");
-                    monsterIdList.Add(monsterId);
+            using (var rdr = linkCmd.ExecuteReader()) {
+                while (rdr.Read()) {
+                    if (playerId == rdr.GetInt32("playerId")) {
+                        var monsterId = rdr.GetInt32("monsterId");
+                        monsterIdList.Add(monsterId);
+                    }
                 }
             }
-            linkReader.Close();
 
             foreach (var monsterId in monsterIdList) {
                 var item = new Item();
@@ -149,51 +144,50 @@ namespace Sandbox.Classes {
                 linkCmd = connection.CreateCommand();
                 linkCmd.CommandText = "SELECT * FROM `monsterlink` WHERE monsterId = @id";
                 linkCmd.Parameters.AddWithValue("@id", monsterId);
-                linkReader = linkCmd.ExecuteReader();
-                if (!linkReader.HasRows) return monsterList;
-                while (linkReader.Read()) {
-                    Uid = linkReader.GetInt32("Uid");
-                    statsId = linkReader.GetInt32("statsId");
-                    level = linkReader.GetInt32("Level");
-                    experience = linkReader.GetInt32("Experience");
-                    itemKind = linkReader.GetString("ItemKind");
-                    if (itemKind == "Capture") capture = true;
-                    itemId = linkReader.GetInt32("ItemId");
-                    ability = Ability.GetAbilityFromString(linkReader.GetString("Ability"));
-                    gen = linkReader.GetString("Gender");
-                    gender = gen == "Male" ? Gender.Male : Gender.Female;
-                    boxed = linkReader.GetBoolean("Boxed");
+                using (var rdr = linkCmd.ExecuteReader()) {
+                    while (rdr.Read()) {
+                        Uid = rdr.GetInt32("Uid");
+                        statsId = rdr.GetInt32("statsId");
+                        level = rdr.GetInt32("Level");
+                        experience = rdr.GetInt32("Experience");
+                        itemKind = rdr.GetString("ItemKind");
+                        if (itemKind == "Capture") capture = true;
+                        itemId = rdr.GetInt32("ItemId");
+                        ability = Ability.GetAbilityFromString(rdr.GetString("Ability"));
+                        gen = rdr.GetString("Gender");
+                        gender = gen == "Male" ? Gender.Male : Gender.Female;
+                        boxed = rdr.GetBoolean("Boxed");
+                    }
                 }
-                linkReader.Close();
 
                 var itemCmd = connection.CreateCommand();
                 itemCmd.CommandText = capture
                     ? $"SELECT * FROM `capture` WHERE `Id` = {itemId}"
                     : $"SELECT * FROM `medicine` WHERE `id` = {itemId}";
 
-                var itemReader = itemCmd.ExecuteReader();
-                if (itemReader.HasRows) {
-                    while (itemReader.Read()) {
-                        var cause = false;
-                        var cure = Medicine.Cure.None;
-                        var healAmount = 0;
-                        var captureChance = 0;
-                        var name = itemReader.GetString("Name");
-                        var description = itemReader.GetString("Description");
-                        if (capture) { captureChance = itemReader.GetInt32("CaptureChance"); }
-                        else {
-                            healAmount = itemReader.GetInt32("HealAmount");
-                            cure = Medicine.GetCureFromString(itemReader.GetString("Cures"));
-                            cause = itemReader.GetBoolean("Cause");
-                        }
-                        var worth = itemReader.GetInt32("Worth");
-                        var maxAmount = itemReader.GetInt32("MaxAmount");
+                using (var rdr = itemCmd.ExecuteReader()) {
+                    if (rdr.HasRows) {
+                        while (rdr.Read()) {
+                            var cause = false;
+                            var cure = Medicine.Cure.None;
+                            var healAmount = 0;
+                            var captureChance = 0;
+                            var name = rdr.GetString("Name");
+                            var description = rdr.GetString("Description");
+                            if (capture) { captureChance = rdr.GetInt32("CaptureChance"); }
+                            else {
+                                healAmount = rdr.GetInt32("HealAmount");
+                                cure = Medicine.GetCureFromString(rdr.GetString("Cures"));
+                                cause = rdr.GetBoolean("Cause");
+                            }
+                            var worth = rdr.GetInt32("Worth");
+                            var maxAmount = rdr.GetInt32("MaxAmount");
 
-                        if (capture) item = new Capture(itemId, name, description, ContentLoader.GetTextureFromCapture(itemId), captureChance, true, worth, 1, maxAmount);
-                        else item = new Medicine(itemId, name, description, ContentLoader.GetTextureFromMedicine(itemId), healAmount, cure, worth, 1, maxAmount, cause);
+                            if (capture) item = new Capture(itemId, name, description, ContentLoader.GetTextureFromCapture(itemId), captureChance, true, worth, 1, maxAmount);
+                            else item = new Medicine(itemId, name, description, ContentLoader.GetTextureFromMedicine(itemId), healAmount, cure, worth, 1, maxAmount, cause);
+                        }
                     }
                 }
-                itemReader.Close();
 
                 var mon = GetMonster(monsterId, level);
                 mon.Experience = experience;
@@ -205,23 +199,23 @@ namespace Sandbox.Classes {
 
                 var statCmd = connection.CreateCommand();
                 statCmd.CommandText = $"SELECT * FROM `stats` WHERE `Id` = {statsId}";
-                var statReader = statCmd.ExecuteReader();
-                if (statReader.HasRows) {
-                    while (statReader.Read()) {
-                        mon.Stats.Health = statReader.GetInt32("Health");
-                        mon.Stats.Attack = statReader.GetInt32("Attack");
-                        mon.Stats.Defense = statReader.GetInt32("Defense");
-                        mon.Stats.SpecialAttack = statReader.GetInt32("SpecialAttack");
-                        mon.Stats.SpecialDefense = statReader.GetInt32("SpecialDefense");
-                        mon.Stats.Speed = statReader.GetInt32("Speed");
-                        mon.Stats.RandAttack = statReader.GetInt32("RandAttack");
-                        mon.Stats.RandDefense = statReader.GetInt32("RandDefense");
-                        mon.Stats.RandSpecialAttack = statReader.GetInt32("RandSpecialAttack");
-                        mon.Stats.RandSpecialDefense = statReader.GetInt32("RandSpecialDefense");
-                        mon.Stats.RandSpeed = statReader.GetInt32("RandSpeed");
+                using (var rdr = statCmd.ExecuteReader()) {
+                    if (rdr.HasRows) {
+                        while (rdr.Read()) {
+                            mon.Stats.Health = rdr.GetInt32("Health");
+                            mon.Stats.Attack = rdr.GetInt32("Attack");
+                            mon.Stats.Defense = rdr.GetInt32("Defense");
+                            mon.Stats.SpecialAttack = rdr.GetInt32("SpecialAttack");
+                            mon.Stats.SpecialDefense = rdr.GetInt32("SpecialDefense");
+                            mon.Stats.Speed = rdr.GetInt32("Speed");
+                            mon.Stats.RandAttack = rdr.GetInt32("RandAttack");
+                            mon.Stats.RandDefense = rdr.GetInt32("RandDefense");
+                            mon.Stats.RandSpecialAttack = rdr.GetInt32("RandSpecialAttack");
+                            mon.Stats.RandSpecialDefense = rdr.GetInt32("RandSpecialDefense");
+                            mon.Stats.RandSpeed = rdr.GetInt32("RandSpeed");
+                        }
                     }
                 }
-                statReader.Close();
                 if (boxed) box.Add(mon);
                 else { monsterList.Add(mon); }
             }
@@ -234,20 +228,21 @@ namespace Sandbox.Classes {
             var cmd = connection.CreateCommand();
             cmd.CommandText = "SELECT * FROM `knownmonsterlink` WHERE `playerId` = @id";
             cmd.Parameters.AddWithValue("@id", playerId);
-            var reader = cmd.ExecuteReader();
-            if (reader.HasRows) {
-                while (reader.Read()) {
-                    var monsterId = reader.GetInt32("monsterId");
+            using (var rdr = cmd.ExecuteReader()) {
+                while (rdr.Read()) {
+                    var monsterId = rdr.GetInt32("monsterId");
                     monsterIdList.Add(monsterId);
                 }
             }
-            reader.Close();
             foreach (var id in monsterIdList) {
                 cmd.CommandText = $"SELECT `Caught` FROM `knownmonsterlink` WHERE `monsterId` = {id}";
                 bool caught = (bool)cmd.ExecuteScalar();
                 var mon = GetMonster(id, 0);
                 if (caught) {
                     caughtMonsters.Add(id, mon);
+                    knownMonsters.Add(id, mon);
+                }
+                else {
                     knownMonsters.Add(id, mon);
                 }
             }
@@ -278,16 +273,12 @@ namespace Sandbox.Classes {
             cmd = connection.CreateCommand();
             cmd.CommandText = $"SELECT * FROM `character` WHERE `Name` = @X";
             cmd.Parameters.AddWithValue("@X", name);
-            reader = cmd.ExecuteReader();
-            if (!reader.HasRows) {
-                reader.Close();
-                return charactersList;
+            using (var rdr = cmd.ExecuteReader()) {
+                while (rdr.Read()) {
+                    var id = rdr.GetInt32("Id");
+                    idList.Add(id);
+                }
             }
-            while (reader.Read()) {
-                var id = reader.GetInt32("Id");
-                idList.Add(id);
-            }
-            reader.Close();
 
             foreach (var id in idList) {
                 var inventory = GetInventory(id);
@@ -296,26 +287,25 @@ namespace Sandbox.Classes {
                 var caughtMonster = new Dictionary<int, Monster>();
                 var knownMonsters = GetKnownMonsters(id, ref caughtMonster);
 
-                reader = cmd.ExecuteReader();
-                while (reader.Read()) {
-                    var money = reader.GetInt32("Money");
-                    var textureId = reader.GetInt32("TextureId");
-                    var front = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.Front);
-                    var back = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.Back);
-                    var world = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.World);
-                    Vector2 position = new Vector2(reader.GetInt32("PositionX"), reader.GetInt32("PositionY"));
+                using (var rdr = cmd.ExecuteReader()) {
+                    while (rdr.Read()) {
+                        var money = rdr.GetInt32("Money");
+                        var textureId = rdr.GetInt32("TextureId");
+                        var front = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.Front);
+                        var back = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.Back);
+                        var world = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.World);
+                        Vector2 position = new Vector2(rdr.GetInt32("PositionX"), rdr.GetInt32("PositionY"));
 
-                    Character character = new Character(name, money, inventory, monsters, front, back,
-                        world, position, true, true);
-                    character.CurrentArea = new Area { Name = reader.GetString("Area") };
-                    character.Id = id;
-                    character.Box = box;
-                    character.KnownMonsters = knownMonsters;
-                    character.CaughtMonster = caughtMonster;
-                    charactersList.Add(character);
+                        Character character = new Character(name, money, inventory, monsters, front, back,
+                            world, position, true, true);
+                        character.CurrentArea = new Area { Name = rdr.GetString("Area") };
+                        character.Id = id;
+                        character.Box = box;
+                        character.KnownMonsters = knownMonsters;
+                        character.CaughtMonster = caughtMonster;
+                        charactersList.Add(character);
+                    }
                 }
-                reader.Close();
-
             }
             foreach (var player in charactersList) {
                 var areaName = player.CurrentArea.Name;
@@ -334,12 +324,11 @@ namespace Sandbox.Classes {
             List<int> ids = new List<int>();
             var cmd = connection.CreateCommand();
             cmd.CommandText = $"SELECT `Id` FROM `Character`";
-            var reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-                while (reader.Read()) {
-                    ids.Add(reader.GetInt32("Id"));
+            using (var rdr = cmd.ExecuteReader()) {
+                while (rdr.Read()) {
+                    ids.Add(rdr.GetInt32("Id"));
                 }
-            reader.Close();
+            }
             return ids;
         }
 
@@ -347,12 +336,11 @@ namespace Sandbox.Classes {
             List<int> ids = new List<int>();
             var cmd = connection.CreateCommand();
             cmd.CommandText = $"SELECT `Uid` FROM `monsterlink`";
-            var reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-                while (reader.Read()) {
-                    ids.Add(reader.GetInt32("Uid"));
+            using (var rdr = cmd.ExecuteReader()) {
+                while (rdr.Read()) {
+                    ids.Add(rdr.GetInt32("Id"));
                 }
-            reader.Close();
+            }
             return ids;
         }
 
@@ -360,12 +348,11 @@ namespace Sandbox.Classes {
             List<int> ids = new List<int>();
             var cmd = connection.CreateCommand();
             cmd.CommandText = "SELECT `Id` FROM `monsterlink`";
-            var reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-                while (reader.Read()) {
-                    ids.Add(reader.GetInt32("Id"));
+            using (var rdr = cmd.ExecuteReader()) {
+                while (rdr.Read()) {
+                    ids.Add(rdr.GetInt32("Id"));
                 }
-            reader.Close();
+            }
             return ids;
         }
 
@@ -373,12 +360,11 @@ namespace Sandbox.Classes {
             List<int> ids = new List<int>();
             var cmd = connection.CreateCommand();
             cmd.CommandText = $"SELECT `Id` FROM `stats`";
-            var reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-                while (reader.Read()) {
-                    ids.Add(reader.GetInt32("Id"));
+            using (var rdr = cmd.ExecuteReader()) {
+                while (rdr.Read()) {
+                    ids.Add(rdr.GetInt32("Id"));
                 }
-            reader.Close();
+            }
             return ids;
         }
 
@@ -395,6 +381,18 @@ namespace Sandbox.Classes {
             var area = user.CurrentArea;
             var posX = user.Position.X;
             var posY = user.Position.Y;
+            if (user.Position.X % 32 != 0) {
+                var difference = user.Position.X % 32;
+                if (difference <= 16)
+                    posX += difference;
+                else posX -= difference;
+            }
+            if (user.Position.Y % 32 != 0) {
+                var difference = user.Position.Y % 32;
+                if (difference <= 16)
+                    posY += difference;
+                else posY -= difference;
+            }
 
             var cmd = connection.CreateCommand();
 
