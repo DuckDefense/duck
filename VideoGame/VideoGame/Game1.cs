@@ -106,18 +106,21 @@ namespace VideoGame {
                 player.MonsterUpdate(gameTime);
             }
             else {
-                player.Update(gameTime, currentKeyboardState, previousKeyboardState);
                 menu.Update(gameTime, currentMouseState, previousMouseState, currentKeyboardState, previousKeyboardState);
-                player.CurrentArea.Update(gameTime, currentKeyboardState, previousKeyboardState, player, ref currentBattle);
-                player.CurrentArea.GetArea(player);
-                player.CurrentArea.GetCollision(player);
-                player.CurrentArea.GetEncounters(player, ref currentBattle, ref battling);
+                if (!menu.Visible) {
+                    player.Update(gameTime, currentKeyboardState, previousKeyboardState);
+                    player.CurrentArea.Update(gameTime, currentKeyboardState, previousKeyboardState, player,
+                        ref currentBattle);
+                    player.CurrentArea.GetArea(player);
+                    player.CurrentArea.GetCollision(player);
+                    player.CurrentArea.GetEncounters(player, ref currentBattle, ref battling);
+                }
+
+                base.Update(gameTime);
+
+                previousMouseState = currentMouseState;
+                previousKeyboardState = currentKeyboardState;
             }
-
-            base.Update(gameTime);
-
-            previousMouseState = currentMouseState;
-            previousKeyboardState = currentKeyboardState;
         }
 
         /// <summary>
