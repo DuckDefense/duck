@@ -196,10 +196,27 @@ namespace VideoGame.Classes {
             Batch.End();
         }
 
+        private static string SplitString(string s, Rectangle size) {
+            var sSize = ContentLoader.Arial.MeasureString(s);
+            if (sSize.X > size.Width) {
+                if (s.Contains(",")) {
+                    var index = s.LastIndexOf(",");
+                    var splitS = s.Split(Convert.ToChar(","));
+                    var splitSize = ContentLoader.Arial.MeasureString(splitS.ToString());
+                    if (splitSize.X < size.Width) {
+                        return s.Insert(index + 2, "\n");
+                    }
+                }
+                else {
+                    var difference = sSize.X%size.Width;
+                    //Find a way to split the string so its size is low enough
+                }
+            }
+            return s;
+        }
         public static void DrawMonsterInfo(SpriteBatch batch, Monster m, bool knownMonsters = false) {
             Texture2D background = ContentLoader.MonsterViewer;
             var nameSize = ContentLoader.Arial.MeasureString(m.Ability.Name);
-            var descriptionSize = ContentLoader.Arial.MeasureString(m.Ability.Description);
             Rectangle backgroundRectangle = new Rectangle(16, 16, background.Width, background.Height);
             var frontPos = new Vector2(backgroundRectangle.X + 10, backgroundRectangle.Y + 24);
             var namePos = new Vector2(frontPos.X, backgroundRectangle.Y + 6);
@@ -210,7 +227,7 @@ namespace VideoGame.Classes {
 
             batch.Draw(background, backgroundRectangle, Color.White);
             batch.Draw(m.FrontSprite, frontPos, Color.White);
-            batch.DrawString(ContentLoader.Arial, m.Description, descriptionPos, Color.Black);
+            batch.DrawString(ContentLoader.Arial, SplitString(m.Description, new Rectangle(0, 0, 112, 24)), descriptionPos, Color.Black);
             if (knownMonsters) {
                 batch.DrawString(ContentLoader.Arial, m.Name, namePos, Color.Black);
                 batch.DrawString(ContentLoader.Arial, m.Stats.PintBaseStats(), statsPos, Color.Black);

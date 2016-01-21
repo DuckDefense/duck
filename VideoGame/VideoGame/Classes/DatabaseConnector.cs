@@ -338,7 +338,7 @@ namespace Sandbox.Classes {
             cmd.CommandText = $"SELECT `Uid` FROM `monsterlink`";
             using (var rdr = cmd.ExecuteReader()) {
                 while (rdr.Read()) {
-                    ids.Add(rdr.GetInt32("Id"));
+                    ids.Add(rdr.GetInt32("Uid"));
                 }
             }
             return ids;

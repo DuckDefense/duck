@@ -215,8 +215,8 @@ namespace VideoGame.Classes {
 
         #region Preset Moves
 
-        #region Physical
         #region Normal
+        //Physical
         public static Move Tackle() {
             return new Move("Tackle", "A fullbody tackle",
                 60, 100, 40, Kind.Physical, Type.Normal);
@@ -230,65 +230,78 @@ namespace VideoGame.Classes {
             return new Move("Strangle", "The monster strangles the foe",
                 40, 100, 20, Kind.Physical, Type.Normal);
         }
+        //Special
 
-        public static Move InstantKill() {
-            return new Move("InstantKill", "Test Attack, not to be used in final game",
-                5000, 1500, 60, Kind.Physical, Type.Normal);
+        //NonDamage
+        public static Move Glare() {
+            var statMod = new ModApplyer(new StatModifier(1, 1, 1, 1, .75), false, true);
+            return new Move("Glare", "The monster gives a cold glare",
+                0, 70, 25, statMod, null, Kind.NonDamage, Type.Normal);
+        }
+        public static Move Intimidate() {
+            var hit = new ModApplyer(new StatModifier(1, 0.75, 1, 1, 1), false, true);
+            var miss = new ModApplyer(new StatModifier(1, 1, 0.75, 1, 1), true, false);
+            return new Move("Intimidate", "The monster shows the opponent just how intimidating it is",
+                0, 75, 20, hit, miss, Kind.NonDamage, Type.Normal);
         }
         #endregion
         #region Fight
-        #endregion
-        #region Fire
-        #endregion
-        #region Water
-        #endregion
-        #region Grass
-        #endregion
-        #region Rock
-        #endregion
-        #region Ice
-        #endregion
-        #region Poison
-        #endregion
-        #region Ghost
-        #endregion
-        #region Psych
-        #endregion
-        #region Flying
-        #endregion
-        #region Sound
-        #endregion
-        #endregion
-        #region Special
-        #region Normal
-        #endregion
-        #region Fight
+        //Physical
         public static Move MultiPunch() {
-            return new Move("Multipunch", "punches the foe at a high speed",
-                70, 90, 15, Kind.Special, Type.Fight);
+            return new Move("Multipunch", "punches the foe at high speed",
+                70, 90, 15, Kind.Physical, Type.Fight);
         }
         #endregion
         #region Fire
+        //Physical
+
+        //Special
         public static Move Meteor() {
-            return new Move("Meteor", "Cast down a meteor uppon the foe",
-                100, 70, 5, Kind.Special, Type.Fire);
+            return new Move("Meteor", "Cast down a meteor upon the foe",
+                120, 55, 5, Kind.Special, Type.Fire);
         }
         public static Move Implode() {
             return new Move("Implode", "Implodes the foe",
-                70, 75, 20, Ailment.Burned, 20, Kind.Special, Type.Fire);
+                70, 85, 20, Ailment.Burned, 20, Kind.Special, Type.Fire);
+        }
+
+        //NonDamage
+        public static Move Flare() {
+            return new Move("Flare", "Fires a flare to the foe",
+                0, 85, 25, Ailment.Burned, 75, Kind.NonDamage, Type.Fire);
         }
         #endregion
         #region Water
+        //Physical
+        public static Move WetSlap() {
+            return new Move("Wet Slap", "A wet slap right in the kisser",
+                50, 85, 30, Kind.Physical, Type.Water);
+        }
+
+        //Special
         public static Move Bubble() {
             return new Move("Bubble", "The monster spits bubbles",
                 40, 100, 30, Kind.Special, Type.Water);
         }
+        //NonDamage
+        public static Move Douse() {
+            return new Move("Douse", "Slow down the foe by dousing it",
+                0, 100, 20, 
+                new ModApplyer(new StatModifier(1, 1, 1, 1, 0.8), false, true), 
+                new ModApplyer(new StatModifier(1, 1, 1, 1, 1), true, false),
+                Kind.NonDamage, Type.Water);
+        }
+
         #endregion
         #region Grass
+        //Physical
+
+        //Special
         public static Move LeafCut() {
             return new Move("LeafCut", "Cuts the target with a sharp leaf",
-                60, 80, 20, Kind.Special, Type.Grass);
+                60, 80, 20, Kind.Physical, Type.Grass);
         }
+        //NonDamage
         #endregion
         #region Rock
         public static Move RockThrow() {
@@ -345,49 +358,21 @@ namespace VideoGame.Classes {
         }
         public static Move HighPitch() {
             return new Move("High pitch", "Make a high pitch sound, deafening the foe",
-                75, 65, 15, Kind.Special, Type.Sound);
+                75, 80, 15, Kind.Special, Type.Sound);
         }
-        #endregion
-        #endregion
-        #region NonDamage
 
-        #region Normal
-        public static Move Glare() {
-            var statMod = new ModApplyer(new StatModifier(1, 1, 1, 1, .75), false, true);
-            return new Move("Glare", "The monster gives a cold glare and slightly lowers opponents speed",
-                0, 70, 25, statMod, null, Kind.NonDamage, Type.Normal);
+        //NonDamage
+        public static Move DazzlingTune() {
+            return new Move("Dazzling Tune", "The monster plays a dazzling tune",
+                0, 100, 15, Ailment.Dazzled, 75, Kind.NonDamage, Type.Sound);
+        }public static Move SleepyTune() {
+            return new Move("Sleepy Tune", "The monster plays a sleep inducing tune",
+                0, 100, 15, Ailment.Sleep, 75, Kind.NonDamage, Type.Sound);
+        }public static Move AngryTune() {
+            return new Move("Angry Tune", "The monster plays a aggresive tune",
+                0, 100, 15, Ailment.Frenzied, 75, Kind.NonDamage, Type.Sound);
         }
-        public static Move Intimidate() {
-            var hit = new ModApplyer(new StatModifier(1, 0.75, 1, 1, 1), false, true);
-            var miss = new ModApplyer(new StatModifier(1, 1, 0.75, 1, 1), true, false);
-            return new Move("Intimidate", "The monster shows the opponent just how intimidating it can be," +
-                                          "which will slightly lower the opponents attack," +
-                                          "if it misses will lower the users defense",
-                0, 75, 20, hit, miss, Kind.NonDamage, Type.Normal);
-        }
-        #endregion
-        #region Fight
-        #endregion
-        #region Fire
-        #endregion
-        #region Water
-        #endregion
-        #region Grass
-        #endregion
-        #region Rock
-        #endregion
-        #region Ice
-        #endregion
-        #region Poison
-        #endregion
-        #region Ghost
-        #endregion
-        #region Psych
-        #endregion
-        #region Flying
-        #endregion
-        #region Sound
-        #endregion
+
         #endregion
         #endregion
     }
