@@ -196,7 +196,7 @@ namespace VideoGame.Classes {
             Batch.End();
         }
 
-        private static string SplitString(string s, Rectangle size) {
+        public static string SplitString(string s, Rectangle size) {
             var sSize = ContentLoader.Arial.MeasureString(s);
             if (sSize.X > size.Width) {
                 if (s.Contains(",")) {
