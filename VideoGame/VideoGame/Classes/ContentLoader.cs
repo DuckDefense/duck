@@ -45,6 +45,7 @@ namespace VideoGame.Classes {
         #endregion
 
         public static Texture2D NormalType, FightType, FireType, WaterType, GrassType, PoisonType, PsychType, GhostType, IceType, RockType, FlyingType, SoundType;
+        public static Texture2D PhysicalAttack, SpecialAttack;
         public static Texture2D SLP, PSN, BRN, DZL, FRZ, FZD, FNT;
 
         public static Texture2D Grid;
@@ -167,9 +168,12 @@ namespace VideoGame.Classes {
 
             #region Battle
             GrassyBackground = Content.Load<Texture2D>(@"Sprites/Battle/Backgrounds/Grassy");
-            Health = Content.Load<Texture2D>(@"Sprites/Battle/Health");
+            Health = Content.Load<Texture2D>(@"Sprites/Battle/Special");
+            PhysicalAttack = Content.Load<Texture2D>(@"Sprites/Battle/Physical");
+            SpecialAttack = Content.Load<Texture2D>(@"Sprites/Battle/Health");
             HealthBorder = Content.Load<Texture2D>(@"Sprites/Battle/HealthBorder");
             HealthBorderUser = Content.Load<Texture2D>(@"Sprites/Battle/HealthBorderUser");
+
             #endregion
 
             #region Types
