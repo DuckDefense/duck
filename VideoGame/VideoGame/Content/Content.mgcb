@@ -1144,3 +1144,8 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Battle/NonDamage.png
 
+#begin Route5.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:Route5.tmx
+

@@ -241,6 +241,8 @@ namespace VideoGame.Classes
                     return Route3(player);
                 case "route 4":
                     return Route4(player);
+                case "route 5":
+                    return Route5(player);
                 case "city":
                     Random random = new Random();
                     if (random.Next(0, 10) == 2)
@@ -458,7 +460,7 @@ namespace VideoGame.Classes
                 }
                 else
                 {
-                    spawn = new Vector2(256, 320);
+                    spawn = new Vector2(704, 96);
                 }
             List<Monster> monsters = new List<Monster>
             {
@@ -471,6 +473,55 @@ namespace VideoGame.Classes
             };
 
             return new Area("Route 4", levelrange, monsters, opponents, spawn, map);
+        }
+
+        #endregion
+
+        #region Route5
+
+        public static
+            Area Route5(Character player)
+        {
+            if (Sound != null)
+                Sound.Stop();
+
+            Sound = ContentLoader.RouteSong.CreateInstance();
+            Sound.IsLooped = true;
+            Sound.Play();
+
+            //Character tegenstander;
+            //tegenstander = new Character("Nice guy", 6700,
+            //    new Inventory(),
+            //    new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
+            //    ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman,
+            //    new Vector2(192, 192));
+            //tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
+            //tegenstander.Debug = true;
+
+            Random random = new Random();
+            Point levelrange = new Point(22, 27);
+            var map = ContentLoader.Route5;
+            Vector2 spawn = Vector2.One;
+            if (player.PreviousArea != null)
+                if (player.PreviousArea.Name == "Route 4")
+                {
+                    spawn = new Vector2(608, 416);
+                }
+                else
+                {
+                    spawn = new Vector2(256, 320);
+                }
+            List<Monster> monsters = new List<Monster>
+            {
+                DatabaseConnector.GetMonster(1, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
+            };
+            List<Character> opponents = new List<Character>
+            {
+            };
+
+            return new Area("Route 5", levelrange, monsters, opponents, spawn, map);
         }
 
         #endregion
