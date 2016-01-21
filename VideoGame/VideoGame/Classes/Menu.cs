@@ -36,7 +36,7 @@ namespace Sandbox.Classes {
         private List<ContainerButton> medicineList = new List<ContainerButton>();
         private List<Button> PartyMenuList = new List<Button>();
 
-        private bool drawPartyMenu, drawStatus, drawMoves, drawMove;
+        private bool drawPartyMenu, drawStatus, drawMoves;
         private bool movable;
         private Button moveButton;
         private Button statusButton;
@@ -85,9 +85,9 @@ namespace Sandbox.Classes {
                 break;
             case Selection.Party:
                 if (player.Monsters.Count >= partyList.Count) GetPartyMonsters();
-                    foreach (var b in PartyMenuList) {
-                        b.Update(curMouseState, prevMouseState);
-                    }
+                foreach (var b in PartyMenuList) {
+                    b.Update(curMouseState, prevMouseState);
+                }
                 break;
             case Selection.Item:
                 if (player.Inventory.Items.Count >= itemList.Count) GetItems();
@@ -98,7 +98,7 @@ namespace Sandbox.Classes {
                 break;
             case Selection.Save:
                 DatabaseConnector.SaveData(player);
-                    Selection = Selection.None;
+                Selection = Selection.None;
                 break;
             case Selection.Mute:
                 if (SoundEffect.MasterVolume != 0f) {
@@ -123,32 +123,27 @@ namespace Sandbox.Classes {
             case Selection.KnownMonsters:
                 DrawKnownMonsters(batch);
                 foreach (var con in knownMonsterList) {
-                    if (con.Button.IsHovering(curMouseState)) Drawer.DrawMonsterInfo(batch, con.Monster, true);
+                    if (con.Button.IsHovering(curMouseState)) Drawer.DrawMonsterInfo(batch, con.Monster, new Vector2(16, 16), true);
                 }
                 break;
             case Selection.Party:
                 DrawParty(batch);
                 foreach (var con in partyList) {
-                    //Try this with a click instead hover, also find out why IsClicked doesn't work anymore
+                    GetPartyMenu(con);
+                    DrawPartyMenu(batch);
                     if (con.Button.IsHovering(curMouseState)) {
-                        GetPartyMenu(con);
-                        DrawPartyMenu(batch);
-                        if (statusButton.IsHeld(curMouseState)) {
+                        if (statusButton.IsHovering(curMouseState)) {
                             ResetDraws();
                             drawStatus = true;
                         }
-                        else if (moveButton.IsHeld(curMouseState)) {
-                            ResetDraws();
-                            drawMove = true;
-                            movable = true;
-                        }
-                        else if (movesButton.IsHeld(curMouseState)) {
+                        else if (movesButton.IsHovering(curMouseState)) {
                             ResetDraws();
                             drawMoves = true;
                         }
-                        //else ResetDraws();
-                        if (drawStatus) Drawer.DrawMonsterInfo(batch, con.Monster);
-                        if(drawMove) { }
+                        else {
+                            ResetDraws();
+                        }
+                        if (drawStatus) Drawer.DrawMonsterInfo(batch, con.Monster, new Vector2(16, 196));
                         if (drawMoves) {
                             GetMoves(con);
                             DrawMoves(batch);
@@ -176,12 +171,12 @@ namespace Sandbox.Classes {
         private void ResetDraws() {
             drawStatus = false;
             drawMoves = false;
-            drawMove = false;
             movable = false;
         }
 
         private void Toggle(KeyboardState cur, KeyboardState prev) {
             if (cur.IsKeyDown(Keys.Enter) && prev.IsKeyUp(Keys.Enter)) {
+                ResetDraws();
                 Visible = !Visible;
                 Selection = Selection.None;
             }
@@ -216,25 +211,27 @@ namespace Sandbox.Classes {
         private void GetPartyMenu(ContainerButton con) {
             PartyMenuList.Clear();
             var pos = new Rectangle(con.Button.Position.X - 1, con.Button.Position.Y, ContentLoader.Button.Width, ContentLoader.Button.Height);
-            moveButton = new Button(new Rectangle(pos.X, pos.Y, pos.Width, pos.Height), ContentLoader.Button, ContentLoader.ButtonHover, ContentLoader.ButtonClicked, "Move", ContentLoader.Arial);
-            statusButton = new Button(new Rectangle(pos.X, pos.Y + (pos.Height), pos.Width, pos.Height), ContentLoader.Button, ContentLoader.ButtonHover, ContentLoader.ButtonClicked, "Status", ContentLoader.Arial);
-            movesButton = new Button(new Rectangle(pos.X, pos.Y + (pos.Height * 2), pos.Width, pos.Height), ContentLoader.Button, ContentLoader.ButtonHover, ContentLoader.ButtonClicked, "Moves", ContentLoader.Arial);
+            //moveButton = new Button(new Rectangle(pos.X, pos.Y, pos.Width, pos.Height), ContentLoader.Button, ContentLoader.ButtonHover, ContentLoader.ButtonClicked, "Move", ContentLoader.Arial);
+            statusButton = new Button(new Rectangle(pos.X, pos.Y, pos.Width, pos.Height), ContentLoader.Button, ContentLoader.ButtonHover, ContentLoader.ButtonClicked, "Status", ContentLoader.Arial);
+            movesButton = new Button(new Rectangle(pos.X, pos.Y + (pos.Height), pos.Width, pos.Height), ContentLoader.Button, ContentLoader.ButtonHover, ContentLoader.ButtonClicked, "Moves", ContentLoader.Arial);
 
-            PartyMenuList.AddMany(moveButton, statusButton, movesButton);
+            PartyMenuList.AddMany(statusButton, movesButton);
         }
 
         private void GetMoves(ContainerButton con) {
             movesList.Clear();
             for (int i = 0; i < con.Monster.Moves.Count; i++) {
                 var move = con.Monster.Moves[i];
-                var pos = new Rectangle(0, 0, 64, 64);
-                pos = new Rectangle(pos.X, pos.Y + (pos.Height*(i)), pos.Width*2, pos.Height*2);
+                var pos = new Rectangle(0, 0, 220, 100);
+                pos = i < 4 
+                    ? new Rectangle(pos.X, pos.Y + (pos.Height * (i)), pos.Width, pos.Height) 
+                    : new Rectangle(pos.X + pos.Width, pos.Y + ((pos.Height * (i - 4))), pos.Width, pos.Height);
                 var b = new Button(pos, ContentLoader.Health, ContentLoader.Health, ContentLoader.Health, move.Name, ContentLoader.Arial);
                 movesList.Add(new ContainerButton(b, move));
             }
-
         }
 
+        //Unfinished
         private void GetItems() {
             foreach (var item in player.Inventory.Items.Values) {
                 var pos = new Rectangle((int)position.X - 288, (int)position.Y, item.Sprite.Width / 2, item.Sprite.Height / 2);
@@ -277,7 +274,7 @@ namespace Sandbox.Classes {
                 var pos = con.Button.Position;
                 var m = con.Monster;
                 batch.Draw(ContentLoader.Health, new Rectangle(pos.X - 1, pos.Y - 1, (pos.Width) + 2, pos.Height + 2), Color.IndianRed);
-                batch.Draw(m.FrontSprite, new Vector2(pos.X +47, pos.Y), Color.White);
+                batch.Draw(m.FrontSprite, new Vector2(pos.X + 47, pos.Y), Color.White);
             }
         }
         private void DrawPartyMenu(SpriteBatch batch) {
@@ -285,16 +282,18 @@ namespace Sandbox.Classes {
                 b.Draw(batch);
             }
         }
-
         private void DrawMoves(SpriteBatch batch) {
             foreach (var con in movesList) {
                 var move = con.Move;
                 var typeTexture = Drawer.GetTypeTexture(move.Type);
                 batch.Draw(ContentLoader.Health, con.Button.Position, Color.Crimson);
-                batch.Draw(typeTexture, new Vector2(con.Button.Position.X, con.Button.Position.Y + 18), Color.White);
                 batch.DrawString(ContentLoader.Arial, move.Name, new Vector2(con.Button.Position.X, con.Button.Position.Y), Color.Black);
-                batch.DrawString(ContentLoader.Arial, move.Description, new Vector2(con.Button.Position.X, con.Button.Position.Y + 32), Color.Black);
-                batch.DrawString(ContentLoader.Arial, $"{move.Uses}/{move.MaxUses}", new Vector2(con.Button.Position.X, con.Button.Position.Y + (32 + typeTexture.Height)), Color.Black);
+                batch.DrawString(ContentLoader.Arial, Drawer.SplitString(move.Description, con.Button.Position), new Vector2(con.Button.Position.X, con.Button.Position.Y + 18), Color.Black);
+                batch.Draw(typeTexture, new Vector2(con.Button.Position.X + 2, con.Button.Position.Y + 48), Color.White);
+                batch.Draw(Drawer.GetTextureFromMoveKind(move), new Vector2(con.Button.Position.X + 34, con.Button.Position.Y + 48), Color.White);
+                batch.DrawString(ContentLoader.Arial, $"Power \n   {move.BaseDamage}", new Vector2(con.Button.Position.X, con.Button.Position.Y + (32 + (typeTexture.Height * 2))), Color.Black);
+                batch.DrawString(ContentLoader.Arial, $"Accuracy \n    {move.Accuracy}", new Vector2(con.Button.Position.X + 64, con.Button.Position.Y + (32 + (typeTexture.Height * 2))), Color.Black);
+                batch.DrawString(ContentLoader.Arial, $"Uses \n{move.Uses}/{move.MaxUses}", new Vector2(con.Button.Position.X + 144, con.Button.Position.Y + (32 + (typeTexture.Height * 2))), Color.Black);
             }
         }
 
