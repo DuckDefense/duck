@@ -42,6 +42,11 @@ namespace VideoGame.Classes {
         public static Texture2D PrestlerFront, PrestlerBack, PrestlerParty;
         public static Texture2D RasionFront, RasionBack, RasionParty;
         public static Texture2D KirkFront, KirkBack, KirkParty;
+        public static Texture2D BaggleFront, BaggleBack, BaggleParty;
+        public static Texture2D GuilailFront, GuilailBack, GuilailParty;
+        public static Texture2D GulagaFront, GulagaBack, GulagaParty;
+        public static Texture2D DagaFront, DagaBack, DagaParty;
+
         #endregion
 
         public static Texture2D NormalType, FightType, FireType, WaterType, GrassType, PoisonType, PsychType, GhostType, IceType, RockType, FlyingType, SoundType;
@@ -85,12 +90,15 @@ namespace VideoGame.Classes {
             GronkeyFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Gronkey");
             GronkeyBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Gronkey");
             GronkeyParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Gronkey");
+
             ArmlerFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Armler");
             ArmlerBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Armler");
             ArmlerParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Armler");
+
             BrassFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Brass");
             BrassBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Brass");
             BrassParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Brass");
+
             HuffsteinFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Huffstein");
             HuffsteinBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Huffstein");
             HuffsteinParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Huffstein");
@@ -104,8 +112,8 @@ namespace VideoGame.Classes {
             BonsantaiParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Bonsantai");
 
             DrumbyFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Drumby");
-            //DrumbyBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
-            //DrumbyParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+            //DrumbyBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Drumby");
+            //DrumbyParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Drumby");
 
             DvallalinFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Dvallalin");
             DvallalinBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Dvallalin");
@@ -116,20 +124,20 @@ namespace VideoGame.Classes {
             GladkeyParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Gladkey");
 
             HippolaciousFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Hippolacious");
-            //HippolaciousBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
-            //HippolaciousParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+            //HippolaciousBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Hippolacious");
+            //HippolaciousParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Hippolacious");
 
             JoiantlerFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Joiantler");
             JoiantlerBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Joiantler");
             JoiantlerParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Joiantler");
 
             KolfieFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Kolfie");
-            //KolfieBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
-            //KolfieParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+            //KolfieBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Kolfie");
+            //KolfieParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Kolfie");
 
             KrabbleFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Krabble");
-            //KrabbleBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/");
-            //KrabbleParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/");
+            //KrabbleBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Krabble");
+            //KrabbleParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Krabble");
 
             MimirdFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Mimird");
             MimirdBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Mimird");
@@ -154,6 +162,22 @@ namespace VideoGame.Classes {
             KirkFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Kirk");
             //KirkBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Kirk");
             //KirkParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Kirk");
+
+            BaggleFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Baggle");
+            //BaggleBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Baggle");
+            //BaggleParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Baggle");
+
+            GuilailFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Guilail");
+            //GuilailBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Guilail");
+            //GuilailParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Guilail"); 
+             
+            GulagaFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Gulaga");
+            //GulagaBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Gulaga");
+            //GulagaParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Gulaga");  
+
+            DagaFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Daga");
+            //DagaBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Daga");
+            //DagaParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Daga");
 
             #endregion
 
@@ -304,8 +328,26 @@ namespace VideoGame.Classes {
                 }
                 break;
             case 7:
+                switch (face) {
+                case TextureFace.Front: return GuilailFront;
+                case TextureFace.Back: return GuilailBack;
+                case TextureFace.World: return GuilailParty;
+                }
+                break;
             case 8:
+                switch (face) {
+                case TextureFace.Front: return GulagaFront;
+                case TextureFace.Back: return GulagaBack;
+                case TextureFace.World: return GulagaParty;
+                }
+                break;
             case 9:
+                switch (face) {
+                case TextureFace.Front: return DagaFront;
+                case TextureFace.Back: return DagaBack;
+                case TextureFace.World: return DagaParty;
+                }
+                break;
             case 10:
                 switch (face) {
                 case TextureFace.Front: return GronkeyFront;
@@ -363,12 +405,17 @@ namespace VideoGame.Classes {
                 }
                 break;
             case 18:
-                break;
-            case 19:
                 switch (face) {
                 case TextureFace.Front: return HippolaciousFront;
                 case TextureFace.Back: return HippolaciousBack;
                 case TextureFace.World: return HippolaciousParty;
+                }
+                break;
+            case 19:
+                switch (face) {
+                case TextureFace.Front: return BaggleFront;
+                case TextureFace.Back: return BaggleBack;
+                case TextureFace.World: return BaggleParty;
                 }
                 break;
             case 20:
@@ -379,12 +426,24 @@ namespace VideoGame.Classes {
                 }
                 break;
             case 21:
+                switch (face) {
+                case TextureFace.Front: return DrumbyFront;
+                case TextureFace.Back: return DrumbyBack;
+                case TextureFace.World: return DrumbyParty;
+                }
                 break;
             case 22:
                 switch (face) {
                 case TextureFace.Front: return DrumbyFront;
                 case TextureFace.Back: return DrumbyBack;
                 case TextureFace.World: return DrumbyParty;
+                }
+                break;
+            case 23:
+                switch (face) {
+                case TextureFace.Front: return KirkFront;
+                case TextureFace.Back: return KirkBack;
+                case TextureFace.World: return KirkParty;
                 }
                 break;
             }
