@@ -1292,3 +1292,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Monsters/Back/Krabble.png
 
+#begin Route6.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:Route6.tmx
+
+#begin Route7.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:Route7.tmx
+
+#begin Route8.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:Route8.tmx
+
