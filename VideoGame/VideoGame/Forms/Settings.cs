@@ -7,6 +7,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Sandbox.Classes;
+using Sandbox.Forms;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace VideoGame.Forms
@@ -21,13 +23,25 @@ namespace VideoGame.Forms
 
         public Settings()
         {
-            InitializeComponent();
             KeyPreview = true;
+            InitializeComponent();
+            double value = (double)Classes.Settings.ResolutionWidth / Classes.Settings.ResolutionHeight;
+            if (value > 1.66) {
+                cbbRatio.SelectedText = "16:9";
+                cbb4to3.Visible = false;
+                cbb16to9.Visible = true;
+                cbb16to9.SelectedText = $"{Classes.Settings.ResolutionWidth}x{Classes.Settings.ResolutionHeight}";
+            }
+            else {
+                cbbRatio.SelectedText = "4:3";
+                cbb16to9.Visible = false;
+                cbb4to3.Visible = true;
+                cbb4to3.SelectedText = $"{Classes.Settings.ResolutionWidth}x{Classes.Settings.ResolutionHeight}";
+            }
         }
 
         private void Settings_KeyDown(object sender, KeyEventArgs e)
         {
-
             if (up == true)
             { 
                 if (Classes.Settings.moveRight != (Keys) e.KeyCode && Classes.Settings.moveDown != (Keys) e.KeyCode &&
@@ -210,6 +224,7 @@ namespace VideoGame.Forms
             Classes.Settings.DatabaseName = tbDatabaseName.Text;
             Classes.Settings.Username = tbUsername.Text;
             Classes.Settings.Password = tbPassword.Text;
+            DatabaseConnector.SaveSettings(Login.PlayerId);
             this.Close();
         }
 

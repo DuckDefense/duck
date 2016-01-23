@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using MySql.Data.MySqlClient;
 using OpenTK.Graphics.OpenGL;
 using VideoGame.Classes;
@@ -19,6 +20,8 @@ namespace Sandbox.Classes {
 
         public static void SetConnectionString(string server, string user, string password, string database) {
             stringBuilder = new MySqlConnectionStringBuilder { Server = server, UserID = user, Password = password, Database = database };
+            connection = new MySqlConnection(stringBuilder.ToString());
+            connection.Open();
         }
 
         public static Inventory GetInventory(int playerId) {
@@ -256,10 +259,8 @@ namespace Sandbox.Classes {
         public static List<Character> GetCharacters(string name) {
             //TODO: Find a way to use the id as a parameter instead of the name
             var charactersList = new List<Character>();
-            connection = new MySqlConnection(stringBuilder.ToString());
             MySqlDataReader reader;
             MySqlCommand cmd;
-            connection.Open();
             //try {
             cmd = connection.CreateCommand();
             cmd.CommandText = $"SELECT COUNT(*) FROM `character` where `Name` = @X";
@@ -368,11 +369,95 @@ namespace Sandbox.Classes {
             return ids;
         }
 
+        public static int GetPlayerId(string name) {
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = "SELECT * FROM `character` WHERE `name` = @name";
+            cmd.Parameters.AddWithValue("@name", name);
+            using (var rdr = cmd.ExecuteReader()) {
+                while (rdr.Read()) {
+                    var id = rdr.GetInt32("Id");
+                    return id;
+                }
+            }
+            return 0;
+        }
+
+        public static bool CheckPassword(string name, string password) {
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = "SELECT COUNT(*) FROM `character` WHERE `Name` = @name AND `Password` = @pass";
+            cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@pass", password);
+            var count = Convert.ToInt32(cmd.ExecuteScalar());
+            if (count == 1) { return true; }
+            return false;
+        }
+
+        public static void AddCharacter(string name, string password) {
+            var cmd = connection.CreateCommand();
+            var pid = RandomId.GenerateUserId();
+            cmd.CommandText = "INSERT INTO `character`(`Id`, `Name`, `Password`, `Money`, `TextureId`, `Area`, `PositionX`, `PositionY`) VALUES (@pid, @name, @pass, @money, @textureId, @area, @posX, @posY)";
+            cmd.Parameters.AddWithValue("@pid", pid);
+            cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@pass", password);
+            cmd.Parameters.AddWithValue("@money", 200);
+            //TODO: Make the player choose texture
+            cmd.Parameters.AddWithValue("@textureId", 1);
+            cmd.Parameters.AddWithValue("@area", "City");
+            cmd.Parameters.AddWithValue("@posX", 256);
+            cmd.Parameters.AddWithValue("@posY", 196);
+            cmd.ExecuteNonQuery();
+
+            //Create settings
+            cmd.CommandText = "INSERT INTO `settings`(`playerId`) VALUES (@pid)";
+            cmd.ExecuteNonQuery();
+            SaveSettings(pid);
+        }
+
+        public static void GetSettings(int playerId) {
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = $"SELECT * FROM `settings` WHERE `playerId` = @id";
+            cmd.Parameters.AddWithValue("@id", playerId);
+            using (var rdr = cmd.ExecuteReader()) {
+                while (rdr.Read()) {
+                    Settings.ResolutionHeight = rdr.GetInt32("resolutionHeight");
+                    Settings.ResolutionWidth = rdr.GetInt32("resolutionWidth");
+                    Enum.TryParse(rdr.GetString("moveUp"), true, out Settings.moveUp);
+                    Enum.TryParse(rdr.GetString("moveDown"), true, out Settings.moveDown);
+                    Enum.TryParse(rdr.GetString("moveLeft"), true, out Settings.moveLeft);
+                    Enum.TryParse(rdr.GetString("moveRight"), true, out Settings.moveRight);
+                    Enum.TryParse(rdr.GetString("talk"), true, out Settings.conversation);
+                    Settings.ServerName = rdr.GetString("serverName");
+                    Settings.Username = rdr.GetString("userId");
+                    Settings.Password = rdr.GetString("userPassword");
+                    Settings.DatabaseName = rdr.GetString("databaseName");
+                }
+            }
+        }
+
+        public static void SaveSettings(int playerId) {
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = "UPDATE `settings` SET `resolutionHeight`=@resHeight, `resolutionWidth`=@resWidth, " +
+                              "`moveUp`=@moveUp, `moveDown`=@moveDown, `moveLeft`=@moveLeft, `moveRight`=@moveRight, `talk`=@talk, " +
+                              "`serverName`=@serverName, `userId`=@userId, `userPassword`=@userPass, `databaseName`=@dbName " +
+                              "WHERE `playerId` = @pid";
+            cmd.Parameters.AddWithValue("@resHeight", Settings.ResolutionHeight);
+            cmd.Parameters.AddWithValue("@resWidth", Settings.ResolutionWidth);
+            cmd.Parameters.AddWithValue("@moveUp", Settings.moveUp.ToString());
+            cmd.Parameters.AddWithValue("@moveDown", Settings.moveDown.ToString());
+            cmd.Parameters.AddWithValue("@moveLeft", Settings.moveLeft.ToString());
+            cmd.Parameters.AddWithValue("@moveRight", Settings.moveRight.ToString());
+            cmd.Parameters.AddWithValue("@talk", Settings.conversation.ToString());
+            cmd.Parameters.AddWithValue("@serverName", Settings.ServerName);
+            cmd.Parameters.AddWithValue("@userId", Settings.Username);
+            cmd.Parameters.AddWithValue("@userPass", Settings.Password);
+            cmd.Parameters.AddWithValue("@dbName", Settings.DatabaseName);
+            cmd.Parameters.AddWithValue("@pid", playerId);
+            cmd.ExecuteNonQuery();
+        }
+
         public static void SaveData(Character user) {
-            //Get ids
+            //Get id
             var playerId = user.Id;
-            List<int> captureIds = user.Inventory.Captures.Select(m => m.Value.Id).ToList();
-            List<int> medicineIds = user.Inventory.Medicine.Select(m => m.Value.Id).ToList();
 
             //Get player data
             var name = user.Name;
@@ -398,32 +483,17 @@ namespace Sandbox.Classes {
 
             #region Player
 
-            cmd.CommandText = "SELECT COUNT(*) FROM `character` WHERE `Id` = @id";
-            cmd.Parameters.AddWithValue("@id", playerId);
-            var count = Convert.ToInt32(cmd.ExecuteScalar());
             cmd = connection.CreateCommand();
-            if (count > 0) {
-                //User is already in database
-                cmd.CommandText = "UPDATE `character` SET `Money` = @money, `Area` = @area, `PositionX` = @posX, `PositionY` = @posY " +
-                                  "WHERE `Id` = @id";
-                cmd.Parameters.AddWithValue("@money", money);
-                cmd.Parameters.AddWithValue("@area", area.Name);
-                cmd.Parameters.AddWithValue("@posX", posX);
-                cmd.Parameters.AddWithValue("@posY", posY);
-                cmd.Parameters.AddWithValue("@id", playerId);
-                cmd.ExecuteNonQuery();
-            }
-            else {
-                cmd.CommandText = "INSERT INTO `character`(`Id`, `Name`, `Money`, `TextureId`, `Area`, `PositionX`, `PositionY`) VALUES (@pid, @name, @money, @textureId, @area, @posX, @posY)";
-                cmd.Parameters.AddWithValue("@pid", playerId);
-                cmd.Parameters.AddWithValue("@name", name);
-                cmd.Parameters.AddWithValue("@money", money);
-                cmd.Parameters.AddWithValue("@textureId", textureId);
-                cmd.Parameters.AddWithValue("@area", area);
-                cmd.Parameters.AddWithValue("@posX", posX);
-                cmd.Parameters.AddWithValue("@posY", posY);
-                cmd.ExecuteNonQuery();
-            }
+            //User should always be in database
+            cmd.CommandText = "UPDATE `character` SET `Money` = @money, `Area` = @area, `PositionX` = @posX, `PositionY` = @posY " +
+                              "WHERE `Id` = @id";
+            cmd.Parameters.AddWithValue("@money", money);
+            cmd.Parameters.AddWithValue("@area", area.Name);
+            cmd.Parameters.AddWithValue("@posX", posX);
+            cmd.Parameters.AddWithValue("@posY", posY);
+            cmd.Parameters.AddWithValue("@id", playerId);
+            cmd.ExecuteNonQuery();
+
             #endregion
             #region Known and Caught Monsters
 
@@ -434,7 +504,7 @@ namespace Sandbox.Classes {
                     "SELECT COUNT(*) FROM `knownmonsterlink` WHERE `playerId` = @playerId AND `monsterId` = @monsterId";
                 cmd.Parameters.AddWithValue("@playerId", playerId);
                 cmd.Parameters.AddWithValue("@monsterId", mon.Id);
-                count = Convert.ToInt32(cmd.ExecuteScalar());
+                var count = Convert.ToInt32(cmd.ExecuteScalar());
                 if (count == 0) {
                     //Player has not seen the monster before
                     cmd.CommandText = "INSERT INTO `knownmonsterlink`(`playerId`, `monsterId`, `Caught`) VALUES (@playerId, @monsterId, FALSE)";
@@ -453,7 +523,7 @@ namespace Sandbox.Classes {
                 cmd = connection.CreateCommand();
                 cmd.CommandText = "SELECT COUNT(*) FROM `monsterlink` WHERE `Uid` = @monUid";
                 cmd.Parameters.AddWithValue("@monUid", mon.UId);
-                count = Convert.ToInt32(cmd.ExecuteScalar());
+                var count = Convert.ToInt32(cmd.ExecuteScalar());
 
                 if (count > 0) {
                     //Monster is already in database
@@ -534,7 +604,7 @@ namespace Sandbox.Classes {
                 cmd.CommandText = "SELECT COUNT(*) FROM `capturelink` WHERE `playerId` = @playerId AND `captureId` = @captureId";
                 cmd.Parameters.AddWithValue("@playerId", playerId);
                 cmd.Parameters.AddWithValue("@captureId", cap.Id);
-                count = Convert.ToInt32(cmd.ExecuteScalar());
+                var count = Convert.ToInt32(cmd.ExecuteScalar());
                 if (count > 0) {
                     //player already has item
                     cmd.CommandText = "UPDATE `capturelink` SET `Amount` = @amount WHERE `playerId` = @playerId AND `captureId` = @captureId";
@@ -553,7 +623,7 @@ namespace Sandbox.Classes {
                 cmd.CommandText = "SELECT COUNT(*) FROM `medicinelink` WHERE `playerId` = @playerId AND `medicineId` = @medicineId";
                 cmd.Parameters.AddWithValue("@playerId", playerId);
                 cmd.Parameters.AddWithValue("@medicineId", med.Id);
-                count = Convert.ToInt32(cmd.ExecuteScalar());
+                var count = Convert.ToInt32(cmd.ExecuteScalar());
                 if (count > 0) {
                     //player already has item
                     cmd.CommandText = "UPDATE `medicinelink` SET `Amount` = @amount WHERE `playerId` = @playerId AND `medicineId` = @medicineId";

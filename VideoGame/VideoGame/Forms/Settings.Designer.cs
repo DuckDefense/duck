@@ -30,6 +30,9 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpKeybinds = new System.Windows.Forms.TabPage();
+            this.btnConversation = new System.Windows.Forms.Button();
+            this.lblConversation = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.btnMoveLeft = new System.Windows.Forms.Button();
             this.btnMoveRight = new System.Windows.Forms.Button();
             this.btnMoveDown = new System.Windows.Forms.Button();
@@ -48,19 +51,16 @@
             this.cbbRatio = new System.Windows.Forms.ComboBox();
             this.cbb4to3 = new System.Windows.Forms.ComboBox();
             this.cbb16to9 = new System.Windows.Forms.ComboBox();
-            this.btnApply = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.lblConversation = new System.Windows.Forms.Label();
-            this.btnConversation = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tbServerName = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.tbDatabaseName = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.tbUsername = new System.Windows.Forms.TextBox();
-            this.tbPassword = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.tbPassword = new System.Windows.Forms.TextBox();
+            this.tbUsername = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tbDatabaseName = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tbServerName = new System.Windows.Forms.TextBox();
+            this.btnApply = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tpKeybinds.SuspendLayout();
             this.tpGraphics.SuspendLayout();
@@ -104,6 +104,34 @@
             this.tpKeybinds.TabIndex = 0;
             this.tpKeybinds.Text = "Keybinds";
             this.tpKeybinds.UseVisualStyleBackColor = true;
+            // 
+            // btnConversation
+            // 
+            this.btnConversation.Location = new System.Drawing.Point(187, 122);
+            this.btnConversation.Name = "btnConversation";
+            this.btnConversation.Size = new System.Drawing.Size(75, 23);
+            this.btnConversation.TabIndex = 14;
+            this.btnConversation.Text = "Change";
+            this.btnConversation.UseVisualStyleBackColor = true;
+            this.btnConversation.Click += new System.EventHandler(this.btnConversation_Click);
+            // 
+            // lblConversation
+            // 
+            this.lblConversation.AutoSize = true;
+            this.lblConversation.Location = new System.Drawing.Point(108, 127);
+            this.lblConversation.Name = "lblConversation";
+            this.lblConversation.Size = new System.Drawing.Size(38, 13);
+            this.lblConversation.TabIndex = 13;
+            this.lblConversation.Text = "Space";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(9, 127);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(69, 13);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Conversation";
             // 
             // btnMoveLeft
             // 
@@ -300,44 +328,6 @@
             this.cbb16to9.TabIndex = 0;
             this.cbb16to9.SelectedIndexChanged += new System.EventHandler(this.cbb16to9_SelectedIndexChanged);
             // 
-            // btnApply
-            // 
-            this.btnApply.Location = new System.Drawing.Point(23, 239);
-            this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(115, 23);
-            this.btnApply.TabIndex = 1;
-            this.btnApply.Text = "Apply changes";
-            this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(9, 127);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(69, 13);
-            this.label7.TabIndex = 12;
-            this.label7.Text = "Conversation";
-            // 
-            // lblConversation
-            // 
-            this.lblConversation.AutoSize = true;
-            this.lblConversation.Location = new System.Drawing.Point(108, 127);
-            this.lblConversation.Name = "lblConversation";
-            this.lblConversation.Size = new System.Drawing.Size(38, 13);
-            this.lblConversation.TabIndex = 13;
-            this.lblConversation.Text = "Space";
-            // 
-            // btnConversation
-            // 
-            this.btnConversation.Location = new System.Drawing.Point(187, 122);
-            this.btnConversation.Name = "btnConversation";
-            this.btnConversation.Size = new System.Drawing.Size(75, 23);
-            this.btnConversation.TabIndex = 14;
-            this.btnConversation.Text = "Change";
-            this.btnConversation.UseVisualStyleBackColor = true;
-            this.btnConversation.Click += new System.EventHandler(this.btnConversation_Click);
-            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.label11);
@@ -355,39 +345,30 @@
             this.tabPage1.Text = "Database";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tbServerName
+            // label11
             // 
-            this.tbServerName.Location = new System.Drawing.Point(107, 12);
-            this.tbServerName.Name = "tbServerName";
-            this.tbServerName.Size = new System.Drawing.Size(180, 20);
-            this.tbServerName.TabIndex = 0;
-            this.tbServerName.Text = "localhost";
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(17, 93);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(53, 13);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "Password";
             // 
-            // label8
+            // tbPassword
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(17, 15);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(69, 13);
-            this.label8.TabIndex = 1;
-            this.label8.Text = "Server Name";
+            this.tbPassword.Location = new System.Drawing.Point(107, 90);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.PasswordChar = '*';
+            this.tbPassword.Size = new System.Drawing.Size(180, 20);
+            this.tbPassword.TabIndex = 6;
             // 
-            // tbDatabaseName
+            // tbUsername
             // 
-            this.tbDatabaseName.Location = new System.Drawing.Point(107, 38);
-            this.tbDatabaseName.Name = "tbDatabaseName";
-            this.tbDatabaseName.Size = new System.Drawing.Size(180, 20);
-            this.tbDatabaseName.TabIndex = 2;
-            this.tbDatabaseName.Text = "ripoff";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(17, 41);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(82, 13);
-            this.label9.TabIndex = 3;
-            this.label9.Text = "Database name";
+            this.tbUsername.Location = new System.Drawing.Point(107, 64);
+            this.tbUsername.Name = "tbUsername";
+            this.tbUsername.Size = new System.Drawing.Size(180, 20);
+            this.tbUsername.TabIndex = 5;
+            this.tbUsername.Text = "root";
             // 
             // label10
             // 
@@ -398,30 +379,49 @@
             this.label10.TabIndex = 4;
             this.label10.Text = "Username";
             // 
-            // tbUsername
+            // label9
             // 
-            this.tbUsername.Location = new System.Drawing.Point(107, 64);
-            this.tbUsername.Name = "tbUsername";
-            this.tbUsername.Size = new System.Drawing.Size(180, 20);
-            this.tbUsername.TabIndex = 5;
-            this.tbUsername.Text = "root";
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(17, 41);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(82, 13);
+            this.label9.TabIndex = 3;
+            this.label9.Text = "Database name";
             // 
-            // tbPassword
+            // tbDatabaseName
             // 
-            this.tbPassword.Location = new System.Drawing.Point(107, 90);
-            this.tbPassword.Name = "tbPassword";
-            this.tbPassword.PasswordChar = '*';
-            this.tbPassword.Size = new System.Drawing.Size(180, 20);
-            this.tbPassword.TabIndex = 6;
+            this.tbDatabaseName.Location = new System.Drawing.Point(107, 38);
+            this.tbDatabaseName.Name = "tbDatabaseName";
+            this.tbDatabaseName.Size = new System.Drawing.Size(180, 20);
+            this.tbDatabaseName.TabIndex = 2;
+            this.tbDatabaseName.Text = "ripoff";
             // 
-            // label11
+            // label8
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(17, 93);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(53, 13);
-            this.label11.TabIndex = 7;
-            this.label11.Text = "Password";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(17, 15);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(69, 13);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "Server Name";
+            // 
+            // tbServerName
+            // 
+            this.tbServerName.Location = new System.Drawing.Point(107, 12);
+            this.tbServerName.Name = "tbServerName";
+            this.tbServerName.Size = new System.Drawing.Size(180, 20);
+            this.tbServerName.TabIndex = 0;
+            this.tbServerName.Text = "localhost";
+            // 
+            // btnApply
+            // 
+            this.btnApply.Location = new System.Drawing.Point(23, 239);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(115, 23);
+            this.btnApply.TabIndex = 1;
+            this.btnApply.Text = "Apply changes";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // Settings
             // 
