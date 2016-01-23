@@ -9,7 +9,9 @@ using MonoGame.Extended.Collisions;
 using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended.ViewportAdapters;
 using Sandbox.Classes;
+using Sandbox.Forms;
 using VideoGame.Classes;
+using VideoGame.Forms;
 using Settings = VideoGame.Classes.Settings;
 using Type = VideoGame.Classes.Type;
 
@@ -72,12 +74,8 @@ namespace VideoGame {
             ContentLoader.SetContent(Content, graphics);
             _contentLoader.LoadContent();
 
-            var playerList = DatabaseConnector.GetCharacters("Pieter");
+            var playerList = DatabaseConnector.GetCharacters(Login.UserName);
             player = playerList[0];
-            currentBattle = new Battle(player, DatabaseConnector.GetMonster(1, 1)) {
-                battleOver = true,
-                battleStart = false
-            };
 
             menu = new Menu(player, new Vector2(Settings.ResolutionWidth - 64, 0));
         }
@@ -100,7 +98,12 @@ namespace VideoGame {
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
 
-            if (!currentBattle.battleOver) {
+            //Check if the player is new and has no monsters
+            if (player.Monsters.Count == 0) {
+                //Do intro here
+            }
+
+            if (currentBattle != null && !currentBattle.battleOver) {
                 currentBattle.Update(currentMouseState, previousMouseState, gameTime);
                 Drawer.UpdateBattleButtons(currentMouseState, previousMouseState);
                 player.MonsterUpdate(gameTime);
@@ -132,7 +135,7 @@ namespace VideoGame {
 
             spriteBatch.Begin();
             spriteBatch.Draw(ContentLoader.Grid, Vector2.Zero, Color.White);
-            if (!currentBattle.battleOver) {
+            if (currentBattle != null && !currentBattle.battleOver) {
                 spriteBatch.Draw(ContentLoader.GrassyBackground, Vector2.Zero);
                 currentBattle.Draw(spriteBatch, player);
             }
