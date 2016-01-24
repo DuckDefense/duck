@@ -103,6 +103,7 @@ namespace VideoGame {
                 //Do intro here
             }
 
+            Drawer.UpdateMessage(currentKeyboardState, previousKeyboardState, player);
             if (currentBattle != null && !currentBattle.battleOver) {
                 currentBattle.Update(currentMouseState, previousMouseState, gameTime);
                 Drawer.UpdateBattleButtons(currentMouseState, previousMouseState);
@@ -135,6 +136,7 @@ namespace VideoGame {
 
             spriteBatch.Begin();
             spriteBatch.Draw(ContentLoader.Grid, Vector2.Zero, Color.White);
+            Drawer.DrawMessage(spriteBatch);
             if (currentBattle != null && !currentBattle.battleOver) {
                 spriteBatch.Draw(ContentLoader.GrassyBackground, Vector2.Zero);
                 currentBattle.Draw(spriteBatch, player);
