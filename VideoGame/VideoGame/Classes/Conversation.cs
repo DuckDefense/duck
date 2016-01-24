@@ -70,6 +70,58 @@ namespace Sandbox.Classes {
             }
         }
 
+        public class BattleMessage {
+            public List<string> Lines;
+            public string CurrentLine;
+            public int CurrentIndex;
+            public SpriteFont Font;
+
+            public Vector2 Position;
+
+            public Color Color;
+            public Texture2D SourceTexture;
+            public bool Visible;
+            public bool Said;
+
+            public BattleMessage(List<string> lines, Color color) {
+                Lines = lines;
+                CurrentIndex = 0;
+                CurrentLine = Lines[CurrentIndex];
+                Color = color;
+                Font = ContentLoader.Arial;
+                SourceTexture = ContentLoader.BattleMessage;
+                Position = new Vector2(0, Settings.ResolutionHeight - SourceTexture.Height);
+                Visible = true;
+            }
+
+            public void Update(KeyboardState curKey, KeyboardState prevKey, Character player) {
+                if (Visible) {
+                    player.Talking = true;
+                    if (curKey.IsKeyDown(Settings.conversation) && prevKey.IsKeyUp(Settings.conversation)) {
+                        if (CurrentIndex < Lines.Count - 1) {
+                            CurrentIndex++;
+                            CurrentLine = Lines[CurrentIndex];
+                        }
+                        else {
+                            Visible = false;
+                            Said = true;
+                        }
+                    }
+                }
+                else {
+                    player.Talking = false;
+                }
+            }
+
+            public void Draw(SpriteBatch batch) {
+                if (Visible) {
+                    batch.Draw(SourceTexture, Position, Color.White);
+                    batch.DrawString(Font, CurrentLine,
+                        new Vector2(8, Settings.ResolutionHeight - (SourceTexture.Height - 32)), Color);
+                }
+            }
+        }
+
         public class Choice {
 
         }
