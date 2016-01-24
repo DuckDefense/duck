@@ -340,6 +340,7 @@ namespace VideoGame.Classes
             {
                 Random r = new Random();
                 var medicine = medicineList[r.Next(0, medicineList.Count)];
+                Drawer.AddMessage(new List<string> { $"{medicine.Name} used on {user.Name}." });
                 medicine.Use(user, player);
             }
         }
