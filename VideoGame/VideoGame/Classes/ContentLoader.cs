@@ -437,9 +437,9 @@ namespace VideoGame.Classes {
                 break;
             case 22:
                 switch (face) {
-                case TextureFace.Front: return DrumbyFront;
-                case TextureFace.Back: return DrumbyBack;
-                case TextureFace.World: return DrumbyParty;
+                case TextureFace.Front: return KolfieFront;
+                case TextureFace.Back: return KolfieBack;
+                case TextureFace.World: return KolfieParty;
                 }
                 break;
             case 23:
