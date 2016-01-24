@@ -58,7 +58,7 @@ namespace VideoGame.Classes {
         public static Texture2D GrassyBackground;
         public static Texture2D ChristmanWorld, ChristmanFront, ChristmanBack;
         public static Texture2D MCGirlWorld, MCGirlFront, MCGirlBack;
-        public static Texture2D MessageBox;
+        public static Texture2D MessageBox, BattleMessage;
         public static Texture2D Button, ButtonHover, ButtonClicked;
         public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt;
         public static Texture2D RottenNet, RegularNet, GreatNet;
@@ -77,6 +77,7 @@ namespace VideoGame.Classes {
         public void LoadContent() {
             Grid = Content.Load<Texture2D>(@"Sprites/Debug/32grid");
             MessageBox = Content.Load<Texture2D>(@"Sprites/Conversation/MessageBox");
+            BattleMessage = Content.Load<Texture2D>(@"Sprites/Conversation/BattleMessage");
 
             #region Button
             Button = Content.Load<Texture2D>(@"Sprites/Buttons/Button");
