@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Sandbox.Classes;
 using Sandbox.Classes.UI;
 
 namespace VideoGame.Classes {
@@ -17,11 +18,11 @@ namespace VideoGame.Classes {
         public static Button bMedicine, bCapture;
         public static List<ContainerButton> MoveButtons, ItemButtons, MedicineButtons, CaptureButtons, PartyButtons;
         public static List<Button> InventoryButtons;
+        public static List<Conversation.BattleMessage> BattleMessages = new List<Conversation.BattleMessage>();
 
         private static Rectangle userpos, opponentpos;
 
         #region Battle
-
 
         public static Texture2D GetTextureFromMoveKind(Move m) {
             switch (m.Kind) {
@@ -61,10 +62,6 @@ namespace VideoGame.Classes {
             case Type.Sound: return ContentLoader.SoundType;
             }
             return ContentLoader.NormalType;
-        }
-
-        public static void Initialize(GraphicsDeviceManager graphics) {
-            Batch = new SpriteBatch(graphics.GraphicsDevice);
         }
 
         public static void DrawMoves(SpriteBatch batch, Character player) {
@@ -187,13 +184,26 @@ namespace VideoGame.Classes {
             batch.Draw(ContentLoader.Health, opponentHealthRec, opponentCol);
         }
 
-        public static void DrawMessage(string message) {
-            Rectangle rec = new Rectangle(0 - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
-            Batch.Begin();
-            var b = new Button(rec, message, ContentLoader.Arial);
-            //Batch.DrawString(ContentLoader.Arial, message, new Vector2(500, 500), Color.White);
-            b.Draw(Batch);
-            Batch.End();
+        public static void DrawMessage(SpriteBatch batch) {
+            if (BattleMessages != null && BattleMessages.Count != 0)
+                foreach (var mes in BattleMessages) {
+                    mes.Draw(batch);
+                }
+        }
+
+        public static void AddMessage(List<string> lines) {
+            //BattleMessages = new List<Conversation.BattleMessage>();
+            for (int i = 0; i < lines.Count; i++) if (string.IsNullOrEmpty(lines[i])) lines.RemoveAt(i);
+            if (BattleMessages.Count != 0 && !BattleMessages[0].Said) {
+                foreach (var line in lines) {
+                    BattleMessages[0].Lines.Add(line);
+                }
+            }
+            else {
+                BattleMessages = new List<Conversation.BattleMessage>();
+                var mes = new Conversation.BattleMessage(lines, Color.Black);
+                BattleMessages.Add(mes);
+            }
         }
 
         public static string SplitString(string s, Rectangle size) {
@@ -208,7 +218,7 @@ namespace VideoGame.Classes {
                     }
                 }
                 else {
-                    var difference = sSize.X%size.Width;
+                    var difference = sSize.X % size.Width;
                     //Find a way to split the string so its size is low enough
                 }
             }
@@ -282,11 +292,6 @@ namespace VideoGame.Classes {
             PartyButtons = new List<ContainerButton>();
         }
 
-        //public static void ClearButtons() {
-        //    LastClickedContainer = null;
-        //    LastClickedButton = null;
-        //}
-
         public static void UpdateBattleButtons(MouseState cur, MouseState prev) {
             if (ItemButtons != null)
                 foreach (var btn in ItemButtons) {
@@ -328,6 +333,13 @@ namespace VideoGame.Classes {
                 if (bCapture.IsClicked(cur, prev)) {
                     DrawCapture = true;
                     DrawMedicine = false;
+                }
+        }
+
+        public static void UpdateMessage(KeyboardState cur, KeyboardState prev, Character player) {
+            if (BattleMessages != null && BattleMessages.Count != 0)
+                foreach (var message in BattleMessages) {
+                    message.Update(cur, prev, player);
                 }
         }
         #endregion
