@@ -108,7 +108,6 @@ namespace VideoGame.Classes {
                     receiver.Stats.Health -= Damage;
                 }
                 if (HitModifier != null) {
-                    //TODO: Find out if this will return the same stats if the modifier is empty
                     if (HitModifier.ApplyToOpponent) receiver.Stats = HitModifier.Modifier.ApplyModifiers(receiver);
                     if (HitModifier.ApplyToUser) user.Stats = HitModifier.Modifier.ApplyModifiers(user);
                 }
@@ -116,6 +115,7 @@ namespace VideoGame.Classes {
             }
             //User missed
             else {
+                Drawer.AddMessage(new List<string> { "But it missed.." });
                 Missed = true;
                 if (MissModifier != null) {
                     if (MissModifier.ApplyToOpponent)
