@@ -723,7 +723,7 @@ namespace VideoGame.Classes
             var introLines = new List<string> { "Yello!\n Feel free to buy some of my stock" };
             var byeLines = new List<string> { "Thanks for stopping by" };
             var healLady = new Character("HealLady", 0, null, introLines, byeLines, NPCKind.Healer,
-                ContentLoader.ChristmanFront, ContentLoader.ChristmanBack, ContentLoader.ChristmanWorld,
+                ContentLoader.ChristmanFront, ContentLoader.ChristmanBack, ContentLoader.HealLady,
                 new Vector2(256, 64));
 
             healLady.AI = new AI(healLady, 5);
