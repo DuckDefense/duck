@@ -32,15 +32,16 @@
             // 
             // tbPassword
             // 
-            this.tbPassword.Location = new System.Drawing.Point(15, 70);
+            this.tbPassword.Location = new System.Drawing.Point(12, 70);
             this.tbPassword.Name = "tbPassword";
+            this.tbPassword.PasswordChar = '●';
             this.tbPassword.Size = new System.Drawing.Size(153, 20);
             this.tbPassword.TabIndex = 11;
             // 
             // lbPassword
             // 
             this.lbPassword.AutoSize = true;
-            this.lbPassword.Location = new System.Drawing.Point(12, 53);
+            this.lbPassword.Location = new System.Drawing.Point(12, 54);
             this.lbPassword.Name = "lbPassword";
             this.lbPassword.Size = new System.Drawing.Size(108, 13);
             this.lbPassword.TabIndex = 10;
@@ -82,7 +83,7 @@
             this.Controls.Add(this.lbPassword);
             this.Controls.Add(this.tbUser);
             this.Controls.Add(this.lbName);
-            Login.UserName = "Login";
+            this.Name = "Login";
             this.Text = "Login";
             this.ResumeLayout(false);
             this.PerformLayout();
