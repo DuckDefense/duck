@@ -45,12 +45,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.tpGraphics = new System.Windows.Forms.TabPage();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cbbRatio = new System.Windows.Forms.ComboBox();
-            this.cbb4to3 = new System.Windows.Forms.ComboBox();
-            this.cbb16to9 = new System.Windows.Forms.ComboBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label11 = new System.Windows.Forms.Label();
             this.tbPassword = new System.Windows.Forms.TextBox();
@@ -63,7 +57,6 @@
             this.btnApply = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tpKeybinds.SuspendLayout();
-            this.tpGraphics.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,7 +64,6 @@
             // 
             this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.Buttons;
             this.tabControl1.Controls.Add(this.tpKeybinds);
-            this.tabControl1.Controls.Add(this.tpGraphics);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Multiline = true;
@@ -245,89 +237,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Move up";
             // 
-            // tpGraphics
-            // 
-            this.tpGraphics.Controls.Add(this.label6);
-            this.tpGraphics.Controls.Add(this.label5);
-            this.tpGraphics.Controls.Add(this.cbbRatio);
-            this.tpGraphics.Controls.Add(this.cbb4to3);
-            this.tpGraphics.Controls.Add(this.cbb16to9);
-            this.tpGraphics.Location = new System.Drawing.Point(4, 25);
-            this.tpGraphics.Name = "tpGraphics";
-            this.tpGraphics.Padding = new System.Windows.Forms.Padding(3);
-            this.tpGraphics.Size = new System.Drawing.Size(302, 192);
-            this.tpGraphics.TabIndex = 1;
-            this.tpGraphics.Text = "Graphics";
-            this.tpGraphics.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 42);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 13);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "Resolution";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 15);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 13);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Ratio";
-            // 
-            // cbbRatio
-            // 
-            this.cbbRatio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbRatio.FormattingEnabled = true;
-            this.cbbRatio.Items.AddRange(new object[] {
-            "16:9",
-            "4:3"});
-            this.cbbRatio.Location = new System.Drawing.Point(74, 12);
-            this.cbbRatio.Name = "cbbRatio";
-            this.cbbRatio.Size = new System.Drawing.Size(121, 21);
-            this.cbbRatio.TabIndex = 2;
-            this.cbbRatio.SelectedIndexChanged += new System.EventHandler(this.cbbRatio_SelectedIndexChanged);
-            // 
-            // cbb4to3
-            // 
-            this.cbb4to3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbb4to3.FormattingEnabled = true;
-            this.cbb4to3.Items.AddRange(new object[] {
-            "640x480",
-            "800x600",
-            "960x720",
-            "1280x960",
-            "1440x1080",
-            "1600x1200",
-            "1920x1440"});
-            this.cbb4to3.Location = new System.Drawing.Point(74, 39);
-            this.cbb4to3.Name = "cbb4to3";
-            this.cbb4to3.Size = new System.Drawing.Size(121, 21);
-            this.cbb4to3.TabIndex = 1;
-            this.cbb4to3.Visible = false;
-            this.cbb4to3.SelectedIndexChanged += new System.EventHandler(this.cbb4to3_SelectedIndexChanged);
-            // 
-            // cbb16to9
-            // 
-            this.cbb16to9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbb16to9.FormattingEnabled = true;
-            this.cbb16to9.Items.AddRange(new object[] {
-            "854x480",
-            "960x540",
-            "1280x720",
-            "1600x900",
-            "1920x1080",
-            "2560x1440",
-            "3840x2160"});
-            this.cbb16to9.Location = new System.Drawing.Point(74, 39);
-            this.cbb16to9.Name = "cbb16to9";
-            this.cbb16to9.Size = new System.Drawing.Size(121, 21);
-            this.cbb16to9.TabIndex = 0;
-            this.cbb16to9.SelectedIndexChanged += new System.EventHandler(this.cbb16to9_SelectedIndexChanged);
-            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.label11);
@@ -436,8 +345,6 @@
             this.tabControl1.ResumeLayout(false);
             this.tpKeybinds.ResumeLayout(false);
             this.tpKeybinds.PerformLayout();
-            this.tpGraphics.ResumeLayout(false);
-            this.tpGraphics.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
@@ -460,12 +367,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TabPage tpGraphics;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox cbbRatio;
-        private System.Windows.Forms.ComboBox cbb4to3;
-        private System.Windows.Forms.ComboBox cbb16to9;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnConversation;
         private System.Windows.Forms.Label lblConversation;

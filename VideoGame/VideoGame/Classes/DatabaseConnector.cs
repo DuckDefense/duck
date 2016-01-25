@@ -419,8 +419,6 @@ namespace Sandbox.Classes {
             cmd.Parameters.AddWithValue("@id", playerId);
             using (var rdr = cmd.ExecuteReader()) {
                 while (rdr.Read()) {
-                    Settings.ResolutionHeight = rdr.GetInt32("resolutionHeight");
-                    Settings.ResolutionWidth = rdr.GetInt32("resolutionWidth");
                     Enum.TryParse(rdr.GetString("moveUp"), true, out Settings.moveUp);
                     Enum.TryParse(rdr.GetString("moveDown"), true, out Settings.moveDown);
                     Enum.TryParse(rdr.GetString("moveLeft"), true, out Settings.moveLeft);
@@ -436,12 +434,10 @@ namespace Sandbox.Classes {
 
         public static void SaveSettings(int playerId) {
             var cmd = connection.CreateCommand();
-            cmd.CommandText = "UPDATE `settings` SET `resolutionHeight`=@resHeight, `resolutionWidth`=@resWidth, " +
+            cmd.CommandText = "UPDATE `settings` SET " +
                               "`moveUp`=@moveUp, `moveDown`=@moveDown, `moveLeft`=@moveLeft, `moveRight`=@moveRight, `talk`=@talk, " +
                               "`serverName`=@serverName, `userId`=@userId, `userPassword`=@userPass, `databaseName`=@dbName " +
                               "WHERE `playerId` = @pid";
-            cmd.Parameters.AddWithValue("@resHeight", Settings.ResolutionHeight);
-            cmd.Parameters.AddWithValue("@resWidth", Settings.ResolutionWidth);
             cmd.Parameters.AddWithValue("@moveUp", Settings.moveUp.ToString());
             cmd.Parameters.AddWithValue("@moveDown", Settings.moveDown.ToString());
             cmd.Parameters.AddWithValue("@moveLeft", Settings.moveLeft.ToString());
