@@ -515,7 +515,7 @@ namespace VideoGame.Classes
                 }
                 else
                 {
-                    spawn = new Vector2(256, 320);
+                    spawn = new Vector2(0, 32);
                 }
             List<Monster> monsters = new List<Monster>
             {
@@ -558,13 +558,13 @@ namespace VideoGame.Classes
             var map = ContentLoader.Route6;
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Route 4")
+                if (player.PreviousArea.Name == "Route 5")
                 {
-                    spawn = new Vector2(608, 416);
+                    spawn = new Vector2(64, 32);
                 }
                 else
                 {
-                    spawn = new Vector2(256, 320);
+                    spawn = new Vector2(96, 384);
                 }
             List<Monster> monsters = new List<Monster>
             {
@@ -607,13 +607,13 @@ namespace VideoGame.Classes
             var map = ContentLoader.Route7;
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Route 4")
+                if (player.PreviousArea.Name == "Route 6")
                 {
-                    spawn = new Vector2(608, 416);
+                    spawn = new Vector2(96, 448);
                 }
                 else
                 {
-                    spawn = new Vector2(256, 320);
+                    spawn = new Vector2(672, 384);
                 }
             List<Monster> monsters = new List<Monster>
             {
@@ -656,9 +656,9 @@ namespace VideoGame.Classes
             var map = ContentLoader.Route8;
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Route 4")
+                if (player.PreviousArea.Name == "Route 7")
                 {
-                    spawn = new Vector2(608, 416);
+                    spawn = new Vector2(672, 128);
                 }
                 else
                 {
