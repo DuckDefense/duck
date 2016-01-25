@@ -56,6 +56,7 @@ namespace VideoGame.Classes {
         public static Texture2D Grid;
 
         public static Texture2D GrassyBackground;
+        public static Texture2D HealLady;
         public static Texture2D ChristmanWorld, ChristmanFront, ChristmanBack;
         public static Texture2D MCGirlWorld, MCGirlFront, MCGirlBack;
         public static Texture2D MessageBox, BattleMessage;
@@ -189,6 +190,8 @@ namespace VideoGame.Classes {
             MCGirlFront = Content.Load<Texture2D>(@"Sprites/Characters/Front/MC Girl");
             //MCGirlBack = Content.Load<Texture2D>(@"Sprites/Characters/Back/MC Girl");
             MCGirlWorld = Content.Load<Texture2D>(@"Sprites/Characters/World/MC Girl");
+            HealLady = Content.Load<Texture2D>(@"Sprites/Characters/World/Heal mevrouw");
+
             #endregion
 
             #region Battle
