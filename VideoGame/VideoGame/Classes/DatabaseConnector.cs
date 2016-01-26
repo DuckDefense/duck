@@ -34,7 +34,9 @@ namespace Sandbox.Classes {
             return inventory;
         }
 
-        public static Monster GetMonster(int monsterId, int level) {
+        public static Monster GetMonster(int monsterId, int level)
+        {
+            Monster mon = null;
             var monsterCmd = connection.CreateCommand();
             monsterCmd.CommandText = $"SELECT * FROM `monster` WHERE `Id` = @id";
             monsterCmd.Parameters.AddWithValue("@id", monsterId);
@@ -62,9 +64,15 @@ namespace Sandbox.Classes {
                         var front = ContentLoader.GetTextureFromMonsterId(id, TextureFace.Front);
                         var back = ContentLoader.GetTextureFromMonsterId(id, TextureFace.Back);
                         var party = ContentLoader.GetTextureFromMonsterId(id, TextureFace.World);
-                        return new Monster(id, level, name, description, primaryType, secondType, maleChance, captureChance, new Item(), baseStats, abilities, front, back, party, true);
+                        mon = new Monster(id, level, name, description, primaryType, secondType, maleChance, captureChance, new Item(), baseStats, abilities, front, back, party, true);
+                        break;
                     }
                 }
+            }
+            if(mon.Name != String.Empty) { 
+                mon.UId = RandomId.GenerateRandomUId();
+                mon.StatId = RandomId.GenerateStatsId();
+                return mon;
             }
             return null;
         }
