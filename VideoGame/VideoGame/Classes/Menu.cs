@@ -17,8 +17,6 @@ namespace Sandbox.Classes {
         None,
         KnownMonsters,
         Party,
-        Item,
-        Player,
         Save,
         Mute
     }
@@ -31,9 +29,6 @@ namespace Sandbox.Classes {
         private List<ContainerButton> knownMonsterList = new List<ContainerButton>();
         private List<ContainerButton> partyList = new List<ContainerButton>();
         private List<ContainerButton> movesList = new List<ContainerButton>();
-        private List<ContainerButton> itemList = new List<ContainerButton>();
-        private List<ContainerButton> captureList = new List<ContainerButton>();
-        private List<ContainerButton> medicineList = new List<ContainerButton>();
         private List<Button> PartyMenuList = new List<Button>();
 
         private bool drawPartyMenu, drawStatus, drawMoves;
@@ -42,7 +37,7 @@ namespace Sandbox.Classes {
         private Button statusButton;
         private Button movesButton;
 
-        public Button KnownMonstersButton, PartyButton, ItemButton, PlayerButton, SaveButton, MuteButton, CloseButton;
+        public Button KnownMonstersButton, PartyButton, SaveButton, MuteButton, CloseButton;
         private Button generalItems, medicineItems, captureItems;
         public List<Button> ButtonList;
 
@@ -57,13 +52,11 @@ namespace Sandbox.Classes {
             position = pos;
             KnownMonstersButton = new Button(new Rectangle((int)pos.X, (int)pos.Y, width, height), buttonTexture, hoverTexture, clickedTexture, "Monsters", ContentLoader.Arial);
             PartyButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + height, width, height), buttonTexture, hoverTexture, clickedTexture, "Party", ContentLoader.Arial);
-            ItemButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 2), width, height), buttonTexture, hoverTexture, clickedTexture, "Item", ContentLoader.Arial);
-            PlayerButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 3), width, height), buttonTexture, hoverTexture, clickedTexture, player.Name, ContentLoader.Arial);
-            SaveButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 4), width, height), buttonTexture, hoverTexture, clickedTexture, "Save", ContentLoader.Arial);
-            MuteButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 5), width, height), buttonTexture, hoverTexture, clickedTexture, "Mute", ContentLoader.Arial);
-            CloseButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 6), width, height), buttonTexture, hoverTexture, clickedTexture, "Close", ContentLoader.Arial);
+            SaveButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 2), width, height), buttonTexture, hoverTexture, clickedTexture, "Save", ContentLoader.Arial);
+            MuteButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 3), width, height), buttonTexture, hoverTexture, clickedTexture, "Mute", ContentLoader.Arial);
+            CloseButton = new Button(new Rectangle((int)pos.X, (int)pos.Y + (height * 4), width, height), buttonTexture, hoverTexture, clickedTexture, "Close", ContentLoader.Arial);
 
-            ButtonList.AddMany(KnownMonstersButton, PartyButton, ItemButton, PlayerButton, SaveButton, MuteButton, CloseButton);
+            ButtonList.AddMany(KnownMonstersButton, PartyButton, SaveButton, MuteButton, CloseButton);
         }
 
         public void Update(GameTime gameTime, MouseState curMouseState, MouseState prevMouseState, KeyboardState curKeyboardState, KeyboardState prevKeyboardState) {
@@ -73,8 +66,6 @@ namespace Sandbox.Classes {
 
             if (KnownMonstersButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.KnownMonsters;
             if (PartyButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Party;
-            if (ItemButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Item;
-            if (PlayerButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Player;
             if (SaveButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Save;
             if (MuteButton.IsClicked(curMouseState, prevMouseState)) Selection = Selection.Mute;
             if (CloseButton.IsClicked(curMouseState, prevMouseState)) Hide();
@@ -88,13 +79,6 @@ namespace Sandbox.Classes {
                 foreach (var b in PartyMenuList) {
                     b.Update(curMouseState, prevMouseState);
                 }
-                break;
-            case Selection.Item:
-                if (player.Inventory.Items.Count >= itemList.Count) GetItems();
-                if (player.Inventory.Captures.Count >= captureList.Count) GetCapture();
-                if (player.Inventory.Medicine.Count >= medicineList.Count) GetMedicine();
-                break;
-            case Selection.Player:
                 break;
             case Selection.Save:
                 DatabaseConnector.SaveData(player);
@@ -150,10 +134,6 @@ namespace Sandbox.Classes {
                         }
                     }
                 }
-                break;
-            case Selection.Item:
-                break;
-            case Selection.Player:
                 break;
             case Selection.Save:
                 break;
@@ -230,16 +210,7 @@ namespace Sandbox.Classes {
                 movesList.Add(new ContainerButton(b, move));
             }
         }
-
-        //Unfinished
-        private void GetItems() {
-            foreach (var item in player.Inventory.Items.Values) {
-                var pos = new Rectangle((int)position.X - 288, (int)position.Y, item.Sprite.Width / 2, item.Sprite.Height / 2);
-
-            }
-        }
-        private void GetCapture() { }
-        private void GetMedicine() { }
+        
         private void DrawKnownMonsters(SpriteBatch batch) {
             batch.Draw(ContentLoader.Health, new Rectangle(0, 0, (96 * 7) + 1, (96 * 5) + 1), Color.DarkRed);
             foreach (var con in knownMonsterList) {
@@ -295,21 +266,6 @@ namespace Sandbox.Classes {
                 batch.DrawString(ContentLoader.Arial, $"Accuracy \n    {move.Accuracy}", new Vector2(con.Button.Position.X + 64, con.Button.Position.Y + (32 + (typeTexture.Height * 2))), Color.Black);
                 batch.DrawString(ContentLoader.Arial, $"Uses \n{move.Uses}/{move.MaxUses}", new Vector2(con.Button.Position.X + 144, con.Button.Position.Y + (32 + (typeTexture.Height * 2))), Color.Black);
             }
-        }
-
-        private void DrawItem(SpriteBatch batch) {
-            var pos = new Rectangle((int)position.X + ContentLoader.Button.Width, (int)position.Y, ContentLoader.Button.Width, ContentLoader.Button.Height);
-            generalItems = new Button(new Rectangle(pos.X, pos.Y, pos.Width, pos.Height), ContentLoader.Button, ContentLoader.ButtonHover, ContentLoader.ButtonClicked, "General", ContentLoader.Arial);
-            captureItems = new Button(new Rectangle(pos.X, pos.Y, pos.Width, pos.Height), ContentLoader.Button, ContentLoader.ButtonHover, ContentLoader.ButtonClicked, "Capture", ContentLoader.Arial);
-            medicineItems = new Button(new Rectangle(pos.X, pos.Y, pos.Width, pos.Height), ContentLoader.Button, ContentLoader.ButtonHover, ContentLoader.ButtonClicked, "Medicine", ContentLoader.Arial);
-        }
-
-        private void DrawPlayer(SpriteBatch batch) {
-
-        }
-
-        private void DrawSave(SpriteBatch batch) {
-
         }
     }
 }
