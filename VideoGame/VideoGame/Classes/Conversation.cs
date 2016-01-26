@@ -11,7 +11,7 @@ namespace Sandbox.Classes {
     public class Conversation {
 
         public class Message {
-            List<string> Lines;
+            public List<string> Lines;
             public string CurrentLine;
             public int CurrentIndex;
             public SpriteFont Font;

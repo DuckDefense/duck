@@ -259,6 +259,8 @@ namespace VideoGame.Classes
                     {
                         return City(player);
                     }
+                case "eastercity":
+                    return EasterCity(player);
                 case "shop":
                     return Shop();
                 case "secrettunnel":
@@ -316,7 +318,11 @@ namespace VideoGame.Classes
                 {
                     spawn = new Vector2(384, 32);
                 }
-                else
+                else if (player.PreviousArea.Name == "EasterCity")
+                {
+                    spawn = new Vector2(384, 32);
+                }
+            else
                 {
                     spawn = new Vector2(192, 416);
                 }
