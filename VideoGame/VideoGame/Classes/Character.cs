@@ -164,6 +164,11 @@ namespace VideoGame.Classes {
             NpcKind = npcKind;
             }
 
+        public Character(string name)
+        {
+            Name = name;
+        }
+
         public void Update(GameTime time, KeyboardState cur, KeyboardState prev) {
             if (!Talking) {
                 if (CountingDown) {
