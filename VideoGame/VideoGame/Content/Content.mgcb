@@ -1329,3 +1329,14 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Characters/World/Heal mevrouw.png
 
+#begin Sprites/Characters/Front/Professor Koak.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Characters/Front/Professor Koak.png
+
