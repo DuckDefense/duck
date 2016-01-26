@@ -56,6 +56,7 @@ namespace VideoGame.Classes {
         public static Texture2D Grid;
 
         public static Texture2D GrassyBackground;
+        public static Texture2D Koak;
         public static Texture2D HealLady;
         public static Texture2D ChristmanWorld, ChristmanFront, ChristmanBack;
         public static Texture2D MCGirlWorld, MCGirlFront, MCGirlBack;
@@ -184,6 +185,7 @@ namespace VideoGame.Classes {
             #endregion
 
             #region Characters
+            Koak = Content.Load<Texture2D>(@"Sprites/Characters/Front/Professor Koak");
             ChristmanFront = Content.Load<Texture2D>(@"Sprites/Characters/Front/Christman");
             //ChristmanBack = Content.Load<Texture2D>(@"Sprites/Characters/Back/Christman");
             ChristmanWorld = Content.Load<Texture2D>(@"Sprites/Characters/World/Christman");
