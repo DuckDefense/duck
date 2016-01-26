@@ -292,6 +292,40 @@ namespace VideoGame.Classes {
             PartyButtons = new List<ContainerButton>();
         }
 
+        public static void UpdateItemButtons(MouseState cur, MouseState prev)
+        {
+            if (bMedicine != null)
+                if (bMedicine.IsClicked(cur, prev))
+                {
+                    DrawMedicine = true;
+                    DrawCapture = false;
+                }
+            if (bCapture != null)
+                if (bCapture.IsClicked(cur, prev))
+                {
+                    DrawCapture = true;
+                    DrawMedicine = false;
+                }
+            if (MedicineButtons != null)
+                foreach (var btn in MedicineButtons)
+                {
+                    btn.Update(cur, prev);
+                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn;
+                }
+            if (CaptureButtons != null)
+                foreach (var btn in CaptureButtons)
+                {
+                    btn.Update(cur, prev);
+                    if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn;
+                }
+            if (InventoryButtons != null)
+                foreach (var btn in InventoryButtons)
+                {
+                    btn.Update(cur, prev);
+                    if (btn.IsClicked(cur, prev)) LastClickedButton = btn;
+                }
+        }
+
         public static void UpdateBattleButtons(MouseState cur, MouseState prev) {
             if (ItemButtons != null)
                 foreach (var btn in ItemButtons) {
