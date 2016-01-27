@@ -297,13 +297,27 @@ namespace VideoGame.Classes {
         //Physical
 
         //Special
-        public static Move LeafCut() {
+        public static Move LeafCut()
+        {
             return new Move("LeafCut", "Cuts the target with a sharp leaf",
                 60, 80, 20, Kind.Physical, Type.Grass);
         }
+
+        public static Move NatureCalling()
+        {
+            return new Move("Nature Calling", "Calls upon nature to harm the foe",
+                60, 100, 25, Kind.Special, Type.Grass);
+        }
+
+        public static Move TreeHammer()
+        {
+            return new Move("Tree hammer", "Tears a tree out of the earth, and smacks the foe with it",
+                120, 95, 5, Kind.Physical, Type.Grass);
+        }
+
         //NonDamage
-        #endregion
-        #region Rock
+            #endregion
+            #region Rock
         public static Move RockThrow() {
             return new Move("Rock throw", "Throw a rock at the foe",
                 65, 80, 20, Kind.Special, Type.Rock);
