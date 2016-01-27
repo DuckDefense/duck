@@ -419,6 +419,24 @@ namespace Sandbox.Classes {
             cmd.CommandText = "INSERT INTO `settings`(`playerId`) VALUES (@pid)";
             cmd.ExecuteNonQuery();
             SaveSettings(pid);
+
+            //Make inventory
+            cmd.CommandText = "SELECT COUNT(*) FROM `medicine`";
+            int count = Convert.ToInt32(cmd.ExecuteScalar());
+            for (int i = 1; i < count; i++)
+            {
+                cmd.CommandText = "INSERT INTO `medicinelink`(`playerId`, `medicineId`,  `Amount`) " +
+                                  $"VALUES ({pid}, {i}, 0)";
+                cmd.ExecuteNonQuery();
+            }
+            cmd.CommandText = "SELECT COUNT(*) FROM `capture`";
+            count = Convert.ToInt32(cmd.ExecuteScalar());
+            for (int i = 1; i < count; i++)
+            {
+                cmd.CommandText = "INSERT INTO `capturelink`(`playerId`,`captureId`,`Amount`) " +
+                                  $"VALUES ({pid}, {i}, 0)";
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public static void GetSettings(int playerId) {
