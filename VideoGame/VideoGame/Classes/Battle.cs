@@ -36,6 +36,8 @@ namespace VideoGame.Classes {
         public Monster CurrentUserMonster;
         public Monster CurrentOpponentMonster;
         private int boxSize, partySize;
+        private int sleepTurns = 0;
+        private int frozenTurns = 0;
         public int OpponentMonstersDead = 0;
         public int UserMonstersDead = 0;
         public Selection Selection = Selection.None;
@@ -145,6 +147,8 @@ namespace VideoGame.Classes {
                 if (!User.Talking) {
                     CheckDefeat();
                     UpdateButtons(cur, prev, gameTime);
+                    //AilmentEffect(CurrentUserMonster);
+                    //AilmentEffect(CurrentOpponentMonster);
                 }
             }
             //If the battle is over
@@ -156,6 +160,7 @@ namespace VideoGame.Classes {
                     CurrentUserMonster.Stats = CurrentUserMonster.PreviousStats;
                     CurrentUserMonster.Stats.Health = userHealth;
                     CurrentOpponentMonster.Stats = CurrentOpponentMonster.PreviousStats;
+                    CheckState();
             }
         }
 
@@ -202,12 +207,13 @@ namespace VideoGame.Classes {
                 break;
             case State.Loss:
                 if (Opponent != null) Opponent.WinMessage.Visible = true;
-                Drawer.AddMessage(new List<string> { $"{User} blanked out" });
+                Drawer.AddMessage(new List<string> { $"{User.Name} blanked out" });
                 //Send the player to a healing lady
                 User.CurrentArea = Area.Shop();
-                //Heal monsters
+                User.Position = new Vector2(224, 128);
+                    //Heal monsters
 
-                foreach (var m in User.Monsters) {
+                    foreach (var m in User.Monsters) {
                     m.Stats.Health = m.MaxHealth;
                     m.Ailment = Ailment.Normal;
                     foreach (var use in m.Moves) {
@@ -467,6 +473,8 @@ namespace VideoGame.Classes {
         }
         private void Reset(bool passTurn = true) {
             ResetDraws();
+            AilmentEffect(CurrentUserMonster);
+            AilmentEffect(CurrentOpponentMonster);
             Selection = Selection.None;
             SelectedMedicine = null;
             SelectedCapture = null;
@@ -487,6 +495,67 @@ namespace VideoGame.Classes {
         private void SetLoss() {
             BattleState = State.Loss;
             battleOver = true;
+        }
+        public void AilmentEffect(Monster monster)
+        {
+                if (monster.Ailment == Ailment.Burned)
+                {
+                    monster.Stats.Health -= (monster.MaxHealth/100*8);
+                }
+                if (monster.Ailment == Ailment.Poisoned)
+                {
+                    monster.Stats.Health -= Convert.ToInt32(((double)monster.MaxHealth / 100)*8);
+                }
+                if (monster.Ailment == Ailment.Sleep)
+                {
+                    if (sleepTurns == 3)
+                    {
+                        monster.Ailment = Ailment.Normal;
+                        sleepTurns = 0;
+                    }
+                    else
+                    {
+                        Random r = new Random();
+                        if (r.Next(0, 100) < 40)
+                        {
+                            monster.Ailment = Ailment.Normal;
+                            sleepTurns = 0;
+                        }
+                        else
+                        {
+                            sleepTurns++;
+                        }
+                    }
+                }
+                if (monster.Ailment == Ailment.Frozen)
+                {
+                    if (frozenTurns == 5)
+                    {
+                        monster.Ailment = Ailment.Normal;
+                        frozenTurns = 0;
+                    }
+                    else
+                    {
+                        Random r = new Random();
+                        if (r.Next(0, 100) < 15)
+                        {
+                            monster.Ailment = Ailment.Normal;
+                            frozenTurns = 0;
+                        }
+                        else
+                        {
+                            frozenTurns++;
+                        }
+                    }
+                }
+                if (monster.Ailment == Ailment.Frenzied)
+                {
+                    Random r = new Random();
+                    if (r.Next(0, 100) < 20)
+                    {
+                        monster.Ailment = Ailment.Normal;
+                    }
+                }
         }
     }
 }
