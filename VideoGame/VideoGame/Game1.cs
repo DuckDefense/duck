@@ -193,6 +193,7 @@ namespace VideoGame
                     ref currentBattle);
                 player.CurrentArea.GetArea(player);
                 player.CurrentArea.GetCollision(player);
+                player.CurrentArea.GetBox(player);
                 player.CurrentArea.GetEncounters(player, ref currentBattle, ref battling);
             }
 
@@ -210,7 +211,7 @@ namespace VideoGame
         {
             fpsCounter.Update(gameTime);
             GraphicsDevice.Clear(Color.Gray);
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, null);
 
             if (player.Monsters.Count == 0)
             {

@@ -13,11 +13,9 @@ using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
 using Sandbox.Classes;
 
-namespace VideoGame.Classes
-{
-    public class Area
-    {
-        public bool Debug = false;
+namespace VideoGame.Classes {
+    public class Area {
+        public bool Debug = true;
         private static SoundEffectInstance Sound;
         private static Point Levelrange;
         public string Name;
@@ -29,137 +27,122 @@ namespace VideoGame.Classes
         private Rectangle collisionHitbox;
         private Vector2 SpawnLocation;
         public List<Character> OpponentList = new List<Character>();
-        private Dictionary<Rectangle, string> AreaColiders = new Dictionary<Rectangle, string>();
-        private List<Rectangle> EncounterColiders = new List<Rectangle>();
-        private List<Rectangle> CollisionColiders = new List<Rectangle>();
-        private List<Shop> shopList = new List<Shop>(); 
+        private Dictionary<Rectangle, string> AreaColliders = new Dictionary<Rectangle, string>();
+        private List<Rectangle> EncounterColliders = new List<Rectangle>();
+        private List<Rectangle> CollisionColliders = new List<Rectangle>();
+        private List<Rectangle> BoxColliders = new List<Rectangle>();
+        private List<Shop> shopList = new List<Shop>();
         private static int tileWidth = 32;
         private static int tileHeight = 32;
         private Vector2 previousPos = new Vector2();
+        public Box Box;
+        private bool BoxAccesed = false;
 
-        public Area()
-        {
+        public Area() {
         }
 
         public Area(string name, Point levelrange, List<Monster> monsters, List<Character> opponentList,
-            Vector2 spawnLocation, TiledMap map)
-        {
+            Vector2 spawnLocation, TiledMap map) {
             Levelrange = levelrange;
             Name = name;
             Monsters = monsters;
             OpponentList = opponentList;
             SpawnLocation = spawnLocation;
             Map = map;
+            Box = new Box();
         }
 
-        public void Draw(Camera2D camera, SpriteBatch batch, Character player)
-        {
+        public void Draw(Camera2D camera, SpriteBatch batch, Character player) {
             foreach (var layer in Map.Layers) layer.Draw();
 
-            if (Debug)
-            {
-                foreach (var encounterColider in EncounterColiders)
-                {
-                    batch.Draw(ContentLoader.Button, encounterColider, Color.Green);
+            if (Debug) {
+                foreach (var encounterCollide in EncounterColliders) {
+                    batch.Draw(ContentLoader.Button, encounterCollide, Color.Green);
                 }
-                foreach (var collisionColider in CollisionColiders)
-                {
-                    batch.Draw(ContentLoader.Button, collisionColider, Color.Blue);
+                foreach (var collisionCollide in CollisionColliders) {
+                    batch.Draw(ContentLoader.Button, collisionCollide, Color.Blue);
                 }
-                foreach (var areaCollider in AreaColiders)
-                {
-                    batch.Draw(ContentLoader.Button, areaCollider.Key, Color.Aqua);
+                foreach (var areaCollide in AreaColliders) {
+                    batch.Draw(ContentLoader.Button, areaCollide.Key, Color.Aqua);
                 }
-                foreach (var opponent in OpponentList)
-                {
-                    batch.Draw(ContentLoader.Health, opponent.AI.Hitbox, Color.White);   
+                foreach (var opponent in OpponentList) {
+                    batch.Draw(ContentLoader.Health, opponent.AI.Hitbox, Color.White);
                 }
             }
-                foreach (var opponent in OpponentList)
-                {
-                    opponent.Draw(batch);
-                }
-            foreach (var shop in shopList)
-            {
+            foreach (var opponent in OpponentList) {
+                opponent.Draw(batch);
+            }
+            foreach (var shop in shopList) {
                 shop.Draw(batch, player);
+            }
+            Box.Draw(batch);
+            foreach (var boxCollide in BoxColliders) {
+                batch.Draw(ContentLoader.HealLady, boxCollide, Color.Yellow);
             }
         }
 
         public void Update(GameTime gameTime, KeyboardState currentKeyboardState, KeyboardState previousKeyboardState,
-            MouseState currentMouseState, MouseState previousMouseState, 
-            Character player, ref Battle currentBattle)
-        {
+            MouseState currentMouseState, MouseState previousMouseState,
+            Character player, ref Battle currentBattle) {
             if (OpponentList == null) return;
             if (OpponentList.Count == 0) return;
-            foreach (var opponent in OpponentList)
-            {
+            foreach (var opponent in OpponentList) {
                 opponent.UpdateMessages(currentKeyboardState, previousKeyboardState, player);
                 opponent.Update(gameTime, currentKeyboardState, previousKeyboardState);
                 opponent.AI.Update(player, ref currentBattle, ref shopList, currentMouseState, previousMouseState);
             }
-            foreach (var shop in shopList)
-            {
+            foreach (var shop in shopList) {
                 shop.Update(currentMouseState, previousMouseState);
             }
+            Box.Update(currentMouseState, previousMouseState, gameTime);
         }
 
-        public void GetCollision(Character player)
-        {
-            CollisionColiders.Clear();
-            var collisionLayers =
-                Map.TileLayers.Where(
-                    layer => layer.Properties.ContainsKey("Collision") && layer.Properties.ContainsValue("true"))
-                    .ToList();
-            foreach (var layer in collisionLayers)
-            {
-                foreach (var tile in layer.Tiles)
-                {
-                    if (tile.Id != 0)
-                    {
+        public void GetCollision(Character player) {
+            CollisionColliders.Clear();
+            var collisionLayers = Map.TileLayers.Where(layer => layer.Properties.ContainsKey("Collision") && layer.Properties.ContainsValue("true")).ToList();
+            foreach (var layer in collisionLayers) {
+                foreach (var tile in layer.Tiles) {
+                    if (tile.Id != 0) {
                         collisionHitbox = new Rectangle((tile.X * tileWidth), (tile.Y * tileHeight), tileWidth, tileHeight);
-                        CollisionColiders.Add(collisionHitbox);
+                        CollisionColliders.Add(collisionHitbox);
                     }
                 }
             }
-            if (CollisionColiders.Count != 0)
-            {
-                foreach (var collision in CollisionColiders)
-                {
-                    if (player.Hitbox.Intersects(collision))
-                    {
+            var boxLayer = Map.TileLayers.Where(layer => layer.Properties.ContainsKey("Box") && layer.Properties.ContainsValue("true")).ToList();
+            foreach (var tile in boxLayer.SelectMany(layer => layer.Tiles.Where(x => x.Id != 0))) {
+                collisionHitbox = new Rectangle((tile.X * tileWidth), (tile.Y * tileHeight), tileWidth, tileHeight);
+                CollisionColliders.Add(collisionHitbox);
+            }
+            if (CollisionColliders.Count != 0) {
+                foreach (var collision in CollisionColliders) {
+                    if (player.Hitbox.Intersects(collision)) {
                         var moduloX = player.Position.X % 32;
                         var moduloY = player.Position.Y % 32;
                         var vector = new Vector2(collision.X, collision.Y);
                         //If right of it
-                        if (vector.X >= player.Position.X)
-                        {
-                            if (player.RightCollide(collision))
-                            {
+                        if (vector.X >= player.Position.X) {
+                            if (player.RightCollide(collision)) {
                                 if (moduloX >= 16) moduloX -= 32;
                                 player.Position.X -= moduloX;
                             }
                         }
                         //if left of it
-                        if (vector.X <= player.Position.X)
-                        {
-                            if (player.LeftCollide(collision))
-                            {
+                        if (vector.X <= player.Position.X) {
+                            if (player.LeftCollide(collision)) {
                                 if (moduloX >= 16) moduloX -= 32;
                                 player.Position.X -= moduloX;
                             }
                         }
                         //if above it
                         if (player.UpperCollide(collision))
-                            if (vector.Y >= player.Position.Y - 32)
-                            {
+                            if (vector.Y >= player.Position.Y - 32) {
                                 if (moduloY >= 16) moduloY -= 32;
                                 player.Position.Y -= moduloY;
                             }
                         //}
                         //if below it
                         if (player.LowerCollide(collision))
-                            if (vector.Y <= player.Position.Y + 32)
-                            {
+                            if (vector.Y <= player.Position.Y + 32) {
                                 if (moduloY >= 16) moduloY -= 32;
                                 player.Position.Y -= moduloY;
                             }
@@ -168,40 +151,52 @@ namespace VideoGame.Classes
             }
         }
 
-        public void GetEncounters(Character player, ref Battle battle, ref bool battling)
-        {
-            bool test = true;
-            EncounterColiders.Clear();
-            var encounterLayers =
-                Map.TileLayers.Where(
-                    layer => layer.Properties.ContainsKey("Encounters") && layer.Properties.ContainsValue("true"))
-                    .ToList();
-            foreach (var layer in encounterLayers)
-            {
-                foreach (var tile in layer.Tiles)
-                {
-                    if (tile.Id != 0)
-                    {
-                        encounterHitbox = new Rectangle((tile.X * tileWidth), (tile.Y * tileHeight), tileWidth, tileHeight);
-                        EncounterColiders.Add(encounterHitbox);
+        public void GetBox(Character player) {
+            var boxLayers = Map.TileLayers.Where(layer => layer.Properties.ContainsKey("Box") && layer.Properties.ContainsValue("true")).ToList();
+            foreach (var layer in boxLayers) {
+                foreach (var tile in layer.Tiles.Where(tile => tile.Id != 0)) {
+                    encounterHitbox = new Rectangle((tile.X * tileWidth), (tile.Y * (tileHeight * 2)), tileWidth, tileHeight);
+                    BoxColliders.Add(encounterHitbox);
+                }
+            }
+            if (BoxColliders.Count != 0) {
+                foreach (var collision in BoxColliders) {
+                    if (player.Hitbox.Intersects(collision)) {
+                        //Show the box
+                        if (!BoxAccesed) {
+                            Box.Access(player, new Vector2(0, 0));
+                            BoxAccesed = true;
+                        }
+                    }
+                    else {
+                        Box.Disconnect();
+                        BoxAccesed = false;
                     }
                 }
             }
-            if (EncounterColiders.Count != 0)
-            {
-                foreach (var collision in EncounterColiders)
-                {
-                    if (player.Hitbox.Intersects(collision))
-                    {
+        }
+
+        public void GetEncounters(Character player, ref Battle battle, ref bool battling) {
+            EncounterColliders.Clear();
+            var encounterLayers = Map.TileLayers.Where(layer => layer.Properties.ContainsKey("Encounters") && layer.Properties.ContainsValue("true")).ToList();
+            foreach (var layer in encounterLayers) {
+                foreach (var tile in layer.Tiles) {
+                    if (tile.Id != 0) {
+                        encounterHitbox = new Rectangle((tile.X * tileWidth), (tile.Y * tileHeight), tileWidth, tileHeight);
+                        EncounterColliders.Add(encounterHitbox);
+                    }
+                }
+            }
+            if (EncounterColliders.Count != 0) {
+                foreach (var collision in EncounterColliders) {
+                    if (player.Hitbox.Intersects(collision)) {
                         Random rand = new Random();
 
-                        if (player.Position != previousPos && player.Moved >= 29f)
-                        {
+                        if (player.Position != previousPos && player.Moved >= 29f) {
                             var chanceToEncounter = rand.Next(0, 100);
 
 
-                            if (chanceToEncounter <= 5)
-                            {
+                            if (chanceToEncounter <= 5) {
                                 battling = true;
                                 battle = new Battle(player, GetRandomMonster());
                             }
@@ -212,25 +207,20 @@ namespace VideoGame.Classes
             previousPos = player.Position;
         }
 
-        public void GetArea(Character player)
-        {
-            AreaColiders.Clear();
+        public void GetArea(Character player) {
+            AreaColliders.Clear();
             var collisionLayers = Map.TileLayers.Where(layer => layer.Properties.ContainsKey("EnterArea")).ToList();
-            foreach (var layer in collisionLayers)
-            {
-                foreach (var tile in layer.Tiles.Where(tile => tile.Id != 0))
-                {
-                    //if(AreaColiders.ContainsKey(layer.Properties.Values))
+            foreach (var layer in collisionLayers) {
+                foreach (var tile in layer.Tiles.Where(tile => tile.Id != 0)) {
+                    //if(AreaColliders.ContainsKey(layer.Properties.Values))
                     collisionHitbox = new Rectangle((tile.X * tileWidth), (tile.Y * tileHeight), tileWidth, tileHeight);
                     var areaName = layer.Properties.Values.ElementAt(0);
-                    if (!AreaColiders.ContainsKey(collisionHitbox))
-                        AreaColiders.Add(collisionHitbox, areaName);
+                    if (!AreaColliders.ContainsKey(collisionHitbox))
+                        AreaColliders.Add(collisionHitbox, areaName);
                 }
             }
-            if (AreaColiders.Count != 0)
-            {
-                foreach (var entry in AreaColiders.Where(entry => player.Hitbox.Intersects(entry.Key)))
-                {
+            if (AreaColliders.Count != 0) {
+                foreach (var entry in AreaColliders.Where(entry => player.Hitbox.Intersects(entry.Key))) {
                     //Enter area
                     player.CountingDown = false;
                     player.Moved = 0;
@@ -242,51 +232,41 @@ namespace VideoGame.Classes
             }
         }
 
-        public static Area GetAreaFromName(string n, Character player)
-        {
+        public static Area GetAreaFromName(string n, Character player) {
             //return area if n is the name
-            switch (n.ToLower())
-            {
-                case "route 1":
-                    return Route1(player);
-                case "route 2":
-                    return Route2(player);
-                case "route 3":
-                    return Route3(player);
-                case "route 4":
-                    return Route4(player);
-                case "route 5":
-                    return Route5(player);
-                case "route 6":
-                    return Route6(player);
-                case "route 7":
-                    return Route7(player);
-                case "route 8":
-                    return Route8(player);
-                case "city":
-                    Random random = new Random();
-                    if (random.Next(0, 10) == 2)
-                    {
-                        return EasterCity(player);
-                    }
-                    else
-                    {
-                        return City(player);
-                    }
-                case "eastercity":
-                    return EasterCity(player);
-                case "shop":
-                    return Shop();
-                case "secrettunnel":
-                    return SecretTunnel(player);
-                case "secretcity":
-                    return SecretCity(player);
+            switch (n.ToLower()) {
+            case "route 1":
+                return Route1(player);
+            case "route 2":
+                return Route2(player);
+            case "route 3":
+                return Route3(player);
+            case "route 4":
+                return Route4(player);
+            case "route 5":
+                return Route5(player);
+            case "route 6":
+                return Route6(player);
+            case "route 7":
+                return Route7(player);
+            case "route 8":
+                return Route8(player);
+            case "city":
+                Random random = new Random();
+                return random.Next(0, 10) == 2 ? EasterCity(player) : City(player);
+            case "eastercity":
+                return EasterCity(player);
+            case "shop":
+                return Shop();
+            case "secrettunnel":
+                return SecretTunnel(player);
+            case "secretcity":
+                return SecretCity(player);
             }
             return null;
         }
 
-        public Monster GetRandomMonster()
-        {
+        public Monster GetRandomMonster() {
             CryptoRandom rand = new CryptoRandom();
             int index = rand.Next(0, Monsters.Count);
             Monsters[index].Stats.Health = Monsters[index].MaxHealth;
@@ -297,8 +277,7 @@ namespace VideoGame.Classes
         #region Route1
 
         public static
-            Area Route1(Character player)
-        {
+            Area Route1(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -328,16 +307,13 @@ namespace VideoGame.Classes
             var map = ContentLoader.Route1;
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "City")
-                {
+                if (player.PreviousArea.Name == "City") {
                     spawn = new Vector2(384, 32);
                 }
-                else if (player.PreviousArea.Name == "EasterCity")
-                {
+                else if (player.PreviousArea.Name == "EasterCity") {
                     spawn = new Vector2(384, 32);
                 }
-            else
-                {
+                else {
                     spawn = new Vector2(192, 416);
                 }
             List<Monster> monsters = new List<Monster>
@@ -359,8 +335,7 @@ namespace VideoGame.Classes
         #region Route2
 
         public static
-            Area Route2(Character player)
-        {
+            Area Route2(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -382,12 +357,10 @@ namespace VideoGame.Classes
             var map = ContentLoader.Route2;
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Route 1")
-                {
+                if (player.PreviousArea.Name == "Route 1") {
                     spawn = new Vector2(64, 32);
                 }
-                else
-                {
+                else {
                     spawn = new Vector2(32, 384);
                 }
             List<Monster> monsters = new List<Monster>
@@ -396,8 +369,7 @@ namespace VideoGame.Classes
                 DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
-            List<Character> opponents = new List<Character>
-            {
+            List<Character> opponents = new List<Character> {
             };
 
             return new Area("Route 2", levelrange, monsters, opponents, spawn, map);
@@ -408,8 +380,7 @@ namespace VideoGame.Classes
         #region Route3
 
         public static
-            Area Route3(Character player)
-        {
+            Area Route3(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -431,12 +402,10 @@ namespace VideoGame.Classes
             var map = ContentLoader.Route3;
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Route 2")
-                {
+                if (player.PreviousArea.Name == "Route 2") {
                     spawn = new Vector2(736, 392);
                 }
-                else
-                {
+                else {
                     spawn = new Vector2(352, 32);
                 }
             List<Monster> monsters = new List<Monster>
@@ -445,8 +414,7 @@ namespace VideoGame.Classes
                 DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
-            List<Character> opponents = new List<Character>
-            {
+            List<Character> opponents = new List<Character> {
             };
 
             return new Area("Route 3", levelrange, monsters, opponents, spawn, map);
@@ -457,8 +425,7 @@ namespace VideoGame.Classes
         #region Route4
 
         public static
-            Area Route4(Character player)
-        {
+            Area Route4(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -480,12 +447,10 @@ namespace VideoGame.Classes
             var map = ContentLoader.Route4;
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Route 3")
-                {
+                if (player.PreviousArea.Name == "Route 3") {
                     spawn = new Vector2(384, 416);
                 }
-                else
-                {
+                else {
                     spawn = new Vector2(704, 96);
                 }
             List<Monster> monsters = new List<Monster>
@@ -494,8 +459,7 @@ namespace VideoGame.Classes
                 DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
-            List<Character> opponents = new List<Character>
-            {
+            List<Character> opponents = new List<Character> {
             };
 
             return new Area("Route 4", levelrange, monsters, opponents, spawn, map);
@@ -506,8 +470,7 @@ namespace VideoGame.Classes
         #region Route5
 
         public static
-            Area Route5(Character player)
-        {
+            Area Route5(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -529,12 +492,10 @@ namespace VideoGame.Classes
             var map = ContentLoader.Route5;
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Route 4")
-                {
+                if (player.PreviousArea.Name == "Route 4") {
                     spawn = new Vector2(608, 416);
                 }
-                else
-                {
+                else {
                     spawn = new Vector2(0, 32);
                 }
             List<Monster> monsters = new List<Monster>
@@ -543,8 +504,7 @@ namespace VideoGame.Classes
                 DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
-            List<Character> opponents = new List<Character>
-            {
+            List<Character> opponents = new List<Character> {
             };
 
             return new Area("Route 5", levelrange, monsters, opponents, spawn, map);
@@ -555,8 +515,7 @@ namespace VideoGame.Classes
         #region Route6
 
         public static
-            Area Route6(Character player)
-        {
+            Area Route6(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -578,12 +537,10 @@ namespace VideoGame.Classes
             var map = ContentLoader.Route6;
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Route 5")
-                {
+                if (player.PreviousArea.Name == "Route 5") {
                     spawn = new Vector2(64, 32);
                 }
-                else
-                {
+                else {
                     spawn = new Vector2(96, 384);
                 }
             List<Monster> monsters = new List<Monster>
@@ -592,8 +549,7 @@ namespace VideoGame.Classes
                 DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
-            List<Character> opponents = new List<Character>
-            {
+            List<Character> opponents = new List<Character> {
             };
 
             return new Area("Route 6", levelrange, monsters, opponents, spawn, map);
@@ -604,8 +560,7 @@ namespace VideoGame.Classes
         #region Route7
 
         public static
-            Area Route7(Character player)
-        {
+            Area Route7(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -627,12 +582,10 @@ namespace VideoGame.Classes
             var map = ContentLoader.Route7;
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Route 6")
-                {
+                if (player.PreviousArea.Name == "Route 6") {
                     spawn = new Vector2(96, 448);
                 }
-                else
-                {
+                else {
                     spawn = new Vector2(672, 384);
                 }
             List<Monster> monsters = new List<Monster>
@@ -641,8 +594,7 @@ namespace VideoGame.Classes
                 DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
-            List<Character> opponents = new List<Character>
-            {
+            List<Character> opponents = new List<Character> {
             };
 
             return new Area("Route 7", levelrange, monsters, opponents, spawn, map);
@@ -653,8 +605,7 @@ namespace VideoGame.Classes
         #region Route8
 
         public static
-            Area Route8(Character player)
-        {
+            Area Route8(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -676,12 +627,10 @@ namespace VideoGame.Classes
             var map = ContentLoader.Route8;
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Route 7")
-                {
+                if (player.PreviousArea.Name == "Route 7") {
                     spawn = new Vector2(672, 128);
                 }
-                else
-                {
+                else {
                     spawn = new Vector2(256, 320);
                 }
             List<Monster> monsters = new List<Monster>
@@ -690,8 +639,7 @@ namespace VideoGame.Classes
                 DatabaseConnector.GetMonster(10, random.Next(levelrange.X, levelrange.Y)),
                 DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y))
             };
-            List<Character> opponents = new List<Character>
-            {
+            List<Character> opponents = new List<Character> {
             };
 
             return new Area("Route 8", levelrange, monsters, opponents, spawn, map);
@@ -699,8 +647,7 @@ namespace VideoGame.Classes
 
         #endregion
 
-        public static Area City(Character player)
-        {
+        public static Area City(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -713,16 +660,13 @@ namespace VideoGame.Classes
 
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Shop")
-                {
+                if (player.PreviousArea.Name == "Shop") {
                     spawn = new Vector2(256, 192);
                 }
-                else if (player.PreviousArea.Name == "Route 1")
-                {
+                else if (player.PreviousArea.Name == "Route 1") {
                     spawn = new Vector2(256, 416);
                 }
-                else
-                {
+                else {
                     spawn = new Vector2(32, 96);
                 }
 
@@ -735,8 +679,7 @@ namespace VideoGame.Classes
             return new Area("City", levelrange, monsters, opponents, spawn, map);
         }
 
-        public static Area Shop()
-        {
+        public static Area Shop() {
             var spawn = new Vector2(288, 256);
             var map = ContentLoader.Shop;
             var inventory = new Inventory();
@@ -753,7 +696,7 @@ namespace VideoGame.Classes
             ShopLady.SetLineOfSight(2);
 
             var introLines = new List<string> { "Hello!\n Do you want to restore your monsters?" };
-            var byeLines = new List<string> { "Here you go","Thanks for stopping by" };
+            var byeLines = new List<string> { "Here you go", "Thanks for stopping by" };
             var healLady = new Character("HealLady", 0, null, introLines, byeLines, NPCKind.Healer,
                 ContentLoader.ChristmanFront, ContentLoader.ChristmanBack, ContentLoader.HealLady,
                 new Vector2(224, 64));
@@ -772,8 +715,7 @@ namespace VideoGame.Classes
 
         #region Secret tunnel
 
-        public static Area SecretTunnel(Character player)
-        {
+        public static Area SecretTunnel(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -787,12 +729,10 @@ namespace VideoGame.Classes
 
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "EasterCity")
-                {
+                if (player.PreviousArea.Name == "EasterCity") {
                     spawn = new Vector2(384, 416);
                 }
-                else
-                {
+                else {
                     spawn = new Vector2(384, 32);
                 }
 
@@ -808,8 +748,7 @@ namespace VideoGame.Classes
 
         #region Secret City
 
-        public static Area SecretCity(Character player)
-        {
+        public static Area SecretCity(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -834,8 +773,7 @@ namespace VideoGame.Classes
         }
         #endregion
 
-        public static Area EasterCity(Character player)
-        {
+        public static Area EasterCity(Character player) {
             if (Sound != null)
                 Sound.Stop();
 
@@ -848,16 +786,13 @@ namespace VideoGame.Classes
 
             Vector2 spawn = Vector2.One;
             if (player.PreviousArea != null)
-                if (player.PreviousArea.Name == "Shop")
-                {
+                if (player.PreviousArea.Name == "Shop") {
                     spawn = new Vector2(256, 192);
                 }
-                else if (player.PreviousArea.Name == "Route 1")
-                {
+                else if (player.PreviousArea.Name == "Route 1") {
                     spawn = new Vector2(256, 416);
                 }
-                else
-                {
+                else {
                     spawn = new Vector2(32, 96);
                 }
 
