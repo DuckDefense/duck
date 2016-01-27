@@ -17,7 +17,7 @@ public class Button {
     public string Tooltip { get; set; }
     //Misc
     public Rectangle Position { get; set; }
-    public Vector2 VectorPosition { get; set; }
+    public Vector2 VectorPosition { get { return new Vector2(Position.X, Position.Y); } }
     public Vector2 Origin { get; set; }
 
 
@@ -83,7 +83,6 @@ public class Button {
     public Button(Rectangle position, Texture2D sourceTexture) {
         Position = position;
         SourceTexture = sourceTexture;
-        VectorPosition = new Vector2(position.X, position.Y);
         DrawSourceImage = true;
     }
     /// <summary>
@@ -163,7 +162,6 @@ public class Button {
     public Button(Rectangle position, Texture2D sourceTexture, string text, SpriteFont font) {
         Position = position;
         SourceTexture = sourceTexture;
-        VectorPosition = new Vector2(position.X, position.Y);
         Text = text;
         Font = font;
         DrawText = true;
@@ -182,7 +180,6 @@ public class Button {
         Position = position;
         SourceTexture = sourceTexture;
         HoverTexture = hoverTexture;
-        VectorPosition = new Vector2(position.X, position.Y);
         Text = text;
         Font = font;
         DrawText = true;
@@ -203,7 +200,6 @@ public class Button {
         SourceTexture = sourceTexture;
         HoverTexture = hoverTexture;
         Tooltip = toolTip;
-        VectorPosition = new Vector2(position.X, position.Y);
         Text = text;
         Font = font;
         FontColor = fontColor;
@@ -224,7 +220,6 @@ public class Button {
         SourceTexture = sourceTexture;
         HoverTexture = hoverTexture;
         ClickTexture = clickTexture;
-        VectorPosition = new Vector2(position.X, position.Y);
         DrawSourceImage = true;
         Text = text;
         Font = font;
@@ -248,7 +243,6 @@ public class Button {
         HoverTexture = hoverTexture;
         ClickTexture = clickTexture;
         Tooltip = toolTip;
-        VectorPosition = new Vector2(position.X, position.Y);
         DrawSourceImage = true;
         Text = text;
         Font = font;
