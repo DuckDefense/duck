@@ -28,10 +28,11 @@ namespace VideoGame.Classes
         private Rectangle encounterHitbox;
         private Rectangle collisionHitbox;
         private Vector2 SpawnLocation;
-        private List<Character> OpponentList = new List<Character>();
+        public List<Character> OpponentList = new List<Character>();
         private Dictionary<Rectangle, string> AreaColiders = new Dictionary<Rectangle, string>();
         private List<Rectangle> EncounterColiders = new List<Rectangle>();
         private List<Rectangle> CollisionColiders = new List<Rectangle>();
+        private List<Shop> shopList = new List<Shop>(); 
         private static int tileWidth = 32;
         private static int tileHeight = 32;
         private Vector2 previousPos = new Vector2();
@@ -51,16 +52,12 @@ namespace VideoGame.Classes
             Map = map;
         }
 
-        public void Draw(Camera2D camera, SpriteBatch batch)
+        public void Draw(Camera2D camera, SpriteBatch batch, Character player)
         {
             foreach (var layer in Map.Layers) layer.Draw();
 
             if (Debug)
             {
-                foreach (var opponent in OpponentList)
-                {
-                    batch.Draw(ContentLoader.Health, opponent.AI.Hitbox, Color.White);
-                }
                 foreach (var encounterColider in EncounterColiders)
                 {
                     batch.Draw(ContentLoader.Button, encounterColider, Color.Green);
@@ -73,11 +70,24 @@ namespace VideoGame.Classes
                 {
                     batch.Draw(ContentLoader.Button, areaCollider.Key, Color.Aqua);
                 }
+                foreach (var opponent in OpponentList)
+                {
+                    batch.Draw(ContentLoader.Health, opponent.AI.Hitbox, Color.White);   
+                }
             }
-            foreach (var opponent in OpponentList) opponent.Draw(batch);
+                foreach (var opponent in OpponentList)
+                {
+                    opponent.Draw(batch);
+                }
+            foreach (var shop in shopList)
+            {
+                shop.Draw(batch, player);
+            }
         }
 
-        public void Update(GameTime gameTime, KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, Character player, ref Battle currentBattle)
+        public void Update(GameTime gameTime, KeyboardState currentKeyboardState, KeyboardState previousKeyboardState,
+            MouseState currentMouseState, MouseState previousMouseState, 
+            Character player, ref Battle currentBattle)
         {
             if (OpponentList == null) return;
             if (OpponentList.Count == 0) return;
@@ -85,7 +95,11 @@ namespace VideoGame.Classes
             {
                 opponent.UpdateMessages(currentKeyboardState, previousKeyboardState, player);
                 opponent.Update(gameTime, currentKeyboardState, previousKeyboardState);
-                opponent.AI.Update(player, ref currentBattle);
+                opponent.AI.Update(player, ref currentBattle, ref shopList, currentMouseState, previousMouseState);
+            }
+            foreach (var shop in shopList)
+            {
+                shop.Update(currentMouseState, previousMouseState);
             }
         }
 
@@ -725,20 +739,33 @@ namespace VideoGame.Classes
         {
             var spawn = new Vector2(288, 256);
             var map = ContentLoader.Shop;
+            var inventory = new Inventory();
+            inventory.Add(Capture.RottenNet(), 99);
+            var introShopLines = new List<string> { "Hello!\n Do you want to buy something?" };
+            var byeShopLines = new List<string> { "Take a look", "Thanks for stopping by" };
+            var ShopLady = new Character("HealLady", 0, inventory, introShopLines, byeShopLines, NPCKind.Shop,
+                ContentLoader.ChristmanFront, ContentLoader.ChristmanBack, ContentLoader.HealLady,
+                new Vector2(288, 64));
 
-            var introLines = new List<string> { "Yello!\n Feel free to buy some of my stock" };
-            var byeLines = new List<string> { "Thanks for stopping by" };
+            ShopLady.AI = new AI(ShopLady, 2);
+            ShopLady.Debug = true;
+            ShopLady.Direction = Direction.Down;
+            ShopLady.SetLineOfSight(2);
+
+            var introLines = new List<string> { "Hello!\n Do you want to restore your monsters?" };
+            var byeLines = new List<string> { "Here you go","Thanks for stopping by" };
             var healLady = new Character("HealLady", 0, null, introLines, byeLines, NPCKind.Healer,
                 ContentLoader.ChristmanFront, ContentLoader.ChristmanBack, ContentLoader.HealLady,
-                new Vector2(256, 64));
+                new Vector2(224, 64));
 
-            healLady.AI = new AI(healLady, 5);
+            healLady.AI = new AI(healLady, 2);
             healLady.Debug = true;
             healLady.Direction = Direction.Down;
-            healLady.SetLineOfSight(5);
+            healLady.SetLineOfSight(2);
 
             List<Character> opponents = new List<Character>();
             opponents.Add(healLady);
+            opponents.Add(ShopLady);
 
             return new Area("Shop", Point.Zero, new List<Monster>(), opponents, spawn, map);
         }
