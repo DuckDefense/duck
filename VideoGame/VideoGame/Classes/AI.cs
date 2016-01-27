@@ -5,6 +5,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Sandbox.Classes.UI;
 
 namespace VideoGame.Classes
 {
@@ -15,6 +18,7 @@ namespace VideoGame.Classes
         public Rectangle Hitbox;
         private int tiles;
         public string Message;
+        private bool shopAdded;
 
         public AI(Character character, int sightSize)
         {
@@ -23,9 +27,9 @@ namespace VideoGame.Classes
             RandomizeDirection();
         }
 
-        public void Update(Character player, ref Battle battle)
+        public void Update(Character player, ref Battle battle, ref List<Shop> shops, MouseState cur, MouseState prev)
         {
-            var playerRect = new Rectangle((int)player.Position.X, (int)player.Position.Y, 32,32);
+            var playerRect = new Rectangle((int)player.Position.X, (int)player.Position.Y, 32, 32);
             character.SetLineOfSight(tiles);
             Hitbox = new Rectangle((int)character.Position.X - (character.SpriteSize.X / 2), (int)character.Position.Y - (character.SpriteSize.Y / 2),
               character.SpriteSize.X * 2, character.SpriteSize.Y * 2);
@@ -36,20 +40,19 @@ namespace VideoGame.Classes
                     Chase = true;
                 }
                 if (Chase)
-                    MoveToPoint(player.Position, 100, player, ref player.Controllable, ref battle);
+                    MoveToPoint(player.Position, 100, player, ref player.Controllable, ref battle, ref shops);
             }
             else
             {
                 if (character.LineOfSightRectangle.Intersects(playerRect))
                 {
-                    GetMessages(player, ref battle, ref player.Controllable);
+                    GetMessages(player, ref battle, ref player.Controllable, ref shops);
                 }
                 else
                 {
                     ResetMessages();
                 }
             }
-
         }
 
         public void RandomizeDirection()
@@ -70,7 +73,7 @@ namespace VideoGame.Classes
             character.Direction = randomDir;
         }
 
-        public void MoveToPoint(Vector2 move, float delay, Character player, ref bool allowedToWalk, ref Battle battle)
+        public void MoveToPoint(Vector2 move, float delay, Character player, ref bool allowedToWalk, ref Battle battle, ref List<Shop> shops)
         {
             if (!character.Defeated)
             {
@@ -86,19 +89,19 @@ namespace VideoGame.Classes
                 {
                     allowedToWalk = false;
                     if (character.Direction == Direction.Right || character.Direction == Direction.Left)
-                        character.Position.X += moveX*2;
+                        character.Position.X += moveX * 2;
                     if (character.Direction == Direction.Down || character.Direction == Direction.Up)
-                        character.Position.Y += moveY*2;
+                        character.Position.Y += moveY * 2;
                 }
                 else
                 {
-                    GetMessages(player, ref battle, ref allowedToWalk);
+                    GetMessages(player, ref battle, ref allowedToWalk, ref shops);
                 }
             }
             else Chase = false;
         }
 
-        public void GetMessages(Character player, ref Battle battle, ref bool allowedToWalk)
+        public void GetMessages(Character player, ref Battle battle, ref bool allowedToWalk, ref List<Shop> shops)
         {
             switch (character.NpcKind)
             {
@@ -126,11 +129,34 @@ namespace VideoGame.Classes
                         {
                             HealMonsters(player);
                             character.ByeMessage.Visible = true;
-                            allowedToWalk = true;
+                        }
+                        else
+                        {
+                            character.Talking = false;
                         }
                     }
                     break;
                 case NPCKind.Shop:
+                    if (!character.IntroMessage.Said)
+                    {
+                        character.IntroMessage.Visible = true;
+                        character.Talking = true;
+                    }
+                    if (!character.Talking)
+                    {
+                        if (character.ByeMessage.Said == false)
+                        {
+                            if (!shopAdded)
+                            {
+                                shops.Add( new Shop("Best shop around TM", character, player));
+                                shopAdded = true;
+                            }
+                        }
+                        else
+                        {
+                            character.Talking = false;
+                        }
+                    }
                     break;
             }
         }
@@ -152,14 +178,14 @@ namespace VideoGame.Classes
         {
             if (character.BattleMessage != null)
             {
-                 character.BattleMessage.Said = false;
+                character.BattleMessage.Said = false;
                 character.WinMessage.Said = false;
                 character.LoseMessage.Said = false;
             }
             if (character.IntroMessage != null)
             {
                 character.IntroMessage.Said = false;
-                 character.ByeMessage.Said = false;
+                character.ByeMessage.Said = false;
             }
         }
     }
