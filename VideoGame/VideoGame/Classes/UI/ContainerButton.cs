@@ -17,6 +17,7 @@ namespace Sandbox.Classes.UI {
         public Monster Monster;
         public Medicine Medicine;
         public Capture Capture;
+        public BoxedMonster BoxedMonster;
 
         public ContainerButton(Button button, Move move) {
             Button = button;
@@ -24,6 +25,7 @@ namespace Sandbox.Classes.UI {
             Monster = null;
             Medicine = null;
             Capture = null;
+            BoxedMonster = null;
         }
 
         public ContainerButton(Button button, Monster monster) {
@@ -32,6 +34,7 @@ namespace Sandbox.Classes.UI {
             Monster = monster;
             Medicine = null;
             Capture = null;
+            BoxedMonster = null;
         }
         public ContainerButton(Button button, Medicine medicine) {
             Button = button;
@@ -39,6 +42,7 @@ namespace Sandbox.Classes.UI {
             Monster = null;
             Medicine = medicine;
             Capture = null;
+            BoxedMonster = null;
         }
         public ContainerButton(Button button, Capture capture) {
             Button = button;
@@ -46,6 +50,16 @@ namespace Sandbox.Classes.UI {
             Monster = null;
             Medicine = null;
             Capture = capture;
+            BoxedMonster = null;
+        }
+
+        public ContainerButton(Button button, BoxedMonster boxedMonster) {
+            Button = button;
+            Move = null;
+            Monster = null;
+            Medicine = null;
+            Capture = null;
+            BoxedMonster = boxedMonster;
         }
 
         public void Update(MouseState cur, MouseState prev) {
