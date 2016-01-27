@@ -189,7 +189,7 @@ namespace VideoGame
                 menu.Update(gameTime, currentMouseState, previousMouseState, currentKeyboardState, previousKeyboardState);
                 //if (!menu.Visible) {
                 player.Update(gameTime, currentKeyboardState, previousKeyboardState);
-                player.CurrentArea.Update(gameTime, currentKeyboardState, previousKeyboardState, player,
+                player.CurrentArea.Update(gameTime, currentKeyboardState, previousKeyboardState, currentMouseState , previousMouseState, player,
                     ref currentBattle);
                 player.CurrentArea.GetArea(player);
                 player.CurrentArea.GetCollision(player);
@@ -226,7 +226,7 @@ namespace VideoGame
             }
             else
             {
-                spriteBatch.Draw(ContentLoader.Grid, Vector2.Zero, Color.White);
+                //spriteBatch.Draw(ContentLoader.Grid, Vector2.Zero, Color.White);
                 Drawer.DrawMessage(spriteBatch);
                 if (currentBattle != null && !currentBattle.battleOver)
                 {
@@ -236,7 +236,7 @@ namespace VideoGame
                 else
                 {
                     //Draw areas before player and opponents
-                    player.CurrentArea.Draw(camera, spriteBatch);
+                    player.CurrentArea.Draw(camera, spriteBatch, player);
                     player.CurrentArea.EnteredArea = false;
                     player.Draw(spriteBatch);
                     menu.Draw(spriteBatch, currentMouseState, previousMouseState);
