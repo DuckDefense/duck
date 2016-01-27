@@ -209,11 +209,14 @@ namespace VideoGame.Classes
                 case 3:
                     if (user.Ailment != Ailment.Normal)
                     {
-                        foreach (var value in player.Inventory.Medicine.Values)
+                        if (player != null)
                         {
-                            if (Medicine.CuresAilment(user.Ailment))
+                            foreach (var value in player.Inventory.Medicine.Values)
                             {
-                                UseMedicine(b, player, user);
+                                if (Medicine.CuresAilment(user.Ailment))
+                                {
+                                    UseMedicine(b, player, user);
+                                }
                             }
                         }
                     }
