@@ -24,4 +24,17 @@
    eJzt0UEKwjAQBdDpHWwrigXr/e9oCl2EUKuSCkHegw8TyGzmR0R0KaeUYU2fzWXGbD6vuxxruekle193/t6yeQp9/EJ500/72NqlXnnTe8r8Io83u9Sruak+jqePtuijLfpoiz7a0u3kmz8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/kCdN0Aw0=
   </data>
  </layer>
+ <layer name="Details" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztyLEJADAMBLEfwWT/YdOkMfEERmoOLunOa+U3PQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA2OQCHTEAMw==
+  </data>
+ </layer>
+ <layer name="Box" width="100" height="100">
+  <properties>
+   <property name="Box" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzjEJAAAMA7De8y94MgolUZCEBdcOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACMeKVKAAs=
+  </data>
+ </layer>
 </map>
