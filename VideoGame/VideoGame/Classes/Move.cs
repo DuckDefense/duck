@@ -88,6 +88,8 @@ namespace VideoGame.Classes {
             double critMultiplier = 1;
             //Check if the move hit
             var chanceToHit = Accuracy + ((user.Stats.Speed - receiver.Stats.Speed) / 3);
+            if (user.Ailment == Ailment.Frenzied) Convert.ToInt32(chanceToHit/=2);
+            
             if (chanceToHit < Accuracy / 3) chanceToHit = Accuracy / 3;
             Random rand = new Random();
             //If random number is below chanceToHit the move did hit
@@ -96,22 +98,37 @@ namespace VideoGame.Classes {
                 //if random number is below the CriticalHitChance, the move did a critical
                 if (rand.Next(0, 100) <= user.CriticalHitChance) critMultiplier = user.CriticalHitMultiplier;
 
-                if (Kind == Kind.Physical) {
+                if (Kind == Kind.Physical)
+                {
                     Damage = GetDamage(user.Stats.Attack, receiver.Stats.Defense, GetDamageModifier(receiver),
                         critMultiplier);
-                    receiver.Stats.Health -= Damage;
+                    switch (user.Ailment)
+                    {
+                        case Ailment.Burned: receiver.Stats.Health -= Damage/2; break;
+                        case Ailment.Frenzied: receiver.Stats.Health -= Convert.ToInt32(Damage*1.5); break;
+                        default: receiver.Stats.Health -= Damage; break;
+                    }
                     //Replace this with a lerp (reducing it little by little) so it looks nicer
                 }
-                else if (Kind == Kind.Special) {
+                else if (Kind == Kind.Special)
+                {
                     Damage = GetDamage(user.Stats.SpecialAttack, receiver.Stats.SpecialDefense,
                         GetDamageModifier(receiver), critMultiplier);
-                    receiver.Stats.Health -= Damage;
+                    switch (user.Ailment)
+                    {
+                        case Ailment.Dazzled: receiver.Stats.Health -= Damage / 2; break;
+                        case Ailment.Frenzied: receiver.Stats.Health -= Convert.ToInt32(Damage * 1.5); break;
+                        default: receiver.Stats.Health -= Damage; break;
+                    }
                 }
                 if (HitModifier != null) {
                     if (HitModifier.ApplyToOpponent) receiver.Stats = HitModifier.Modifier.ApplyModifiers(receiver);
                     if (HitModifier.ApplyToUser) user.Stats = HitModifier.Modifier.ApplyModifiers(user);
                 }
-
+                if (AilmentChance > rand.Next(0, 100))
+                {
+                    receiver.Ailment = Ailment;
+                }
             }
             //User missed
             else {
