@@ -248,24 +248,34 @@ namespace VideoGame.Classes {
                 if (Level >= 1) {
                     Moves.Add(Move.Tackle());
                 }
-                if (Level >= 8) Moves.Add(Move.RockThrow());
-                break;
+                if (Level >= 8) Moves.Add(Move.LeafCut());
+                if (Level >= 12) Moves.Add(Move.RockThrow());
+                    break;
             case 2:
-                Moves.AddMany(Move.Tackle(), Move.RockThrow());
-                break;
+                Moves.AddMany(Move.Tackle(), Move.LeafCut(), Move.RockThrow());
+                    if (Level >= 27) Moves.Add(Move.Strangle());
+                    break;
             case 3:
-                Moves.AddMany(Move.Tackle(), Move.RockThrow(), Move.MultiPunch(), Move.LeafCut());
-                break;
+                Moves.AddMany(Move.Tackle(), Move.LeafCut(), Move.RockThrow(), Move.Strangle());
+                    if (Level >= 40) Moves.Add(Move.Intimidate());
+                    if (Level >= 51) Moves.Add(Move.MultiPunch());
+                    if (Level >= 60) Moves.Add(Move.PoisonDart());
+                    if (Level >= 65) Moves.Add(Move.TreeHammer());
+                    break;
             case 4:
-                if (Level >= 1) Moves.AddMany(Move.Bubble(), Move.Tackle(), Move.Scream());
-                if (Level >= 9) Moves.Add(Move.Icicle());
+                if (Level >= 1) Moves.Add(Move.Tackle());
+                if (Level >= 9) Moves.Add(Move.Bubble());
                 break;
             case 5:
-                Moves.AddMany(Move.Bubble(), Move.Tackle(), Move.Scream(), Move.Icicle());
-                break;
+                Moves.AddMany(Move.Tackle(),Move.Bubble());
+                    if (Level >= 20) Moves.Add(Move.Scream());
+                    if (Level >= 30) Moves.Add(Move.Douse());
+                    break;
             case 6:
-                Moves.AddMany(Move.Bubble(), Move.Tackle(), Move.Scream(), Move.Icicle());
-                break;
+                Moves.AddMany(Move.Tackle(), Move.Bubble(), Move.Scream(), Move.Douse());
+                    if (Level >= 47) Moves.Add(Move.Icicle());
+
+                    break;
             case 10:
                 if (Level >= 1) {
                     Moves.Add(Move.Strangle());
