@@ -99,7 +99,7 @@ namespace VideoGame.Classes {
             var buttonPos = 0;
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
             if (DrawMedicine) {
-                foreach (var item in player.Inventory.Medicine) {
+                foreach (var item in player.Inventory.Medicine.Where(x=> x.Value.Amount > 0)) {
                     var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + (ContentLoader.Button.Height * 2), rec.Width, rec.Height),
                             ContentLoader.Button);
                     b.Draw(batch);
@@ -110,7 +110,7 @@ namespace VideoGame.Classes {
                 }
             }
             if (DrawCapture) {
-                foreach (var item in player.Inventory.Captures) {
+                foreach (var item in player.Inventory.Captures.Where(x => x.Value.Amount > 0)) {
                     var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + (ContentLoader.Button.Height * 2), rec.Width, rec.Height),
                         ContentLoader.Button) { Text = item.Value.Name };
                     b.Draw(batch);
