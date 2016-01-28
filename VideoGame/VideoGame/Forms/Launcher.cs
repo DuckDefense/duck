@@ -14,7 +14,7 @@ namespace VideoGame.Forms {
         public static bool isIngelogd;
         public Launcher() {
             InitializeComponent();
-            if (isIngelogd == true) {
+            if (isIngelogd) {
                 btnPlay.Text = "Play";
             }
             else {
@@ -22,24 +22,16 @@ namespace VideoGame.Forms {
                 btnSettings.Enabled = false;
                 //btnPlay.Text = "Play offline";
             }
+            ShowLogin();
         }
 
         private void btnLogin_Click(object sender, EventArgs e) {
-            using (var login = new Login())
-                login.ShowDialog();
-            btnPlay.Enabled = isIngelogd;
-            btnSettings.Enabled = isIngelogd;
-            if (isIngelogd == true) {
+            if (isIngelogd) {
                 isIngelogd = false;
-                //btnPlay.Text = "Play offline";
-                //btnLogin.Text = "Login";
+                btnPlay.Enabled = false;
+                btnSettings.Enabled = false;
             }
-            else {
-                isIngelogd = true;
-                btnPlay.Text = "Play";
-                //btnLogin.Text = "Logout";
-            }
-
+            else ShowLogin();
         }
 
         private void btnPlay_Click(object sender, EventArgs e) {
@@ -53,6 +45,21 @@ namespace VideoGame.Forms {
         private void btnSettings_Click(object sender, EventArgs e) {
             using (var setting = new Settings())
                 setting.ShowDialog();
+        }
+
+        private void ShowLogin() {
+            using (var login = new Login())
+                login.ShowDialog();
+            btnPlay.Enabled = isIngelogd;
+            btnSettings.Enabled = isIngelogd;
+            if (isIngelogd) {
+                isIngelogd = false;
+            }
+            else {
+                isIngelogd = true;
+                btnPlay.Text = "Play";
+                btnLogin.Text = "Logout";
+            }
         }
     }
 }
