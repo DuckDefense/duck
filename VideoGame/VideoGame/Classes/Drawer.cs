@@ -230,7 +230,7 @@ namespace VideoGame.Classes {
             Rectangle backgroundRectangle = new Rectangle((int)startPos.X, (int)startPos.Y, background.Width, background.Height);
             var frontPos = new Vector2(backgroundRectangle.X + 10, backgroundRectangle.Y + 24);
             var namePos = new Vector2(frontPos.X, backgroundRectangle.Y + 6);
-            var descriptionPos = new Vector2(backgroundRectangle.X + frontPos.X + 89, backgroundRectangle.Y + 28);
+            var descriptionPos = new Vector2(frontPos.X + 110, backgroundRectangle.Y + 28);
             var statsPos = new Vector2(frontPos.X, backgroundRectangle.Y + 130);
             var abilityNamePos = new Vector2(backgroundRectangle.X + 230, statsPos.Y);
             var abilityDescriptionPos = new Vector2(abilityNamePos.X, abilityNamePos.Y + 17);
