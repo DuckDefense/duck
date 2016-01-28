@@ -128,7 +128,7 @@ namespace VideoGame.Classes {
 
             HippolaciousFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Hippolacious");
             HippolaciousBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Hippolacious");
-            //HippolaciousParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Hippolacious");
+            HippolaciousParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Hippolacious");
 
             JoiantlerFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Joiantler");
             JoiantlerBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Joiantler");
@@ -172,15 +172,15 @@ namespace VideoGame.Classes {
 
             GuilailFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Guilail");
             GuilailBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Guilail");
-            //GuilailParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Guilail"); 
+            GuilailParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Guilail");
 
             GulagaFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Gulaga");
             GulagaBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Gulaga");
-            //GulagaParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Gulaga");  
+            GulagaParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Gulaga");
 
             DagaFront = Content.Load<Texture2D>(@"Sprites/Monsters/Front/Daga");
             DagaBack = Content.Load<Texture2D>(@"Sprites/Monsters/Back/Daga");
-            //DagaParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Daga");
+            DagaParty = Content.Load<Texture2D>(@"Sprites/Monsters/Party/Daga");
 
             #endregion
 
