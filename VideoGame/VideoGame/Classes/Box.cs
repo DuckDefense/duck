@@ -23,7 +23,7 @@ namespace Sandbox.Classes {
         private int Page;
         public int CurrentPage;
         private int maxMonstersWidth = 6;
-        private int maxMonstersHeight = 4;
+        private int maxMonstersHeight = 5;
         private int MaxMonstersPerPage => maxMonstersWidth * maxMonstersHeight;
 
         private Rectangle boxBounds;
@@ -38,13 +38,13 @@ namespace Sandbox.Classes {
 
         public void Access(Character player, Vector2 pos) {
             this.player = player;
+            CurrentPage = 1;
+            Page = 1;
+            var index = 0;
+            boxBounds = new Rectangle((int)pos.X, (int)pos.Y, 48 * maxMonstersWidth, 48 * maxMonstersHeight);
             if (player.Box.Count != Monsters.Count) {
                 Party = new List<ContainerButton>();
                 Monsters = new List<ContainerButton>();
-                CurrentPage = 1;
-                Page = 1;
-                var index = 0;
-                boxBounds = new Rectangle((int)pos.X, (int)pos.Y, 48 * maxMonstersWidth, 48 * maxMonstersHeight);
                 var rect = new Rectangle(-48, 0, 48, 48);
                 foreach (var mon in player.Box) {
                     if (player.Box.Count > MaxMonstersPerPage) {
