@@ -24,6 +24,18 @@ public static class ExtensionManager {
         list[secondIndex] = item;
     }
 
+    public static void MoveToList<T>(this List<T> list, List<T> secondList, int firstIndex, int secondIndex) {
+        try {
+            var item = list[secondIndex];
+            var secondItem = secondList[firstIndex];
+            list[secondIndex] = secondItem;
+            secondList[firstIndex] = item;
+        }
+        catch (IndexOutOfRangeException) {
+            //No idea what causes this, just make the player try again 
+        }
+    }
+
     public static void AddIfNotNull<T>(this List<T> list, T value) {
         if ((object)value != null)
             list.Add(value);
