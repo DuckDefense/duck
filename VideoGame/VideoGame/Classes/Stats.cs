@@ -12,7 +12,6 @@ namespace VideoGame.Classes {
         Burned,
         Dazzled,
         Frozen,
-        Blessed,
         Frenzied,
         Fainted
     }
