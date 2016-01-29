@@ -17,6 +17,13 @@ public static class ExtensionManager {
         list[pos] = item;
     }
 
+    public static void MoveItem<T>(this List<T> list, int firstIndex, int secondIndex) {
+        var item = list[firstIndex];
+        var secondItem = list[secondIndex];
+        list[firstIndex] = secondItem;
+        list[secondIndex] = item;
+    }
+
     public static void AddIfNotNull<T>(this List<T> list, T value) {
         if ((object)value != null)
             list.Add(value);
