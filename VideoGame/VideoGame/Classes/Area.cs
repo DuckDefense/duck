@@ -15,7 +15,7 @@ using Sandbox.Classes;
 
 namespace VideoGame.Classes {
     public class Area {
-        public bool Debug = true;
+        public bool Debug = false;
         private static SoundEffectInstance Sound;
         private static Point Levelrange;
         public string Name;
@@ -300,7 +300,6 @@ namespace VideoGame.Classes {
                 ContentLoader.Button, ContentLoader.Button, ContentLoader.ChristmanWorld,
                 new Vector2(192, 192));
             tegenstander.AI = new AI(tegenstander, 8);
-            tegenstander.Debug = true;
 
             Random random = new Random();
             Point levelrange = new Point(2, 8);
@@ -342,16 +341,7 @@ namespace VideoGame.Classes {
             Sound = ContentLoader.RouteSong.CreateInstance();
             Sound.IsLooped = true;
             Sound.Play();
-
-            //Character tegenstander;
-            //tegenstander = new Character("Nice guy", 6700,
-            //    new Inventory(),
-            //    new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
-            //    ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman,
-            //    new Vector2(192, 192));
-            //tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
-            //tegenstander.Debug = true;
-
+            
             Random random = new Random();
             Point levelrange = new Point(8, 13);
             var map = ContentLoader.Route2;
@@ -388,15 +378,6 @@ namespace VideoGame.Classes {
             Sound.IsLooped = true;
             Sound.Play();
 
-            //Character tegenstander;
-            //tegenstander = new Character("Nice guy", 6700,
-            //    new Inventory(),
-            //    new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
-            //    ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman,
-            //    new Vector2(192, 192));
-            //tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
-            //tegenstander.Debug = true;
-
             Random random = new Random();
             Point levelrange = new Point(13, 17);
             var map = ContentLoader.Route3;
@@ -432,16 +413,7 @@ namespace VideoGame.Classes {
             Sound = ContentLoader.RouteSong.CreateInstance();
             Sound.IsLooped = true;
             Sound.Play();
-
-            //Character tegenstander;
-            //tegenstander = new Character("Nice guy", 6700,
-            //    new Inventory(),
-            //    new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
-            //    ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman,
-            //    new Vector2(192, 192));
-            //tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
-            //tegenstander.Debug = true;
-
+            
             Random random = new Random();
             Point levelrange = new Point(17, 22);
             var map = ContentLoader.Route4;
@@ -478,15 +450,6 @@ namespace VideoGame.Classes {
             Sound.IsLooped = true;
             Sound.Play();
 
-            //Character tegenstander;
-            //tegenstander = new Character("Nice guy", 6700,
-            //    new Inventory(),
-            //    new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
-            //    ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman,
-            //    new Vector2(192, 192));
-            //tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
-            //tegenstander.Debug = true;
-
             Random random = new Random();
             Point levelrange = new Point(22, 27);
             var map = ContentLoader.Route5;
@@ -522,16 +485,7 @@ namespace VideoGame.Classes {
             Sound = ContentLoader.RouteSong.CreateInstance();
             Sound.IsLooped = true;
             Sound.Play();
-
-            //Character tegenstander;
-            //tegenstander = new Character("Nice guy", 6700,
-            //    new Inventory(),
-            //    new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
-            //    ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman,
-            //    new Vector2(192, 192));
-            //tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
-            //tegenstander.Debug = true;
-
+            
             Random random = new Random();
             Point levelrange = new Point(27, 30);
             var map = ContentLoader.Route6;
@@ -567,16 +521,7 @@ namespace VideoGame.Classes {
             Sound = ContentLoader.RouteSong.CreateInstance();
             Sound.IsLooped = true;
             Sound.Play();
-
-            //Character tegenstander;
-            //tegenstander = new Character("Nice guy", 6700,
-            //    new Inventory(),
-            //    new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
-            //    ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman,
-            //    new Vector2(192, 192));
-            //tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
-            //tegenstander.Debug = true;
-
+            
             Random random = new Random();
             Point levelrange = new Point(22, 27);
             var map = ContentLoader.Route7;
@@ -612,16 +557,7 @@ namespace VideoGame.Classes {
             Sound = ContentLoader.RouteSong.CreateInstance();
             Sound.IsLooped = true;
             Sound.Play();
-
-            //Character tegenstander;
-            //tegenstander = new Character("Nice guy", 6700,
-            //    new Inventory(),
-            //    new List<Monster> { Monster.Armler(5), Monster.Huffstein(10) },
-            //    ContentLoader.Button, ContentLoader.Button, ContentLoader.Christman,
-            //    new Vector2(192, 192));
-            //tegenstander.AI = new AI(tegenstander, 8, "Nice to meat you");
-            //tegenstander.Debug = true;
-
+            
             Random random = new Random();
             Point levelrange = new Point(22, 27);
             var map = ContentLoader.Route8;
@@ -691,7 +627,6 @@ namespace VideoGame.Classes {
                 new Vector2(288, 64));
 
             ShopLady.AI = new AI(ShopLady, 2);
-            ShopLady.Debug = true;
             ShopLady.Direction = Direction.Down;
             ShopLady.SetLineOfSight(2);
 
@@ -702,7 +637,6 @@ namespace VideoGame.Classes {
                 new Vector2(224, 64));
 
             healLady.AI = new AI(healLady, 2);
-            healLady.Debug = true;
             healLady.Direction = Direction.Down;
             healLady.SetLineOfSight(2);
 
