@@ -206,7 +206,7 @@ namespace Sandbox.Classes {
                 pos = i < 4 
                     ? new Rectangle(pos.X, pos.Y + (pos.Height * (i)), pos.Width, pos.Height) 
                     : new Rectangle(pos.X + pos.Width, pos.Y + ((pos.Height * (i - 4))), pos.Width, pos.Height);
-                var b = new Button(pos, ContentLoader.Health, ContentLoader.Health, ContentLoader.Health, move.Name, ContentLoader.Arial);
+                var b = new Button(pos, ContentLoader.BRN, ContentLoader.BRN, ContentLoader.BRN, move.Name, ContentLoader.Arial);
                 movesList.Add(new ContainerButton(b, move));
             }
         }
@@ -257,7 +257,7 @@ namespace Sandbox.Classes {
             foreach (var con in movesList) {
                 var move = con.Move;
                 var typeTexture = Drawer.GetTypeTexture(move.Type);
-                batch.Draw(ContentLoader.Health, con.Button.Position, Color.Crimson);
+                batch.Draw(ContentLoader.Move, con.Button.Position, Color.White);
                 batch.DrawString(ContentLoader.Arial, move.Name, new Vector2(con.Button.Position.X, con.Button.Position.Y), Color.Black);
                 batch.DrawString(ContentLoader.Arial, Drawer.SplitString(move.Description, con.Button.Position), new Vector2(con.Button.Position.X, con.Button.Position.Y + 18), Color.Black);
                 batch.Draw(typeTexture, new Vector2(con.Button.Position.X + 2, con.Button.Position.Y + 48), Color.White);
