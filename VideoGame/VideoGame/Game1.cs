@@ -96,21 +96,17 @@ namespace VideoGame
 
                 List<string> lines = new List<string>
                 {
-                    "Oh..............",
-                    "Hello there didn't see you",
-                    "I'm proffessor Koak",
-                    $"You must be {player.Name}",
-                    "Nice to meet you",
-                    "I've heard you are new here",
-                    "This is a place overrun with monsters",
-                    "Without your own monster these monster can be deadly",
-                    "So let's get started",
-                    "I've three monsters ready",
-                    "You will have the option to choose one of them!",
-                    "All monsters have a type",
-                    "The monsters you can choose out of are the types: fire, water and grass",
-                    "Now you can choose your own monster",
-                    "Choose wisely"
+                    $"Oh..\n(Press `{Settings.conversation}` to advance in conversations",
+                    $"Hello, I'm professor Koak\nYou must be {player.Name}",
+                    "Nice to meet you.",
+                    "I've heard you are new to this place.",
+                    "This is a place overrun with monsters.",
+                    "Without your own, they can be deadly!",
+                    "So let's get you started.",
+                    "I have three monsters here,",
+                    "And you can choose one of them!",
+                    "So have at them.",
+                    "Come now, I won't bite!"
                 };
                 intro = new Conversation.Message(lines, Color.Black, new Character("Koak"));
                 intro.Visible = true;
@@ -158,21 +154,21 @@ namespace VideoGame
                         selectedMonster = 1;
                         player.Monsters.Add(DatabaseConnector.GetMonster(selectedMonster, 5));
                         drawStarters = false;
-                        AllowedToWalk = true;
+                        player.Talking = false;
                     }
                     if (Mimird.IsClicked(currentMouseState, previousMouseState))
                     {
                         selectedMonster = 4;
                         player.Monsters.Add(DatabaseConnector.GetMonster(selectedMonster, 5));
                         drawStarters = false;
-                        AllowedToWalk = true;
+                        player.Talking = false;
                     }
                     if (Guilail.IsClicked(currentMouseState, previousMouseState))
                     {
                         selectedMonster = 7;
                         drawStarters = false;
                         player.Monsters.Add(DatabaseConnector.GetMonster(selectedMonster, 5));
-                        AllowedToWalk = true;
+                        player.Talking = false;
                     }
                 }
             }
