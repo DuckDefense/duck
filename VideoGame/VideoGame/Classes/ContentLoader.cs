@@ -54,6 +54,7 @@ namespace VideoGame.Classes {
         public static Texture2D SLP, PSN, BRN, DZL, FRZ, FZD, FNT;
 
         public static Texture2D Grid;
+        public static Texture2D Move;
 
         public static Texture2D GrassyBackground;
         public static Texture2D Koak;
@@ -77,6 +78,7 @@ namespace VideoGame.Classes {
 
         //Add all Textures in here
         public void LoadContent() {
+            Move = Content.Load<Texture2D>(@"Sprites/Move");
             Grid = Content.Load<Texture2D>(@"Sprites/Debug/32grid");
             MessageBox = Content.Load<Texture2D>(@"Sprites/Conversation/MessageBox");
             BattleMessage = Content.Load<Texture2D>(@"Sprites/Conversation/BattleMessage");
