@@ -93,7 +93,7 @@ namespace VideoGame.Classes {
             var dice = random.Next(0, 100);
             if (dice < capturechance) {
                 //Add monster to caught list
-                if (!player.CaughtMonster.ContainsKey(monster.Id)) player.CaughtMonster.Add(monster.Id, monster);
+                //if (!player.CaughtMonster.ContainsKey(monster.Id)) player.CaughtMonster.Add(monster.Id, monster);
                 monster.UId = RandomId.GenerateRandomUId();
                 if (player.Monsters.Count >= 6) player.Box.Add(monster);
                 else player.Monsters.Add(monster);

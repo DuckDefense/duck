@@ -311,7 +311,7 @@ namespace Sandbox.Classes {
                         character.Id = id;
                         character.Box = box;
                         character.KnownMonsters = knownMonsters;
-                        character.CaughtMonster = caughtMonster;
+                        //character.CaughtMonster = caughtMonster;
                         charactersList.Add(character);
                     }
                 }
@@ -519,8 +519,8 @@ namespace Sandbox.Classes {
             #endregion
             #region Known and Caught Monsters
 
-            var mergedList = ExtensionManager.CombineDictionaries(user.KnownMonsters, user.CaughtMonster);
-            foreach (var mon in mergedList.Values) {
+            //var mergedList = ExtensionManager.CombineDictionaries(user.KnownMonsters, user.CaughtMonster);
+            foreach (var mon in user.KnownMonsters.Values) {
                 cmd = connection.CreateCommand();
                 cmd.CommandText =
                     "SELECT COUNT(*) FROM `knownmonsterlink` WHERE `playerId` = @playerId AND `monsterId` = @monsterId";
@@ -530,11 +530,6 @@ namespace Sandbox.Classes {
                 if (count == 0) {
                     //Player has not seen the monster before
                     cmd.CommandText = "INSERT INTO `knownmonsterlink`(`playerId`, `monsterId`, `Caught`) VALUES (@playerId, @monsterId, FALSE)";
-                    cmd.ExecuteNonQuery();
-                }
-                if (user.CaughtMonster.ContainsKey(mon.Id)) {
-                    //Player has already seen the monster and has now caught it
-                    cmd.CommandText = "UPDATE `knownmonsterlink` SET `Caught` = TRUE WHERE `playerId` = @playerId AND `monsterId` = @monsterId";
                     cmd.ExecuteNonQuery();
                 }
             }

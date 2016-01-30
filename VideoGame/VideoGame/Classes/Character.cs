@@ -59,7 +59,7 @@ namespace VideoGame.Classes {
         public Inventory Inventory;
         public List<Monster> Monsters;
         public Dictionary<int, Monster> KnownMonsters = new Dictionary<int, Monster>();
-        public Dictionary<int, Monster> CaughtMonster = new Dictionary<int, Monster>();
+        //public Dictionary<int, Monster> CaughtMonster = new Dictionary<int, Monster>();
         public List<Monster> Box = new List<Monster>();
 
         public Conversation.Message BattleMessage;
