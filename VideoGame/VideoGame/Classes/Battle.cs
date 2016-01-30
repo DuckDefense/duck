@@ -153,14 +153,14 @@ namespace VideoGame.Classes {
             }
             //If the battle is over
             if (battleOver) {
-                    drawBattleButtons = false;
-                    if (Opponent != null) Opponent.Defeated = true;
-                    //Restore the stats when the battle is over, or when the monster has been switched out
-                    var userHealth = CurrentUserMonster.Stats.Health;
-                    CurrentUserMonster.Stats = CurrentUserMonster.PreviousStats;
-                    CurrentUserMonster.Stats.Health = userHealth;
-                    CurrentOpponentMonster.Stats = CurrentOpponentMonster.PreviousStats;
-                    CheckState();
+                drawBattleButtons = false;
+                if (Opponent != null) Opponent.Defeated = true;
+                //Restore the stats when the battle is over, or when the monster has been switched out
+                var userHealth = CurrentUserMonster.Stats.Health;
+                CurrentUserMonster.Stats = CurrentUserMonster.PreviousStats;
+                CurrentUserMonster.Stats.Health = userHealth;
+                CurrentOpponentMonster.Stats = CurrentOpponentMonster.PreviousStats;
+                CheckState();
             }
         }
 
@@ -200,6 +200,9 @@ namespace VideoGame.Classes {
                     if (m.Level != 100) {
                         foreach (var levels in from levels in levelList where levels.Key == m.Id where m.Level > levels.Value where m.CanEvolve() select levels) {
                             User.Monsters[i] = m.GetEvolution();
+                            var mon = User.Monsters[i];
+                            if (!User.KnownMonsters.ContainsValue(mon))
+                                User.KnownMonsters.Add(mon.Id, mon);
                         }
                     }
                     if (Opponent != null) Opponent.LoseMessage.Visible = true;
@@ -211,9 +214,9 @@ namespace VideoGame.Classes {
                 //Send the player to a healing lady
                 User.CurrentArea = Area.Shop();
                 User.Position = new Vector2(224, 128);
-                    //Heal monsters
+                //Heal monsters
 
-                    foreach (var m in User.Monsters) {
+                foreach (var m in User.Monsters) {
                     m.Stats.Health = m.MaxHealth;
                     m.Ailment = Ailment.Normal;
                     foreach (var use in m.Moves) {
@@ -496,66 +499,51 @@ namespace VideoGame.Classes {
             BattleState = State.Loss;
             battleOver = true;
         }
-        public void AilmentEffect(Monster monster)
-        {
-                if (monster.Ailment == Ailment.Burned)
-                {
-                    monster.Stats.Health -= (monster.MaxHealth/100*8);
+        public void AilmentEffect(Monster monster) {
+            if (monster.Ailment == Ailment.Burned) {
+                monster.Stats.Health -= (monster.MaxHealth / 100 * 8);
+            }
+            if (monster.Ailment == Ailment.Poisoned) {
+                monster.Stats.Health -= Convert.ToInt32(((double)monster.MaxHealth / 100) * 8);
+            }
+            if (monster.Ailment == Ailment.Sleep) {
+                if (sleepTurns == 3) {
+                    monster.Ailment = Ailment.Normal;
+                    sleepTurns = 0;
                 }
-                if (monster.Ailment == Ailment.Poisoned)
-                {
-                    monster.Stats.Health -= Convert.ToInt32(((double)monster.MaxHealth / 100)*8);
-                }
-                if (monster.Ailment == Ailment.Sleep)
-                {
-                    if (sleepTurns == 3)
-                    {
+                else {
+                    Random r = new Random();
+                    if (r.Next(0, 100) < 40) {
                         monster.Ailment = Ailment.Normal;
                         sleepTurns = 0;
                     }
-                    else
-                    {
-                        Random r = new Random();
-                        if (r.Next(0, 100) < 40)
-                        {
-                            monster.Ailment = Ailment.Normal;
-                            sleepTurns = 0;
-                        }
-                        else
-                        {
-                            sleepTurns++;
-                        }
+                    else {
+                        sleepTurns++;
                     }
                 }
-                if (monster.Ailment == Ailment.Frozen)
-                {
-                    if (frozenTurns == 5)
-                    {
+            }
+            if (monster.Ailment == Ailment.Frozen) {
+                if (frozenTurns == 5) {
+                    monster.Ailment = Ailment.Normal;
+                    frozenTurns = 0;
+                }
+                else {
+                    Random r = new Random();
+                    if (r.Next(0, 100) < 15) {
                         monster.Ailment = Ailment.Normal;
                         frozenTurns = 0;
                     }
-                    else
-                    {
-                        Random r = new Random();
-                        if (r.Next(0, 100) < 15)
-                        {
-                            monster.Ailment = Ailment.Normal;
-                            frozenTurns = 0;
-                        }
-                        else
-                        {
-                            frozenTurns++;
-                        }
+                    else {
+                        frozenTurns++;
                     }
                 }
-                if (monster.Ailment == Ailment.Frenzied)
-                {
-                    Random r = new Random();
-                    if (r.Next(0, 100) < 20)
-                    {
-                        monster.Ailment = Ailment.Normal;
-                    }
+            }
+            if (monster.Ailment == Ailment.Frenzied) {
+                Random r = new Random();
+                if (r.Next(0, 100) < 20) {
+                    monster.Ailment = Ailment.Normal;
                 }
+            }
         }
     }
 }
