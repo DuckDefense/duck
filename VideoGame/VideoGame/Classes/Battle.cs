@@ -94,6 +94,7 @@ namespace VideoGame.Classes {
             if (chosen != null || !playerTurn) {
                 chosen.Execute(user, opponent);
             }
+            Reset();
         }
 
 
@@ -130,8 +131,8 @@ namespace VideoGame.Classes {
                 CurrentOpponentMonster.PreviousStats = CurrentOpponentMonster.Stats;
 
                 //Get Ability effects here
-                CurrentUserMonster.Ability.GetEffects(CurrentUserMonster, CurrentOpponentMonster);
-                CurrentOpponentMonster.Ability.GetEffects(CurrentOpponentMonster, CurrentUserMonster);
+                CurrentUserMonster.Ability.GetStatBoosts(CurrentUserMonster);
+                CurrentOpponentMonster.Ability.GetStatBoosts(CurrentOpponentMonster);
                 CurrentUserMonster.Fought = true;
 
                 foreach (var m in User.Monsters) { if (!levelList.ContainsKey(m.Id)) levelList.Add(m.Id, m.Level); }
@@ -241,6 +242,7 @@ namespace VideoGame.Classes {
                 character.Monsters.Move(SelectedMonster, 0);
                 CurrentUserMonster = SelectedMonster;
                 CurrentUserMonster.PreviousStats = CurrentUserMonster.Stats;
+                CurrentUserMonster.Ability.GetStatBoosts(CurrentUserMonster);
                 CurrentUserMonster.Fought = true;
                 Drawer.AddMessage(new List<string> { $"You did well {prevName}! \nYou're up now {CurrentUserMonster.Name}" });
             }
@@ -249,7 +251,8 @@ namespace VideoGame.Classes {
                     var prevName = current.Name;
                     character.Monsters.Move(monster, 0);
                     CurrentOpponentMonster = monster;
-                    CurrentUserMonster.PreviousStats = CurrentUserMonster.Stats;
+                    CurrentOpponentMonster.PreviousStats = CurrentOpponentMonster.Stats;
+                    CurrentOpponentMonster.Ability.GetStatBoosts(CurrentOpponentMonster);
                     Drawer.AddMessage(new List<string> { $"{Opponent.Name} switched out {prevName} for \n{CurrentOpponentMonster.Name}" });
                     break;
                 }
@@ -364,39 +367,47 @@ namespace VideoGame.Classes {
                 }
                 else {
                     if (playerTurn) {
-                        AttackButton.Update(cur, prev);
-                        InventoryButton.Update(cur, prev);
-                        PartyButton.Update(cur, prev);
-                        RunButton.Update(cur, prev);
+                        if (!CurrentOpponentMonster.Ability.SkipTurn(CurrentUserMonster)) {
+                            AttackButton.Update(cur, prev);
+                            InventoryButton.Update(cur, prev);
+                            PartyButton.Update(cur, prev);
+                            RunButton.Update(cur, prev);
 
-                        if (AttackButton.IsClicked(cur, prev)) {
-                            Selection = Selection.Attack;
-                            ResetDraws();
-                            drawMoves = true;
+                            if (AttackButton.IsClicked(cur, prev)) {
+                                Selection = Selection.Attack;
+                                ResetDraws();
+                                drawMoves = true;
+                            }
+                            else if (InventoryButton.IsClicked(cur, prev)) {
+                                Selection = Selection.Item;
+                                ResetDraws();
+                                drawInventory = true;
+                            }
+                            else if (PartyButton.IsClicked(cur, prev)) {
+                                Selection = Selection.Party;
+                                ResetDraws();
+                                drawParty = true;
+                            }
+                            else if (RunButton.IsClicked(cur, prev)) {
+                                Selection = Selection.Run;
+                                ResetDraws();
+                            }
+                            GetSelected(cur);
                         }
-                        else if (InventoryButton.IsClicked(cur, prev)) {
-                            Selection = Selection.Item;
-                            ResetDraws();
-                            drawInventory = true;
+                        else {
+                            playerTurn = false;
                         }
-                        else if (PartyButton.IsClicked(cur, prev)) {
-                            Selection = Selection.Party;
-                            ResetDraws();
-                            drawParty = true;
-                        }
-                        else if (RunButton.IsClicked(cur, prev)) {
-                            Selection = Selection.Run;
-                            ResetDraws();
-                        }
-                        GetSelected(cur);
                     }
                     else {
-                        //Add a little delay
-                        CountDown(time);
-                        //Reset all choices
-                        ResetDraws();
-                        Selection = Selection.None;
-                        BattleAI.MakeDecision(this, SelectedMove, CurrentOpponentMonster, CurrentUserMonster, Opponent);
+                        if (!CurrentOpponentMonster.Ability.SkipTurn(CurrentOpponentMonster)) {
+                            //Add a little delay
+                            CountDown(time);
+                            //Reset all choices
+                            ResetDraws();
+                            Selection = Selection.None;
+                            BattleAI.MakeDecision(this, SelectedMove, CurrentOpponentMonster, CurrentUserMonster,
+                                Opponent);
+                        }
                         playerTurn = true;
                     }
                 }
@@ -477,7 +488,7 @@ namespace VideoGame.Classes {
         private void Reset(bool passTurn = true) {
             ResetDraws();
             AilmentEffect(CurrentUserMonster);
-            AilmentEffect(CurrentOpponentMonster);
+            //AilmentEffect(CurrentOpponentMonster);
             Selection = Selection.None;
             SelectedMedicine = null;
             SelectedCapture = null;
@@ -500,7 +511,7 @@ namespace VideoGame.Classes {
             battleOver = true;
         }
         public void AilmentEffect(Monster monster) {
-            if (monster.Ailment == Ailment.Burned) {
+            if (monster.Ailment == Ailment.Burned) { 
                 monster.Stats.Health -= (monster.MaxHealth / 100 * 8);
             }
             if (monster.Ailment == Ailment.Poisoned) {
