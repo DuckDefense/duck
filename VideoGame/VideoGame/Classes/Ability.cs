@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Sandbox.Classes;
 
 namespace VideoGame.Classes {
     public enum AbilityId {
@@ -45,7 +47,7 @@ namespace VideoGame.Classes {
         public double ChanceToInflictFrozen;
         public double ChanceToInflictBlessed;
         public double ChanceToInflictFrenzied;
-        
+
         public bool GoesLast;
         public bool GoesFirst;
         public bool ImmuneToSound;
@@ -84,33 +86,93 @@ namespace VideoGame.Classes {
             }
             return null;
         }
+        
+        public double GetDodgePercent(Monster user) {
+            double dodge = 0;
+            switch (user.Ability.Id) {
+            case AbilityId.Fuzzy: dodge += 7.5; break;
+            case AbilityId.AfterImage: dodge += 3; break;
+            case AbilityId.Evasive: dodge += 5; break;
+            }
+            return dodge;
+        }
 
-        public void GetEffects(Monster user, Monster opponent) {
-            Random rand = new Random();
-
+        public void GetStatBoosts(Monster user) {
             switch (user.Ability.Id) {
             case AbilityId.Buff: user.Stats = new StatModifier(1, 1.25, 1, 1, 1).ApplyModifiers(user); break;
-            case AbilityId.Fuzzy: ChanceToNeglectAttack = 7.5; break;
             case AbilityId.Enraged: user.Stats = new StatModifier(1.25, 1, 1, 1, 1).ApplyModifiers(user); break;
-            case AbilityId.Ordinary: break;
-            case AbilityId.Unmovable: GoesLast = true; break;
-            case AbilityId.ToxicBody: ChanceToInflictPoison = 10; break;
             case AbilityId.Swift: user.Stats = new StatModifier(1, 1, 1, 1, 1.25).ApplyModifiers(user); break;
             case AbilityId.Relaxed: user.MaxHealth += user.MaxHealth / 95; break;
             case AbilityId.StrongFist: user.Stats = new StatModifier(1.50, 0.75, 1, 1, 1).ApplyModifiers(user); break;
-            case AbilityId.AfterImage: ChanceToEvade = 3; user.Stats = new StatModifier(1, 1, 1, 1, 1.20).ApplyModifiers(user); break;
-            case AbilityId.Evasive: ChanceToEvade = 5; break;
+            case AbilityId.AfterImage: user.Stats = new StatModifier(1, 1, 1, 1, 1.20).ApplyModifiers(user); break;
             case AbilityId.Enjoyer: user.Stats = new StatModifier(1.1, 1.1, 1.1, 1.1, 1.1).ApplyModifiers(user); break;
             case AbilityId.Squishy: user.Stats = new StatModifier(1, .80, 1, 1, 1.30).ApplyModifiers(user); break;
-            case AbilityId.Confident: foreach (var m in user.Moves) m.Accuracy += 25;  break;
-            case AbilityId.Warm: ChanceToInflictSleep = 7.5f; break;
-            case AbilityId.OnFire: ChanceToInflictBurned = 15f; break;
-            case AbilityId.Silly: ChanceToSkipTurn = 10f; break;
-            case AbilityId.Deaf: ImmuneToSound = true; break;
-            case AbilityId.Musician: MoneyModifier = 20f; break;
+            case AbilityId.Confident: foreach (var move in user.Moves) { move.Accuracy += 25; } break;
             }
-            //TODO: Actually check for the chances
         }
+
+        public bool SkipTurn(Monster user) {
+            if (user.Ability.Id == AbilityId.Silly) {
+                ChanceToSkipTurn = 10f;
+                var rand = new CryptoRandom();
+                int ran = rand.Next(0, 100);
+                if (ran <= ChanceToSkipTurn) {
+                    Drawer.AddMessage(new List<string> { $"{user.Name}s {user.Ability.Name} made {user.Name} skip a turn!" });
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Checks if the opponent has an ability that can trigger an ailment on hit
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="opponent"></param>
+        /// <param name="move"></param>
+        /// <returns></returns>
+        public Ailment GetAilment(Monster user, Monster opponent, Move move) {
+            //If user already has an ailment
+            if (user.Ailment != Ailment.Normal) return user.Ailment;
+            //If move does not make contact with the opponent
+            if (move.Kind != Kind.Physical) return user.Ailment;
+            var rand = new CryptoRandom();
+            switch (opponent.Ability.Id) {
+            case AbilityId.ToxicBody:
+                if (rand.Next(0, 100) <= 10) {
+                    Drawer.AddMessage(new List<string> { $"{opponent.Name}s {opponent.Ability.Name} made {user.Name} poisoned!" });
+                    return Ailment.Poisoned;
+                }
+                break;
+            case AbilityId.Warm:
+                if (rand.Next(0, 100) <= 7.5) {
+                    Drawer.AddMessage(new List<string> { $"{opponent.Name}s {opponent.Ability.Name} made {user.Name} fall asleep!" });
+                    return Ailment.Sleep;
+                }
+                break;
+            case AbilityId.OnFire:
+                if (rand.Next(0, 100) <= 7.5) {
+                    Drawer.AddMessage(new List<string> { $"{opponent.Name}s {opponent.Ability.Name} made {user.Name} catch fire!" });
+                    return Ailment.Burned;
+                }
+                break;
+            }
+            return Ailment.Normal;
+        }
+
+        public bool IsImmune(Monster reciever, Move move) {
+            if (reciever.Ability.Id == AbilityId.Deaf && move.Type == Type.Sound) {
+                Drawer.AddMessage(new List<string> { $"{reciever.Name} is immune to Sound attacks." });
+                return true;
+            }
+            return false;
+        }
+
+        public int GetMoneyModifier(Monster user, int money) {
+            if (user.Ability.Id == AbilityId.Musician) return Convert.ToInt32(money + (money * .10f));
+            return money;
+        }
+
         #region Preset Abilities
 
         public static Ability Buff() {
