@@ -83,14 +83,13 @@ namespace VideoGame.Classes {
         /// <param name="user">Monster that is using this move</param>
         /// <param name="receiver">Monster that is receiving this move</param>
         public void Execute(Monster user, Monster receiver) {
-            //TODO: Actually remove uses here
             Uses -= 1;
             double critMultiplier = 1;
             //Check if the move hit
             var chanceToHit = Accuracy + ((user.Stats.Speed - receiver.Stats.Speed) / 3);
             if (user.Ailment == Ailment.Frenzied) Convert.ToInt32(chanceToHit/=2);
-            
-            if (chanceToHit < Accuracy / 3) chanceToHit = Accuracy / 3;
+            chanceToHit -= Convert.ToInt32(receiver.Ability.GetDodgePercent(receiver));
+            if (chanceToHit < Accuracy / 2) chanceToHit = Accuracy / 2;
             Random rand = new Random();
             //If random number is below chanceToHit the move did hit
             if (rand.Next(0, 100) <= chanceToHit) {
@@ -102,18 +101,19 @@ namespace VideoGame.Classes {
                 {
                     Damage = GetDamage(user.Stats.Attack, receiver.Stats.Defense, GetDamageModifier(receiver),
                         critMultiplier);
-                    switch (user.Ailment)
+                    if (receiver.Ability.IsImmune(receiver, this)) Damage = 0;
+                        switch (user.Ailment)
                     {
                         case Ailment.Burned: receiver.Stats.Health -= Damage/2; break;
                         case Ailment.Frenzied: receiver.Stats.Health -= Convert.ToInt32(Damage*1.5); break;
                         default: receiver.Stats.Health -= Damage; break;
                     }
-                    //Replace this with a lerp (reducing it little by little) so it looks nicer
                 }
                 else if (Kind == Kind.Special)
                 {
                     Damage = GetDamage(user.Stats.SpecialAttack, receiver.Stats.SpecialDefense,
                         GetDamageModifier(receiver), critMultiplier);
+                    if (receiver.Ability.IsImmune(receiver, this)) Damage = 0;
                     switch (user.Ailment)
                     {
                         case Ailment.Dazzled: receiver.Stats.Health -= Damage / 2; break;
@@ -129,6 +129,7 @@ namespace VideoGame.Classes {
                 {
                     receiver.Ailment = Ailment;
                 }
+                user.Ailment = user.Ability.GetAilment(user, receiver, this);
             }
             //User missed
             else {
