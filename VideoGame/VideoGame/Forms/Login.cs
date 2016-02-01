@@ -34,6 +34,8 @@ namespace Sandbox.Forms {
                 if (DatabaseConnector.CheckPassword(UserName, Password)) {
                     Launcher.isIngelogd = true;
                     this.Close();
+                    Launcher l = new Launcher();
+                    l.ShowDialog();
                 }
             }
             else if (cbRegister.Checked) {
@@ -50,6 +52,8 @@ namespace Sandbox.Forms {
                             MessageBox.Show($"Succesfully added {tbUser.Text} to database");
                             Launcher.isIngelogd = true;
                             this.Close();
+                            Launcher l = new Launcher();
+                            l.ShowDialog();
                         }
                         break;
                     case DialogResult.No:

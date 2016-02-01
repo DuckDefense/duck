@@ -1,4 +1,5 @@
 ﻿using System;
+using Sandbox.Forms;
 using VideoGame.Forms;
 
 namespace VideoGame {
@@ -14,7 +15,7 @@ namespace VideoGame {
         static void Main() {
             //using (var game = new Game1())
             //    game.Run();
-            Launcher l = new Launcher();
+            Login l = new Login();
             l.ShowDialog();
         }
     }

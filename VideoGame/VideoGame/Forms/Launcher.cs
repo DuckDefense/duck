@@ -23,7 +23,7 @@ namespace VideoGame.Forms {
                 btnSettings.Enabled = false;
                 //btnPlay.Text = "Play offline";
             }
-            ShowLogin();
+            //ShowLogin();
         }
 
         private void btnLogin_Click(object sender, EventArgs e) {
