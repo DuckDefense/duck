@@ -300,13 +300,10 @@ namespace Sandbox.Classes {
                     while (rdr.Read()) {
                         var money = rdr.GetInt32("Money");
                         var textureId = rdr.GetInt32("TextureId");
-                        var front = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.Front);
-                        var back = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.Back);
-                        var world = ContentLoader.GetTextureFromPlayer(textureId, TextureFace.World);
+                        var world = ContentLoader.GetTextureFromPlayer(textureId);
                         Vector2 position = new Vector2(rdr.GetInt32("PositionX"), rdr.GetInt32("PositionY"));
 
-                        Character character = new Character(name, money, inventory, monsters, front, back,
-                            world, position, true, true);
+                        Character character = new Character(name, money, inventory, monsters, world, position, true, true);
                         character.CurrentArea = new Area { Name = rdr.GetString("Area") };
                         character.Id = id;
                         character.Box = box;
@@ -400,7 +397,7 @@ namespace Sandbox.Classes {
             return false;
         }
 
-        public static void AddCharacter(string name, string password) {
+        public static void AddCharacter(string name, string password, bool male) {
             var cmd = connection.CreateCommand();
             var pid = RandomId.GenerateUserId();
             cmd.CommandText = "INSERT INTO `character`(`Id`, `Name`, `Password`, `Money`, `TextureId`, `Area`, `PositionX`, `PositionY`) VALUES (@pid, @name, @pass, @money, @textureId, @area, @posX, @posY)";
@@ -408,8 +405,9 @@ namespace Sandbox.Classes {
             cmd.Parameters.AddWithValue("@name", name);
             cmd.Parameters.AddWithValue("@pass", password);
             cmd.Parameters.AddWithValue("@money", 200);
+            if (male) cmd.Parameters.AddWithValue("@textureId", 2);
+            if (!male) cmd.Parameters.AddWithValue("@textureId", 1);
             //TODO: Make the player choose texture
-            cmd.Parameters.AddWithValue("@textureId", 1);
             cmd.Parameters.AddWithValue("@area", "City");
             cmd.Parameters.AddWithValue("@posX", 256);
             cmd.Parameters.AddWithValue("@posY", 196);
