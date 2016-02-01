@@ -109,8 +109,14 @@ namespace VideoGame.Classes {
                 Random rand = new Random();
                 if (rand.Next(0, 255) < f) {
                     BattleState = State.Ran;
+                    battleOver = true;
+                    Drawer.AddMessage(new List<string> { "You got away safely" });
+                }
+                else
+                {
                     battleOver = false;
                     Drawer.AddMessage(new List<string> { "You couldn't get away" });
+                    Reset(true);
                 }
             }
             else {
