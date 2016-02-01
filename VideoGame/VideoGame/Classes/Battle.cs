@@ -200,7 +200,7 @@ namespace VideoGame.Classes {
             case State.Won:
                 if (Opponent != null) {
                     User.Money += Opponent.Money;
-                    Drawer.AddMessage(new List<string> { $"{User} got ${Opponent.Money} for winning" });
+                    Drawer.AddMessage(new List<string> { $"{User.Name} got ${Opponent.Money} for winning" });
                 }
                 for (var i = 0; i < User.Monsters.Count; i++) {
                     var m = User.Monsters[i];
