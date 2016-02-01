@@ -298,7 +298,7 @@ namespace VideoGame.Classes {
                     DatabaseConnector.GetMonster(4, 15)
                 },
                 battleLine, winLine, loseLine, ContentLoader.ChristmanWorld, new Vector2(192, 192));
-            tegenstander.AI = new AI(tegenstander, 4);
+            tegenstander.AI = new AI(tegenstander, 3);
 
             Random random = new Random();
             Point levelrange = new Point(2, 8);
