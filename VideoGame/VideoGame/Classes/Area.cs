@@ -251,7 +251,9 @@ namespace VideoGame.Classes {
                 return Route7(player);
             case "route 8":
                 return Route8(player);
-            case "city":
+            case "route 9":
+                return Route9(player);
+                case "city":
                 Random random = new Random();
                 return random.Next(0, 10) == 2 ? EasterCity(player) : City(player);
             case "eastercity":
@@ -552,7 +554,7 @@ namespace VideoGame.Classes {
                     spawn = new Vector2(672, 128);
                 }
                 else {
-                    spawn = new Vector2(256, 320);
+                    spawn = new Vector2(192, 416);
                 }
             List<Monster> monsters = new List<Monster>
             {
@@ -571,6 +573,38 @@ namespace VideoGame.Classes {
             return new Area("Route 8", levelrange, monsters, opponents, spawn, map);
         }
 
+        public static Area Route9(Character player)
+        {
+            if (Sound != null)
+                Sound.Stop();
+
+            Sound = ContentLoader.RouteSong.CreateInstance();
+            Sound.IsLooped = true;
+            Sound.Play();
+
+            Random random = new Random();
+            Point levelrange = new Point(22, 27);
+            var map = ContentLoader.Route9;
+            Vector2 spawn = Vector2.One;
+            spawn = new Vector2(352, 32);
+
+            List<Monster> monsters = new List<Monster>
+            {
+                DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y - 2)),
+                DatabaseConnector.GetMonster(12, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(13, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(17, random.Next(levelrange.X, levelrange.Y - 2)),
+                DatabaseConnector.GetMonster(21, random.Next(levelrange.X, levelrange.Y + 1)),
+                DatabaseConnector.GetMonster(18, random.Next(levelrange.X, levelrange.Y)),
+                DatabaseConnector.GetMonster(23, random.Next(levelrange.X, levelrange.Y - 2))
+
+            };
+            List<Character> opponents = new List<Character>
+            {
+            };
+
+            return new Area("Route 9", levelrange, monsters, opponents, spawn, map);
+        }
         public static Area City(Character player) {
             if (Sound != null)
                 Sound.Stop();
