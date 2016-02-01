@@ -1461,3 +1461,8 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Items/Medicine/Nasty Spoon.png
 
+#begin Route9.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:Route9.tmx
+
