@@ -80,7 +80,7 @@ namespace Sandbox.Classes {
             itemIdList.Clear();
             int amount = 0;
             var linkCmd = connection.CreateCommand();
-            linkCmd.CommandText = capture ? $"SELECT * FROM `capturelink` WHERE `playerId` = @X"
+            linkCmd.CommandText = capture ? $"SELECT * FROM `capturelink` WHERE `playerId` = @X"                 
                 : $"SELECT * FROM `medicinelink` WHERE `playerId` = @X";
             linkCmd.Parameters.AddWithValue("@X", playerId);
             using (var rdr = linkCmd.ExecuteReader()) {
@@ -124,6 +124,7 @@ namespace Sandbox.Classes {
 
         public static List<Monster> GetMonsters(int playerId, ref List<Monster> box) {
             bool capture = false;
+            int Uid = 0;
             int Id = 0;
             int statsId = 0;
             int level = 0;
@@ -150,12 +151,12 @@ namespace Sandbox.Classes {
 
             foreach (var monsterId in monsterIdList) {
                 var item = new Item();
-
                 linkCmd = connection.CreateCommand();
                 linkCmd.CommandText = "SELECT * FROM `monsterlink` WHERE Uid = @uid";
                 linkCmd.Parameters.AddWithValue("@uid", monsterId);
                 using (var rdr = linkCmd.ExecuteReader()) {
                     while (rdr.Read()) {
+                        Uid = rdr.GetInt32("Uid");
                         Id = rdr.GetInt32("monsterId");
                         statsId = rdr.GetInt32("statsId");
                         level = rdr.GetInt32("Level");
@@ -200,6 +201,7 @@ namespace Sandbox.Classes {
                 }
 
                 var mon = GetMonster(Id, level);
+                mon.UId = Uid;
                 mon.Experience = experience;
                 mon.Ability = ability;
                 mon.HeldItem = item;
