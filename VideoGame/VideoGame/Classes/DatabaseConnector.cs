@@ -419,16 +419,16 @@ namespace Sandbox.Classes {
             //Make inventory
             cmd.CommandText = "SELECT COUNT(*) FROM `medicine`";
             int count = Convert.ToInt32(cmd.ExecuteScalar());
-            for (int i = 1; i < count; i++) {
+            for (int i = 0; i < count; i++) {
                 cmd.CommandText = "INSERT INTO `medicinelink`(`playerId`, `medicineId`,  `Amount`) " +
-                                  $"VALUES ({pid}, {i}, 0)";
+                                  $"VALUES ({pid}, {i+1}, 0)";
                 cmd.ExecuteNonQuery();
             }
             cmd.CommandText = "SELECT COUNT(*) FROM `capture`";
             count = Convert.ToInt32(cmd.ExecuteScalar());
-            for (int i = 1; i < count; i++) {
+            for (int i = 0; i < count; i++) {
                 cmd.CommandText = "INSERT INTO `capturelink`(`playerId`,`captureId`,`Amount`) " +
-                                  $"VALUES ({pid}, {i}, 0)";
+                                  $"VALUES ({pid}, {i+1}, 0)";
                 cmd.ExecuteNonQuery();
             }
         }
