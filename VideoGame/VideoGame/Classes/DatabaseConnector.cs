@@ -77,8 +77,8 @@ namespace Sandbox.Classes {
         }
 
         private static void GetItemLists(int playerId, Inventory inventory, bool capture) {
-            itemIdList.Clear();
-            int amount = 0;
+            var itemDictionary = new Dictionary<int, int>();            
+            //itemIdList.Clear();
             var linkCmd = connection.CreateCommand();
             linkCmd.CommandText = capture ? $"SELECT * FROM `capturelink` WHERE `playerId` = @X"                 
                 : $"SELECT * FROM `medicinelink` WHERE `playerId` = @X";
@@ -86,19 +86,17 @@ namespace Sandbox.Classes {
             using (var rdr = linkCmd.ExecuteReader()) {
                 while (rdr.Read()) {
                     var linkId = rdr.GetInt32(capture ? "captureId" : "medicineId");
-                    amount = rdr.GetInt32("Amount");
-                    itemIdList.Add(linkId);
+                    itemDictionary.Add(linkId, rdr.GetInt32("Amount"));
                 }
             }
 
-            foreach (var linkId in itemIdList) {
+            foreach (var linkId in itemDictionary) {
                 var cmd = connection.CreateCommand();
                 cmd.CommandText = capture ? $"SELECT * FROM `capture`" : $"SELECT * FROM `medicine`";
-
                 using (var rdr = cmd.ExecuteReader()) {
                     while (rdr.Read()) {
                         var id = rdr.GetInt32("Id");
-                        if (linkId == id) {
+                        if (linkId.Key == id) {
                             var cause = false;
                             var cure = Medicine.Cure.None;
                             var healAmount = 0;
@@ -114,8 +112,8 @@ namespace Sandbox.Classes {
                             var worth = rdr.GetInt32("Worth");
                             var maxAmount = rdr.GetInt32("MaxAmount");
 
-                            if (capture) inventory.Add(new Capture(id, name, description, ContentLoader.GetTextureFromCapture(id), captureChance, true, worth, amount, maxAmount), amount);
-                            else inventory.Add(new Medicine(id, name, description, ContentLoader.GetTextureFromMedicine(id), healAmount, cure, worth, amount, maxAmount, cause), amount);
+                            if (capture) inventory.Add(new Capture(id, name, description, ContentLoader.GetTextureFromCapture(id), captureChance, true, worth, linkId.Value, maxAmount), linkId.Value);
+                            else inventory.Add(new Medicine(id, name, description, ContentLoader.GetTextureFromMedicine(id), healAmount, cure, worth, linkId.Value, maxAmount, cause), linkId.Value);
                         }
                     }
                 }
