@@ -606,6 +606,19 @@ namespace VideoGame.Classes {
             var map = ContentLoader.Shop;
             var inventory = new Inventory();
             inventory.Add(Capture.RottenNet(), 99);
+            inventory.Add(Capture.RegularNet(), 99);
+            inventory.Add(Capture.GreatNet(), 99);
+            inventory.Add(Capture.MasterNet(), 99);
+
+            inventory.Add(Medicine.LeafBandage(), 99);
+            inventory.Add(Medicine.MagicStone(), 99);
+            inventory.Add(Medicine.NastySpoon(), 99);
+            inventory.Add(Medicine.AntiPoison(), 99);
+            inventory.Add(Medicine.BucketOfWater(), 99);
+            inventory.Add(Medicine.Salt(), 99);
+            inventory.Add(Medicine.AirHorn(), 99);
+            inventory.Add(Medicine.RoosVicee(), 99);
+
             var introShopLines = new List<string> { "Hello!\n Do you want to buy something?" };
             var byeShopLines = new List<string> { "Take a look", "Thanks for stopping by" };
             var ShopLady = new Character("HealLady", 0, inventory, introShopLines, byeShopLines, NPCKind.Shop, ContentLoader.HealLady, new Vector2(288, 64));
