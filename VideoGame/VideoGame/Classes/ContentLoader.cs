@@ -467,6 +467,7 @@ namespace VideoGame.Classes {
             case 1: return RottenNet;
             case 2: return RegularNet;
             case 3: return GreatNet;
+            case 4: return MasterNet;
             }
             return null;
         }
@@ -480,7 +481,7 @@ namespace VideoGame.Classes {
             case 5: return Salt;
             case 6: return AirHorn;
             case 7: return RoosVicee;
-                //case 8: return PictureOfMother;
+            case 8: return NastySpoon;
             }
             return null;
         }
@@ -496,7 +497,8 @@ namespace VideoGame.Classes {
 
         public static int GetIdFromCharacterWorldTexture(Texture tex) {
             if (tex == MCGirlWorld) return 1;
-            if (tex == ChristmanWorld) return 2;
+            if (tex == MCBoyWorld) return 2;
+            if (tex == ChristmanWorld) return 3;
             return 0;
         }
         #endregion
