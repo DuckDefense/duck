@@ -147,6 +147,7 @@ namespace VideoGame.Classes {
                 if (!User.KnownMonsters.ContainsKey(CurrentOpponentMonster.Id)) User.KnownMonsters.Add(CurrentOpponentMonster.Id, CurrentOpponentMonster);
                 battleStart = false;
                 drawBattleButtons = true;
+                CurrentUserMonster.Ailment = Ailment.Sleep;
             }
             //If battle is happening right now.
             if (!battleOver) {
@@ -200,7 +201,7 @@ namespace VideoGame.Classes {
             case State.Won:
                 if (Opponent != null) {
                     User.Money += Opponent.Money;
-                    Drawer.AddMessage(new List<string> { $"{User.Name} got ${Opponent.Money} for winning" });
+                    //Drawer.AddMessage(new List<string> { $"{User.Name} got ${Opponent.Money} for winning" });
                 }
                 for (var i = 0; i < User.Monsters.Count; i++) {
                     var m = User.Monsters[i];
@@ -373,7 +374,9 @@ namespace VideoGame.Classes {
                 }
                 else {
                     if (playerTurn) {
-                        if (!CurrentOpponentMonster.Ability.SkipTurn(CurrentUserMonster)) {
+                        if (!CurrentUserMonster.Ability.SkipTurn(CurrentUserMonster)
+                            && CurrentUserMonster.Ailment != Ailment.Frozen
+                            && CurrentUserMonster.Ailment != Ailment.Sleep) {
                             AttackButton.Update(cur, prev);
                             InventoryButton.Update(cur, prev);
                             PartyButton.Update(cur, prev);
@@ -402,6 +405,12 @@ namespace VideoGame.Classes {
                         }
                         else {
                             playerTurn = false;
+                            if(CurrentUserMonster.Ailment == Ailment.Frozen)
+                            Drawer.AddMessage(new List<string>
+                               {"Is frozen solid"});
+                            else if (CurrentUserMonster.Ailment == Ailment.Frozen)
+                                Drawer.AddMessage(new List<string>
+                                {"Is Fast asleep"});
                         }
                     }
                     else {
