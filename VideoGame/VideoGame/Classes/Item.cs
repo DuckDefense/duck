@@ -116,6 +116,8 @@ namespace VideoGame.Classes {
         }
         public static Capture GreatNet() {
             return new Capture(3, "Great Net", "A big net that will occasionally catch a monster.", ContentLoader.GreatNet, 65, true, 500, 1, 99);
+        }public static Capture MasterNet() {
+            return new Capture(4, "Master Net", "A net so amazing it'll be hard not to catch monsters with it.", ContentLoader.MasterNet, 2500, true, 1500, 1, 99);
         }
     }
 
@@ -141,9 +143,7 @@ namespace VideoGame.Classes {
                     if (ailment == Ailment.Frozen)
                         return true;
                     break;
-                case Cure.All:
-                        return true;
-                    break;
+                case Cure.All: return true;
                 case Cure.Frenzied:
                     if (ailment == Ailment.Frenzied)
                         return true;
@@ -250,8 +250,8 @@ namespace VideoGame.Classes {
             return new Medicine(7, "RoosVicee", "Komt wel goed schatje", ContentLoader.RoosVicee, 0, Cure.All, 586, 1, 99);
         }
 
-        public static Medicine MotherPicture() {
-            return new Medicine(8, "Picture of Mother", "Causes the user to go into a frenzy", ContentLoader.Health, 0, Cure.Frenzied, 200, 1, 99, false);
+        public static Medicine NastySpoon() {
+            return new Medicine(8, "Nasty spoon", "A nasty spoon that completely heals the monster", ContentLoader.NastySpoon, int.MaxValue, Cure.All, 750, 1, 99, true);
         }
     }
 

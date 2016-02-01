@@ -64,8 +64,8 @@ namespace VideoGame.Classes {
         public static Texture2D MCBoyWorld;
         public static Texture2D MessageBox, BattleMessage;
         public static Texture2D Button, ButtonHover, ButtonClicked;
-        public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt;
-        public static Texture2D RottenNet, RegularNet, GreatNet;
+        public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt, NastySpoon;
+        public static Texture2D RottenNet, RegularNet, GreatNet, MasterNet;
         public static TiledMap City, Route1, Route2, Route3, Route4, Route5, Route6, Route7, Route8, Shop, SecretTunnel, SecretCity, EasterCity;
         public static SpriteFont Arial;
 
@@ -264,6 +264,7 @@ namespace VideoGame.Classes {
             RottenNet = Content.Load<Texture2D>(@"Sprites\Items\Capture\Rotten Net");
             RegularNet = Content.Load<Texture2D>(@"Sprites\Items\Capture\Regular Net");
             GreatNet = Content.Load<Texture2D>(@"Sprites\Items\Capture\Great Net");
+            MasterNet = Content.Load<Texture2D>(@"Sprites\Items\Capture\Master Net");
             #endregion
 
             #region Medicine
@@ -274,6 +275,7 @@ namespace VideoGame.Classes {
             MagicStone = Content.Load<Texture2D>(@"Sprites/Items/Medicine/MagicStone");
             RoosVicee = Content.Load<Texture2D>(@"Sprites/Items/Medicine/RoosVicee");
             Salt = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Salt");
+            NastySpoon = Content.Load<Texture2D>(@"Sprites/Items/Medicine/Nasty Spoon");
             #endregion
 
             #region Music
