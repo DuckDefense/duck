@@ -13,7 +13,7 @@ The idea of the game is, just as in Pokemon, to capture monsters, train them, an
 - Download and install the [OpenAL Windows Installer](https://www.openal.org/downloads/)
 - Now you can go and launch the game. Make sure your program is running and MySQL is running.
 - Since this is the first time you're launching the game you should go and create a new account.
-- This is done by simply entering a username and password in the fields, and clicking on the Yes button when prompted.
+- This is done by simply entering a username and password in the fields, clicking on register, choosing a gender and clicking on the Yes button when prompted.
 - You have now succesfully installed the game. To continue with your progress just login with the same username and password.
 
 ######Building
