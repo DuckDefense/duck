@@ -72,7 +72,7 @@ namespace VideoGame
             };
             IsMouseVisible = true;
 
-            Window.AllowUserResizing = true;
+            //Window.AllowUserResizing = true;
             Window.ClientSizeChanged += (s, e) => viewportAdapter.OnClientSizeChanged();
             DatabaseConnector.SetConnectionString(Settings.ServerName, Settings.Username, Settings.Password, Settings.DatabaseName);
             base.Initialize();
@@ -241,7 +241,7 @@ namespace VideoGame
             }
 
 
-            spriteBatch.DrawString(ContentLoader.Arial, $"FPS: {fpsCounter.AverageFramesPerSecond}", new Vector2(5, 5), Color.Yellow);
+            //spriteBatch.DrawString(ContentLoader.Arial, $"FPS: {fpsCounter.AverageFramesPerSecond}", new Vector2(5, 5), Color.Yellow);
             spriteBatch.End();
 
             base.Draw(gameTime);
