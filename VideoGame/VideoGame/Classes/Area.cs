@@ -274,7 +274,9 @@ namespace VideoGame.Classes {
             return Monsters[index];
         }
 
-        public static Area Route1(Character player) {
+        public static Area Route1(Character player)
+        {
+            int money = 500;
             if (Sound != null)
                 Sound.Stop();
 
@@ -287,8 +289,8 @@ namespace VideoGame.Classes {
             inventory.Add(Medicine.MagicStone(), 2);
             List<string> battleLine = new List<string> { "Hah! Almost didn't catch you" };
             List<string> winLine = new List<string> { "That's what you get for getting caught by me" };
-            List<string> loseLine = new List<string> { "I wish I didn't catch you" };
-            tegenstander = new Character("Christguy", 6700, inventory,
+            List<string> loseLine = new List<string> { "I wish I didn't catch you", $"{player.Name} got ${money} for winning" };
+            tegenstander = new Character("Christguy", money, inventory,
                 new List<Monster> {
                     DatabaseConnector.GetMonster(1, 5),
                     DatabaseConnector.GetMonster(4, 15)
