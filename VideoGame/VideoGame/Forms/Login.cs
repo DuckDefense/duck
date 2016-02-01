@@ -18,6 +18,9 @@ namespace Sandbox.Forms {
         public string Password;
         public Login() {
             InitializeComponent();
+            rbFemale.Visible = false;
+            rbMale.Visible = false;
+            lbGender.Visible = false;
         }
 
         private void btnLogin_Click(object sender, EventArgs e) {
@@ -32,26 +35,45 @@ namespace Sandbox.Forms {
                     Launcher.isIngelogd = true;
                     this.Close();
                 }
-                else { MessageBox.Show("Password or username is incorrect"); }
+            }
+            else if (cbRegister.Checked) {
+                //Playername does not exists
+                var mbAnswer = MessageBox.Show("Player name is available, would you like to register it?", "Register",
+                    MessageBoxButtons.YesNo);
+                switch (mbAnswer) {
+                    case DialogResult.Yes:
+                        if (string.IsNullOrEmpty(tbPassword.Text)) {
+                            MessageBox.Show("Please enter a password and try again");
+                        }
+                        else {
+                            DatabaseConnector.AddCharacter(tbUser.Text, tbPassword.Text, rbMale.Checked);
+                            MessageBox.Show($"Succesfully added {tbUser.Text} to database");
+                            Launcher.isIngelogd = true;
+                            this.Close();
+                        }
+                        break;
+                    case DialogResult.No:
+                        break;
+                }
             }
             else {
-                //Playername does not exists
-                var mbAnswer = MessageBox.Show("Player name not found, would you like to register it?", "Register", MessageBoxButtons.YesNo);
-                switch (mbAnswer) {
-                case DialogResult.Yes:
-                    if (string.IsNullOrEmpty(tbPassword.Text)) {
-                        MessageBox.Show("Please enter a password and try again");
-                    }
-                    else {
-                        DatabaseConnector.AddCharacter(tbUser.Text, tbPassword.Text);
-                        MessageBox.Show($"Succesfully added {tbUser.Text} to database");
-                        Launcher.isIngelogd = true;
-                        this.Close();
-                    }
-                    break;
-                case DialogResult.No: break;
-                }
+                MessageBox.Show("Password or username is incorrect");
+            }
+        }
+
+        private void cbRegister_CheckedChanged(object sender, EventArgs e) {
+            rbFemale.Visible = cbRegister.Checked;
+            rbMale.Visible = cbRegister.Checked;
+            lbGender.Visible = cbRegister.Checked;
+            if (!cbRegister.Checked) {
+                rbMale.Checked = false;
+                rbFemale.Checked = false;
+                btnLogin.Text = "Login";
+            }
+            else {
+                btnLogin.Text = "Register";
             }
         }
     }
 }
+

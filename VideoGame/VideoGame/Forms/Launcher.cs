@@ -16,6 +16,7 @@ namespace VideoGame.Forms {
             InitializeComponent();
             if (isIngelogd) {
                 btnPlay.Text = "Play";
+                btnLogin.Visible = false;
             }
             else {
                 btnPlay.Enabled = false;

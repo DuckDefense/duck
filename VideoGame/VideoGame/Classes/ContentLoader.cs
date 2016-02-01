@@ -59,8 +59,9 @@ namespace VideoGame.Classes {
         public static Texture2D GrassyBackground;
         public static Texture2D Koak;
         public static Texture2D HealLady;
-        public static Texture2D ChristmanWorld, ChristmanFront, ChristmanBack;
-        public static Texture2D MCGirlWorld, MCGirlFront, MCGirlBack;
+        public static Texture2D ChristmanWorld;
+        public static Texture2D MCGirlWorld;
+        public static Texture2D MCBoyWorld;
         public static Texture2D MessageBox, BattleMessage;
         public static Texture2D Button, ButtonHover, ButtonClicked;
         public static Texture2D AirHorn, AntiPoison, BucketOfWater, LeafBandage, MagicStone, RoosVicee, Salt;
@@ -188,12 +189,9 @@ namespace VideoGame.Classes {
 
             #region Characters
             Koak = Content.Load<Texture2D>(@"Sprites/Characters/Front/Professor Koak");
-            ChristmanFront = Content.Load<Texture2D>(@"Sprites/Characters/Front/Christman");
-            //ChristmanBack = Content.Load<Texture2D>(@"Sprites/Characters/Back/Christman");
             ChristmanWorld = Content.Load<Texture2D>(@"Sprites/Characters/World/Christman");
-            MCGirlFront = Content.Load<Texture2D>(@"Sprites/Characters/Front/MC Girl");
-            //MCGirlBack = Content.Load<Texture2D>(@"Sprites/Characters/Back/MC Girl");
             MCGirlWorld = Content.Load<Texture2D>(@"Sprites/Characters/World/MC Girl");
+            MCBoyWorld = Content.Load<Texture2D>(@"Sprites/Characters/World/MC Boy");
             HealLady = Content.Load<Texture2D>(@"Sprites/Characters/World/Heal mevrouw");
 
             #endregion
@@ -485,22 +483,11 @@ namespace VideoGame.Classes {
             return null;
         }
 
-        public static Texture2D GetTextureFromPlayer(int id, TextureFace face) {
+        public static Texture2D GetTextureFromPlayer(int id) {
             switch (id) {
-            case 1:
-                switch (face) {
-                case TextureFace.Front: return MCGirlFront;
-                case TextureFace.Back: return MCGirlBack;
-                case TextureFace.World: return MCGirlWorld;
-                }
-                break;
-            case 2:
-                switch (face) {
-                case TextureFace.Front: return ChristmanFront;
-                case TextureFace.Back: return ChristmanBack;
-                case TextureFace.World: return ChristmanWorld;
-                }
-                break;
+            case 1: return MCGirlWorld;
+            case 2: return MCBoyWorld;
+            case 3: return ChristmanWorld;
             }
             return null;
         }

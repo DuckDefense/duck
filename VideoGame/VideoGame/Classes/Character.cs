@@ -42,9 +42,7 @@ namespace VideoGame.Classes {
         //Collisions
         public Rectangle LineOfSightRectangle;
         public Rectangle Hitbox;
-
-        public Texture2D FrontSprite; //Sprite that is shown when you're fighting against this character
-        public Texture2D BackSprite; //Sprite that is shown when you're fighting as this character
+        
         public Texture2D WorldSprite; //Sprite that is shown when you're walking around on the area
 
         public bool CountingDown;
@@ -82,13 +80,11 @@ namespace VideoGame.Classes {
         /// <param name="money">Amount of money the character has</param>
         /// <param name="inventory">Inventory of the character</param>
         /// <param name="monsters">Monsters that the character has</param>
-        /// <param name="front">Sprite that is shown when you're fighting against this character</param>
-        /// <param name="back">Sprite that is shown when you're fighting as this character</param>
         /// <param name="world">Sprite that is shown when you're walking around on the area</param>
         /// <param name="position">Position of the character</param>
         /// <param name="controllable"></param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters,
-        Texture2D front, Texture2D back, Texture2D world, Vector2 position, bool controllable, bool database = false) {
+        Texture2D world, Vector2 position, bool controllable, bool database = false) {
             if (!database) Id = RandomId.GenerateUserId();
             Name = name;
             Money = money;
@@ -98,8 +94,6 @@ namespace VideoGame.Classes {
                 monster.IsWild = false;
             }
             Controllable = controllable;
-            FrontSprite = front;
-            BackSprite = back;
             WorldSprite = world;
             Position = position;
         }
@@ -114,13 +108,11 @@ namespace VideoGame.Classes {
         /// <param name="battleMessage">Lines the character should say when starting a battle with the player</param>
         /// <param name="winMessage">Lines the character should say when winning in a battle against the player</param>
         /// <param name="loseMessage">Lines the character should say when losing in a battle against the player</param>
-        /// <param name="front">Sprite that is shown when you're fighting against this character</param>
-        /// <param name="back">Sprite that is shown when you're fighting as this character</param>
         /// <param name="world">Sprite that is shown when you're walking around on the area</param>
         /// <param name="position">Position of the character</param>
         public Character(string name, int money, Inventory inventory, List<Monster> monsters, 
             List<string> battleMessage, List<string> winMessage, List<string> loseMessage,
-            Texture2D front, Texture2D back, Texture2D world, Vector2 position) {
+            Texture2D world, Vector2 position) {
             Name = name;
             Money = money;
             Inventory = inventory;
@@ -130,8 +122,6 @@ namespace VideoGame.Classes {
             WinMessage = new Conversation.Message(winMessage, Color.Black, this); 
             LoseMessage = new Conversation.Message(loseMessage, Color.Black, this);
             Controllable = false;
-            FrontSprite = front;
-            BackSprite = back;
             WorldSprite = world;
             Position = position;
             NpcKind = NPCKind.Trainer;
@@ -140,25 +130,14 @@ namespace VideoGame.Classes {
         /// <summary>
         /// Shop character
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="money"></param>
-        /// <param name="inventory"></param>
-        /// <param name="introMessage"></param>
-        /// <param name="byeMessage"></param>
-        /// <param name="front"></param>
-        /// <param name="back"></param>
-        /// <param name="world"></param>
-        /// <param name="position"></param>
         public Character(string name, int money, Inventory inventory, List<string> introMessage, List<string> byeMessage, NPCKind npcKind, 
-            Texture2D front, Texture2D back, Texture2D world, Vector2 position) {
+            Texture2D world, Vector2 position) {
             Name = name;
             Money = money;
             Inventory = inventory;
             Controllable = false;
             IntroMessage = new Conversation.Message(introMessage, Color.Black, this);
             ByeMessage = new Conversation.Message(byeMessage, Color.Black, this);
-            FrontSprite = front;
-            BackSprite = back;
             WorldSprite = world;
             Position = position;
             NpcKind = npcKind;

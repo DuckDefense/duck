@@ -296,9 +296,7 @@ namespace VideoGame.Classes {
                     DatabaseConnector.GetMonster(1, 5),
                     DatabaseConnector.GetMonster(4, 15)
                 },
-                battleLine, winLine, loseLine,
-                ContentLoader.Button, ContentLoader.Button, ContentLoader.ChristmanWorld,
-                new Vector2(192, 192));
+                battleLine, winLine, loseLine, ContentLoader.ChristmanWorld, new Vector2(192, 192));
             tegenstander.AI = new AI(tegenstander, 8);
 
             Random random = new Random();
@@ -622,9 +620,7 @@ namespace VideoGame.Classes {
             inventory.Add(Capture.RottenNet(), 99);
             var introShopLines = new List<string> { "Hello!\n Do you want to buy something?" };
             var byeShopLines = new List<string> { "Take a look", "Thanks for stopping by" };
-            var ShopLady = new Character("HealLady", 0, inventory, introShopLines, byeShopLines, NPCKind.Shop,
-                ContentLoader.ChristmanFront, ContentLoader.ChristmanBack, ContentLoader.HealLady,
-                new Vector2(288, 64));
+            var ShopLady = new Character("HealLady", 0, inventory, introShopLines, byeShopLines, NPCKind.Shop, ContentLoader.HealLady, new Vector2(288, 64));
 
             ShopLady.AI = new AI(ShopLady, 2);
             ShopLady.Direction = Direction.Down;
@@ -632,9 +628,7 @@ namespace VideoGame.Classes {
 
             var introLines = new List<string> { "Hello!\n Do you want to restore your monsters?" };
             var byeLines = new List<string> { "Here you go", "Thanks for stopping by" };
-            var healLady = new Character("HealLady", 0, null, introLines, byeLines, NPCKind.Healer,
-                ContentLoader.ChristmanFront, ContentLoader.ChristmanBack, ContentLoader.HealLady,
-                new Vector2(224, 64));
+            var healLady = new Character("HealLady", 0, null, introLines, byeLines, NPCKind.Healer, ContentLoader.HealLady, new Vector2(224, 64));
 
             healLady.AI = new AI(healLady, 2);
             healLady.Direction = Direction.Down;
