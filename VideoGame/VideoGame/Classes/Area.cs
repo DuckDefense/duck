@@ -298,7 +298,7 @@ namespace VideoGame.Classes {
                     DatabaseConnector.GetMonster(4, 15)
                 },
                 battleLine, winLine, loseLine, ContentLoader.ChristmanWorld, new Vector2(192, 192));
-            tegenstander.AI = new AI(tegenstander, 8);
+            tegenstander.AI = new AI(tegenstander, 4);
 
             Random random = new Random();
             Point levelrange = new Point(2, 8);
@@ -575,12 +575,31 @@ namespace VideoGame.Classes {
 
         public static Area Route9(Character player)
         {
+            int money = 10000;
             if (Sound != null)
                 Sound.Stop();
 
             Sound = ContentLoader.RouteSong.CreateInstance();
             Sound.IsLooped = true;
             Sound.Play();
+
+            Character tegenstander;
+            Inventory inventory = new Inventory();
+            inventory.Add(Medicine.MagicStone(), 2);
+            List<string> battleLine = new List<string> { "Hah! Almost didn't catch you" };
+            List<string> winLine = new List<string> { "That's what you get for getting caught by me" };
+            List<string> loseLine = new List<string> { "I wish I didn't catch you", $"{player.Name} got ${money} for winning" };
+            tegenstander = new Character("Christguy", money, inventory,
+                new List<Monster> {
+                    DatabaseConnector.GetMonster(3, 40),
+                    DatabaseConnector.GetMonster(6, 40),
+                    DatabaseConnector.GetMonster(9, 40),
+                    DatabaseConnector.GetMonster(13, 40),
+                    DatabaseConnector.GetMonster(15, 40),
+                    DatabaseConnector.GetMonster(16, 50)
+                },
+                battleLine, winLine, loseLine, ContentLoader.MCGirlWorld, new Vector2(352, 254));
+            tegenstander.AI = new AI(tegenstander, 4);
 
             Random random = new Random();
             Point levelrange = new Point(22, 27);
@@ -601,6 +620,7 @@ namespace VideoGame.Classes {
             };
             List<Character> opponents = new List<Character>
             {
+                tegenstander
             };
 
             return new Area("Route 9", levelrange, monsters, opponents, spawn, map);
