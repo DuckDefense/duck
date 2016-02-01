@@ -237,11 +237,11 @@ namespace VideoGame.Classes {
         //Physical
         public static Move Tackle() {
             return new Move("Tackle", "A fullbody tackle",
-                60, 100, 40, Kind.Physical, Type.Normal);
+                30, 100, 40, Kind.Physical, Type.Normal);
         }
         public static Move Headbutt() {
             return new Move("Headbutt", "A headbutt",
-                70, 100, 25, Kind.Physical, Type.Normal);
+                50, 100, 25, Kind.Physical, Type.Normal);
         }
 
         public static Move Strangle() {
