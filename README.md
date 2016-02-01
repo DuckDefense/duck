@@ -5,7 +5,7 @@ This game is a turn based RPG, kind of like Pokemon, but in no way is it associa
 The idea of the game is, just as in Pokemon, to capture monsters, train them, and ultimately defeat the strongest guy in the region.
 
 ######Installing
-- To install the game you should first go and download any program which can host a database. (WAMP, XAMPP, etc)
+- To install the game you should first go and download any program which can host a database. ([WAMP](http://www.wampserver.com/en/), [XAMPP](https://www.apachefriends.org/index.html), etc)
 - When the installation is complete open up either the XAMPP Control Panel and start both Apache and MySql, or right click on the WAMP icon and enable all services.
 - Open your preffered browser and go to the following address: [localhost/phpmyadmin](localhost/phpmyadmin)
 - Create a new table called `ripoff`, you can give this a custom name, but you'll have to alter a few more settings
@@ -14,6 +14,7 @@ The idea of the game is, just as in Pokemon, to capture monsters, train them, an
 - Now you can go and launch the game. Make sure your program is running and MySQL is running.
 - Since this is the first time you're launching the game you should go and create a new account.
 - This is done by simply entering a username and password in the fields, clicking on register, choosing a gender and clicking on the Yes button when prompted.
+- If you changed any data regarding the database (different table name) you need to alter the database data which is done by clicking on `Settings` and navigating to the database tab. `Server Name` is the name of the server, or the ip to it. `Database Name` is the table name, and `username` and `password` are the user and password you use to get inside phpmyadmin.
 - You have now succesfully installed the game. To continue with your progress just login with the same username and password.
 
 ######Building
