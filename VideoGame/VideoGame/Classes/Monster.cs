@@ -218,6 +218,9 @@ namespace VideoGame.Classes {
             case 10: if (Level >= 28) return true; break;
 
             case 12: if (Level >= 18) return true; break;
+                case 19:
+                    if (Level >= 25) return true;
+                    break;
             }
             return false;
         }
@@ -237,6 +240,7 @@ namespace VideoGame.Classes {
             case 10: return ReturnEvolution(11);
 
             case 12: return ReturnEvolution(13);
+                case 19: return ReturnEvolution(20);
             }
             return this;
         }
@@ -264,17 +268,34 @@ namespace VideoGame.Classes {
                     break;
             case 4:
                 if (Level >= 1) Moves.Add(Move.Tackle());
-                if (Level >= 9) Moves.Add(Move.Bubble());
-                break;
+                    if (Level >= 6) Moves.Add(Move.WetSlap());
+                    if (Level >= 9) Moves.Add(Move.Bubble());
+                if (Level >= 11) Moves.Add(Move.Peck());
+                    break;
             case 5:
-                Moves.AddMany(Move.Tackle(),Move.Bubble());
+                Moves.AddMany(Move.Tackle(), Move.WetSlap(),Move.Bubble(),Move.Peck());
                     if (Level >= 20) Moves.Add(Move.Scream());
                     if (Level >= 30) Moves.Add(Move.Douse());
                     break;
             case 6:
-                Moves.AddMany(Move.Tackle(), Move.Bubble(), Move.Scream(), Move.Douse());
+                Moves.AddMany(Move.Tackle(),Move.WetSlap(), Move.Bubble(), Move.Peck(), Move.Scream(), Move.Douse());
                     if (Level >= 47) Moves.Add(Move.Icicle());
-
+                    if (Level >= 53) Moves.Add(Move.Tornado());
+                    break;
+                case 7:
+                    if (Level >= 1) Moves.Add(Move.Tackle());
+                    if (Level >= 11) Moves.Add(Move.Flare());
+                    break;
+                case 8:
+                    Moves.AddMany(Move.Tackle(), Move.Flare());
+                    if (Level >= 16) Moves.Add(Move.FireClaw());
+                    if (Level >= 20) Moves.Add(Move.RockThrow());
+                    break;
+                case 9:
+                    Moves.AddMany(Move.Tackle(), Move.Flare(), Move.FireClaw(), Move.RockThrow());
+                    if (Level >= 43) Moves.Add(Move.Tornado());
+                    if (Level >= 50) Moves.Add(Move.TailSmash());
+                    if (Level >= 63) Moves.Add(Move.Meteor());
                     break;
             case 10:
                 if (Level >= 1) {
@@ -289,6 +310,69 @@ namespace VideoGame.Classes {
             case 11:
                 Moves.AddMany(Move.Strangle(), Move.Glare(), Move.Tackle(), Move.Intimidate(), Move.Headbutt(), Move.MultiPunch());
                 break;
+                case 12:
+                    if (Level >= 1) { Moves.Add(Move.Tackle()); }
+                    break;
+                case 13:
+                    if (Level >= 1) { Moves.Add(Move.Tackle()); }
+                    if (Level >= 20) { Moves.Add(Move.NatureCalling()); }
+                    if (Level >= 21) { Moves.Add(Move.Intimidate()); }
+                    if (Level >= 53) Moves.Add(Move.TreeHammer());
+                    break;
+                case 14:
+                    if (Level >= 1) { Moves.Add(Move.Tackle()); }
+                    if (Level >= 9) { Moves.Add(Move.Smog()); }
+                    if (Level >= 20) { Moves.Add(Move.PoisonDart()); }
+                    break;
+                case 15:
+                    if (Level >= 1) { Moves.Add(Move.Tackle()); }
+                    if (Level >= 20) { Moves.Add(Move.Torment()); }
+                    if (Level >= 43) { Moves.Add(Move.SoulHunt()); }
+                    break;
+                case 16:
+                    if (Level >= 1) { Moves.Add(Move.Headbutt()); }
+                    if (Level >= 5) { Moves.Add(Move.TreeHammer()); }
+                    if (Level >= 20) { Moves.Add(Move.NatureCalling()); }
+                    break;
+                case 17:
+                    if (Level >= 1) { Moves.Add(Move.Tackle()); }
+                    if (Level >= 20) { Moves.Add(Move.Smog()); }
+                    break;
+                case 18:
+                    if (Level >= 1) { Moves.Add(Move.Headbutt()); }
+                    if (Level >= 11) { Moves.Add(Move.Scream()); }
+                    if (Level >= 17) { Moves.Add(Move.SleepyTune()); }
+                    if (Level >= 21) { Moves.Add(Move.AngryTune()); }
+                    if (Level >= 34) { Moves.Add(Move.MindTrick()); }
+                    break;
+                case 19:
+                    if (Level >= 1) { Moves.Add(Move.Tackle()); }
+                    if (Level >= 8) { Moves.Add(Move.Headbutt()); }
+                    if (Level >= 15) { Moves.Add(Move.Flare()); }
+                    break;
+                case 20:
+                    Moves.AddMany(Move.Tackle(), Move.Headbutt(), Move.Flare());
+                    if (Level >= 29) { Moves.Add(Move.FlameThrower()); }
+                    break;
+                case 21:
+                    if (Level >= 1) { Moves.Add(Move.Scream()); }
+                    if (Level >= 12) { Moves.Add(Move.SleepyTune()); }
+                    if (Level >= 13) { Moves.Add(Move.HighPitch()); }
+                    if (Level >= 15) { Moves.Add(Move.AngryTune()); }
+                    if (Level >= 21) { Moves.Add(Move.DazzlingTune()); }
+                    break;
+                case 22:
+                    if (Level >= 1) { Moves.Add(Move.Headbutt()); }
+                    if (Level >= 15) { Moves.Add(Move.LeafCut()); }
+                    if (Level >= 21) { Moves.Add(Move.MindClose()); }
+                    break;
+                case 23:
+                    if (Level >= 1) { Moves.Add(Move.Headbutt()); }
+                    if (Level >= 9) { Moves.Add(Move.Scream()); }
+                    if (Level >= 21) { Moves.Add(Move.HighPitch()); }
+                    if (Level >= 31) { Moves.Add(Move.MindClose()); }
+                    break;
+
             }
         }
 
