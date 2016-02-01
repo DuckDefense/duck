@@ -272,15 +272,20 @@ namespace VideoGame.Classes {
         #endregion
         #region Fire
         //Physical
+        public static Move FireClaw()
+        {
+            return new Move("Fire Claw", "Slashes at the foe with fiery claws", 50, 100, 15, Kind.Physical, Type.Fire);
+        }
 
         //Special
         public static Move Meteor() {
             return new Move("Meteor", "Cast down a meteor upon the foe",
                 120, 55, 5, Kind.Special, Type.Fire);
         }
-        public static Move Implode() {
-            return new Move("Implode", "Implodes the foe",
-                70, 85, 20, Ailment.Burned, 20, Kind.Special, Type.Fire);
+        public static Move FlameThrower()
+        {
+            return new Move("FlameThrower", "Throws flame",
+                80, 95, 20, Kind.Special, Type.Fire);
         }
 
         //NonDamage
@@ -334,8 +339,14 @@ namespace VideoGame.Classes {
         }
 
         //NonDamage
-            #endregion
-            #region Rock
+        #endregion
+        #region Rock
+
+        public static Move TailSmash()
+        {
+            return new Move("Tail smash", "Smashes the tail down at the enemy causing the rocks to fly in the air",
+                80, 100, 15, Kind.Physical, Type.Rock);
+        }
         public static Move RockThrow() {
             return new Move("Rock throw", "Throw a rock at the foe",
                 65, 80, 20, Kind.Special, Type.Rock);
@@ -354,17 +365,23 @@ namespace VideoGame.Classes {
         #region Poison
         public static Move PoisonDart() {
             return new Move("Poison dart", "Shoots a poison dart at the target",
-                40, 70, 60, Ailment.Poisoned, 60, Kind.Physical, Type.Normal);
+                40, 70, 60, Ailment.Poisoned, 60, Kind.Physical, Type.Poison);
         }
+        public static Move Smog()
+        {
+            return new Move("Smog", "Suffocates the foe",
+                50, 100, 20, Ailment.Poisoned, 10, Kind.Special, Type.Poison);
+        }
+
         #endregion
         #region Ghost
         public static Move Torment() {
             return new Move("Torment", "Torments the foe",
-                70, 75, 15, Kind.Special, Type.Ghost);
+                70, 100, 15, Kind.Special, Type.Ghost);
         }
         public static Move SoulHunt() {
             return new Move("Soul hunt", "Hunt for the foes soul",
-                120, 40, 10, Kind.Special, Type.Ghost);
+                120, 50, 10, Kind.Special, Type.Ghost);
         }
         #endregion
         #region Psych
@@ -378,10 +395,19 @@ namespace VideoGame.Classes {
         }
         #endregion
         #region Flying
+
+        //Physical
+        public static Move Peck()
+        {
+            return new Move("Peck", "Jab the foe with its beak", 35,100,35, Kind.Physical, Type.Flying);
+        }
+
+        //Special
         public static Move Tornado() {
             return new Move("Tornado", "Twists the foe in a tornado",
-                50, 90, 15, Kind.Special, Type.Flying);
+                60, 100, 25, Kind.Special, Type.Flying);
         }
+
         #endregion
         #region Sound
         public static Move Scream() {
@@ -390,7 +416,7 @@ namespace VideoGame.Classes {
         }
         public static Move HighPitch() {
             return new Move("High pitch", "Make a high pitch sound, deafening the foe",
-                75, 80, 15, Kind.Special, Type.Sound);
+                75, 95, 15, Kind.Special, Type.Sound);
         }
 
         //NonDamage
