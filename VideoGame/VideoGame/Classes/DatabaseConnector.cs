@@ -34,8 +34,7 @@ namespace Sandbox.Classes {
             return inventory;
         }
 
-        public static Monster GetMonster(int monsterId, int level)
-        {
+        public static Monster GetMonster(int monsterId, int level) {
             Monster mon = null;
             var monsterCmd = connection.CreateCommand();
             monsterCmd.CommandText = $"SELECT * FROM `monster` WHERE `Id` = @id";
@@ -69,7 +68,7 @@ namespace Sandbox.Classes {
                     }
                 }
             }
-            if(mon.Name != String.Empty) { 
+            if (mon.Name != String.Empty) {
                 mon.UId = RandomId.GenerateRandomUId();
                 mon.StatId = RandomId.GenerateStatsId();
                 return mon;
@@ -125,13 +124,13 @@ namespace Sandbox.Classes {
 
         public static List<Monster> GetMonsters(int playerId, ref List<Monster> box) {
             bool capture = false;
-            int Uid = 0;
+            int Id = 0;
             int statsId = 0;
             int level = 0;
             int experience = 0;
             string itemKind = "";
             int itemId = 0;
-            Ability ability = Ability.Buff();
+            Ability ability = Ability.Ordinary();
             string gen = "";
             Gender gender = Gender.Male;
             bool boxed = false;
@@ -143,7 +142,7 @@ namespace Sandbox.Classes {
             using (var rdr = linkCmd.ExecuteReader()) {
                 while (rdr.Read()) {
                     if (playerId == rdr.GetInt32("playerId")) {
-                        var monsterId = rdr.GetInt32("monsterId");
+                        var monsterId = rdr.GetInt32("Uid");
                         monsterIdList.Add(monsterId);
                     }
                 }
@@ -153,11 +152,11 @@ namespace Sandbox.Classes {
                 var item = new Item();
 
                 linkCmd = connection.CreateCommand();
-                linkCmd.CommandText = "SELECT * FROM `monsterlink` WHERE monsterId = @id";
-                linkCmd.Parameters.AddWithValue("@id", monsterId);
+                linkCmd.CommandText = "SELECT * FROM `monsterlink` WHERE Uid = @uid";
+                linkCmd.Parameters.AddWithValue("@uid", monsterId);
                 using (var rdr = linkCmd.ExecuteReader()) {
                     while (rdr.Read()) {
-                        Uid = rdr.GetInt32("Uid");
+                        Id = rdr.GetInt32("monsterId");
                         statsId = rdr.GetInt32("statsId");
                         level = rdr.GetInt32("Level");
                         experience = rdr.GetInt32("Experience");
@@ -200,12 +199,11 @@ namespace Sandbox.Classes {
                     }
                 }
 
-                var mon = GetMonster(monsterId, level);
+                var mon = GetMonster(Id, level);
                 mon.Experience = experience;
                 mon.Ability = ability;
                 mon.HeldItem = item;
                 mon.Gender = gender;
-                mon.UId = Uid;
                 mon.StatId = statsId;
 
                 var statCmd = connection.CreateCommand();
@@ -421,16 +419,14 @@ namespace Sandbox.Classes {
             //Make inventory
             cmd.CommandText = "SELECT COUNT(*) FROM `medicine`";
             int count = Convert.ToInt32(cmd.ExecuteScalar());
-            for (int i = 1; i < count; i++)
-            {
+            for (int i = 1; i < count; i++) {
                 cmd.CommandText = "INSERT INTO `medicinelink`(`playerId`, `medicineId`,  `Amount`) " +
                                   $"VALUES ({pid}, {i}, 0)";
                 cmd.ExecuteNonQuery();
             }
             cmd.CommandText = "SELECT COUNT(*) FROM `capture`";
             count = Convert.ToInt32(cmd.ExecuteScalar());
-            for (int i = 1; i < count; i++)
-            {
+            for (int i = 1; i < count; i++) {
                 cmd.CommandText = "INSERT INTO `capturelink`(`playerId`,`captureId`,`Amount`) " +
                                   $"VALUES ({pid}, {i}, 0)";
                 cmd.ExecuteNonQuery();
