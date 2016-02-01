@@ -147,7 +147,6 @@ namespace VideoGame.Classes {
                 if (!User.KnownMonsters.ContainsKey(CurrentOpponentMonster.Id)) User.KnownMonsters.Add(CurrentOpponentMonster.Id, CurrentOpponentMonster);
                 battleStart = false;
                 drawBattleButtons = true;
-                CurrentUserMonster.Ailment = Ailment.Sleep;
             }
             //If battle is happening right now.
             if (!battleOver) {
