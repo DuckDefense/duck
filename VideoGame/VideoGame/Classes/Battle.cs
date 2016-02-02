@@ -112,8 +112,7 @@ namespace VideoGame.Classes {
                     battleOver = true;
                     Drawer.AddMessage(new List<string> { "You got away safely" });
                 }
-                else
-                {
+                else {
                     battleOver = false;
                     Drawer.AddMessage(new List<string> { "You couldn't get away" });
                     Reset(true);
@@ -404,9 +403,9 @@ namespace VideoGame.Classes {
                         }
                         else {
                             playerTurn = false;
-                            if(CurrentUserMonster.Ailment == Ailment.Frozen)
-                            Drawer.AddMessage(new List<string>
-                               {"Is frozen solid"});
+                            if (CurrentUserMonster.Ailment == Ailment.Frozen)
+                                Drawer.AddMessage(new List<string>
+                                   {"Is frozen solid"});
                             else if (CurrentUserMonster.Ailment == Ailment.Frozen)
                                 Drawer.AddMessage(new List<string>
                                 {"Is Fast asleep"});
@@ -439,14 +438,15 @@ namespace VideoGame.Classes {
                         SelectedMove = m;
                         break;
                     }
-                    if (SelectedMove.Uses != 0) {
-                        Attack(CurrentUserMonster, CurrentOpponentMonster, SelectedMove);
-                        playerTurn = false;
-                    }
-                    else {
-                        Drawer.AddMessage(new List<string> { "This use is all out of uses" });
-                        playerTurn = true;
-                    }
+                    if (SelectedMove != null)
+                        if (SelectedMove.Uses != 0) {
+                            Attack(CurrentUserMonster, CurrentOpponentMonster, SelectedMove);
+                            playerTurn = false;
+                        }
+                        else {
+                            Drawer.AddMessage(new List<string> { "This use is all out of uses" });
+                            playerTurn = true;
+                        }
                 }
                 //Get selected monster from party
                 if (drawParty) {
@@ -525,7 +525,7 @@ namespace VideoGame.Classes {
             battleOver = true;
         }
         public void AilmentEffect(Monster monster) {
-            if (monster.Ailment == Ailment.Burned) { 
+            if (monster.Ailment == Ailment.Burned) {
                 monster.Stats.Health -= (monster.MaxHealth / 100 * 8);
             }
             if (monster.Ailment == Ailment.Poisoned) {
