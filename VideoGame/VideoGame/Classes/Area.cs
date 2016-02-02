@@ -77,7 +77,7 @@ namespace VideoGame.Classes {
             }
             Box.Draw(batch);
             foreach (var boxCollide in BoxColliders) {
-                batch.Draw(ContentLoader.HealLady, boxCollide, Color.Yellow);
+                batch.Draw(ContentLoader.Health, boxCollide, Color.Red);
             }
         }
 
@@ -295,7 +295,7 @@ namespace VideoGame.Classes {
             tegenstander = new Character("Christguy", money, inventory,
                 new List<Monster> {
                     DatabaseConnector.GetMonster(1, 5),
-                    DatabaseConnector.GetMonster(4, 15)
+                    DatabaseConnector.GetMonster(4, 7)
                 },
                 battleLine, winLine, loseLine, ContentLoader.ChristmanWorld, new Vector2(192, 192));
             tegenstander.AI = new AI(tegenstander, 3);
