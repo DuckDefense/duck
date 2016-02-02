@@ -284,14 +284,14 @@ namespace VideoGame.Classes {
         }
         public static Move FlameThrower()
         {
-            return new Move("FlameThrower", "Throws flame",
+            return new Move("Flame Thrower", "Throws flame",
                 80, 95, 20, Kind.Special, Type.Fire);
         }
 
         //NonDamage
         public static Move Flare() {
             return new Move("Flare", "Fires a flare to the foe",
-                0, 85, 25, Ailment.Burned, 75, Kind.NonDamage, Type.Fire);
+                0, 75, 25, Ailment.Burned, 100, Kind.NonDamage, Type.Fire);
         }
         #endregion
         #region Water
@@ -422,13 +422,13 @@ namespace VideoGame.Classes {
         //NonDamage
         public static Move DazzlingTune() {
             return new Move("Dazzling Tune", "The monster plays a dazzling tune",
-                0, 100, 15, Ailment.Dazzled, 75, Kind.NonDamage, Type.Sound);
+                0, 75, 15, Ailment.Dazzled, 100, Kind.NonDamage, Type.Sound);
         }public static Move SleepyTune() {
             return new Move("Sleepy Tune", "The monster plays a sleep inducing tune",
-                0, 100, 15, Ailment.Sleep, 75, Kind.NonDamage, Type.Sound);
+                0, 75, 15, Ailment.Sleep, 100, Kind.NonDamage, Type.Sound);
         }public static Move AngryTune() {
             return new Move("Angry Tune", "The monster plays a aggresive tune",
-                0, 100, 15, Ailment.Frenzied, 75, Kind.NonDamage, Type.Sound);
+                0, 75, 15, Ailment.Frenzied, 100, Kind.NonDamage, Type.Sound);
         }
 
         #endregion
