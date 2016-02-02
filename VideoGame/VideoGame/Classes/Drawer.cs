@@ -67,11 +67,14 @@ namespace VideoGame.Classes {
         public static void DrawMoves(SpriteBatch batch, Character player) {
             ClearLists();
             var buttonPos = 0;
-            Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
+            float widthMultiplier = 1.5f;
+            //Position.X + ((Position.Width - stringsize.X) / 2)
+            Rectangle rec = new Rectangle(buttonPos - Convert.ToInt32(ContentLoader.Button.Width * widthMultiplier), ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
             foreach (var move in player.Monsters[0].Moves) {
-                var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + ContentLoader.Button.Height, rec.Width, rec.Height), ContentLoader.Button, $"{move.Name}", ContentLoader.Arial);
-                var typeRec = new Rectangle(rec.X + (ContentLoader.Button.Width / 4), rec.Y + ContentLoader.Button.Height + (ContentLoader.NormalType.Height * 2), ContentLoader.NormalType.Width, ContentLoader.NormalType.Height);
-                var usesRec = new Rectangle(rec.X + (ContentLoader.Button.Width / 5), rec.Y + (ContentLoader.Button.Height + (ContentLoader.NormalType.Height * 3)), ContentLoader.NormalType.Width, ContentLoader.NormalType.Height);
+                var stringsize = ContentLoader.Arial.MeasureString($"{move.Uses}/{move.MaxUses}");
+                var b = new Button(new Rectangle(rec.X += Convert.ToInt32(ContentLoader.Button.Width * widthMultiplier), rec.Y + ContentLoader.Button.Height, Convert.ToInt32(rec.Width * widthMultiplier), rec.Height), ContentLoader.Button, $"{move.Name}", ContentLoader.Arial);
+                var typeRec = new Rectangle(rec.X + ((b.Position.Width - ContentLoader.NormalType.Width) / 2), rec.Y + ContentLoader.Button.Height + (ContentLoader.NormalType.Height * 2), ContentLoader.NormalType.Width, ContentLoader.NormalType.Height);
+                var usesRec = new Rectangle(rec.X + Convert.ToInt32((b.Position.Width - stringsize.X) / 2), rec.Y + (ContentLoader.Button.Height + (ContentLoader.NormalType.Height * 3)), ContentLoader.NormalType.Width, ContentLoader.NormalType.Height);
                 b.Draw(batch);
                 batch.Draw(GetTypeTexture(move.Type), typeRec, Color.White);
                 batch.DrawString(ContentLoader.Arial, $"{move.Uses}/{move.MaxUses}", new Vector2(usesRec.X, usesRec.Y), Color.White);
@@ -99,7 +102,7 @@ namespace VideoGame.Classes {
             var buttonPos = 0;
             Rectangle rec = new Rectangle(buttonPos - ContentLoader.Button.Width, ContentLoader.GrassyBackground.Height, ContentLoader.Button.Width, ContentLoader.Button.Height);
             if (DrawMedicine) {
-                foreach (var item in player.Inventory.Medicine.Where(x=> x.Value.Amount > 0)) {
+                foreach (var item in player.Inventory.Medicine.Where(x => x.Value.Amount > 0)) {
                     var b = new Button(new Rectangle(rec.X += ContentLoader.Button.Width, rec.Y + (ContentLoader.Button.Height * 2), rec.Width, rec.Height),
                             ContentLoader.Button);
                     b.Draw(batch);
@@ -292,35 +295,29 @@ namespace VideoGame.Classes {
             PartyButtons = new List<ContainerButton>();
         }
 
-        public static void UpdateItemButtons(MouseState cur, MouseState prev)
-        {
+        public static void UpdateItemButtons(MouseState cur, MouseState prev) {
             if (bMedicine != null)
-                if (bMedicine.IsClicked(cur, prev))
-                {
+                if (bMedicine.IsClicked(cur, prev)) {
                     DrawMedicine = true;
                     DrawCapture = false;
                 }
             if (bCapture != null)
-                if (bCapture.IsClicked(cur, prev))
-                {
+                if (bCapture.IsClicked(cur, prev)) {
                     DrawCapture = true;
                     DrawMedicine = false;
                 }
             if (MedicineButtons != null)
-                foreach (var btn in MedicineButtons)
-                {
+                foreach (var btn in MedicineButtons) {
                     btn.Update(cur, prev);
                     if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn;
                 }
             if (CaptureButtons != null)
-                foreach (var btn in CaptureButtons)
-                {
+                foreach (var btn in CaptureButtons) {
                     btn.Update(cur, prev);
                     if (btn.Button.IsClicked(cur, prev)) LastClickedContainer = btn;
                 }
             if (InventoryButtons != null)
-                foreach (var btn in InventoryButtons)
-                {
+                foreach (var btn in InventoryButtons) {
                     btn.Update(cur, prev);
                     if (btn.IsClicked(cur, prev)) LastClickedButton = btn;
                 }
