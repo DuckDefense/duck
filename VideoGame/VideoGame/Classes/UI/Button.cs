@@ -293,7 +293,7 @@ public class Button {
             }
             if (DrawText) {
                 var stringsize = Font.MeasureString(Text);
-                var pos = new Vector2(Position.X + ((SourceTexture.Width - stringsize.X) / 2), Position.Y + ((SourceTexture.Height - stringsize.Y) / 2));
+                var pos = new Vector2(Position.X + ((Position.Width - stringsize.X) / 2), Position.Y + ((Position.Height - stringsize.Y) / 2));
                 batch.DrawString(Font, Text, pos, FontColor);
             }
         }
