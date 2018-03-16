@@ -5,7 +5,7 @@ This game is a turn based RPG, kind of like Pokemon, but in no way is it associa
 The idea of the game is, just as in Pokemon, to capture monsters, train them, and ultimately defeat the strongest guy in the region.
 
 ######Installing
-- To install the game you should first go and download any program which can host a database. ([WAMP](http://www.wampserver.com/en/), [XAMPP](https://www.apachefriends.org/index.html), etc)
+- To install the game you should first go and download any program which can host a database. ([WAMP](http://www.wampserver.com/en/), [XAMPP](https://www.apachefriends.org/index.html), [MySQL Server](https://dev.mysql.com/downloads/mysql/), etc)
 - When the installation is complete open up either the XAMPP Control Panel and start both Apache and MySql, or right click on the WAMP icon and enable all services.
 - Open your preffered browser and go to the following address: [localhost/phpmyadmin](localhost/phpmyadmin)
 - Create a new table called `ripoff`, you can give this a custom name, but you'll have to alter a few more settings
