@@ -1,10 +1,12 @@
-##Duck: The Rip Offering
+# Duck: The Rip Offering
 This game is a turn based RPG, kind of like Pokemon, but in no way is it associated with it or Nintendo.
 
-######The Game itself
+## The Game itself
+
 The idea of the game is, just as in Pokemon, to capture monsters, train them, and ultimately defeat the strongest guy in the region.
 
-######Installing
+## Installing
+
 - To install the game you should first go and download any program which can host a database. ([WAMP](http://www.wampserver.com/en/), [XAMPP](https://www.apachefriends.org/index.html), [MySQL Server](https://dev.mysql.com/downloads/mysql/), etc)
 - When the installation is complete open up either the XAMPP Control Panel and start both Apache and MySql, or right click on the WAMP icon and enable all services.
 - Open your preffered browser and go to the following address: [localhost/phpmyadmin](localhost/phpmyadmin)
@@ -17,7 +19,7 @@ The idea of the game is, just as in Pokemon, to capture monsters, train them, an
 - If you changed any data regarding the database (different table name) you need to alter the database data which is done by clicking on `Settings` and navigating to the database tab. `Server Name` is the name of the server, or the ip to it. `Database Name` is the table name, and `username` and `password` are the user and password you use to get inside phpmyadmin.
 - You have now succesfully installed the game. To continue with your progress just login with the same username and password.
 
-######Building
+## Building
 Just download the entire project and start it up with Visual Studio 2015, older versions won't work.
 Set `SandBox` as your startup project and build the solution.
 It should work just fine after that
